@@ -131,11 +131,17 @@
     <developers>
         <developer>
             <name>Piotr 'pitrecki' Nowak</name>
-            <roles>
-                <role>Lead programmer</role>
-            </roles>
             <email>piotr_nowak@outlook.com</email>
             <url>github.com/pitrecki</url>
         </developer>
+        <developer>
+            <name>Andrzej Zajst</name>
+            <url>github.com/zajst</url>
+        </developer>
+        <developer>
+            <name>Karol Kawski</name>
+            <url>github.com/mrfrappe</url>
+        </developer>
+
     </developers>
 </project>
