@@ -1,13 +1,22 @@
 package com.ninjabooks;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 /**
- * Hello world!
+ * Main app class
  *
+ * @author Piotr 'pitrecki' Nowak
+ * @since 1.0
  */
-public class App 
+public class App
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    /**
+     * Start application from this point.
+     * @param args nothing
+     */
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext();
     }
 }
