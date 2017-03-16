@@ -3,7 +3,7 @@ package com.ninjabooks.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * This class represent queue in database
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Queue extends BaseEntity
 {
     @Column(name = "order_date")
-    private LocalDate oderDate;
+    private LocalDateTime orderDate;
 
     public Queue() {
 
@@ -24,18 +24,18 @@ public class Queue extends BaseEntity
 
     /**
      * Create mew instace of queuee objet
-     * @param oderDate date when user order book
+     * @param orderDate date when user order book
      */
 
-    public Queue(LocalDate oderDate) {
-        this.oderDate = oderDate;
+    public Queue(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public LocalDate getOderDate() {
-        return oderDate;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setOderDate(LocalDate oderDate) {
-        this.oderDate = oderDate;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 }
