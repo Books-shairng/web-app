@@ -17,6 +17,7 @@ public class App
      */
 
     public static void main(String[] args) {
+        //Perhaps it will replace with super method from spring mvc depedency :)
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext();
     }
 }
