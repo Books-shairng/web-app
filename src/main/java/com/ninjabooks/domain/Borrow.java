@@ -31,7 +31,7 @@ public class Borrow extends BaseEntity
 
     public Borrow(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
-        //here some logic to calculate return date
+        calculateReturnDate(borrowDate);
     }
 
     public LocalDate getBorrowDate() {
@@ -46,5 +46,7 @@ public class Borrow extends BaseEntity
         return returnDate;
     }
 
-
+    private void calculateReturnDate(LocalDate borrowDate) {
+        returnDate = borrowDate.plusDays(30);
+    }
 }
