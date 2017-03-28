@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Entity
-@Table(name = "Queue")
+@Table(name = "QUEUE")
 public class Queue extends BaseEntity
 {
-    @Column(name = "order_date")
+    @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
     public Queue() {

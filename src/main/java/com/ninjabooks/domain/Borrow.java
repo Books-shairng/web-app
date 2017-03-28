@@ -12,13 +12,13 @@ import java.time.LocalDate;
  * @since 1.0
  */
 @Entity
-@Table(name = "Borrow")
+@Table(name = "BORROW")
 public class Borrow extends BaseEntity
 {
-    @Column(name = "borrow_date")
+    @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @Column(name = "return_date")
+    @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
     public Borrow() {

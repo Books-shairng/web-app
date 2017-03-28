@@ -5,14 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * This class represent QR code table in database.
+ *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @Entity
-@Table(name = "Qr_code")
+@Table(name = "QR_CODE")
 public class QRCode extends BaseEntity
 {
-    @Column(name = "data")
+    @Column(name = "DATA")
     private QRCode data;
 
     public QRCode() {

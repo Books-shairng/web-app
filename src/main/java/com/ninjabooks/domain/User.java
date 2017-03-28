@@ -11,16 +11,16 @@ import javax.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "Users")
+@Table(name = "USERS")
 public class User extends BaseEntity
 {
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "PASSWORD")
     private String password;
 
     public User() {
