@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Conection string for a MySQL DB -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/MYSQLlocalDB</property>
+        <!-- Your DB username -->
+        <property name="connection.username">root</property>
+        <!-- Your password DB username -->
+        <property name="connection.password">admin1</property>
+        <!-- Hibernate dialect for MySQL DB -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!-- Shows SQL instructions in shell when you run your program and do any CRUD operation into the DB -->
+        <property name="show_sql">true</property>
+        <!-- Updates DB schema on startup -->
+        <property name="hbm2ddl.auto">update</property>
+        <mapping package="com.ninjabooks.dao"/>
+    </session-factory>
+</hibernate-configuration>
