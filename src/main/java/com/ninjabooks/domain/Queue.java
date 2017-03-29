@@ -1,8 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -13,8 +11,12 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "QUEUE")
-public class Queue extends BaseEntity
+public class Queue
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
@@ -37,5 +39,13 @@ public class Queue extends BaseEntity
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

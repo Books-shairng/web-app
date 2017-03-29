@@ -1,7 +1,8 @@
-package com.ninjabooks.dao;
+package com.ninjabooks.dao.db;
 
+import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.util.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBUserDao implements GenericDao<User>
+public class DBUserDao implements GenericDao<User, Long>
 {
-    private final Session currentSession = HibernateUtil.getSessionFactory().getCurrentSession();
+    private final SessionFactory sessionFactory;
+    private Session currentSession;
 
-    public DBUserDao() {
+    @Autowired
+    public DBUserDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        try {
+            currentSession = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            currentSession = sessionFactory.openSession();
+        }
+//        this.currentSession = sessionFactory.getCurrentSession();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class represent book in database
@@ -11,9 +9,13 @@ import javax.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "BOOKS")
-public class Book extends BaseEntity
+@Table(name = "BOOK")
+public class Book
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "TITLE")
     private String title;
 
@@ -62,5 +64,13 @@ public class Book extends BaseEntity
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

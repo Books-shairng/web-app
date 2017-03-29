@@ -1,8 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class represent user in database
@@ -12,8 +10,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USERS")
-public class User extends BaseEntity
+public class User
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "NAME")
     private String name;
 
@@ -61,5 +63,13 @@ public class User extends BaseEntity
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

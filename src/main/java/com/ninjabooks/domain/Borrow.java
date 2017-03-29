@@ -1,8 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -13,8 +11,12 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "BORROW")
-public class Borrow extends BaseEntity
+public class Borrow
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
@@ -44,6 +46,18 @@ public class Borrow extends BaseEntity
 
     public LocalDate getReturnDate() {
         return returnDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
     private void calculateReturnDate(LocalDate borrowDate) {

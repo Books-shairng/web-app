@@ -1,8 +1,8 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 /**
  * This class represent QR code table in database.
@@ -12,9 +12,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "QR_CODE")
-public class QRCode extends BaseEntity
+public class QRCode
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "DATA")
+    @Type(type = "serializable")
     private QRCode data;
 
     public QRCode() {
@@ -26,5 +31,13 @@ public class QRCode extends BaseEntity
 
     public void setData(QRCode data) {
         this.data = data;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

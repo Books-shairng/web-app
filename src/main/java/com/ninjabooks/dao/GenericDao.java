@@ -1,5 +1,6 @@
 package com.ninjabooks.dao;
 
+import java.io.Serializable;
 import java.util.stream.Stream;
 
 /**
@@ -9,7 +10,7 @@ import java.util.stream.Stream;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public interface GenericDao<T>
+public interface GenericDao<T, K extends Serializable>
 {
     /**
      * Return all mathching elements from T type table.
@@ -42,7 +43,7 @@ public interface GenericDao<T>
      * @param id of element which will be edited
      */
 
-    void update(Long id);
+    void update(K id);
 
     /**
      * Delete t type element in table with specified id.
@@ -50,5 +51,5 @@ public interface GenericDao<T>
      * @param id of element which will be removed
      */
 
-    void delete(Long id);
+    void delete(K id);
 }

@@ -1,7 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class represent history table in database.
@@ -13,8 +12,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "HISTORY")
-public class History  extends BaseEntity
+public class History
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     public History() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
