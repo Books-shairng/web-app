@@ -132,6 +132,13 @@
             <artifactId>core</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <!--Virautl database for testing-->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <developers>
