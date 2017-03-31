@@ -1,6 +1,6 @@
 package com.ninjabooks.dao.db;
 
-import com.ninjabooks.dao.GenericDao;
+import com.ninjabooks.dao.QueueDao;
 import com.ninjabooks.domain.Queue;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBQueueDao implements GenericDao<Queue, Long>
+public class DBQueueDao implements QueueDao
 {
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -30,12 +30,11 @@ public class DBQueueDao implements GenericDao<Queue, Long>
         } catch (HibernateException e) {
             currentSession = sessionFactory.openSession();
         }
-//        this.currentSession = sessionFactory.getCurrentSession();
     }
 
     @Override
     public Stream<Queue> getAll() {
-        return currentSession.createQuery("SELECT q FROM Queue q", Queue.class).stream();
+        return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.Queue q", Queue.class).stream();
     }
 
     @Override
@@ -55,6 +54,12 @@ public class DBQueueDao implements GenericDao<Queue, Long>
 
     @Override
     public void delete(Long id) {
-        currentSession.delete(id);
+        Queue queue = currentSession.get(Queue.class, id);
+        currentSession.delete(queue);
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return currentSession;
     }
 }

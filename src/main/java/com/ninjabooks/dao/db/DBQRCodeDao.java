@@ -1,6 +1,6 @@
 package com.ninjabooks.dao.db;
 
-import com.ninjabooks.dao.GenericDao;
+import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBQRCodeDao implements GenericDao<QRCode, Long>
+public class DBQRCodeDao implements QRCodeDao
 {
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -30,12 +30,11 @@ public class DBQRCodeDao implements GenericDao<QRCode, Long>
         } catch (HibernateException e) {
             currentSession = sessionFactory.openSession();
         }
-//        this.currentSession = sessionFactory.getCurrentSession();
     }
 
     @Override
     public Stream<QRCode> getAll() {
-        return currentSession.createQuery("SELECT q FROM QRCode q").stream();
+        return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.QRCode q").stream();
     }
 
     @Override
@@ -55,6 +54,12 @@ public class DBQRCodeDao implements GenericDao<QRCode, Long>
 
     @Override
     public void delete(Long id) {
-        currentSession.delete(id);
+        QRCode qrCode = currentSession.get(QRCode.class, id);
+        currentSession.delete(qrCode);
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return currentSession;
     }
 }

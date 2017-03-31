@@ -5,10 +5,7 @@ import com.ninjabooks.domain.Book;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +26,15 @@ public class DBBookDao implements BookDao
     public DBBookDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         try {
-            currentSession = sessionFactory.getCurrentSession();
+            this.currentSession = sessionFactory.getCurrentSession();
         } catch (HibernateException e) {
-            currentSession = sessionFactory.openSession();
+            this.currentSession = sessionFactory.openSession();
         }
     }
 
     @Override
     public Stream<Book> getAll() {
-        return currentSession.createQuery("select b from BOOK b",Book.class).stream();
+        return currentSession.createQuery("select book from com.ninjabooks.domain.Book book",Book.class).stream();
     }
 
     @Override
@@ -58,8 +55,11 @@ public class DBBookDao implements BookDao
     @Override
     public void delete(Long id) {
         Book book = currentSession.get(Book.class, id);
-        Transaction transaction = currentSession.beginTransaction();
         currentSession.delete(book);
-        transaction.commit();
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return currentSession;
     }
 }

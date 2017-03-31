@@ -17,11 +17,14 @@ import java.util.Properties;
 
 /**
  * This configuration class contains all necessary beans to inject
- * @see SessionFactory in every class.
+ * depedencies.
  *
- * Configuration is valid only with <b>production</b> database, to testing
- * and other thing use
- * @see HSQLConfig
+ * Use this config to make some <b>developing</b> things like:
+ * unit testing
+ * checking integration with conrtollers and etc
+ *
+ * For more information what's in - memory - db  look at
+ * <a href="http://hsqldb.org/"> click me </a>
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -30,7 +33,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource(value = "classpath:hibernate.properties")
 @ComponentScan(basePackages = {"com.ninjabooks.dao"})
-public class HibernateConfig
+public class HSQLConfig
 {
     @Autowired
     private Environment environment;
@@ -45,18 +48,18 @@ public class HibernateConfig
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("hibernate.cfg.xml");
-        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
-        dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+        dataSource.setUrl("jdbc:hsqldb:mem:butterfly");
+        dataSource.setUsername("root");
+        dataSource.setPassword("");
         return dataSource;
     }
 
     @Bean
     public Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
         properties.put("hibernate.hbm2ddl.auto", "update");

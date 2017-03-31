@@ -1,6 +1,6 @@
 package com.ninjabooks.dao.db;
 
-import com.ninjabooks.dao.GenericDao;
+import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBHistoryDao implements GenericDao<History, Long>
+public class DBHistoryDao implements HistoryDao
 {
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -35,7 +35,7 @@ public class DBHistoryDao implements GenericDao<History, Long>
 
     @Override
     public Stream<History> getAll() {
-        return currentSession.createQuery("SELECT h FROM History h", History.class).stream();
+        return currentSession.createQuery("SELECT h FROM com.ninjabooks.domain.History h", History.class).stream();
     }
 
     @Override
@@ -55,6 +55,12 @@ public class DBHistoryDao implements GenericDao<History, Long>
 
     @Override
     public void delete(Long id) {
-        currentSession.delete(id);
+        History history = currentSession.get(History.class, id);
+        currentSession.delete(history);
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return currentSession;
     }
 }

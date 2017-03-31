@@ -1,15 +1,31 @@
 package com.ninjabooks.dao;
 
+import com.ninjabooks.util.TransactionManager;
+import org.hibernate.Session;
+
 import java.io.Serializable;
 import java.util.stream.Stream;
 
 /**
- * This interface reperesent generic dao, for more information
- * look in google
+ * In computer software, a data access object (DAO) is an object that provides an
+ * abstract interface to some type of database or other persistence mechanism.
+ * By mapping application calls to the persistence layer, the DAO provides some
+ * specific data operations without exposing details of the database. This
+ * isolation supports the Single responsibility principle. It separates what data
+ * access the application needs, in terms of domain-specific objects and data types
+ * (the public interface of the DAO), from how these needs can be satisfied with a
+ * specific DBMS, database schema, etc. (the implementation of the DAO).
+ *
+ * @see BookDao
+ * @see UserDao
+ * @see QRCodeDao
+ * @see HistoryDao
+ * @see BorrowDao
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+
 public interface GenericDao<T, K extends Serializable>
 {
     /**
@@ -30,15 +46,15 @@ public interface GenericDao<T, K extends Serializable>
     T getById(Long id);
 
     /**
-     * Add t type element to table.
+     * Add entity type element to table.
      *
-     * @param t
+     * @param entity
      */
 
-    void add(T t);
+    void add(T entity);
 
     /**
-     * Update t type element in table with specified id.
+     * Update entity type element in table with specified id.
      *
      * @param id of element which will be edited
      */
@@ -46,10 +62,19 @@ public interface GenericDao<T, K extends Serializable>
     void update(K id);
 
     /**
-     * Delete t type element in table with specified id.
+     * Delete entity type element in table with specified id.
      *
      * @param id of element which will be removed
      */
 
     void delete(K id);
+
+    /**
+     * This method return current session status, which is necessary in
+     * @see TransactionManager
+     *
+     * @return current connect session to db
+     */
+
+    Session getCurrentSession();
 }

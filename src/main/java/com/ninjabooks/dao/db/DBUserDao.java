@@ -1,6 +1,6 @@
 package com.ninjabooks.dao.db;
 
-import com.ninjabooks.dao.GenericDao;
+import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBUserDao implements GenericDao<User, Long>
+public class DBUserDao implements UserDao
 {
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -30,12 +30,11 @@ public class DBUserDao implements GenericDao<User, Long>
         } catch (HibernateException e) {
             currentSession = sessionFactory.openSession();
         }
-//        this.currentSession = sessionFactory.getCurrentSession();
     }
 
     @Override
     public Stream<User> getAll() {
-        return currentSession.createQuery("SELECT u FROM  User u", User.class).stream();
+        return currentSession.createQuery("SELECT u FROM  com.ninjabooks.domain.User u", User.class).stream();
     }
 
     @Override
@@ -55,6 +54,12 @@ public class DBUserDao implements GenericDao<User, Long>
 
     @Override
     public void delete(Long id) {
-        currentSession.delete(id);
+        User user = currentSession.get(User.class, id);
+        currentSession.delete(user);
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return currentSession;
     }
 }

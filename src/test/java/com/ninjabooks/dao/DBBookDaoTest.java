@@ -1,34 +1,85 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.dao.db.DBBookDao;
+import com.ninjabooks.configuration.HSQLConfig;
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.utils.TestConfig;
-import org.assertj.core.api.Assertions;
+import com.ninjabooks.util.TransactionManager;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-
 public class DBBookDaoTest
 {
     @Autowired
-    private DBBookDao dbBookDao;
+    private BookDao bookDao;
+
+    private TransactionManager transactionManager;
+    private List<Book> books;
+
+    @Before
+    public void setUp() throws Exception {
+        transactionManager = new TransactionManager(bookDao.getCurrentSession());
+        books = createRecords();
+        transactionManager.beginTransaction();
+    }
+
+    private List<Book> createRecords() {
+        Book effectiveJava = new Book();
+        effectiveJava.setAuthor("J. Bloch");
+        effectiveJava.setTitle("Effective Java");
+        effectiveJava.setIsbn("978-0321356680");
+
+        Book proSpring = new Book();
+        proSpring.setAuthor("C. Ho, R. Harrop, C. Schaefer");
+        proSpring.setTitle("Pro Spring, 4th Edition");
+        proSpring.setIsbn("978-1430261513");
+
+        List<Book> books = new ArrayList<>();
+        books.add(effectiveJava);
+        books.add(proSpring);
+
+        return books;
+    }
 
     @Test
-    @Transactional
-    public void testDEMO() throws Exception {
-        Book book = new Book("Effective Java", "J. Bloch", "1111111");
-        dbBookDao.add(book);
+    public void testAddBook() throws Exception {
+        bookDao.add(books.get(0));
 
-        Assertions.assertThat(dbBookDao).isSameAs(book);
+        assertThat(bookDao.getAll()).containsExactly(books.get(0));
+    }
+
+    @Test
+    public void testDeleteBook() throws Exception {
+        bookDao.add(books.get(0));
+        bookDao.delete(4L);
+
+        assertThat(bookDao.getAll()).isEmpty();
+    }
+
+    @Test
+    public void testGetAllShouldRetrunAllRecords() throws Exception {
+        books.forEach(book -> bookDao.add(book));
+
+        assertThat(bookDao.getAll()).containsExactly(books.get(0), books.get(1));
+    }
+
+
+    @After
+    public void tearDown() throws Exception {
+        transactionManager.rollback();
     }
 }
