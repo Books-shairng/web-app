@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @since 1.0
  */
 @Entity
-@Table(name = "USERS")
+@Table(name = "USER")
 public class User
 {
     @Id
@@ -71,5 +71,15 @@ public class User
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

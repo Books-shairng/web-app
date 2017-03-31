@@ -63,4 +63,13 @@ public class Borrow
     private void calculateReturnDate(LocalDate borrowDate) {
         returnDate = borrowDate.plusDays(30);
     }
+
+    @Override
+    public String toString() {
+        return "Borrow{" +
+                "id=" + id +
+                ", borrowDate=" + borrowDate +
+                ", returnDate=" + returnDate +
+                '}';
+    }
 }

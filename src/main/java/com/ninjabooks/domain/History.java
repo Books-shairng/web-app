@@ -28,4 +28,11 @@ public class History
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "id=" + id +
+                '}';
+    }
 }
