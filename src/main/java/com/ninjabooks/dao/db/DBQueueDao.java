@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0
+ * @since 1.0.1
  */
 @Repository
 @Transactional
@@ -56,6 +57,11 @@ public class DBQueueDao implements QueueDao
     public void delete(Long id) {
         Queue queue = currentSession.get(Queue.class, id);
         currentSession.delete(queue);
+    }
+
+    @Override
+    public Queue getByOrderDate(LocalDateTime orderDate) {
+        return currentSession.get(Queue.class, orderDate);
     }
 
     @Override

@@ -8,4 +8,8 @@ import com.ninjabooks.domain.Book;
  */
 public interface BookDao extends GenericDao<Book, Long>
 {
+    public Book getByTitle(String title);
+    public Book getByAuthor(String author);
+    public Book getByISBN(String isbn);
+
 }

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0
+ * @since 1.0.1
  */
 @Repository
 @Transactional
@@ -56,6 +56,16 @@ public class DBUserDao implements UserDao
     public void delete(Long id) {
         User user = currentSession.get(User.class, id);
         currentSession.delete(user);
+    }
+
+    @Override
+    public User getByName(String name) {
+        return currentSession.get(User.class, name);
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return currentSession.get(User.class, email);
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0
+ * @since 1.0.1
  */
 @Repository
 @Transactional
@@ -45,6 +45,21 @@ public class DBBookDao implements BookDao
     @Override
     public void add(Book book) {
         currentSession.save(book);
+    }
+
+    @Override
+    public Book getByTitle(String title) {
+        return currentSession.get(Book.class, title);
+    }
+
+    @Override
+    public Book getByAuthor(String author) {
+        return currentSession.get(Book.class, author);
+    }
+
+    @Override
+    public Book getByISBN(String isbn) {
+        return currentSession.get(Book.class, isbn);
     }
 
     @Override

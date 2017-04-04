@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0
+ * @since 1.0.1
  */
 @Repository
 @Transactional
@@ -61,5 +62,15 @@ public class DBBorrowDao implements BorrowDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    public Borrow getByReturnDate(LocalDate returnDate) {
+        return currentSession.get(Borrow.class, returnDate);
+    }
+
+    @Override
+    public Borrow getByBorrowDate(LocalDate borrowDate) {
+        return currentSession.get(Borrow.class, borrowDate);
     }
 }

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Repository
 @Transactional
 public class DBHistoryDao implements HistoryDao
-{
+
     private final SessionFactory sessionFactory;
     private Session currentSession;
 
