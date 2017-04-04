@@ -40,7 +40,7 @@ body {
 .main-content {
     background-color: #0d88ee;
 }
-.logging-section, .registration-section{
+.logging-section {
   display:flex;
   justify-content:center;
   align-items:center;
@@ -53,34 +53,34 @@ body {
   min-height: -moz-calc(100% - 55px);
   min-height: calc(100% - 55px);
 }
-.login-form .reg-form{
+.login-form {
   display: block;
   color: #ffffff;
 }
-.login-form label, input ,.reg-form label, input{
+.login-form label, input {
   display: block;
 }
-.login-form label , .reg-form label{
+.login-form label {
   font-size: 21px;
   padding-top: 10px;
 }
-.login-form input, .reg-form input {
+.login-form input {
   color: #000000;
   width: 500px;
   height: 50px;
   font-size: 21px;
 }
-.login-form .btn-login, .reg-form .btn-reg {
+.login-form .btn-login {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 24px;
   float: right;
   margin-top: 40px;
 }
-.login-form p, .login-form a , .reg-form p, .reg-form a{
+.login-form p, .login-form a {
   margin-top: 20px;
   font-size: 21px;
 }
-.login-form p a , .reg-form p a{
+.login-form p a {
     color: #000000;
 }
