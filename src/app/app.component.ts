@@ -14,19 +14,10 @@ import { Component } from '@angular/core';
      </button>
      <a class="navbar-brand" href="#">BOOKS SHARING</a>
    </div>
-   <div class="collapse navbar-collapse" id="navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Szukaj</a></li>
-          <li><a href="#">Lista książek</a></li>
-          <li><a href="#">Dodaj książkę</a></li>
-          <li><a href="#">Powiadomienia</a></li>
-          <li><a href="#">Konto</a></li>
-        </ul>
-    </div>
   </div>
     </nav>
     <div class="container main-content logging-section">
-
+      <login-app></login-app>
     </div>`,
 })
 export class AppComponent  { name = 'Angular'; }
