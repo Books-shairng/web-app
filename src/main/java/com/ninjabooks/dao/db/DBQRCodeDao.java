@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.stream.Stream;
 
 /**
@@ -56,6 +57,11 @@ public class DBQRCodeDao implements QRCodeDao
     public void delete(Long id) {
         QRCode qrCode = currentSession.get(QRCode.class, id);
         currentSession.delete(qrCode);
+    }
+
+    @Override
+    public QRCode getByData(QRCode data) {
+        return currentSession.get(QRCode.class, data);
     }
 
     @Override
