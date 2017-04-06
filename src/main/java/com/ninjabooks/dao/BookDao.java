@@ -4,12 +4,14 @@ import com.ninjabooks.domain.Book;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since  1.0
+ * @since 1.0
  */
 public interface BookDao extends GenericDao<Book, Long>
 {
-    public Book getByTitle(String title);
-    public Book getByAuthor(String author);
-    public Book getByISBN(String isbn);
+    Book getByTitle(String title);
+
+    Book getByAuthor(String author);
+
+    Book getByISBN(String isbn);
 
 }

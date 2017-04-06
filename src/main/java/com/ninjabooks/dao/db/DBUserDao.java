@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0.1
+ * @since 1.0
  */
 @Repository
 @Transactional

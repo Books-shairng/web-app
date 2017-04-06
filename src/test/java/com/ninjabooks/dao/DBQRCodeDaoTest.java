@@ -5,6 +5,7 @@ import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.util.TransactionManager;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class DBQRCodeDaoTest
 {
     @Autowired

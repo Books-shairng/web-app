@@ -5,11 +5,11 @@ import com.ninjabooks.domain.QRCode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.io.Serializable;
 import java.util.stream.Stream;
 
 /**
@@ -35,7 +35,7 @@ public class DBQRCodeDao implements QRCodeDao
 
     @Override
     public Stream<QRCode> getAll() {
-        return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.QRCode q").stream();
+        return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.QRCode q", QRCode.class).stream();
     }
 
     @Override
@@ -61,9 +61,11 @@ public class DBQRCodeDao implements QRCodeDao
 
     @Override
     public QRCode getByData(QRCode data) {
-        return currentSession.get(QRCode.class, data);
+        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =: DATA", QRCode.class);
+        qrCodeQuery.setParameter(data.toString(), "DATA");
+        return qrCodeQuery.getSingleResult();
     }
-
+                                                                                                                                                
     @Override
     public Session getCurrentSession() {
         return currentSession;

@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0.1
+ * @since 1.0
  */
 public interface QueueDao extends GenericDao<Queue, Long>
 {
-    public Queue getByOrderDate(LocalDateTime orderDate);
+    Queue getByOrderDate(LocalDateTime orderDate);
 }

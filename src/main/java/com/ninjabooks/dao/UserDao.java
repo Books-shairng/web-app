@@ -4,10 +4,10 @@ import com.ninjabooks.domain.User;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0.1
+ * @since 1.0
  */
 public interface UserDao extends GenericDao<User, Long>
 {
-    public User getByName(String name);
-    public User getByEmail(String email);
+    User getByName(String name);
+    User getByEmail(String email);
 }

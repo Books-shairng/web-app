@@ -4,9 +4,9 @@ import com.ninjabooks.domain.QRCode;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0.1
+ * @since 1.0
  */
 public interface QRCodeDao extends GenericDao<QRCode, Long>
 {
-    public QRCode getByData(QRCode data);
+    QRCode getByData(QRCode data);
 }
