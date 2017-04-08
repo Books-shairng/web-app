@@ -10,12 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "BOOK")
-public class Book
+public class Book extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "TITLE")
     private String title;
 
@@ -66,18 +62,11 @@ public class Book
         this.isbn = isbn;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", isbn='" + isbn + '\'' +

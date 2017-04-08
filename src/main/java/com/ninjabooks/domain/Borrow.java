@@ -11,12 +11,8 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "BORROW")
-public class Borrow
+public class Borrow extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
@@ -48,14 +44,6 @@ public class Borrow
         return returnDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
@@ -67,7 +55,7 @@ public class Borrow
     @Override
     public String toString() {
         return "Borrow{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", borrowDate=" + borrowDate +
                 ", returnDate=" + returnDate +
                 '}';

@@ -60,9 +60,9 @@ public class DBQRCodeDao implements QRCodeDao
     }
 
     @Override
-    public QRCode getByData(QRCode data) {
-        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =: DATA", QRCode.class);
-        qrCodeQuery.setParameter(data.toString(), "DATA");
+    public QRCode getByData(String data) {
+        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =:DATA", QRCode.class);
+        qrCodeQuery.setParameter("DATA", data);
         return qrCodeQuery.getSingleResult();
     }
                                                                                                                                                 

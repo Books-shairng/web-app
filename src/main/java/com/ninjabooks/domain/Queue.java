@@ -11,12 +11,8 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "QUEUE")
-public class Queue
+public class Queue extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
@@ -26,6 +22,7 @@ public class Queue
 
     /**
      * Create mew instace of queuee objet
+     *
      * @param orderDate date when user order book
      */
 
@@ -41,19 +38,4 @@ public class Queue
         this.orderDate = orderDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Queue{" +
-                "id=" + id +
-                ", orderDate=" + orderDate +
-                '}';
-    }
 }

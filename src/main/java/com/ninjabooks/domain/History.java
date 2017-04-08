@@ -12,27 +12,16 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "HISTORY")
-public class History
+public class History extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     public History() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
         return "History{" +
-                "id=" + id +
+                "id=" + getId() +
                 '}';
     }
 }
