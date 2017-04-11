@@ -18,4 +18,14 @@ Backend:
 Frontend:
 * __Angular__
 
+
+### How to run
+Maven is required. In your terminal type:
+```bash
+    mvn tomcat7:run
+```
+
+Then open your web browser and type
+    localhost:8080
+
 Rest tbd
