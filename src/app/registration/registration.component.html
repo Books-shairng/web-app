@@ -1,16 +1,16 @@
-<form class="reg-form">
-  <label for="name-reg ">Imię</label>
-  <input type="text" name="name-reg" id="email-adress-reg" value="" placeholder="Imię" required>
+<form class="reg-form" fole="form"#f="ngForm" (ngSubmit)="onSubmit(f)">
+  <label for="nameReg ">Imię</label>
+  <input type="text" name="nameReg" placeholder="Imię" required ngModel #nameReg = "ngModel">
   <label for="surname-adress-reg ">Nazwisko</label>
-  <input type="text" name="surname-reg" id="email-adress-reg" value="" placeholder="Nazwisko" required>
-  <label for="email-adress-reg ">Adres e-mail</label>
-  <input type="email" name="email-adress-reg" id="email-adress-reg" value="" placeholder="twojadres@buziaczek.pl" required>
-  <label for="email-adress-reg ">Powtorz adres e-mail</label>
-  <input type="email" name="email-adress-reg" id="email-adress-reg" value="" required>
-  <label for="password-reg">Hasło</label>
-  <input type="password" name="password-reg" id="password-reg" value="" placeholder="Hasło" required>
-  <label for="password-reg">Powtorz hasło</label>
-  <input type="password" name="password-reg" id="password-reg" value="" required>
-  <button type="submit" class="btn btn-primary btn-md btn-reg active">Rejestracja</button>
-  <p> <a routerLink="['login']"> Cancel </a></p>
+  <input type="text" name="surnameReg" placeholder="Nazwisko" required ngModel #surnameReg = "ngModel">
+  <label for="emailReg ">Adres e-mail</label>
+  <input type="text" name="emailReg" placeholder="twojadres@buziaczek.pl" required  ngModel #emailReg = "ngModel">
+  <label for="emailReg ">Powtorz adres e-mail</label>
+  <input type="text" name="emailReg" required  ngModel #emailReg = "ngModel">
+  <label for="passwordReg">Hasło</label>
+  <input type="password" name="passwordReg" placeholder="Hasło" required  ngModel #passwordReg = "ngModel">
+  <label for="passwordReg">Powtorz hasło</label>
+  <input type="password" name="passwordReg" required  ngModel #passwordReg = "ngModel">
+  <button class="btn btn-primary btn-md btn-reg active">Rejestracja</button>
+  <p> <a routerLink="['login']"> Anuluj </a></p>
 </form>

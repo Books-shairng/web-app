@@ -7,8 +7,7 @@ import { Http } from '@angular/http';
   templateUrl: `login.component.html`,
 })
 export class LoginComponent  {
-  data = {};
-  formSubmit() {
-
+  onSubmit(f: NgForm) {
+    console.log(f.value);
   }
 }

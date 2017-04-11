@@ -10,7 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
-  imports:      [ BrowserModule, routes, HttpModule ],
+  imports:      [ BrowserModule, FormsModule, routes, HttpModule ],
   declarations: [ AppComponent, LoginComponent, RegistrationComponent],
   bootstrap:    [ AppComponent ]
 })
