@@ -7,9 +7,8 @@ import { Http } from '@angular/http';
   templateUrl: `login.component.html`,
 })
 export class LoginComponent  {
+  data = {};
+  formSubmit() {
 
-logincomponent(event, emial, password) {
-//json
-    );
-}
+  }
 }

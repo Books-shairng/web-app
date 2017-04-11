@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require("@angular/core");
 var LoginComponent = (function () {
     function LoginComponent() {
+        this.data = {};
     }
-    LoginComponent.prototype.logincomponent = function (event, emial, password) {
-        ;
+    LoginComponent.prototype.formSubmit = function () {
     };
     return LoginComponent;
 }());
