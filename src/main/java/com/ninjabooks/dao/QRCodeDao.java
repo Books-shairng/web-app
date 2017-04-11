@@ -8,5 +8,10 @@ import com.ninjabooks.domain.QRCode;
  */
 public interface QRCodeDao extends GenericDao<QRCode, Long>
 {
+    /**
+     * @param data
+     * @return
+     */
+
     QRCode getByData(String data);
 }

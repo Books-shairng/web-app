@@ -2,6 +2,8 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,6 +22,8 @@ import java.util.stream.Stream;
 @Transactional
 public class DBQRCodeDao implements QRCodeDao
 {
+    private final static Logger logger = LogManager.getLogger(DBQRCodeDao.class);
+
     private final SessionFactory sessionFactory;
     private Session currentSession;
 
@@ -27,9 +31,12 @@ public class DBQRCodeDao implements QRCodeDao
     public DBQRCodeDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         try {
-            currentSession = sessionFactory.getCurrentSession();
+            logger.info("Try obtain current session");
+            this.currentSession = sessionFactory.getCurrentSession();
         } catch (HibernateException e) {
-            currentSession = sessionFactory.openSession();
+            logger.error(e);
+            logger.info("Open new session");
+            this.currentSession = sessionFactory.openSession();
         }
     }
 
@@ -41,6 +48,13 @@ public class DBQRCodeDao implements QRCodeDao
     @Override
     public QRCode getById(Long id) {
         return currentSession.get(QRCode.class, id);
+    }
+
+    @Override
+    public QRCode getByData(String data) {
+        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =:DATA", QRCode.class);
+        qrCodeQuery.setParameter("DATA", data);
+        return qrCodeQuery.getSingleResult();
     }
 
     @Override
@@ -59,13 +73,6 @@ public class DBQRCodeDao implements QRCodeDao
         currentSession.delete(qrCode);
     }
 
-    @Override
-    public QRCode getByData(String data) {
-        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =:DATA", QRCode.class);
-        qrCodeQuery.setParameter("DATA", data);
-        return qrCodeQuery.getSingleResult();
-    }
-                                                                                                                                                
     @Override
     public Session getCurrentSession() {
         return currentSession;

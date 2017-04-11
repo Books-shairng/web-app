@@ -75,6 +75,14 @@ public class DBQueueDaoTest
         assertThat(queueDao.getAll()).containsExactly(queues.get(0), queues.get(1));
     }
 
+    @Test
+    public void testGetOrderByDate() throws Exception {
+        queues.forEach(queue -> queueDao.add(queue));
+        Queue actual = queueDao.getByOrderDate(queues.get(0).getOrderDate());
+
+        assertThat(actual).isEqualTo(queues.get(0));
+    }
+
     @After
     public void tearDown() throws Exception {
         transactionManager.rollback();

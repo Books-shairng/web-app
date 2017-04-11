@@ -38,6 +38,7 @@ public class Borrow extends BaseEntity
 
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
+        calculateReturnDate(borrowDate);
     }
 
     public LocalDate getReturnDate() {

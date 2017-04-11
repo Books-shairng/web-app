@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -65,7 +66,7 @@ public class DBBookDaoTest
     @Test
     public void testDeleteBook() throws Exception {
         bookDao.add(books.get(0));
-        bookDao.delete(4L);
+        bookDao.delete(8L);
 
         assertThat(bookDao.getAll()).isEmpty();
     }
@@ -77,6 +78,29 @@ public class DBBookDaoTest
         assertThat(bookDao.getAll()).containsExactly(books.get(0), books.get(1));
     }
 
+    @Test
+    public void testGetBooksByTitle() throws Exception {
+        books.forEach(book -> bookDao.add(book));
+        Stream<Book> actual = bookDao.getByTitle("Effective Java");
+
+        assertThat(actual).containsExactly(books.get(0));
+    }
+
+    @Test
+    public void testGetBooksByAuthor() throws Exception {
+        books.forEach(book -> bookDao.add(book));
+        Stream<Book> actual = bookDao.getByAuthor("C. Ho, R. Harrop, C. Schaefer");
+
+        assertThat(actual).containsExactly(books.get(1));
+    }
+
+    @Test
+    public void testGetBooksByISBN() throws Exception {
+        books.forEach(book -> bookDao.add(book));
+        Stream<Book> actual = bookDao.getByISBN("978-1430261513");
+
+        assertThat(actual).containsExactly(books.get(1));
+    }
 
     @After
     public void tearDown() throws Exception {

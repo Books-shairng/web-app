@@ -10,6 +10,21 @@ import java.time.LocalDate;
  */
 public interface BorrowDao extends GenericDao<Borrow, Long>
 {
+    /**
+     * Find borrow date by specified data.
+     *
+     * @param borrowDate is parameter which is searched
+     * @return desired borrow date
+     */
+
     Borrow getByBorrowDate(LocalDate borrowDate);
+
+    /**
+     * Find return date by specified data.
+     *
+     * @param returnDate is parameter which is searched
+     * @return desired return date
+     */
+
     Borrow getByReturnDate(LocalDate returnDate);
 }

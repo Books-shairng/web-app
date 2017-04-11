@@ -41,7 +41,6 @@ public class DBBorrowDaoTest
     private List<Borrow> createRecords() {
         Borrow firstBorrows = new Borrow();
         firstBorrows.setBorrowDate(LocalDate.of(2017, 1, 1));
-        firstBorrows.getReturnDate();
 
         Borrow secondBorrow = new Borrow();
         secondBorrow.setBorrowDate(LocalDate.of(2016, 12, 12));
@@ -63,7 +62,7 @@ public class DBBorrowDaoTest
     @Test
     public void testDeleteBorrow() throws Exception {
         borrowDao.add(borrows.get(0));
-        borrowDao.delete(3L);
+        borrowDao.delete(7L);
 
         assertThat(borrowDao.getAll()).isEmpty();
     }
@@ -73,6 +72,26 @@ public class DBBorrowDaoTest
         borrows.forEach(user -> borrowDao.add(user));
 
         assertThat(borrowDao.getAll()).containsExactly(borrows.get(0), borrows.get(1));
+    }
+
+    @Test
+    public void testGetReturnDate() throws Exception {
+        borrows.forEach(borrow -> borrowDao.add(borrow));
+
+        LocalDate returnDate = borrows.get(0).getReturnDate();
+        Borrow actual = borrowDao.getByReturnDate(returnDate);
+        
+        assertThat(actual).isEqualTo(borrows.get(0));
+    }
+
+    @Test
+    public void testGetBorrowDate() throws Exception {
+        borrows.forEach(borrow -> borrowDao.add(borrow));
+
+        LocalDate borrowDate = borrows.get(1).getBorrowDate();
+        Borrow actual = borrowDao.getByBorrowDate(borrowDate);
+
+        assertThat(actual).isEqualTo(borrows.get(1));
     }
 
     @After
