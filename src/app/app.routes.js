@@ -1,8 +1,12 @@
 "use strict";
-var login_component_1 = require("./login.component");
-var registration_component_1 = require("./registration.component");
-exports.routes = [
+var router_1 = require("@angular/router");
+var login_component_1 = require("./login/login.component");
+var registration_component_1 = require("./registration/registration.component");
+exports.router = [
+    { path: '', component: login_component_1.LoginComponent },
     { path: 'login', component: login_component_1.LoginComponent },
-    { path: 'registration', component: registration_component_1.RegistrationComponent }
+    { path: 'registration', component: registration_component_1.RegistrationComponent },
+    { path: '**', redirectTo: '' },
 ];
+exports.routes = router_1.RouterModule.forRoot(exports.router);
 //# sourceMappingURL=app.routes.js.map

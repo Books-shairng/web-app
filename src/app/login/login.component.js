@@ -9,21 +9,15 @@ var core_1 = require("@angular/core");
 var LoginComponent = (function () {
     function LoginComponent() {
     }
-    LoginComponent.prototype.loginComponent = function (event, email, password) {
-        if (email === void 0) { email = -adress; }
-        registration(event);
-        {
-            event.preventDefault();
-            this.router.navigate(['registration']);
-        }
+    LoginComponent.prototype.logincomponent = function (event, emial, password) {
+        ;
     };
     return LoginComponent;
 }());
 LoginComponent = __decorate([
     core_1.Component({
-        selector: 'login-app',
         moduleId: module.id,
-        templateUrl: "login.html",
+        templateUrl: "login.component.html",
     })
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;

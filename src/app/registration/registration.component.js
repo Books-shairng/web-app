@@ -15,7 +15,7 @@ RegistrationComponent = __decorate([
     core_1.Component({
         selector: 'registration-app',
         moduleId: module.id,
-        templateUrl: "registration.html",
+        templateUrl: "registration.component.html",
     })
 ], RegistrationComponent);
 exports.RegistrationComponent = RegistrationComponent;

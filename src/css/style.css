@@ -75,7 +75,7 @@ body {
   font-weight: 400;
   font-size: 24px;
   float: right;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 .login-form p, .login-form a , .reg-form p, .reg-form a{
   margin-top: 20px;

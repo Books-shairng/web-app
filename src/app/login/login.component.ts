@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Http } from '@angular/http';
 
 @Component({
-  selector: 'login-app',
   moduleId: module.id,
-  templateUrl: `login.html`,
+  templateUrl: `login.component.html`,
 })
 export class LoginComponent  {
-  loginComponent(event, email-adress, password){
 
-
-  registration(event) {
-  event.preventDefault();
-  this.router.navigate(['registration']);
+logincomponent(event, emial, password) {
+//json
+    );
 }
-  }
 }

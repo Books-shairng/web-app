@@ -1,0 +1,12 @@
+<form class="login-form" role="form" (submit)="login($event, email-adress.value, password.value)">
+  <div class="form-group">
+  <label for="emailAdress ">Adres e-mail</label>
+  <input type="email" id="emailAdress" placeholder="twojadres@buziaczek.pl" required>
+  </div>
+  <div class="form-group">
+  <label for="password">Hasło</label>
+  <input type="password" id="password" value="" placeholder="Hasło" required>
+  </div>
+  <button type="submit" class="btn btn-primary btn-md btn-login active">Zaloguj</button>
+  <p>Nie masz konta? <a [routerLink]="['registration']">Zaloguj</a></p>
+</form>
