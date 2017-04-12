@@ -1,21 +1,19 @@
 package com.ninjabooks.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * This class represent book in database
  *
  * @author Piotr 'pitrecki' Nowak
+ * @author Andrzej Zajst
  * @since 1.0
  */
 @Entity
 @Table(name = "BOOK")
-public class Book
+public class Book extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "TITLE")
     private String title;
 
@@ -24,6 +22,18 @@ public class Book
 
     @Column(name = "ISBN")
     private String isbn;
+
+    @OneToOne
+    private QRCode QR_code;
+
+    @OneToMany(mappedBy = "book")
+    private List<Queue> queues;
+
+    @OneToMany(mappedBy = "book")
+    private List<Borrow> borrows;
+
+    @OneToMany(mappedBy = "book")
+    private List<History> histories;
 
     public Book() {
     }
@@ -34,6 +44,7 @@ public class Book
      * @param title
      * @param author
      * @param isbn
+     *
      */
 
     public Book(String title, String author, String isbn) {
@@ -66,18 +77,42 @@ public class Book
         this.isbn = isbn;
     }
 
-    public Long getId() {
-        return id;
+    public QRCode getQR_code() {
+        return QR_code;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQR_code(QRCode QR_code) {
+        this.QR_code = QR_code;
+    }
+
+    public List<Queue> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
+    }
+
+    public List<Borrow> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(List<Borrow> borrows) {
+        this.borrows = borrows;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", isbn='" + isbn + '\'' +

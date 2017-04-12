@@ -133,3 +133,6 @@ hs_err_pid*
 
 #Target files #
 /target
+
+#Karol template
+/node_modules

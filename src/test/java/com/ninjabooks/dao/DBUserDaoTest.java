@@ -65,7 +65,7 @@ public class DBUserDaoTest
     @Test
     public void testDeleteUser() throws Exception {
         userDao.add(users.get(0));
-        userDao.delete(4L);
+        userDao.delete(8L);
 
         assertThat(userDao.getAll()).isEmpty();
     }
@@ -75,6 +75,24 @@ public class DBUserDaoTest
         users.forEach(user -> userDao.add(user));
 
         assertThat(userDao.getAll()).containsExactly(users.get(0), users.get(1));
+    }
+
+    @Test
+    public void testGetUserByName() throws Exception {
+        users.forEach(user -> userDao.add(user));
+
+        User actual = userDao.getByName("alfred");
+
+        assertThat(actual).isEqualTo(users.get(1));
+    }
+
+    @Test
+    public void testGetUserByEmail() throws Exception {
+        users.forEach(user -> userDao.add(user));
+
+        User actual = userDao.getByEmail(users.get(1).getEmail());
+
+        assertThat(actual).isEqualTo(users.get(1));
     }
 
     @After

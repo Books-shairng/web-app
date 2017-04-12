@@ -1,6 +1,10 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 
 /**
  * This class represent user in database
@@ -10,12 +14,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USER")
-public class User
+public class User extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "NAME")
     private String name;
 
@@ -24,6 +24,15 @@ public class User
 
     @Column(name = "PASSWORD")
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Queue> queues;
+
+    @OneToMany(mappedBy = "user")
+    private List<Borrow> borrows;
+
+    @OneToMany(mappedBy = "user")
+    private List<History> histories;
 
     public User() {
     }
@@ -65,18 +74,34 @@ public class User
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public List<Queue> getQueues() {
+        return queues;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
+    }
+
+    public List<Borrow> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(List<Borrow> borrows) {
+        this.borrows = borrows;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

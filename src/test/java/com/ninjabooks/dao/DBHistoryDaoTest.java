@@ -5,6 +5,7 @@ import com.ninjabooks.domain.History;
 import com.ninjabooks.util.TransactionManager;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Ignore
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DBHistoryDaoTest

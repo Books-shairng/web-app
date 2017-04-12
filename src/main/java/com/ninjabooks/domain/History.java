@@ -1,6 +1,7 @@
 package com.ninjabooks.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * This class represent history table in database.
@@ -12,27 +13,73 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "HISTORY")
-public class History
+public class History extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @Column(name = "BORROW_DATE")
+    private LocalDate borrowDate;
+
+    @Column(name = "RETURN_DATE")
+    private LocalDate returnDate;
+
+    @Column(name = "COMMENT", length = 1200)
+    private String comment;
+
+    @ManyToOne
+    @JoinColumn(name = "BOOK_ID")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
     public History() {
     }
 
-    public Long getId() {
-        return id;
+    public LocalDate getBorrowDate() {
+        return borrowDate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBorrowDate(LocalDate borrowDate) {
+        this.borrowDate = borrowDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "History{" +
-                "id=" + id +
+                "id=" + getId() +
                 '}';
     }
 }

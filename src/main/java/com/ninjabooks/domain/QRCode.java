@@ -2,7 +2,11 @@ package com.ninjabooks.domain;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * This class represent QR code table in database.
@@ -12,40 +16,48 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "QR_CODE")
-public class QRCode
+public class QRCode extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "DATA")
     @Type(type = "serializable")
-    private QRCode data;
+    private String data;
+
+    @OneToOne(mappedBy = "QR_code")
+    private Book book;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 
     public QRCode() {
     }
 
-    public QRCode getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(QRCode data) {
+    public void setData(String data) {
         this.data = data;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
         return "QRCode{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", data=" + data +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QRCode qrCode = (QRCode) o;
+        return Objects.equals(data, qrCode.data);
+    }
+
 }

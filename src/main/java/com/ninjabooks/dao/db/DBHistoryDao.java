@@ -2,6 +2,8 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +21,8 @@ import java.util.stream.Stream;
 @Transactional
 public class DBHistoryDao implements HistoryDao
 {
+    private final static Logger logger = LogManager.getLogger(DBHistoryDao.class);
+
     private final SessionFactory sessionFactory;
     private Session currentSession;
 
@@ -26,11 +30,13 @@ public class DBHistoryDao implements HistoryDao
     public DBHistoryDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         try {
-            currentSession = sessionFactory.getCurrentSession();
+            logger.info("Try obtain current session");
+            this.currentSession = sessionFactory.getCurrentSession();
         } catch (HibernateException e) {
-            currentSession = sessionFactory.openSession();
+            logger.error(e);
+            logger.info("Open new session");
+            this.currentSession = sessionFactory.openSession();
         }
-//        this.currentSession = sessionFactory.getCurrentSession();
     }
 
     @Override
