@@ -16,6 +16,14 @@ public class Queue extends BaseEntity
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
+    @ManyToOne
+    @JoinColumn(name = "BOOK_ID")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
     public Queue() {
 
     }
@@ -38,4 +46,19 @@ public class Queue extends BaseEntity
         this.orderDate = orderDate;
     }
 
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

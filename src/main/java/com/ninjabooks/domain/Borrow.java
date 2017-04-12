@@ -19,6 +19,14 @@ public class Borrow extends BaseEntity
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
+    @ManyToOne
+    @JoinColumn(name = "BOOK_ID")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
     public Borrow() {
     }
 
@@ -47,6 +55,22 @@ public class Borrow extends BaseEntity
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     private void calculateReturnDate(LocalDate borrowDate) {

@@ -1,6 +1,7 @@
 package com.ninjabooks.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * This class represent user in database
@@ -20,6 +21,15 @@ public class User extends BaseEntity
 
     @Column(name = "PASSWORD")
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Queue> queues;
+
+    @OneToMany(mappedBy = "user")
+    private List<Borrow> borrows;
+
+    @OneToMany(mappedBy = "user")
+    private List<History> histories;
 
     public User() {
     }
@@ -59,6 +69,30 @@ public class User extends BaseEntity
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Queue> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
+    }
+
+    public List<Borrow> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(List<Borrow> borrows) {
+        this.borrows = borrows;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
     }
 
     @Override
