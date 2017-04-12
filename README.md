@@ -15,10 +15,11 @@ Backend:
 * __MySQL__ as production database
 * __HSQL__ as development database
 * __Tomcat__ as webserver
+* __Junit & Mockito__ for testing
 
 Frontend:
 * __Angular 4.0__
-* __Bootstrap __
+* __Bootstra __
 * __QuickStart seed__
 * __Node.js__
 * __npm package menager__
