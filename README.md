@@ -10,14 +10,18 @@ borrowed by someone else application will add you to waiting list and notify you
 
 ### Technology stack
 Backend:
-* __Spring MVC + Spring Security__
+* __Spring MVC + Spring Security + Spring Test__
 * __Hibernate__ for ORM
-* _MySQL_ as production database
-* _HSQL_ as development database
+* __MySQL__ as production database
+* __HSQL__ as development database
+* __Tomcat__ as webserver
 
 Frontend:
-* __Angular__
-
+* __Angular 4.0__
+* __Bootstrap __
+* __QuickStart seed__
+* __Node.js__
+* __npm package menager__
 
 ### How to run
 Maven is required. In your terminal type:
@@ -26,6 +30,8 @@ Maven is required. In your terminal type:
 ```
 
 Then open your web browser and type
+```bash
     localhost:8080
+```
 
 Rest tbd
