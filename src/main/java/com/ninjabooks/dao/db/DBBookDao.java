@@ -20,9 +20,11 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBBookDao implements BookDao
+public class DBBookDao implements BookDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBBookDao.class);
+
+    private enum DBColumnName {TITLE, AUTHOR, ISBN}
 
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -52,23 +54,17 @@ public class DBBookDao implements BookDao
 
     @Override
     public Stream<Book> getByTitle(String title) {
-        String query = "select book from com.ninjabooks.domain.Book book where TITLE =:title";
-        return currentSession.createQuery(query,Book.class).setParameter("title", title).stream();
+        return findSpecifiedElementInDB(title, DBColumnName.TITLE);
     }
 
     @Override
     public Stream<Book> getByAuthor(String author) {
-        String query = "select book from com.ninjabooks.domain.Book book where AUTHOR =:author";
-        return currentSession.createQuery(query, Book.class).setParameter("author", author).stream();
+        return findSpecifiedElementInDB(author, DBColumnName.AUTHOR);
     }
 
     @Override
     public Stream<Book> getByISBN(String isbn) {
-        String query = "select book from com.ninjabooks.domain.Book book where ISBN =:isbn";
-        Query<Book> isbnQuery = currentSession.createQuery(query, Book.class);
-        isbnQuery.setParameter("isbn", isbn);
-
-        return isbnQuery.stream();
+        return findSpecifiedElementInDB(isbn, DBColumnName.ISBN);
     }
 
     @Override
@@ -90,5 +86,15 @@ public class DBBookDao implements BookDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked t cast")
+    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
+        Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
+        bookQuery.setParameter("parameter", parameter);
+
+        return (T) bookQuery.stream();
     }
 }

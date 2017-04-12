@@ -17,13 +17,15 @@ import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0.1
+ * @since 1.0
  */
 @Repository
 @Transactional
-public class DBQueueDao implements QueueDao
+public class DBQueueDao implements QueueDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBQueueDao.class);
+
+    private enum DBColumnName {ORDER_DATE}
 
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -53,10 +55,7 @@ public class DBQueueDao implements QueueDao
 
     @Override
     public Queue getByOrderDate(LocalDateTime orderDate) {
-        String query = "select queue from com.ninjabooks.domain.Queue queue where ORDER_DATE =:date";
-        Query<Queue> queueQuery = currentSession.createQuery(query);
-        queueQuery.setParameter("date", orderDate);
-        return queueQuery.getSingleResult();
+        return findSpecifiedElementInDB(orderDate, DBColumnName.ORDER_DATE);
     }
 
     @Override
@@ -78,5 +77,16 @@ public class DBQueueDao implements QueueDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked t cast")
+    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
+        Query<Queue> bookQuery = currentSession.createQuery(query, Queue.class);
+        bookQuery.setParameter("parameter", parameter);
+
+        return (T) bookQuery.getSingleResult();
+
     }
 }

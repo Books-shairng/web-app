@@ -20,9 +20,11 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBUserDao implements UserDao
+public class DBUserDao implements UserDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBUserDao.class);
+
+    private enum DBColumnName {NAME, EMAIL}
 
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -51,20 +53,12 @@ public class DBUserDao implements UserDao
 
     @Override
     public User getByName(String name) {
-        String query = "SELECT u FROM  com.ninjabooks.domain.User u WHERE NAME =:name";
-        Query<User> userQuery = currentSession.createQuery(query, User.class);
-        userQuery.setParameter("name", name);
-
-        return userQuery.getSingleResult();
+        return findSpecifiedElementInDB(name, DBColumnName.NAME);
     }
 
     @Override
     public User getByEmail(String email) {
-        String query = "SELECT u FROM  com.ninjabooks.domain.User u WHERE EMAIL =:mail";
-        Query<User> userQuery = currentSession.createQuery(query, User.class);
-        userQuery.setParameter("mail", email);
-
-        return userQuery.getSingleResult();
+        return findSpecifiedElementInDB(email, DBColumnName.EMAIL);
     }
 
     @Override
@@ -86,5 +80,16 @@ public class DBUserDao implements UserDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked t cast")
+    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        String query = "select user from User user where " + columnName + "=:parameter";
+        Query<User> bookQuery = currentSession.createQuery(query, User.class);
+        bookQuery.setParameter("parameter", parameter);
+
+        return (T) bookQuery.getSingleResult();
+
     }
 }

@@ -20,9 +20,11 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBQRCodeDao implements QRCodeDao
+public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBQRCodeDao.class);
+
+    private enum DBColumnName {DATA}
 
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -52,9 +54,7 @@ public class DBQRCodeDao implements QRCodeDao
 
     @Override
     public QRCode getByData(String data) {
-        Query<QRCode> qrCodeQuery =  currentSession.createQuery("SELECT q from com.ninjabooks.domain.QRCode q where q =:DATA", QRCode.class);
-        qrCodeQuery.setParameter("DATA", data);
-        return qrCodeQuery.getSingleResult();
+        return findSpecifiedElementInDB(data, DBColumnName.DATA);
     }
 
     @Override
@@ -76,5 +76,16 @@ public class DBQRCodeDao implements QRCodeDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked t cast")
+    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        String query = "select qr_code from com.ninjabooks.domain.QRCode qr_code where " + columnName + "=:parameter";
+        Query<QRCode> bookQuery = currentSession.createQuery(query, QRCode.class);
+        bookQuery.setParameter("parameter", parameter);
+
+        return (T) bookQuery.getSingleResult();
+
     }
 }

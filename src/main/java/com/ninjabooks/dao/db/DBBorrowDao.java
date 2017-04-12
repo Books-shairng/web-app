@@ -21,9 +21,11 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBBorrowDao implements BorrowDao
+public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
 {
     private final  static Logger logger = LogManager.getLogger(DBBorrowDao.class);
+
+    private enum DBColumnName {BORROW_DATE, RETURN_DATE}
 
     private final SessionFactory sessionFactory;
     private Session currentSession;
@@ -53,20 +55,12 @@ public class DBBorrowDao implements BorrowDao
 
     @Override
     public Borrow getByReturnDate(LocalDate returnDate) {
-        String query = "select b from com.ninjabooks.domain.Borrow b where RETURN_DATE =:date";
-        Query<Borrow> borrowQuery = currentSession.createQuery(query, Borrow.class);
-        borrowQuery.setParameter("date", returnDate);
-
-        return  borrowQuery.getSingleResult();
+        return findSpecifiedElementInDB(returnDate, DBColumnName.RETURN_DATE);
     }
 
     @Override
     public Borrow getByBorrowDate(LocalDate borrowDate) {
-        String query = "select b from com.ninjabooks.domain.Borrow b where BORROW_DATE =:date";
-        Query<Borrow> borrowQuery = currentSession.createQuery(query, Borrow.class);
-        borrowQuery.setParameter("date", borrowDate);
-
-        return borrowQuery.getSingleResult();
+        return findSpecifiedElementInDB(borrowDate, DBColumnName.BORROW_DATE);
     }
 
     @Override
@@ -88,5 +82,15 @@ public class DBBorrowDao implements BorrowDao
     @Override
     public Session getCurrentSession() {
         return currentSession;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked t cast")
+    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        String query = "select borrow from com.ninjabooks.domain.Borrow borrow where " + columnName + "=:parameter";
+        Query<Borrow> bookQuery = currentSession.createQuery(query, Borrow.class);
+        bookQuery.setParameter("parameter", parameter);
+
+        return (T) bookQuery.getSingleResult();
     }
 }
