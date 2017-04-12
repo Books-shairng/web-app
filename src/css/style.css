@@ -47,10 +47,10 @@ body {
   display:flex;
   justify-content:center;
   align-items:center;
-  height: 100%;
+  min-height: 100%;
 }
 .reg-form {
-  margin-top: 20px;
+  padding-top: 60px;
 }
 .login-form .reg-form{
   display: block;
@@ -82,4 +82,11 @@ body {
 }
 .login-form p a , .reg-form p a{
     color: #000000;
+}
+.search-form input {
+  height: 60px;
+  width: 500px;
+}
+.search-form button {
+  float: right;
 }

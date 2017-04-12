@@ -6,20 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = require("@angular/core");
-var RegistrationComponent = (function () {
-    function RegistrationComponent() {
+var SearchComponent = (function () {
+    function SearchComponent() {
     }
-    RegistrationComponent.prototype.onRegSubmit = function (r) {
-        console.log(r.value);
-    };
-    return RegistrationComponent;
+    return SearchComponent;
 }());
-RegistrationComponent = __decorate([
+SearchComponent = __decorate([
     core_1.Component({
-        selector: 'registration-app',
         moduleId: module.id,
-        templateUrl: "registration.component.html",
+        templateUrl: "search.component.html",
     })
-], RegistrationComponent);
-exports.RegistrationComponent = RegistrationComponent;
-//# sourceMappingURL=registration.component.js.map
+], SearchComponent);
+exports.SearchComponent = SearchComponent;
+//# sourceMappingURL=search.component.js.map
