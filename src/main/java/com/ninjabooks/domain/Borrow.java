@@ -1,7 +1,9 @@
 package com.ninjabooks.domain;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * This class represent borrow in databes
@@ -74,7 +76,11 @@ public class Borrow extends BaseEntity
     }
 
     private void calculateReturnDate(LocalDate borrowDate) {
-        returnDate = borrowDate.plusDays(30);
+        LocalDate tmpDate = borrowDate.plusDays(30);
+        if (tmpDate.getDayOfWeek() == DayOfWeek.SATURDAY || tmpDate.getDayOfWeek() == DayOfWeek.SUNDAY)
+            tmpDate = tmpDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+
+        returnDate = tmpDate;
     }
 
     @Override
