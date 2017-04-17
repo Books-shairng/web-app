@@ -27,7 +27,7 @@ Frontend:
 ### How to run
 Maven is required. In your terminal type:
 ```bash
-    mvn tomcat7:run
+    mvn tomcat7:run-war
 ```
 
 Then open your web browser and type

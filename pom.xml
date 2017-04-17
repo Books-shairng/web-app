@@ -42,12 +42,21 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <path>/${project.build.finalName}</path>
+                    <!--<path>/${project.build.finalName}</path>-->
+                    <path>/</path>
                     <port>8080</port>
                 </configuration>
                 <goals>
                     <goal>run</goal>
                 </goals>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
