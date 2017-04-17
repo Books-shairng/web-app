@@ -19,7 +19,7 @@ Backend:
 
 Frontend:
 * __Angular 4.0__
-* __Bootstra __
+* __Bootstrap__
 * __QuickStart seed__
 * __Node.js__
 * __npm package menager__
