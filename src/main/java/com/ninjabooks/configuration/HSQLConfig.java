@@ -1,12 +1,10 @@
 package com.ninjabooks.configuration;
 
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
@@ -31,14 +29,12 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value = "classpath:hibernate.properties")
 @ComponentScan(basePackages = {"com.ninjabooks.dao"})
-public class HSQLConfig
+@Profile(value = "dev")
+public class HSQLConfig implements DBConnectConfig
 {
-    @Autowired
-    private Environment environment;
-
     @Bean
+    @Override
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
         builder.scanPackages("com.ninjabooks.domain")
@@ -47,6 +43,7 @@ public class HSQLConfig
     }
 
     @Bean
+    @Override
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
@@ -57,11 +54,12 @@ public class HSQLConfig
     }
 
     @Bean
+    @Override
     public Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-        properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
 //        properties.put("hibernate.current_session_context_class", "thread");
         properties.put("hibernate.rollback", "false");
@@ -69,6 +67,7 @@ public class HSQLConfig
     }
 
     @Bean
+    @Override
     public HibernateTransactionManager transactionManager() {
         return new HibernateTransactionManager(sessionFactory());
     }

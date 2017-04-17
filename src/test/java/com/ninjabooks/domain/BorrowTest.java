@@ -1,9 +1,12 @@
 package com.ninjabooks.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -19,6 +22,16 @@ public class BorrowTest
         borrow = new Borrow(date);
         LocalDate actual = borrow.getReturnDate();
 
-        Assertions.assertThat(actual).isEqualTo(date.plusDays(30));
+        assertThat(actual).isEqualTo(date.plusDays(30));
+    }
+
+    @Test
+    public void testWithSaturdayOrSundayAsReturnDayShouldMoveReturnDateToNextMonday() throws Exception {
+        LocalDate date = LocalDate.of(2017, 3, 2);
+
+        borrow = new Borrow(date);
+        LocalDate actual = borrow.getReturnDate();
+
+        assertThat(actual).isEqualTo(date.plusDays(30).with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
     }
 }

@@ -3,6 +3,8 @@ package com.ninjabooks;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import static org.springframework.core.env.AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME;
+
 /**
  * Main app class
  *
@@ -18,6 +20,9 @@ public class App
 
     public static void main(String[] args) {
         //Perhaps it will replace with super method from spring mvc depedency :)
+        System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "prod");
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        
+        
     }
 }
