@@ -22,23 +22,23 @@ import static org.springframework.core.env.AbstractEnvironment.ACTIVE_PROFILES_P
  */
 public class WebApp implements WebApplicationInitializer
 {
-  private final static Logger logger = LogManager.getLogger(WebApp.class);
+    private final static Logger logger = LogManager.getLogger(WebApp.class);
 
 
-  @Override
-  public void onStartup(ServletContext servletContext) throws ServletException {
-    System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "prod");
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "prod");
 
-    logger.info("Application initilization: " + servletContext.getServerInfo());
-    AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-    applicationContext.register(AppConfig.class);
+        logger.info("Application initilization: " + servletContext.getServerInfo());
+        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+        applicationContext.register(AppConfig.class);
 
-    servletContext.addListener(new ContextLoaderListener(applicationContext));
+        servletContext.addListener(new ContextLoaderListener(applicationContext));
 
-    DispatcherServlet dispatcherServlet = new DispatcherServlet(applicationContext);
-    ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(applicationContext);
+        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
 
-    servlet.addMapping("/");
-    servlet.setLoadOnStartup(1);
-  }
+        servlet.addMapping("/");
+        servlet.setLoadOnStartup(1);
+    }
 }
