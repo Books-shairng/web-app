@@ -8,7 +8,7 @@ import com.ninjabooks.domain.User;
  */
 public interface UserService
 {
-    User login();
+    User login(User user);
     User logout();
     User addUser(User user);
 }

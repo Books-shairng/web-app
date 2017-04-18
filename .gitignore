@@ -135,4 +135,4 @@ hs_err_pid*
 /target
 
 #Karol template
-/node_modules
+/src/main/webapp/node_modules

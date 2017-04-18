@@ -5,11 +5,16 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.util.TransactionManager;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class UserServiceImpl implements UserService
 {
     @Autowired
@@ -18,7 +23,7 @@ public class UserServiceImpl implements UserService
     private TransactionManager transactionManager;
 
     @Override
-    public User login() {
+    public User login(User user) {
         return null;
     }
 

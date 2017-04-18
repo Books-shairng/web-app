@@ -22,7 +22,7 @@ public class UserController
     @Autowired
     private UserValidator userValidator;
 
-    @RequestMapping(value = "/registration.component", method = RequestMethod.PUT)
+    @RequestMapping(value = "/registration", method = RequestMethod.PUT)
     public String addUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
 
