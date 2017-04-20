@@ -6,8 +6,8 @@ import "rxjs/add/operator/map";
 export class HttpService {
   constructor(private http: Http) { }
 
-  loginFunction(login: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ login: login, password: password }))
+  loginFunction(email: string, password: string) {
+        return this.http.post('/api/authenticate', JSON.stringify({ email: login, password: password }))
             .map((response: Response) => {
                 let user = response.json();
                 if (user && user.token) {
