@@ -159,7 +159,7 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.3.4</version>
-            <scope>test</scope>
+   <!--          <scope>test</scope> -->
         </dependency>
         <!--Servlet api extension-->
         <dependency>
