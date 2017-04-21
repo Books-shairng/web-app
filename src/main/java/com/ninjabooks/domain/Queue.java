@@ -16,6 +16,9 @@ public class Queue extends BaseEntity
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
+    @Column(name = "STATUS")
+    private Boolean status;
+
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;

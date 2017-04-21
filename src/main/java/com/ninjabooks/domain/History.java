@@ -19,8 +19,8 @@ public class History extends BaseEntity
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @Column(name = "RETURN_DATE")
-    private LocalDate returnDate;
+    @Column(name = "RETURNED_DATE")
+    private LocalDate returnedDate;
 
     @Column(name = "COMMENT", length = 1200)
     private String comment;
@@ -44,12 +44,12 @@ public class History extends BaseEntity
         this.borrowDate = borrowDate;
     }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
+    public LocalDate getReturnedDate() {
+        return returnedDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
+    public void setReturnedDate(LocalDate returnDate) {
+        this.returnedDate = returnDate;
     }
 
     public String getComment() {
