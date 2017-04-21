@@ -17,7 +17,7 @@ exports.fakeBackendProvider = {
                     var params_1 = JSON.parse(connection.request.getBody());
                     // find if any user matches login credentials
                     var filteredUsers = users.filter(function (user) {
-                        return user.username === params_1.username && user.password === params_1.password;
+                        return user.email === params_1.email && user.password === params_1.password;
                     });
                     if (filteredUsers.length) {
                         // if login details are valid return 200 OK with user details and fake jwt token
@@ -26,7 +26,7 @@ exports.fakeBackendProvider = {
                             status: 200,
                             body: {
                                 id: user.id,
-                                username: user.username,
+                                email: user.email,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
                                 token: 'fake-jwt-token'
@@ -35,7 +35,7 @@ exports.fakeBackendProvider = {
                     }
                     else {
                         // else return 400 bad request
-                        connection.mockError(new Error('Username or password is incorrect'));
+                        connection.mockError(new Error('email or password is incorrect'));
                     }
                 }
                 // get users
@@ -71,9 +71,9 @@ exports.fakeBackendProvider = {
                     // get new user object from post body
                     var newUser_1 = JSON.parse(connection.request.getBody());
                     // validation
-                    var duplicateUser = users.filter(function (user) { return user.username === newUser_1.username; }).length;
+                    var duplicateUser = users.filter(function (user) { return user.email === newUser_1.email; }).length;
                     if (duplicateUser) {
-                        return connection.mockError(new Error('Username "' + newUser_1.username + '" is already taken'));
+                        return connection.mockError(new Error('email "' + newUser_1.email + '" is already taken'));
                     }
                     // save new user
                     newUser_1.id = users.length + 1;

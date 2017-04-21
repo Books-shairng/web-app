@@ -8,14 +8,22 @@ import { AppComponent }  from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { SearchComponent } from './search/search.component';
-import { NotificationComponent } from './notification/index';
+import { NotificationComponent } from './notifications/index';
 import { AuthGuard } from './guards/index';
 import { AuthenticationService, UserService } from './services/index';
+// used to create fake backend
+import { fakeBackendProvider } from './fakebackend/index';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { BaseRequestOptions } from '@angular/http';
+
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, routes, HttpModule ],
   declarations: [ AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent],
-  providers:    [ AuthGuard, AuthenticationService, UserService, fakeBackendProvider, MockBackend, BaseRequestOptions],
+  providers:    [ AuthGuard, AuthenticationService, UserService,
+                  fakeBackendProvider,
+                  MockBackend,
+                  BaseRequestOptions],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
