@@ -9,8 +9,10 @@ import com.ninjabooks.domain.QRCode;
 public interface QRCodeDao extends GenericDao<QRCode, Long>
 {
     /**
-     * @param data
-     * @return
+     * Find qr code by specified generated data.
+     *
+     * @param data as search argument
+     * @return qr data
      */
 
     QRCode getByData(String data);

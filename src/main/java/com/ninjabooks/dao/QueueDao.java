@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public interface QueueDao extends GenericDao<Queue, Long>
 {
     /**
-     * Looking for book oder date.
+     * Looking for book order date.
      *
      * @param orderDate is parameter of desired order date.
      * @return book order date

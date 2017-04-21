@@ -86,6 +86,5 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
         bookQuery.setParameter("parameter", parameter);
 
         return (T) bookQuery.getSingleResult();
-
     }
 }

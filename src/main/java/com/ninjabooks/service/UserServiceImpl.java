@@ -3,46 +3,63 @@ package com.ninjabooks.service;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.TransactionManager;
-import org.hibernate.HibernateException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- * @since 1.0
+ * @version 1.0
  */
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService
 {
-    @Autowired
-    private UserDao userDao;
+    private final static Logger logger = LogManager.getLogger(UserService.class);
+
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     private TransactionManager transactionManager;
 
-    @Override
-    public User login(User user) {
-        return null;
+    @Autowired
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+        this.userDao = userDao;
+        this.passwordEncoder =passwordEncoder;
     }
 
     @Override
-    public User logout() {
-        return null;
-    }
+    @Transactional(readOnly = false)
+    public User createUser(User user) {
+        logger.debug("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
+        User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
 
-    @Override
-    public User addUser(User user) {
-        transactionManager = new TransactionManager(userDao.getCurrentSession());
-        transactionManager.beginTransaction();
-        try {
-            userDao.add(user);
-            transactionManager.commit();
-        } catch (HibernateException e) {
-            transactionManager.rollback();
+        if (checkIfUserAlreadyExist(user)) {
+            logger.warn(user.getEmail() + "already exist in database");
+            throw new IllegalArgumentException("Username already exist in database");
         }
 
-        return user;
+        transactionManager =  new TransactionManager(userDao.getCurrentSession());
+        transactionManager.beginTransaction();
+        userDao.add(newUser);
+        transactionManager.commit();
+        logger.info(user.getName() + "successfully added to database");
+
+        return newUser;
+    }
+
+    /**
+     * Check if user already exist in database
+     *
+     * @param user obtained by http request
+     * @return true if exist
+     *         false if not
+     */
+
+    private boolean checkIfUserAlreadyExist(User user) {
+        return userDao.getByEmail(user.getEmail()) != null;
     }
 }

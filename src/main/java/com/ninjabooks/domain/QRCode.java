@@ -1,7 +1,5 @@
 package com.ninjabooks.domain;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -18,8 +16,7 @@ import java.util.Objects;
 @Table(name = "QR_CODE")
 public class QRCode extends BaseEntity
 {
-    @Column(name = "DATA")
-    @Type(type = "serializable")
+    @Column(name = "DATA", length = 5)
     private String data;
 
     @OneToOne(mappedBy = "QR_code")

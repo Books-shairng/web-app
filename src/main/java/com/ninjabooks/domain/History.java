@@ -8,14 +8,11 @@ import java.time.LocalDate;
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
- *
- * <b> EMPTY </b>
  */
 @Entity
 @Table(name = "HISTORY")
 public class History extends BaseEntity
 {
-
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
@@ -79,7 +76,11 @@ public class History extends BaseEntity
     @Override
     public String toString() {
         return "History{" +
-                "id=" + getId() +
-                '}';
+            "borrowDate=" + borrowDate +
+            ", returnedDate=" + returnedDate +
+            ", comment='" + comment + '\'' +
+            ", book=" + book +
+            ", user=" + user +
+            '}';
     }
 }

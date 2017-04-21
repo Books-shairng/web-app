@@ -1,13 +1,12 @@
 package com.ninjabooks.controller;
 
+import com.google.gson.Gson;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.service.UserService;
-import com.ninjabooks.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -16,16 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController
 {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final Gson gson;
 
     @Autowired
-    private UserValidator userValidator;
+    public UserController(UserService userService) {
+        this.userService = userService;
+        this.gson = new Gson();
+    }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.PUT)
-    public String addUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
+    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+    public ResponseEntity<Gson> createUser(@RequestBody User user) {
+        userService.createUser(user);
+        gson.toJson("User created", String.class);
 
-        return user.toString();
+        return new ResponseEntity<>(gson, HttpStatus.CREATED);
     }
 }

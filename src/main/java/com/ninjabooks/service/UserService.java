@@ -8,7 +8,11 @@ import com.ninjabooks.domain.User;
  */
 public interface UserService
 {
-    User login(User user);
-    User logout();
-    User addUser(User user);
+    /**
+     * Create new user in database
+     * @param user obtained by requested mapping
+     * @return created user
+     */
+
+   User createUser(User user);
 }
