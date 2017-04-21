@@ -4,17 +4,21 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class HttpService {
+export class AuthenticationService {
   constructor(private http: Http) { }
 
-  loginFunction(login: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ login: login, password: password }))
+  login(email: string, password: string) {
+        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
             .map((response: Response) => {
                 let user = response.json();
                 if (user && user.token) {
                     localStorage.setItem('currentUser', JSON.stringify(user));
                 }
             });
+    }
+    logout() {
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
     }
 
 }

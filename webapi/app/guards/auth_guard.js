@@ -9,26 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
-var HttpService = (function () {
-    function HttpService(http) {
-        this.http = http;
+var router_1 = require("@angular/router");
+var AuthGuard = (function () {
+    function AuthGuard(router) {
+        this.router = router;
     }
-    HttpService.prototype.loginFunction = function (login, password) {
-        return this.http.post('/api/authenticate', JSON.stringify({ login: login, password: password }))
-            .map(function (response) {
-            var user = response.json();
-            if (user && user.token) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-        });
+    AuthGuard.prototype.canActivate = function (route, state) {
+        if (localStorage.getItem('currentUser')) {
+            // logged in so return true
+            return true;
+        }
+        // not logged in so redirect to login page with the return url
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        return false;
     };
-    return HttpService;
+    return AuthGuard;
 }());
-HttpService = __decorate([
+AuthGuard = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], HttpService);
-exports.HttpService = HttpService;
-//# sourceMappingURL=http.service.js.map
+    __metadata("design:paramtypes", [router_1.Router])
+], AuthGuard);
+exports.AuthGuard = AuthGuard;
+//# sourceMappingURL=auth_guard.js.map

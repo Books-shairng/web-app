@@ -14,7 +14,9 @@ var app_component_1 = require("./app.component");
 var login_component_1 = require("./login/login.component");
 var registration_component_1 = require("./registration/registration.component");
 var search_component_1 = require("./search/search.component");
-var index_1 = require("./services/index");
+var index_1 = require("./notification/index");
+var index_2 = require("./guards/index");
+var index_3 = require("./services/index");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -23,8 +25,8 @@ var AppModule = (function () {
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
-        declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, registration_component_1.RegistrationComponent, search_component_1.SearchComponent],
-        providers: [index_1.HttpService,],
+        declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, registration_component_1.RegistrationComponent, search_component_1.SearchComponent, index_1.NotificationComponent],
+        providers: [index_2.AuthGuard, index_3.AuthenticationService, index_3.UserService, fakeBackendProvider, MockBackend, BaseRequestOptions],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);
