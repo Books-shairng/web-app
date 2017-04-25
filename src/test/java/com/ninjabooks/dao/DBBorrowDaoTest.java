@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class DBBorrowDaoTest
 {
     @Autowired
@@ -82,7 +82,7 @@ public class DBBorrowDaoTest
 
         LocalDate returnDate = borrows.get(0).getReturnDate();
         Borrow actual = borrowDao.getByReturnDate(returnDate);
-        
+
         assertThat(actual).isEqualTo(borrows.get(0));
     }
 

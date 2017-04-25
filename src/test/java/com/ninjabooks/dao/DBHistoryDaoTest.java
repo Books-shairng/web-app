@@ -21,7 +21,7 @@ import java.util.List;
 @Ignore
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class DBHistoryDaoTest
 {
     @Autowired

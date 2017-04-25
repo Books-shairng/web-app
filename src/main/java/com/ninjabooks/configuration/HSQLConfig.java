@@ -1,10 +1,7 @@
 package com.ninjabooks.configuration;
 
 import org.hibernate.SessionFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
@@ -27,10 +24,11 @@ import java.util.Properties;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Lazy
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.ninjabooks.dao"})
-@Profile(value = "dev")
+@Profile(value = {"dev", "test"})
 public class HSQLConfig implements DBConnectConfig
 {
     @Bean

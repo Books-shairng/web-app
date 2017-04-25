@@ -23,6 +23,7 @@ import java.util.Properties;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Lazy
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = "classpath:hibernate.properties")
@@ -30,8 +31,12 @@ import java.util.Properties;
 @Profile(value = "prod")
 public class MySQLConfig implements DBConnectConfig
 {
+    private final Environment environment;
+
     @Autowired
-    private Environment environment;
+    public MySQLConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     @Override

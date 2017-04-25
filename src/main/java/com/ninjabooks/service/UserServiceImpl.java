@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService
     @Autowired
     public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
-        this.passwordEncoder =passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
