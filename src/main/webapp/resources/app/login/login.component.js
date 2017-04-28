@@ -30,7 +30,7 @@ var LoginComponent = (function () {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(function (data) {
-            _this.router.navigate([_this.returnUrl]);
+            _this.router.navigate(['/notifications/index']);
         }, function (error) {
             _this.loading = false;
         });

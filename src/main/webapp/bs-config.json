@@ -1,6 +1,6 @@
 {
   "server": {
-    "baseDir": ["","webapp/resources"],
+    "baseDir": ["WEB-INF/static/",""],
     "routes": {
       "/node_modules": "node_modules"
     }
