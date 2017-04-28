@@ -1,11 +1,7 @@
 <form class="reg-form" fole="form" #f="ngForm" (ngSubmit)="f.form.valid && register()">
-    <div class="form-group">
-  <label for="firstName">Imię</label>
-  <input type="text" name="firstName" [(ngModel)]="model.firstName" placeholder="Imię" required #firstName = "ngModel">
-</div>
   <div class="form-group">
-  <label for="lastName">Nazwisko</label>
-  <input type="text" name="lastName"  [(ngModel)]="model.lastName" placeholder="Nazwisko" required #lastName = "ngModel">
+  <label for="firstlastName">Imię i nazwisko</label>
+  <input type="text" name="firstlastName"  [(ngModel)]="model.firstlastName" placeholder="Imię i nazwisko" required #firstlastName = "ngModel">
 </div>
   <div class="form-group">
   <label for="email">Adres e-mail</label>
