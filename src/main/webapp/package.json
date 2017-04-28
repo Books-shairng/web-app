@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "QuickStart package.json from the documentation, supplemented with testing support",
   "scripts": {
-    "build": "tsc -p src/main/webapp/resources/",
-    "build:watch": "tsc -p src/main/webapp/resources/ -w",
+    "build": "tsc -p resources/",
+    "build:watch": "tsc -p resources/ -w",
     "serve": "lite-server -c=bs-config.json",
     "prestart": "npm run build",
     "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
@@ -14,7 +14,7 @@
     "test": "concurrently \"npm run build:watch\" \"karma start karma.conf.js\"",
     "pretest:once": "npm run build",
     "test:once": "karma start karma.conf.js --single-run",
-    "lint": "tslint ./src/main/webapp/resources/**/*.ts -t verbose"
+    "lint": "tslint ./resources/**/*.ts -t verbose"
   },
   "keywords": [],
   "author": "",
