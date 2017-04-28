@@ -1,6 +1,6 @@
 {
   "server": {
-    "baseDir": "webapi",
+    "baseDir": ["src/main/webapp","src/main/webapp/resources"],
     "routes": {
       "/node_modules": "node_modules"
     }

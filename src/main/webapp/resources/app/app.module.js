@@ -18,6 +18,8 @@ var index_1 = require("./notifications/index");
 var index_2 = require("./guards/index");
 var index_3 = require("./services/index");
 // used to create fake backend
+var index_4 = require("./fakebackend/index");
+var testing_1 = require("@angular/http/testing");
 var http_2 = require("@angular/http");
 var AppModule = (function () {
     function AppModule() {
@@ -29,6 +31,8 @@ AppModule = __decorate([
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
         declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, registration_component_1.RegistrationComponent, search_component_1.SearchComponent, index_1.NotificationComponent],
         providers: [index_2.AuthGuard, index_3.AuthenticationService, index_3.UserService,
+            index_4.fakeBackendProvider,
+            testing_1.MockBackend,
             http_2.BaseRequestOptions],
         bootstrap: [app_component_1.AppComponent]
     })

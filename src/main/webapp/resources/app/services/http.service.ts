@@ -7,7 +7,7 @@ export class HttpService {
   constructor(private http: Http) { }
 
   loginFunction(email: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ email: login, password: password }))
+        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
             .map((response: Response) => {
                 let user = response.json();
                 if (user && user.token) {

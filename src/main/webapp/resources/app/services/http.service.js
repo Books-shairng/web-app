@@ -15,8 +15,8 @@ var HttpService = (function () {
     function HttpService(http) {
         this.http = http;
     }
-    HttpService.prototype.loginFunction = function (login, password) {
-        return this.http.post('/api/authenticate', JSON.stringify({ login: login, password: password }))
+    HttpService.prototype.loginFunction = function (email, password) {
+        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
             .map(function (response) {
             var user = response.json();
             if (user && user.token) {
