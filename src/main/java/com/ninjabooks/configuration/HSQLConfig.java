@@ -35,8 +35,13 @@ public class HSQLConfig implements DBConnectConfig
     @Override
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
+        String activeProfile = System.getProperty("spring.profiles.active");
         builder.scanPackages("com.ninjabooks.domain")
-                .addProperties(hibernateProperties());
+            .addProperties(hibernateProperties());
+
+        if (activeProfile.equals("dev"))
+            builder.addProperties(importDataToDB());
+
         return builder.buildSessionFactory();
     }
 
@@ -61,6 +66,14 @@ public class HSQLConfig implements DBConnectConfig
         properties.put("hibernate.hbm2ddl.auto", "update");
 //        properties.put("hibernate.current_session_context_class", "thread");
         properties.put("hibernate.rollback", "false");
+        return properties;
+    }
+
+    @Bean
+    @Profile(value = "dev")
+    public Properties importDataToDB() {
+        Properties properties = new Properties();
+        properties.put("hibernate.hbm2ddl.import_files", "");
         return properties;
     }
 
