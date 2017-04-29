@@ -1,14 +1,18 @@
 package com.ninjabooks.service;
 
+import com.ninjabooks.error.UserAlreadyExistException;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.TransactionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -34,12 +38,12 @@ public class UserServiceImpl implements UserService
     @Override
     @Transactional(readOnly = false)
     public User createUser(User user) {
-        logger.debug("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
+        logger.info("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
         User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
 
         if (checkIfUserAlreadyExist(user)) {
-            logger.warn(user.getEmail() + "already exist in database");
-            throw new IllegalArgumentException("Username already exist in database");
+            logger.error(user.getEmail() + "already exist in database");
+            throw new UserAlreadyExistException("Username already exist in database");
         }
 
         transactionManager =  new TransactionManager(userDao.getCurrentSession());
@@ -49,6 +53,23 @@ public class UserServiceImpl implements UserService
         logger.info(user.getName() + "successfully added to database");
 
         return newUser;
+    }
+
+    @Override
+    public User baseUserInfo(Principal email) {
+        transactionManager = new TransactionManager(userDao.getCurrentSession());
+        User foundUser = null;
+
+        try {
+            logger.info("Try to found " + email + " in database and obtain information");
+            transactionManager.beginTransaction();
+            foundUser = userDao.getByEmail(email.getName());
+            transactionManager.close();
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+
+        return foundUser;
     }
 
     /**

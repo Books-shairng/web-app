@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -16,19 +18,28 @@ import org.springframework.web.bind.annotation.*;
 public class UserController
 {
     private final UserService userService;
-    private final Gson gson;
+    private Gson gson;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-        this.gson = new Gson();
     }
 
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public ResponseEntity<Gson> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         userService.createUser(user);
-        gson.toJson("User created", String.class);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
-        return new ResponseEntity<>(gson, HttpStatus.CREATED);
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    public ResponseEntity<Gson> basUserInfo(@RequestParam Principal email) {
+        gson = new Gson();
+        User userInfo = userService.baseUserInfo(email);
+
+        gson.toJson(userInfo.getId());
+        gson.toJson(userInfo.getEmail());
+        gson.toJson(userInfo.getName());
+
+        return new ResponseEntity<>(gson, HttpStatus.FOUND);
     }
 }
