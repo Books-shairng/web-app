@@ -49,13 +49,5 @@ public class UserController
         gson.toJson(user);
 
         return new ResponseEntity<>(gson, HttpStatus.FOUND);
-//        gson = new Gson();
-//        User userInfo = userService.baseUserInfo(email);
-//
-//        gson.toJson(userInfo.getId());
-//        gson.toJson(userInfo.getEmail());
-//        gson.toJson(userInfo.getName());
-//
-//        return new ResponseEntity<>(gson, HttpStatus.FOUND);
     }
 }
