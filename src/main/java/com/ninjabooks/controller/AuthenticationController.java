@@ -2,7 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.json.AuthenticationRequest;
 import com.ninjabooks.json.AuthenticationResponse;
-import com.ninjabooks.security.JwtUser;
+import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,17 +29,16 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0
  */
 @RestController
-@RequestMapping("{}")
+@RequestMapping(value = "/api/auth")
 public class AuthenticationController
 {
     private static final Logger logger = LogManager.getLogger(AuthenticationController.class);
-
-    @Value("${token.header}")
-    private String tokenHeader;
-
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
+
+    @Value("${token.header}")
+    private String tokenHeader;
 
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
@@ -53,27 +52,28 @@ public class AuthenticationController
 
         // Perform the authentication
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-authentication so we can generate token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         String token = tokenUtils.generateToken(userDetails, device);
 
         // Return the token
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 
-    @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> authenticationRequest(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String username = tokenUtils.getUsernameFromToken(token);
-        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
         if (tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = tokenUtils.refreshToken(token);
             return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
-        } else {
+        }
+        else {
             return ResponseEntity.badRequest().body(null);
         }
     }

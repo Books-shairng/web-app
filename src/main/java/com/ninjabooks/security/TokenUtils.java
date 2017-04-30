@@ -132,7 +132,7 @@ public class TokenUtils
         return generateToken(claims);
     }
 
-    String generateToken(Map<String, Object> claims) {
+    private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
             .setClaims(claims)
             .setExpiration(generateExpirationDate())
@@ -159,7 +159,7 @@ public class TokenUtils
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        JwtUser user = (JwtUser) userDetails;
+        SpringSecurityUser user = (SpringSecurityUser) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getCreatedDateFromToken(token);
         //final Date expiration = getExpirationDateFromToken(token);
