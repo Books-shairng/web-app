@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  *
  */
 @Configuration
-@ComponentScan(basePackageClasses = UserAuthService.class)
+@ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class})
 @EnableWebSecurity
 public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 {
