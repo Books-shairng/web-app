@@ -2,6 +2,7 @@ package com.ninjabooks.service;
 
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
+import com.ninjabooks.error.UserAlreadyExistException;
 import com.ninjabooks.util.TransactionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,19 +35,19 @@ public class UserServiceImpl implements UserService
     @Override
     @Transactional(readOnly = false)
     public User createUser(User user) {
-        logger.debug("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
-        User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
+        logger.info("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
 
         if (checkIfUserAlreadyExist(user)) {
-            logger.warn(user.getEmail() + "already exist in database");
-            throw new IllegalArgumentException("Username already exist in database");
+            logger.error(user.getEmail() + " already exist in database");
+            throw new UserAlreadyExistException("Username already exist in database");
         }
 
+        User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
         transactionManager =  new TransactionManager(userDao.getCurrentSession());
-        transactionManager.beginTransaction();
+//        transactionManager.beginTransaction();
         userDao.add(newUser);
-        transactionManager.commit();
-        logger.info(user.getName() + "successfully added to database");
+//        transactionManager.commit();
+        logger.info(user.getName() + " successfully added to database");
 
         return newUser;
     }

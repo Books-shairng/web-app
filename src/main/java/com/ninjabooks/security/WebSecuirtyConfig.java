@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -20,18 +24,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  */
 @Configuration
-@ComponentScan(basePackageClasses = UserAuthService.class)
+@ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class})
 @EnableWebSecurity
 public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 {
     private final UserDetailsService userAuthService;
+    private final EntryPointUnauthorizedHandler unauthorizedHandler;
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService) {
+    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler) {
         this.userAuthService = userAuthService;
+        this.unauthorizedHandler = unauthorizedHandler;
     }
 
-
+    @Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+            .userDetailsService(userAuthService)
+            .passwordEncoder(passwordEncoder());
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userAuthService).passwordEncoder(passwordEncoder());
@@ -39,37 +50,42 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//            .anyRequest().permitAll()
-//            .and()
-//            .formLogin().loginPage("/login")
-//            .usernameParameter("email")
-//            .passwordParameter("password")
-//            .and()
-//            .logout().permitAll()
-//            .and()
-//            .csrf();
-
         http
-            .exceptionHandling()
+            // we don't need CSRF because our token is invulnerable
+            .csrf().disable()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/", "/registration").anonymous()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin().loginPage("/")
-            .loginProcessingUrl("login")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/notifications")
-            .and()
-            .logout().logoutSuccessUrl("/")
-            .and()
-            .csrf();
+            .antMatchers(HttpMethod.GET, "/**").permitAll()
+            .antMatchers("/auth/**").permitAll()
+            .anyRequest().authenticated();
+
+        // Custom JWT based security filter
+        http
+            .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // disable page caching
+        http.headers().cacheControl();
+
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {
+        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(userAuthService);
+        authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
+        return authenticationTokenFilter;
     }
 }

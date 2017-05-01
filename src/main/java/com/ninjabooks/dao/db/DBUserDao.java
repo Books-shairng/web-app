@@ -39,7 +39,8 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
             logger.error(e);
             logger.info("Open new session");
             this.currentSession = sessionFactory.openSession();
-        }    }
+        }
+    }
 
     @Override
     public Stream<User> getAll() {
