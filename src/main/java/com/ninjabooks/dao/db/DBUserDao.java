@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -87,10 +88,14 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
         String query = "select user from User user where " + columnName + "=:parameter";
-        Query<User> bookQuery = currentSession.createQuery(query, User.class);
-        bookQuery.setParameter("parameter", parameter);
+        Query<User> userQuery = currentSession.createQuery(query, User.class);
+        userQuery.setParameter("parameter", parameter);
 
-        return (T) bookQuery.getSingleResult();
+        List<User> results = userQuery.getResultList();
+        if (!results.isEmpty())
+            return (T) results.get(0);
+        else
+            return null;
 
     }
 }

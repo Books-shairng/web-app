@@ -85,6 +85,9 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
         Query<QRCode> bookQuery = currentSession.createQuery(query, QRCode.class);
         bookQuery.setParameter("parameter", parameter);
 
-        return (T) bookQuery.getSingleResult();
+        if (bookQuery.getSingleResult() != null)
+            return (T) bookQuery.getSingleResult();
+        else
+            return null;
     }
 }

@@ -1,6 +1,5 @@
 package com.ninjabooks.controller;
 
-import com.google.gson.Gson;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
@@ -9,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +25,7 @@ public class UserController
     private final UserService userService;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private Gson gson;
+//    private Gson gson;
 
     @Autowired
     public UserController(UserService userService, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
@@ -39,15 +41,15 @@ public class UserController
     }
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    public ResponseEntity<Gson> getAuthenticatedUser(@RequestParam HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("Authorization");
         String email = tokenUtils.getUsernameFromToken(token);
 
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(email);
 
-        gson = new Gson();
-        gson.toJson(user);
+//        gson = new Gson();
+//        gson.toJson(user);
 
-        return new ResponseEntity<>(gson, HttpStatus.FOUND);
+        return new ResponseEntity<>(user, HttpStatus.FOUND);
     }
 }

@@ -91,6 +91,9 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
         Query<Borrow> bookQuery = currentSession.createQuery(query, Borrow.class);
         bookQuery.setParameter("parameter", parameter);
 
-        return (T) bookQuery.getSingleResult();
+        if (bookQuery.getSingleResult() != null)
+            return (T) bookQuery.getSingleResult();
+        else
+            return null;
     }
 }

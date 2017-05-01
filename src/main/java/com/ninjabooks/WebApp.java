@@ -27,7 +27,7 @@ public class WebApp implements WebApplicationInitializer
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "prod");
+        System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "dev");
 
         logger.info("Application initilization: " + servletContext.getServerInfo());
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
