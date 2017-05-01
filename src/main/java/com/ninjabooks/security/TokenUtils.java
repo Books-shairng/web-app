@@ -3,11 +3,12 @@ package com.ninjabooks.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +31,7 @@ public class TokenUtils
     private static final String AUDIENCE_MOBILE = "mobile";
     private static final String AUDIENCE_TABLET = "tablet";
 
-    @Value("${secret}")
-    private String secret;
-
-    private Long expiration;
+    private final String secret = "secret";
 
     public String getUsernameFromToken(String token) {
         String username;
@@ -46,22 +44,23 @@ public class TokenUtils
         return username;
     }
 
-    public Date getCreatedDateFromToken(String token) {
-        Date created;
+    public LocalDate getCreatedDateFromToken(String token) {
+        LocalDate created;
         try {
             final Claims claims = getClaimsFromToken(token);
-            created = new Date((Long) claims.get(CLAIM_KEY_CREATED));
+            created = LocalDate.ofEpochDay((Long) claims.get(CLAIM_KEY_CREATED));
+//            new Date((Long) claims.get(CLAIM_KEY_CREATED));
         } catch (Exception e) {
             created = null;
         }
         return created;
     }
 
-    public Date getExpirationDateFromToken(String token) {
-        Date expiration;
+    public LocalDate getExpirationDateFromToken(String token) {
+        LocalDate expiration;
         try {
             final Claims claims = getClaimsFromToken(token);
-            expiration = claims.getExpiration();
+            expiration = claims.getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } catch (Exception e) {
             expiration = null;
         }
@@ -93,16 +92,17 @@ public class TokenUtils
     }
 
     private Date generateExpirationDate() {
+        Long expiration = 604800L;
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
     private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
+        final LocalDate expiration = getExpirationDateFromToken(token);
+        return expiration.isBefore(LocalDate.now());
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
+    private Boolean isCreatedBeforeLastPasswordReset(LocalDate created, LocalDate lastPasswordReset) {
+        return (lastPasswordReset != null && created.isBefore(lastPasswordReset));
     }
 
     private String generateAudience(Device device) {
@@ -140,8 +140,8 @@ public class TokenUtils
             .compact();
     }
 
-    public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
-        final Date created = getCreatedDateFromToken(token);
+    public Boolean canTokenBeRefreshed(String token, LocalDate lastPasswordReset) {
+        final LocalDate created = getCreatedDateFromToken(token);
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
             && (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
@@ -161,7 +161,7 @@ public class TokenUtils
     public Boolean validateToken(String token, UserDetails userDetails) {
         SpringSecurityUser user = (SpringSecurityUser) userDetails;
         final String username = getUsernameFromToken(token);
-        final Date created = getCreatedDateFromToken(token);
+        final LocalDate created = getCreatedDateFromToken(token);
         //final Date expiration = getExpirationDateFromToken(token);
         return (
             username.equals(user.getUsername())

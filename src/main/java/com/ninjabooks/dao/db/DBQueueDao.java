@@ -86,7 +86,9 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
         Query<Queue> bookQuery = currentSession.createQuery(query, Queue.class);
         bookQuery.setParameter("parameter", parameter);
 
-        return (T) bookQuery.getSingleResult();
-
+        if (bookQuery.getSingleResult() != null)
+            return (T) bookQuery.getSingleResult();
+        else
+            return null;
     }
 }

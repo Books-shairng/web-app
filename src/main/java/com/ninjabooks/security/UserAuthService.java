@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * In this service is performed basic user authentacy
+ * In this service is performed basic user authorization
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -29,18 +29,18 @@ public class UserAuthService implements UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.getByName(username);
+        User user = userDao.getByEmail(username);
 
         if (user == null)
             throw new UsernameNotFoundException("User not found");
 
-        return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
+        return new SpringSecurityUser(
+            user.getId(),
+            user.getName(),
             user.getPassword(),
-            true,
-            true,
-            true,
-            true,
-            AuthorityUtils.createAuthorityList("USER"));
+            user.getEmail(),
+            user.getLastPasswordReset(),
+            AuthorityUtils.createAuthorityList("USER")
+        );
     }
 }

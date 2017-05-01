@@ -44,11 +44,10 @@ public class UserServiceImpl implements UserService
 
         User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
         transactionManager =  new TransactionManager(userDao.getCurrentSession());
-//        transactionManager.beginTransaction();
+        transactionManager.beginTransaction();
         userDao.add(newUser);
-//        transactionManager.commit();
+        transactionManager.commit();
         logger.info(user.getName() + " successfully added to database");
-
         return newUser;
     }
 
