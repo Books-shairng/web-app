@@ -29,11 +29,10 @@ export let fakeBackendProvider = {
                         connection.mockRespond(new Response(new ResponseOptions({
                             status: 200,
                             body: {
-                                id: user.id,
-                                email: user.email,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
-                                token: 'fake-jwt-token'
+                            id: user.id,
+                            username: user.username,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
                             }
                         })));
                     } else {

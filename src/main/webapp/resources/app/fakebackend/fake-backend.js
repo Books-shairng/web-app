@@ -26,10 +26,9 @@ exports.fakeBackendProvider = {
                             status: 200,
                             body: {
                                 id: user.id,
-                                email: user.email,
+                                username: user.username,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
-                                token: 'fake-jwt-token'
                             }
                         })));
                     }
