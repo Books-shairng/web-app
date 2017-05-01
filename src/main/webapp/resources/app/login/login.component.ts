@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http } from '@angular/http';
-import { FormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 
 import { AuthenticationService } from '../services/index';
 

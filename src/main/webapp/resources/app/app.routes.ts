@@ -1,5 +1,4 @@
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleWithProviders } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -8,7 +7,7 @@ import { SearchComponent } from './search/search.component';
 import { NotificationComponent } from './notifications/index';
 import { AuthGuard } from './guards/index';
 
-export const router: Routes = [
+const router: Routes = [
 { path: '',  component: NotificationComponent, canActivate: [AuthGuard] },
 { path: 'login',  component: LoginComponent },
 { path: 'registration',  component: RegistrationComponent },
@@ -16,4 +15,4 @@ export const router: Routes = [
 { path: '**',     redirectTo: '' },
 ];
 
-export const routes: ModuleWithProviders = RouterModule.forRoot(router);
+export const routes = RouterModule.forRoot(router);

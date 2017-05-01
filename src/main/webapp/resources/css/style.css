@@ -90,3 +90,6 @@ body {
 .search-form button {
   float: right;
 }
+.notification p a{
+  color: #000000;
+}

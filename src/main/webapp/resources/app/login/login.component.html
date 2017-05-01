@@ -1,7 +1,7 @@
-<form class="login-form" role="form" #f="ngForm" (ngSubmit)="f.from.valid && login()">
+<form class="login-form" role="form" #f="ngForm" (ngSubmit)="login()">
   <div class="form-group">
   <label for="email">Adres e-mail</label>
-  <input type="text" name="email" class="form-control" [(ngModel)] = "model.email" #email="ngModel" placeholder="twojadres@buziaczek.pl" required >
+  <input type="email" name="email" class="form-control" [(ngModel)] = "model.email" #email="ngModel" placeholder="twojadres@buziaczek.pl" required >
   </div>
   <div class="form-group">
   <label for="password">Hasło</label>

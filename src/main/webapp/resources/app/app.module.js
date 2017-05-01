@@ -7,10 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
-var app_routes_1 = require("./app.routes");
 var http_1 = require("@angular/http");
 var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
+var app_routes_1 = require("./app.routes");
 var login_component_1 = require("./login/login.component");
 var registration_component_1 = require("./registration/registration.component");
 var search_component_1 = require("./search/search.component");

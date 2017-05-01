@@ -30,9 +30,10 @@ export let fakeBackendProvider = {
                             status: 200,
                             body: {
                             id: user.id,
-                            username: user.username,
+                            email: user.email,
                             firstName: user.firstName,
                             lastName: user.lastName,
+                            token: 'fake-jwt-token'
                             }
                         })));
                     } else {
