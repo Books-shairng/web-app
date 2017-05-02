@@ -1,6 +1,7 @@
 package com.ninjabooks.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public class Book extends BaseEntity
     private QRCode QR_code;
 
     @OneToMany(mappedBy = "book")
-    private List<Queue> queues;
+    private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "book")
-    private List<Borrow> borrows;
+    private List<Borrow> borrows = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "book")
-    private List<History> histories;
+    private List<History> histories = new ArrayList<>(0);
 
     public Book() {
     }

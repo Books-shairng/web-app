@@ -33,6 +33,11 @@ public class History extends BaseEntity
     public History() {
     }
 
+    public History(LocalDate borrowDate, LocalDate returnedDate) {
+        this.borrowDate = borrowDate;
+        this.returnedDate = returnedDate;
+    }
+
     public LocalDate getBorrowDate() {
         return borrowDate;
     }

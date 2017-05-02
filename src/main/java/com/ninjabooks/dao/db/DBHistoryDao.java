@@ -40,13 +40,13 @@ public class DBHistoryDao implements HistoryDao
     }
 
     @Override
-    public Stream<History> getAll() {
-        return currentSession.createQuery("SELECT h FROM com.ninjabooks.domain.History h", History.class).stream();
+    public History getById(Long id) {
+        return currentSession.get(History.class, id);
     }
 
     @Override
-    public History getById(Long id) {
-        return currentSession.get(History.class, id);
+    public Stream<History> getAll() {
+        return currentSession.createQuery("SELECT h FROM com.ninjabooks.domain.History h", History.class).stream();
     }
 
     @Override
@@ -56,12 +56,13 @@ public class DBHistoryDao implements HistoryDao
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        History history = getById(id);
+        currentSession.update(history);
     }
 
     @Override
     public void delete(Long id) {
-        History history = currentSession.get(History.class, id);
+        History history = getById(id);
         currentSession.delete(history);
     }
 

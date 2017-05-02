@@ -74,12 +74,13 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        Book book = getById(id);
+        currentSession.update(book);
     }
 
     @Override
     public void delete(Long id) {
-        Book book = currentSession.get(Book.class, id);
+        Book book = getById(id);
         currentSession.delete(book);
     }
 

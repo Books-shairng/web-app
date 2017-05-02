@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -67,9 +68,35 @@ public class DBUserDaoTest
     @Test
     public void testDeleteUser() throws Exception {
         userDao.add(users.get(0));
-        userDao.delete(8L);
+        userDao.delete(users.get(0).getId());
 
         assertThat(userDao.getAll()).isEmpty();
+    }
+
+    @Test
+    public void testDeleteUserNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.delete(555L))
+            .withNoCause();
+    }
+
+    @Test
+    public void testUpdateUser() throws Exception {
+        User userBeforeUpdate = users.get(0);
+        userDao.add(userBeforeUpdate);
+
+        String newName = "Peter";
+        userBeforeUpdate.setName(newName);
+        userDao.update(userBeforeUpdate.getId());
+
+        User afterUpdate = userDao.getAll().findFirst().get();
+
+        assertThat(afterUpdate.getName()).isEqualTo(newName);
+    }
+
+    @Test
+    public void testUpdateUserNotExist() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.update(555L))
+            .withNoCause();
     }
 
     @Test
@@ -89,12 +116,22 @@ public class DBUserDaoTest
     }
 
     @Test
+    public void testGetUserByNameNotExistShouldReturnNull() throws Exception {
+        assertThat(userDao.getByName("TEST")).isNull();
+    }
+
+    @Test
     public void testGetUserByEmail() throws Exception {
         users.forEach(user -> userDao.add(user));
 
         User actual = userDao.getByEmail(users.get(1).getEmail());
 
         assertThat(actual).isEqualTo(users.get(1));
+    }
+
+    @Test
+    public void testGetUserEmailWhichNotExistShouldReturnNull() throws Exception {
+        assertThat(userDao.getByEmail("TEST")).isNull();
     }
 
     @After

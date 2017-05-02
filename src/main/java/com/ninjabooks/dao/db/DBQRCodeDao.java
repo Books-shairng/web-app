@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -64,12 +65,13 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        QRCode qrCode = getById(id);
+        currentSession.update(qrCode);
     }
 
     @Override
     public void delete(Long id) {
-        QRCode qrCode = currentSession.get(QRCode.class, id);
+        QRCode qrCode = getById(id);
         currentSession.delete(qrCode);
     }
 
@@ -82,11 +84,12 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
         String query = "select qr_code from com.ninjabooks.domain.QRCode qr_code where " + columnName + "=:parameter";
-        Query<QRCode> bookQuery = currentSession.createQuery(query, QRCode.class);
-        bookQuery.setParameter("parameter", parameter);
+        Query<QRCode> qrCodeQuery = currentSession.createQuery(query, QRCode.class);
+        qrCodeQuery.setParameter("parameter", parameter);
 
-        if (bookQuery.getSingleResult() != null)
-            return (T) bookQuery.getSingleResult();
+        List<QRCode> results = qrCodeQuery.getResultList();
+        if (!results.isEmpty())
+            return (T) results.get(0);
         else
             return null;
     }

@@ -28,7 +28,6 @@ public class Queue extends BaseEntity
     private User user;
 
     public Queue() {
-
     }
 
     /**

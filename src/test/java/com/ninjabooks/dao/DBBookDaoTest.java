@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 /**
@@ -68,9 +69,17 @@ public class DBBookDaoTest
     @Test
     public void testDeleteBook() throws Exception {
         bookDao.add(books.get(0));
-        bookDao.delete(8L);
+        long idBookToDelete = bookDao.getAll().findFirst().get().getId();
+
+        bookDao.delete(idBookToDelete);
 
         assertThat(bookDao.getAll()).isEmpty();
+    }
+
+    @Test
+    public void testTryDeleteBookWhichNotExistShouldThrowsException() throws Exception {
+            assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(555L))
+                .withNoCause();
     }
 
     @Test
@@ -102,6 +111,48 @@ public class DBBookDaoTest
         Stream<Book> actual = bookDao.getByISBN("978-1430261513");
 
         assertThat(actual).containsExactly(books.get(1));
+    }
+
+    @Test
+    public void testGetBookTitleWhichNotExistShouldBeEmpty() throws Exception {
+        Stream<Book> actual = bookDao.getByTitle("Effective Java");
+
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    public void testGetBookAuthorWhichNotExistShouldBeEmpty() throws Exception {
+        Stream<Book> actual = bookDao.getByAuthor("J. Bloch");
+
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    public void testGetBookISBNWhichNotExistShouldBeEmpty() throws Exception {
+        Stream<Book> actual = bookDao.getByAuthor("978-0321356680");
+
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    public void testUpdateBook() throws Exception {
+        Book beforeUpdate = books.get(0);
+
+        bookDao.add(beforeUpdate);
+        beforeUpdate.setTitle("New Title");
+
+        bookDao.update(beforeUpdate.getId());
+
+        Book updatedBook =  bookDao.getAll().findFirst().get();
+
+        assertThat(updatedBook.getTitle()).isEqualTo("New Title");
+    }
+
+    @Test
+    public void testTryUpdateBookWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.update(555L))
+            .withMessage("attempt to create saveOrUpdate event with null entity")
+            .withNoCause();
     }
 
     @After

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +34,13 @@ public class User extends BaseEntity
     private String authoritiy;
 
     @OneToMany(mappedBy = "user")
-    private List<Queue> queues;
+    private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "user")
-    private List<Borrow> borrows;
+    private List<Borrow> borrows = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "user")
-    private List<History> histories;
+    private List<History> histories = new ArrayList<>(0);
 
     public User() {
     }

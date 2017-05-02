@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -65,12 +66,13 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        Queue queue = getById(id);
+        currentSession.update(queue);
     }
 
     @Override
     public void delete(Long id) {
-        Queue queue = currentSession.get(Queue.class, id);
+        Queue queue = getById(id);
         currentSession.delete(queue);
     }
 
@@ -83,11 +85,12 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
         String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
-        Query<Queue> bookQuery = currentSession.createQuery(query, Queue.class);
-        bookQuery.setParameter("parameter", parameter);
+        Query<Queue> queueQuery = currentSession.createQuery(query, Queue.class);
+        queueQuery.setParameter("parameter", parameter);
 
-        if (bookQuery.getSingleResult() != null)
-            return (T) bookQuery.getSingleResult();
+        List<Queue> results = queueQuery.getResultList();
+        if (!results.isEmpty())
+            return (T) results.get(0);
         else
             return null;
     }

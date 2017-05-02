@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -67,6 +68,54 @@ public class DBQRCodeDaoTest
         assertThat(qrCodeDao.getAll()).containsExactly(qrCodes.get(0), qrCodes.get(1));
     }
 
+    @Test
+    public void testGetByData() throws Exception {
+        qrCodes.forEach(qrCode -> qrCodeDao.add(qrCode));
+
+        String data = qrCodes.get(0).getData();
+        assertThat(qrCodeDao.getByData(data)).isEqualTo(qrCodes.get(0));
+    }
+
+    @Test
+    public void testGetDataWhichNotExistShouldReturnNull() throws Exception {
+        assertThat(qrCodeDao.getByData("TEST")).isNull();
+    }
+
+    @Test
+    public void testUpdateQRCode() throws Exception {
+        QRCode beforeUpdate = qrCodes.get(0);
+        qrCodeDao.add(beforeUpdate);
+
+        String newData = "54312";
+        beforeUpdate.setData(newData);
+        qrCodeDao.update(beforeUpdate.getId());
+
+        QRCode afterUpdate = qrCodeDao.getAll().findFirst().get();
+
+        assertThat(afterUpdate.getData()).isEqualTo(newData);
+
+    }
+
+    @Test
+    public void testUpdateQRCodeNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.update(555L))
+            .withNoCause();
+    }
+
+    @Test
+    public void testDeleteQRCode() throws Exception {
+        qrCodeDao.add(qrCodes.get(0));
+
+        qrCodeDao.delete(qrCodes.get(0).getId());
+
+        assertThat(qrCodeDao.getAll()).isEmpty();
+    }
+
+    @Test
+    public void testDeleteQRCodeWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.delete(555L))
+            .withNoCause();
+    }
 
     @After
     public void tearDown() throws Exception {

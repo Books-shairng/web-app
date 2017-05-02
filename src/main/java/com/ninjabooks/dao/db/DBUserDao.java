@@ -70,12 +70,13 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        User user = getById(id);
+        currentSession.update(user);
     }
 
     @Override
     public void delete(Long id) {
-        User user = currentSession.get(User.class, id);
+        User user = getById(id);
         currentSession.delete(user);
     }
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -63,11 +64,37 @@ public class DBQueueDaoTest
     }
 
     @Test
-    public void testDeleteQeueu() throws Exception {
+    public void testDeleteQueue() throws Exception {
         queueDao.add(queues.get(0));
-        queueDao.delete(3L);
+        queueDao.delete(queues.get(0).getId());
 
         assertThat(queueDao.getAll()).isEmpty();
+    }
+
+    @Test
+    public void testDeleteQueueNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.delete(555L))
+            .withNoCause();
+    }
+
+    @Test
+    public void testUpdateQueue() throws Exception {
+        Queue beforeUpdate = queues.get(0);
+        queues.add(beforeUpdate);
+
+        LocalDateTime newOrderDate = LocalDateTime.now();
+        beforeUpdate.setOrderDate(newOrderDate);
+        queueDao.update(beforeUpdate.getId());
+
+        Queue afterUpdate = queueDao.getAll().findFirst().get();
+
+        assertThat(afterUpdate.getOrderDate()).isEqualTo(newOrderDate);
+    }
+
+    @Test
+    public void testUpdateQueueNotExistShouldThorwsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.update(555L))
+            .withNoCause();
     }
 
     @Test
@@ -84,6 +111,14 @@ public class DBQueueDaoTest
 
         assertThat(actual).isEqualTo(queues.get(0));
     }
+
+    @Test
+    public void testGetOrderByDateWhichNotExistShouldReturnNull() throws Exception {
+        Queue actual = queueDao.getByOrderDate(LocalDateTime.now());
+        assertThat(actual).isNull();
+    }
+
+
 
     @After
     public void tearDown() throws Exception {
