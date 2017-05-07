@@ -136,3 +136,5 @@ hs_err_pid*
 
 #Karol template
 /src/main/webapp/node_modules
+#Karol backend
+/src/main/webapp/resources/app/fakebackend

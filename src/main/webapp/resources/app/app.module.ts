@@ -20,10 +20,10 @@ import { BaseRequestOptions } from '@angular/http';
 @NgModule({
   imports:      [ BrowserModule, FormsModule, routes, HttpModule ],
   declarations: [ AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent],
-  providers:    [ AuthGuard, AuthenticationService, UserService,
-                  fakeBackendProvider,
-                  MockBackend,
-                  BaseRequestOptions],
+  providers:    [ AuthGuard, AuthenticationService, UserService,],
+                  // fakeBackendProvider,
+                  // MockBackend,
+                  // BaseRequestOptions],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
