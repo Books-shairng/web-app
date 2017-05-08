@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -18,7 +18,7 @@ public class SpringSecurityUser implements UserDetails
     private String name;
     private String password;
 
-    private LocalDate lastPasswordReset;
+    private LocalDateTime lastPasswordReset;
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean accountNonExpired = true;
     private Boolean accountNonLocked = true;
@@ -26,7 +26,7 @@ public class SpringSecurityUser implements UserDetails
     private Boolean enabled = true;
 
 
-    public SpringSecurityUser(Long id, String name, String password, String email, LocalDate lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+    public SpringSecurityUser(Long id, String name, String password, String email, LocalDateTime lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -70,15 +70,16 @@ public class SpringSecurityUser implements UserDetails
     }
 
     @JsonIgnore
-    public LocalDate getLastPasswordReset() {
+    public LocalDateTime getLastPasswordReset() {
         return lastPasswordReset;
     }
 
-    public void setLastPasswordReset(LocalDate lastPasswordReset) {
+    public void setLastPasswordReset(LocalDateTime lastPasswordReset) {
         this.lastPasswordReset = lastPasswordReset;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }

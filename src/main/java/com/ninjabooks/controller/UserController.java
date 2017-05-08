@@ -25,7 +25,6 @@ public class UserController
     private final UserService userService;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-//    private Gson gson;
 
     @Autowired
     public UserController(UserService userService, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
@@ -46,9 +45,6 @@ public class UserController
         String email = tokenUtils.getUsernameFromToken(token);
 
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(email);
-
-//        gson = new Gson();
-//        gson.toJson(user);
 
         return new ResponseEntity<>(user, HttpStatus.FOUND);
     }

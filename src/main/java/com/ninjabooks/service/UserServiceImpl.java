@@ -3,7 +3,6 @@ package com.ninjabooks.service;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.UserAlreadyExistException;
-import com.ninjabooks.util.TransactionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ public class UserServiceImpl implements UserService
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
 
-    private TransactionManager transactionManager;
-
     @Autowired
     public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
@@ -42,13 +39,10 @@ public class UserServiceImpl implements UserService
             throw new UserAlreadyExistException("Username already exist in database");
         }
 
-        User newUser = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
-        transactionManager =  new TransactionManager(userDao.getCurrentSession());
-        transactionManager.beginTransaction();
-        userDao.add(newUser);
-        transactionManager.commit();
+        User newUserToPersistent = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
+        userDao.add(newUserToPersistent);
         logger.info(user.getName() + " successfully added to database");
-        return newUser;
+        return newUserToPersistent;
     }
 
     /**

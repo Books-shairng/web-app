@@ -7,7 +7,6 @@ import com.ninjabooks.security.TokenUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,9 +36,6 @@ public class AuthenticationController
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
 
-    @Value("${token.header}")
-    private String tokenHeader;
-
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
@@ -65,7 +61,8 @@ public class AuthenticationController
     }
 
     @RequestMapping(value = "/api/refresh", method = RequestMethod.GET)
-    public ResponseEntity<?> authenticationRequest(HttpServletRequest request) {
+    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+        String tokenHeader = "Authorization";
         String token = request.getHeader(tokenHeader);
         String username = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);

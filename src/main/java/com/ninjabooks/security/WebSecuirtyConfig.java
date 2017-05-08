@@ -30,11 +30,14 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 {
     private final UserDetailsService userAuthService;
     private final EntryPointUnauthorizedHandler unauthorizedHandler;
+    private final TokenUtils tokenUtils;
+
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler) {
+    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils) {
         this.userAuthService = userAuthService;
         this.unauthorizedHandler = unauthorizedHandler;
+        this.tokenUtils = tokenUtils;
     }
 
     @Autowired
@@ -84,7 +87,7 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 
     @Bean
     public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {
-        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(userAuthService);
+        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(userAuthService, tokenUtils);
         authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationTokenFilter;
     }

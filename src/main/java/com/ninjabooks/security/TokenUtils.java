@@ -7,7 +7,7 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,11 +44,12 @@ public class TokenUtils
         return username;
     }
 
-    public LocalDate getCreatedDateFromToken(String token) {
-        LocalDate created;
+    public LocalDateTime getCreatedDateFromToken(String token) {
+        LocalDateTime created;
         try {
             final Claims claims = getClaimsFromToken(token);
-            created = LocalDate.ofEpochDay((Long) claims.get(CLAIM_KEY_CREATED));
+            created = LocalDateTime.ofInstant(new Date((Long) claims.get(CLAIM_KEY_CREATED))
+                .toInstant(), ZoneId.systemDefault());
 //            new Date((Long) claims.get(CLAIM_KEY_CREATED));
         } catch (Exception e) {
             created = null;
@@ -56,11 +57,11 @@ public class TokenUtils
         return created;
     }
 
-    public LocalDate getExpirationDateFromToken(String token) {
-        LocalDate expiration;
+    public LocalDateTime getExpirationDateFromToken(String token) {
+        LocalDateTime expiration;
         try {
             final Claims claims = getClaimsFromToken(token);
-            expiration = claims.getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            expiration = claims.getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         } catch (Exception e) {
             expiration = null;
         }
@@ -97,11 +98,11 @@ public class TokenUtils
     }
 
     private Boolean isTokenExpired(String token) {
-        final LocalDate expiration = getExpirationDateFromToken(token);
-        return expiration.isBefore(LocalDate.now());
+        final LocalDateTime expiration = getExpirationDateFromToken(token);
+        return expiration.isBefore(LocalDateTime.now());
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(LocalDate created, LocalDate lastPasswordReset) {
+    private Boolean isCreatedBeforeLastPasswordReset(LocalDateTime created, LocalDateTime lastPasswordReset) {
         return (lastPasswordReset != null && created.isBefore(lastPasswordReset));
     }
 
@@ -128,7 +129,7 @@ public class TokenUtils
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device));
-        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(CLAIM_KEY_CREATED, LocalDateTime.now());
         return generateToken(claims);
     }
 
@@ -140,8 +141,8 @@ public class TokenUtils
             .compact();
     }
 
-    public Boolean canTokenBeRefreshed(String token, LocalDate lastPasswordReset) {
-        final LocalDate created = getCreatedDateFromToken(token);
+    public Boolean canTokenBeRefreshed(String token, LocalDateTime lastPasswordReset) {
+        final LocalDateTime created = getCreatedDateFromToken(token);
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
             && (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
@@ -161,7 +162,7 @@ public class TokenUtils
     public Boolean validateToken(String token, UserDetails userDetails) {
         SpringSecurityUser user = (SpringSecurityUser) userDetails;
         final String username = getUsernameFromToken(token);
-        final LocalDate created = getCreatedDateFromToken(token);
+        final LocalDateTime created = getCreatedDateFromToken(token);
         //final Date expiration = getExpirationDateFromToken(token);
         return (
             username.equals(user.getUsername())

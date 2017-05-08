@@ -1,6 +1,5 @@
 package com.ninjabooks.service;
 
-import com.ninjabooks.WebApp;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.UserAlreadyExistException;
@@ -8,15 +7,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -24,30 +21,33 @@ import static org.mockito.Mockito.when;
  * @since 1.0
  */
 @ActiveProfiles(value = "test")
-@ContextConfiguration(classes = WebApp.class)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceImplTest
 {
     @Mock
-    private UserDao userDaoMock;
+    private PasswordEncoder passwordEncoderMock;
 
     @Mock
-    private PasswordEncoder passwordEncoder;
-
-    private UserService userServiceMock;
+    private UserDao userDaoMock;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
+    private UserService userServiceMock;
+
+    private static final String NAME = "John Dee";
+    private static final String EMAIL = "john.dee@exmaple.com";
+    private static final String PASSWORD = "Johny!Dee123";
+
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.userServiceMock = new UserServiceImpl(userDaoMock, passwordEncoder);
+        this.userServiceMock = new UserServiceImpl(userDaoMock, passwordEncoderMock);
     }
 
     @Test
     public void testCreateNewUserWhenAlreadyExistShouldThrowsException() throws Exception {
-        User user = new User("Name", "exmaple@exmaple.com", "secret");
+        User user = new User(NAME, EMAIL, PASSWORD);
 
         //given
         when(userDaoMock.getByEmail(user.getEmail())).thenReturn(user);
@@ -60,12 +60,10 @@ public class UserServiceImplTest
     }
 
     @Test
-    public void testCreeteNewUserShouldSucceed() throws Exception {
-        User user = new User("Name", "exmaple@exmaple.com", "secret");
+    public void testCreateNewUserShouldSucceed() throws Exception {
+        User user = new User(NAME, EMAIL, PASSWORD);
 
-
-        User peristedUser = userServiceMock.createUser(user);
-
-        assertThat(peristedUser).isNotNull();
+        userServiceMock.createUser(user);
+        verify(userDaoMock).add(Mockito.any(User.class));
     }
 }

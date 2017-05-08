@@ -43,9 +43,11 @@ public class DBQueueDaoTest
 
     private List<Queue> createRecords() {
         Queue firstQueue = new Queue();
+        firstQueue.setId(1L);
         firstQueue.setOrderDate(LocalDateTime.of(2017,  3, 21, 8, 17));
 
         Queue secondQueue = new Queue();
+        secondQueue.setId(2L);
         secondQueue.setOrderDate(LocalDateTime.of(2015,  10, 8, 23, 59));
 
 

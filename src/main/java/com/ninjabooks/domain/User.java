@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +28,10 @@ public class User extends BaseEntity
     private String password;
 
     @Column(name = "LAST_PASSWORD_RESET")
-    private LocalDate lastPasswordReset;
+    private LocalDateTime lastPasswordReset;
 
     @Column(name = "AUTHORITY")
-    private String authoritiy;
+    private final String authoritiy = "USER";
 
     @OneToMany(mappedBy = "user")
     private List<Queue> queues = new ArrayList<>(0);
@@ -57,18 +57,8 @@ public class User extends BaseEntity
         this.name = name;
         this.email = email;
         this.password = password;
-        this.lastPasswordReset = LocalDate.now();
-        this.authoritiy = "USER";
+        this.lastPasswordReset = LocalDateTime.now();
     }
-
-    public User(String name, String email, String password, LocalDate lastPasswordReset, String  authoritiy) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.lastPasswordReset = lastPasswordReset;
-        this.authoritiy = "USER";
-    }
-
 
 
     public String getName() {
@@ -95,11 +85,11 @@ public class User extends BaseEntity
         this.password = password;
     }
 
-    public LocalDate getLastPasswordReset() {
+    public LocalDateTime getLastPasswordReset() {
         return lastPasswordReset;
     }
 
-    public void setLastPasswordReset(LocalDate lastPasswordReset) {
+    public void setLastPasswordReset(LocalDateTime lastPasswordReset) {
         this.lastPasswordReset = lastPasswordReset;
     }
 
@@ -107,9 +97,6 @@ public class User extends BaseEntity
         return authoritiy;
     }
 
-    public void setAuthoritiy(String authoritiy) {
-        this.authoritiy = authoritiy;
-    }
 
     public List<Queue> getQueues() {
         return queues;
