@@ -1,6 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.configuration.AppConfig;
+import com.ninjabooks.error.mapper.AuthenticationMapper;
 import com.ninjabooks.security.AuthenticationTokenFilter;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -57,6 +58,7 @@ public class AuthenticationControllerTest
             .setCustomArgumentResolvers(
                 new ServletWebArgumentResolverAdapter(new DeviceWebArgumentResolver()),
                 new SitePreferenceHandlerMethodArgumentResolver())
+            .setControllerAdvice(new AuthenticationMapper())
             .build();
 
     }
@@ -75,14 +77,15 @@ public class AuthenticationControllerTest
 
     @Test
     public void testAutheticationWithIncorrectDataShouldResponseBadRequest() throws Exception {
+        String body = "{\"email\" : \"user_not_exist@dd.gov\",\"password\" : \"pass0\"}";
         MvcResult result = mockMvc.perform(post("/api/auth")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(""))
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andReturn();
 
-        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
 
     //todo fix this test

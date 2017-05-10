@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This container create, refresh, validate JWT token.
+ *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
@@ -163,7 +165,6 @@ public class TokenUtils
         SpringSecurityUser user = (SpringSecurityUser) userDetails;
         final String username = getUsernameFromToken(token);
         final LocalDateTime created = getCreatedDateFromToken(token);
-        //final Date expiration = getExpirationDateFromToken(token);
         return (
             username.equals(user.getUsername())
                 && !isTokenExpired(token)

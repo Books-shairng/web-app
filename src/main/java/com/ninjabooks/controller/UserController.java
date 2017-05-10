@@ -33,11 +33,26 @@ public class UserController
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Create new user in system.
+     *
+     * @param user - received from request
+     * @return http response with status 201
+     */
+
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User user) {
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    /**
+     * After proper authorization return base info about user like his id, mail and name
+     *
+     * @param httpServletRequest - http request which contains authorization header with
+     *                           jwt token
+     * @return user info as json (content: id, password, email)
+     */
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest httpServletRequest) {

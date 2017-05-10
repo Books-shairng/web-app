@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticationMapper
 {
     @ExceptionHandler(value = AuthenticationException.class)
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value= HttpStatus.UNAUTHORIZED)
     public void authorizationCannotPerform(HttpServletResponse response, AuthenticationException e) throws Exception {
-        response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 }

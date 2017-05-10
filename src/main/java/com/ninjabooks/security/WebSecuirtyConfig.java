@@ -17,11 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * @author Piotr 'pitrecki' Nowak
- * @since 1.0
- *
  * Main security class
  *
+ * @author Piotr 'pitrecki' Nowak
+ * @since 1.0
  */
 @Configuration
 @ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class})
