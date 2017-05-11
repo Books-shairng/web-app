@@ -8,7 +8,11 @@ export class AuthenticationService {
   constructor(private http: Http) { }
 
   login(email: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
+        var dataObject = {
+          email : email,
+          password : password,
+        }
+        return this.http.post('/api/authenticate', dataObject)
             .map((response: Response) => {
                 let user = response.json();
                 if (user && user.token) {

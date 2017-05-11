@@ -16,7 +16,11 @@ var AuthenticationService = (function () {
         this.http = http;
     }
     AuthenticationService.prototype.login = function (email, password) {
-        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
+        var dataObject = {
+            email: email,
+            password: password,
+        };
+        return this.http.post('/api/authenticate', dataObject)
             .map(function (response) {
             var user = response.json();
             if (user && user.token) {
