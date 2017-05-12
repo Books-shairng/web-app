@@ -13,18 +13,18 @@ import { AuthGuard } from './guards/index';
 import { AlertService, AuthenticationService, UserService } from './services/index';
 import { AlertComponent } from './alert/index';
 // used to create fake backend
-import { fakeBackendProvider } from './fakebackend/index';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { BaseRequestOptions } from '@angular/http';
+// import { fakeBackendProvider } from './fakebackend/index';
+// import { MockBackend, MockConnection } from '@angular/http/testing';
+// import { BaseRequestOptions } from '@angular/http';
 
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, routes, HttpModule ],
   declarations: [ AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AlertComponent],
-  providers:    [ AuthGuard, AlertService, AuthenticationService, UserService,
-                  fakeBackendProvider,
-                  MockBackend,
-                  BaseRequestOptions],
+  providers:    [ AuthGuard, AlertService, AuthenticationService, UserService],
+                  // fakeBackendProvider,
+                  // MockBackend,
+                  // BaseRequestOptions],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
