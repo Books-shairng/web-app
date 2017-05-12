@@ -21,7 +21,7 @@ var UserService = (function () {
         return this.http.get('/api/users/' + id, this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.create = function (user) {
-        return this.http.post('/api/users', JSON.stringify(user), this.jwt()).map(function (response) { return response.json(); });
+        return this.http.post('/api/users', user, this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.update = function (user) {
         return this.http.put('/api/users/' + user.id, user, this.jwt()).map(function (response) { return response.json(); });

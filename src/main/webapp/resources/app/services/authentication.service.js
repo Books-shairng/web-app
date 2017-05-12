@@ -20,7 +20,7 @@ var AuthenticationService = (function () {
             email: email,
             password: password,
         };
-        return this.http.post('/api/authenticate', dataObject)
+        return this.http.post('/api/auth', dataObject)
             .map(function (response) {
             var user = response.json();
             if (user && user.token) {

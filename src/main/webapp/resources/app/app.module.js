@@ -17,6 +17,10 @@ var search_component_1 = require("./search/search.component");
 var index_1 = require("./notifications/index");
 var index_2 = require("./guards/index");
 var index_3 = require("./services/index");
+// used to create fake backend
+// import { fakeBackendProvider } from './fakebackend/index';
+// import { MockBackend, MockConnection } from '@angular/http/testing';
+// import { BaseRequestOptions } from '@angular/http';
 var AppModule = (function () {
     function AppModule() {
     }

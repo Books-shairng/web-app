@@ -5,14 +5,16 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private http: Http) { }
+    constructor(private http: Http) { }
 
-  login(email: string, password: string) {
+    login(email: string, password: string) {
+
         var dataObject = {
-          email : email,
-          password : password,
+            email: email,
+            password: password,
         }
-        return this.http.post('/api/authenticate', dataObject)
+
+        return this.http.post('/api/auth', dataObject)
             .map((response: Response) => {
                 let user = response.json();
                 if (user && user.token) {
@@ -20,6 +22,7 @@ export class AuthenticationService {
                 }
             });
     }
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
