@@ -1,12 +1,16 @@
-<form class="login-form" role="form" #f="ngForm" (ngSubmit)="login()">
-  <div class="form-group">
-  <label for="email">Adres e-mail</label>
-  <input type="email" name="email" class="form-control" [(ngModel)] = "model.email" #email="ngModel" placeholder="twojadres@buziaczek.pl" required >
-  </div>
-  <div class="form-group">
-  <label for="password">Hasło</label>
-  <input type="password" name="password" hexadecimal class="form-control" [(ngModel)] = "model.password" #password="ngModel" placeholder="Hasło" required>
-  </div>
-  <button class="btn btn-primary btn-md btn-login active"> Zaloguj </button>
-  <p>Nie masz konta? <a [routerLink]="['/registration']">Rejestracja</a></p>
-</form>
+<div class="col-md-8">
+    <form class="login-form" role="form" #f="ngForm" (ngSubmit)="f.form.valid && login()" novalidate>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+            <label for="email">Adres e-mail</label>
+            <input type="email" name="email" class="form-control" [(ngModel)]="model.email" #email="ngModel" placeholder="twojadres@buziaczek.pl" required>
+            <div *ngIf="f.submitted && !email.valid" class="help-block">Email is required</div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+            <label for="password">Hasło</label>
+            <input type="password" name="password" hexadecimal class="form-control" [(ngModel)]="model.password" #password="ngModel" placeholder="Hasło" required>
+            <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+        </div>
+        <button class="btn btn-primary btn-md btn-login active"> Zaloguj </button>
+        <p>Nie masz konta? <a [routerLink]="['/registration']">Rejestracja</a></p>
+    </form>
+</div>

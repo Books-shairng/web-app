@@ -12,10 +12,11 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var index_1 = require("../services/index");
 var LoginComponent = (function () {
-    function LoginComponent(route, router, authenticationService) {
+    function LoginComponent(route, router, authenticationService, alertService) {
         this.route = route;
         this.router = router;
         this.authenticationService = authenticationService;
+        this.alertService = alertService;
         this.model = {};
         this.loading = false;
     }
@@ -32,6 +33,7 @@ var LoginComponent = (function () {
             .subscribe(function (data) {
             _this.router.navigate([_this.returnUrl]);
         }, function (error) {
+            _this.alertService.error(error);
             _this.loading = false;
         });
     };
@@ -44,7 +46,8 @@ LoginComponent = __decorate([
     }),
     __metadata("design:paramtypes", [router_1.ActivatedRoute,
         router_1.Router,
-        index_1.AuthenticationService])
+        index_1.AuthenticationService,
+        index_1.AlertService])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;
 //# sourceMappingURL=login.component.js.map

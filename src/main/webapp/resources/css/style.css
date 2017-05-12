@@ -49,38 +49,36 @@ body {
   align-items:center;
   min-height: 100%;
 }
-.reg-form {
-  padding-top: 60px;
-}
-.login-form .reg-form{
+
+form{
   display: block;
   color: #ffffff;
 }
-.login-form label, input ,.reg-form label, input{
+label, input {
   display: block;
 }
-.login-form label , .reg-form label{
+form label {
   font-size: 21px;
   padding-top: 10px;
 }
-.login-form input, .reg-form input {
+.logging-section form input{
   color: #000000;
   width: 500px;
   height: 50px;
   font-size: 21px;
 }
-.login-form .btn-login, .reg-form .btn-reg {
+.btn-login, .btn-reg {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 24px;
   float: right;
   margin-top: 10px;
 }
-.login-form p, .login-form a , .reg-form p, .reg-form a{
+form p, form a{
   margin-top: 20px;
   font-size: 21px;
 }
-.login-form p a , .reg-form p a{
+form p a{
     color: #000000;
 }
 .search-form input {
@@ -92,4 +90,9 @@ body {
 }
 .notification p a{
   color: #000000;
+}
+.logging-section #alert {
+  font-weight: bold;
+  color: black;
+  background-color: white;
 }

@@ -27,6 +27,7 @@ export class UserService {
         return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
     }
 
+
     // private helper methods
 
     private jwt() {

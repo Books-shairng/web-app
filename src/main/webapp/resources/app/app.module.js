@@ -11,16 +11,17 @@ var http_1 = require("@angular/http");
 var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
 var app_routes_1 = require("./app.routes");
-var login_component_1 = require("./login/login.component");
-var registration_component_1 = require("./registration/registration.component");
-var search_component_1 = require("./search/search.component");
-var index_1 = require("./notifications/index");
-var index_2 = require("./guards/index");
-var index_3 = require("./services/index");
+var index_1 = require("./login/index");
+var index_2 = require("./registration/index");
+var index_3 = require("./search/index");
+var index_4 = require("./notifications/index");
+var index_5 = require("./guards/index");
+var index_6 = require("./services/index");
+var index_7 = require("./alert/index");
 // used to create fake backend
-// import { fakeBackendProvider } from './fakebackend/index';
-// import { MockBackend, MockConnection } from '@angular/http/testing';
-// import { BaseRequestOptions } from '@angular/http';
+var index_8 = require("./fakebackend/index");
+var testing_1 = require("@angular/http/testing");
+var http_2 = require("@angular/http");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -29,11 +30,11 @@ var AppModule = (function () {
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
-        declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, registration_component_1.RegistrationComponent, search_component_1.SearchComponent, index_1.NotificationComponent],
-        providers: [index_2.AuthGuard, index_3.AuthenticationService, index_3.UserService,],
-        // fakeBackendProvider,
-        // MockBackend,
-        // BaseRequestOptions],
+        declarations: [app_component_1.AppComponent, index_1.LoginComponent, index_2.RegistrationComponent, index_3.SearchComponent, index_4.NotificationComponent, index_7.AlertComponent],
+        providers: [index_5.AuthGuard, index_6.AlertService, index_6.AuthenticationService, index_6.UserService,
+            index_8.fakeBackendProvider,
+            testing_1.MockBackend,
+            http_2.BaseRequestOptions],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);
