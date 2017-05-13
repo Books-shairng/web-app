@@ -1,5 +1,6 @@
 package com.ninjabooks.json;
 
+import com.ninjabooks.json.authentication.AuthenticationRequest;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

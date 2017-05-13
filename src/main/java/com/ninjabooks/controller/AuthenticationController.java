@@ -1,9 +1,10 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.json.AuthenticationRequest;
-import com.ninjabooks.json.AuthenticationResponse;
+import com.ninjabooks.json.authentication.AuthenticationRequest;
+import com.ninjabooks.json.authentication.AuthenticationResponse;
 import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
+import com.ninjabooks.util.SecurityHeaderFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +61,14 @@ public class AuthenticationController
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
+    private final SecurityHeaderFinder securityHeaderFinder;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderFinder securityHeaderFinder) {
         this.authenticationManager = authenticationManager;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
+        this.securityHeaderFinder = securityHeaderFinder;
     }
 
     /**
@@ -104,12 +107,17 @@ public class AuthenticationController
 
     @RequestMapping(value = "/api/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
-        String tokenHeader = "Authorization";
-        String token = request.getHeader(tokenHeader);
+//        String tokenHeader = "Authorization";
+        String header = request.getHeader("Authorization");
+        String token = null;
+
+        if (securityHeaderFinder.hasSecurityPattern(header))
+            token = securityHeaderFinder.extractToken(token);
+
         String username = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
-        if (tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
-            String refreshedToken = tokenUtils.refreshToken(token);
+        if (tokenUtils.canTokenBeRefreshed(header, user.getLastPasswordReset())) {
+            String refreshedToken = tokenUtils.refreshToken(header);
             return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
         }
         else {
