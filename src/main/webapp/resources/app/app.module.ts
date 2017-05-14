@@ -21,7 +21,7 @@ import { AlertComponent } from './alert/index';
 @NgModule({
   imports:      [ BrowserModule, FormsModule, routes, HttpModule ],
   declarations: [ AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AlertComponent],
-  providers:    [ AuthGuard, AlertService, AuthenticationService, UserService],
+  providers:    [ AuthGuard, AlertService, AuthenticationService, UserService,],
                   // fakeBackendProvider,
                   // MockBackend,
                   // BaseRequestOptions],
