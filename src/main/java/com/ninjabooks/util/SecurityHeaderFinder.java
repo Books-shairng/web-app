@@ -1,9 +1,12 @@
 package com.ninjabooks.util;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Component
 public class SecurityHeaderFinder
 {
     private final String BEARER = "Bearer";

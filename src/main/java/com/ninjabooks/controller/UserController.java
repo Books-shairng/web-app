@@ -58,7 +58,7 @@ public class UserController
      *
      * @param httpServletRequest - http request which contains authorization header with
      *                           jwt token
-     * @return user info as json (content: id, password, email)
+     * @return user info as json (content: id, fistname, lastname, email)
      */
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
