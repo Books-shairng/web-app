@@ -1,5 +1,5 @@
 <div class="col-md-8">
-<form class="form" fole="form" #f="ngForm" (ngSubmit)="f.form.valid && register()">
+<form class="form" fole="form" #f="ngForm" (ngSubmit)="register()">
   <div class="form-group">
 <label for="firstName">Imię</label>
 <input type="text" name="firstName" [(ngModel)]="model.firstName" placeholder="Imię" required #firstName = "ngModel">

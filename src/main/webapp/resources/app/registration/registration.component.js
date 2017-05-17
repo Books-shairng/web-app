@@ -12,10 +12,9 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var index_1 = require("../services/index");
 var RegistrationComponent = (function () {
-    function RegistrationComponent(router, userService, alertService) {
+    function RegistrationComponent(router, userService) {
         this.router = router;
         this.userService = userService;
-        this.alertService = alertService;
         this.model = {};
         this.loading = false;
     }
@@ -24,10 +23,8 @@ var RegistrationComponent = (function () {
         this.loading = true;
         this.userService.create(this.model)
             .subscribe(function (data) {
-            _this.alertService.success('Registration successful', true);
             _this.router.navigate(['/login']);
         }, function (error) {
-            _this.alertService.error(error);
             _this.loading = false;
         });
     };
@@ -40,8 +37,7 @@ RegistrationComponent = __decorate([
         templateUrl: "registration.component.html",
     }),
     __metadata("design:paramtypes", [router_1.Router,
-        index_1.UserService,
-        index_1.AlertService])
+        index_1.UserService])
 ], RegistrationComponent);
 exports.RegistrationComponent = RegistrationComponent;
 //# sourceMappingURL=registration.component.js.map

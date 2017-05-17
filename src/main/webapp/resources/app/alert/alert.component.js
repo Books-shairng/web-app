@@ -26,7 +26,8 @@ AlertComponent = __decorate([
         selector: 'alert',
         templateUrl: 'alert.component.html'
     }),
-    __metadata("design:paramtypes", [index_1.AlertService])
+    __metadata("design:paramtypes", [typeof (_a = typeof index_1.AlertService !== "undefined" && index_1.AlertService) === "function" && _a || Object])
 ], AlertComponent);
 exports.AlertComponent = AlertComponent;
+var _a;
 //# sourceMappingURL=alert.component.js.map

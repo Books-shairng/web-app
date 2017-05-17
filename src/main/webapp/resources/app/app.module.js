@@ -17,7 +17,6 @@ var index_3 = require("./search/index");
 var index_4 = require("./notifications/index");
 var index_5 = require("./guards/index");
 var index_6 = require("./services/index");
-var index_7 = require("./alert/index");
 // used to create fake backend
 // import { fakeBackendProvider } from './fakebackend/index';
 // import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -30,8 +29,8 @@ var AppModule = (function () {
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
-        declarations: [app_component_1.AppComponent, index_1.LoginComponent, index_2.RegistrationComponent, index_3.SearchComponent, index_4.NotificationComponent, index_7.AlertComponent],
-        providers: [index_5.AuthGuard, index_6.AlertService, index_6.AuthenticationService, index_6.UserService,],
+        declarations: [app_component_1.AppComponent, index_1.LoginComponent, index_2.RegistrationComponent, index_3.SearchComponent, index_4.NotificationComponent],
+        providers: [index_5.AuthGuard, index_6.AuthenticationService, index_6.UserService],
         // fakeBackendProvider,
         // MockBackend,
         // BaseRequestOptions],
