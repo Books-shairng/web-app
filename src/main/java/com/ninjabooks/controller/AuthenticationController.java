@@ -107,7 +107,6 @@ public class AuthenticationController
 
     @RequestMapping(value = "/api/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
-//        String tokenHeader = "Authorization";
         String header = request.getHeader("Authorization");
         String token = null;
 

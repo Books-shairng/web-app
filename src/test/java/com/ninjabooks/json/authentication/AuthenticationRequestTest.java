@@ -1,4 +1,4 @@
-package com.ninjabooks.json;
+package com.ninjabooks.json.authentication;
 
 import com.ninjabooks.json.authentication.AuthenticationRequest;
 import org.junit.Test;
