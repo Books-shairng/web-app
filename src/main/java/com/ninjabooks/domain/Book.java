@@ -25,7 +25,8 @@ public class Book extends BaseEntity
     private String isbn;
 
     @OneToOne
-    private QRCode QR_code;
+    @JoinColumn(name = "QR_code_id")
+    private QRCode QRCode;
 
     @OneToMany(mappedBy = "book")
     private List<Queue> queues = new ArrayList<>(0);
@@ -78,12 +79,12 @@ public class Book extends BaseEntity
         this.isbn = isbn;
     }
 
-    public QRCode getQR_code() {
-        return QR_code;
+    public QRCode getQRCode() {
+        return QRCode;
     }
 
-    public void setQR_code(QRCode QR_code) {
-        this.QR_code = QR_code;
+    public void setQRCode(QRCode QRCode) {
+        this.QRCode = QRCode;
     }
 
     public List<Queue> getQueues() {

@@ -19,7 +19,7 @@ public class QRCode extends BaseEntity
     @Column(name = "DATA", length = 5)
     private String data;
 
-    @OneToOne(mappedBy = "QR_code")
+    @OneToOne(mappedBy = "QRCode")
     private Book book;
 
     public Book getBook() {
