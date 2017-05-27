@@ -3,6 +3,8 @@ package com.ninjabooks.json.notification;
 import com.ninjabooks.domain.Queue;
 
 /**
+ * This class extend {@link GenericNotification} and add information about:
+ * - order date with hour
  * @author Piotr 'pitrecki' Nowak
  * @since  1.0
  */

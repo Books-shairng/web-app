@@ -55,5 +55,4 @@ public class NotificationServiceImpl implements  NotificationService
     private User findUser(Long id) {
         return userDao.getById(id);
     }
-
 }

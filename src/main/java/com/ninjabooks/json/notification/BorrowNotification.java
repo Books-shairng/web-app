@@ -3,9 +3,9 @@ package com.ninjabooks.json.notification;
 import com.ninjabooks.domain.Borrow;
 
 /**
- * This class extend
- * @see GenericNotification
- * and added
+ * This class extend {@link GenericNotification} and add information about:
+ * - borrow date
+ * - return date
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0

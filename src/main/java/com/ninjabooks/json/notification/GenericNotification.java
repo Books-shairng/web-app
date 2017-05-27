@@ -3,9 +3,9 @@ package com.ninjabooks.json.notification;
 import com.ninjabooks.domain.Book;
 
 /**
- * Notification by default should return information about book.
- * If notification should return other information like order date, this class
- * must be inherited by more elaborate class.
+ * Notification by default should return information about book. If notification
+ * should return other information like order date, this class must be inherited
+ * by more elaborate class.
  *
  * @see BorrowNotification
  * @see QueueNotification

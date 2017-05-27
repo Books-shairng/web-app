@@ -6,8 +6,7 @@ import com.ninjabooks.json.notification.QueueNotification;
 import java.util.List;
 
 /**
- * This service is responsible for return all user books and
- * queues.
+ * This service is responsible for return all user books and queues.
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -15,15 +14,19 @@ import java.util.List;
 public interface NotificationService
 {
     /**
-     * @param userID
-     * @return
+     * Search all borrows related with user.
+     *
+     * @param userID - specifies the user to search for
+     * @return list with borrow notifications
      */
 
     List<BorrowNotification> findUserBorrows(Long userID);
 
     /**
-     * @param userID
-     * @return
+     * Search all queues related with user.
+     *
+     * @param userID - specifies the user to search for
+     * @return list with borrow notifications
      */
 
     List<QueueNotification> findUserQueues(Long userID);
