@@ -76,7 +76,7 @@ public class AuthenticationController
      *
      * @param authenticationRequest - this object represnt request from frontend
      * @param device - automatically detects type device which is needed to generate token
-     * @return HTTP status 201 (ok) and generated token as json
+     * @return HTTP status 200 (ok) with  generated token
      * @throws AuthenticationException if any exception with authorization ocurs
      */
 
@@ -105,18 +105,18 @@ public class AuthenticationController
      * @return refreshed jwt token or HTTP bad request
      */
 
-    @RequestMapping(value = "/api/refresh", method = RequestMethod.GET)
+    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         String token = null;
 
         if (securityHeaderFinder.hasSecurityPattern(header))
-            token = securityHeaderFinder.extractToken(token);
+            token = securityHeaderFinder.extractToken(header);
 
         String username = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
-        if (tokenUtils.canTokenBeRefreshed(header, user.getLastPasswordReset())) {
-            String refreshedToken = tokenUtils.refreshToken(header);
+        if (tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
+            String refreshedToken = tokenUtils.refreshToken(token);
             return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
         }
         else {

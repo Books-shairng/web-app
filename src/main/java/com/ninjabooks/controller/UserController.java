@@ -1,6 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.domain.User;
+import com.ninjabooks.error.UserAlreadyExistException;
 import com.ninjabooks.json.user.UserRequest;
 import com.ninjabooks.json.user.UserResponse;
 import com.ninjabooks.security.SpringSecurityUser;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,22 +37,26 @@ public class UserController
     }
 
     /**
-     * Create new user in system.
+     * Create new user in system. If any exception not occurs, then return http status
+     * 201 (created).
      *
      * @param userRequest - received from request
-     * @return http response with status 201
+     * @throws UserAlreadyExistException if user already exist in DB
      */
 
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void createUser(@RequestBody UserRequest userRequest) throws UserAlreadyExistException {
         User userFromRequest = new User(userRequest.getName(), userRequest.getEmail(), userRequest.getPassword());
 
         userService.createUser(userFromRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
-     * After proper authorization return base info about user like his id, mail and name
+     * After proper authorization return basic info about user like:
+     * - id
+     * - name
+     * - email
      *
      * @param httpServletRequest - http request which contains authorization header with
      *                           jwt token

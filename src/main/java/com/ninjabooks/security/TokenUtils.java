@@ -1,5 +1,6 @@
 package com.ninjabooks.security;
 
+import com.ninjabooks.util.DateParser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,10 +12,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * This container create, refresh, validate JWT token.
+ * This container create, refresh and validate JWT token.
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -50,9 +52,8 @@ public class TokenUtils
         LocalDateTime created;
         try {
             final Claims claims = getClaimsFromToken(token);
-            created = LocalDateTime.ofInstant(new Date((Long) claims.get(CLAIM_KEY_CREATED))
-                .toInstant(), ZoneId.systemDefault());
-//            new Date((Long) claims.get(CLAIM_KEY_CREATED));
+            LinkedHashMap dataMap = (LinkedHashMap) claims.get(CLAIM_KEY_CREATED);
+            created = DateParser.parseMapToLocalDateTime(dataMap);
         } catch (Exception e) {
             created = null;
         }

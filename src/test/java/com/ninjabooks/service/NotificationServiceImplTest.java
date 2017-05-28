@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.*;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@ActiveProfiles(value = "test")
 public class NotificationServiceImplTest
 {
     @Mock

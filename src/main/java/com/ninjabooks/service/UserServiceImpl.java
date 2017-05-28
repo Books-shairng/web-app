@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImpl implements UserService
 {
     private final static Logger logger = LogManager.getLogger(UserService.class);
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public User createUser(User user) {
         logger.info("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
 
