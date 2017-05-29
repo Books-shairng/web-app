@@ -34,8 +34,12 @@ import java.util.Properties;
 @Profile(value = {"dev", "test"})
 public class HSQLConfig implements DBConnectConfig
 {
+    private final Environment environment;
+
     @Autowired
-    private Environment environment;
+    public HSQLConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     @Override
