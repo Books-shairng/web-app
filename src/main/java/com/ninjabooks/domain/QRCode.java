@@ -22,15 +22,11 @@ public class QRCode extends BaseEntity
     @OneToOne(mappedBy = "QRCode")
     private Book book;
 
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     public QRCode() {
+    }
+
+    public QRCode(String data) {
+        this.data = data;
     }
 
     public String getData() {
@@ -39,6 +35,14 @@ public class QRCode extends BaseEntity
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
