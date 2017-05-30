@@ -1,7 +1,10 @@
 package com.ninjabooks.util;
 
 import com.ninjabooks.security.TokenUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.Map;
  */
 public final class DateParser
 {
+    private static final Logger logger = LogManager.getLogger(DateParser.class);
+
     private DateParser() {
     }
 
@@ -35,6 +40,44 @@ public final class DateParser
         int second = list.get(7);
         int nano = list.get(6);
 
+        logger.info("Map was converted successfull to date");
         return LocalDateTime.of(year, month, day, hour, minute, second, nano);
+    }
+
+    /**
+     * Convert string which contains date in the following format yyyy-MM-DD.
+     * Accepted date separator: [-;,;.;], otherwise throws exception.
+     * Month or day less than 10 can be entered as 01 or 1.
+     *
+     * @param str - string which contains date to convert
+     * @return converted string to local date object
+     */
+
+    public static LocalDate parseStringToLcoalDate(String str) {
+        if (!str.matches("[\\d,.-]+") || str.length() > 10) {
+            logger.error("String contains illegal arguments");
+            throw new IllegalArgumentException("String contains illegal arguments");
+        }
+
+        String[] date = str.split("[,.-]");
+        int year = Integer.parseInt(date[0]);
+        int month = convertNumberLessThanTen(date[1]);
+        int day = convertNumberLessThanTen(date[2]);
+
+        return LocalDate.of(year, month, day);
+    }
+
+    private static int convertNumberLessThanTen(String str) {
+        int number = 0;
+        try {
+            number = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            logger.error(e.getMessage());
+            String tmp = str.substring(0, 1);
+            number = Integer.parseInt(tmp);
+        }
+        finally {
+            return number;
+        }
     }
 }
