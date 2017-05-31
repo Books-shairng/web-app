@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.BookService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
@@ -17,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -30,7 +29,7 @@ public class BookControllerTest
     private static final String ISBN = "978-0321356680";
 
 
-    private String json =
+    private final String json =
         "{" +
             "\"title\":\""+ TITLE + "\"," +
             "\"author\":\""+ AUTHOR+ "\"," +
@@ -39,24 +38,21 @@ public class BookControllerTest
 
     @Mock
     private BookService bookServiceMock;
-
-    @Mock
-    private ObjectMapper objectMapper;
-
-    @InjectMocks
+    private ObjectMapper objectMapperMock;
     private BookController bookControllerMock;
-
     private MockMvc mockMvc;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        objectMapperMock = new ObjectMapper();
+        bookControllerMock = new BookController(bookServiceMock, objectMapperMock);
+
         this.mockMvc= MockMvcBuilders.standaloneSetup(bookControllerMock).build();
     }
 
-    //todo fix this test
     @Test
-    @Ignore(value = "Something wrong with this test.")
     public void testAddNewBookIntoSystemShouldReturnStatusCreated() throws Exception {
         Book book = new Book(TITLE, AUTHOR, ISBN);
         when(bookServiceMock.addBook(book)).thenReturn("");
@@ -64,7 +60,7 @@ public class BookControllerTest
         mockMvc.perform(post("/api/books")
             .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isCreated());
 
         verify(bookServiceMock, atLeastOnce()).addBook(any(Book.class));
