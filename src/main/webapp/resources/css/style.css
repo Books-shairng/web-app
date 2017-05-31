@@ -43,6 +43,9 @@ body {
 .main-content {
     background-color: #0d88ee;
 }
+.login-div, .reg-div {
+  width: 100%;
+}
 .logging-section, .registration-section{
   display:flex;
   justify-content:center;
