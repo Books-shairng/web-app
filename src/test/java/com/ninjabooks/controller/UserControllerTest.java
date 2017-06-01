@@ -56,7 +56,7 @@ public class UserControllerTest
     private static final String EMAIL = "john.dee@exmaple.com";
     private static final String PASSWORD = "Johny!Dee123";
 
-    private String json =
+    private final String json =
         "{" +
             "\"firstName\":\""+ FIRST_NAME + "\"," +
             "\"lastName\":\""+ LAST_NAME + "\"," +
