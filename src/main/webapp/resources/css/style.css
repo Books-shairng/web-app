@@ -118,19 +118,15 @@ form p a {
 .notification p a {
     color: #000000;
 }
-.notification table {
+table {
   border: 3px solid white;
   width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
-.notification table tr {
-  border-collapse:  separate;
-  border-spacing:  5px;
-}
-.notification table tr, .notification table td {
+tr, td {
   border: 3px solid white;
 }
-.notification table tr td:last-child {
+tr td:last-child {
   background-color:  white;
 }
