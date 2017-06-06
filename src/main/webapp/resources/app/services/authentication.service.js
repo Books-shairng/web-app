@@ -27,7 +27,6 @@ var AuthenticationService = (function () {
         configurable: true
     });
     AuthenticationService.prototype.login = function (email, password) {
-        var _this = this;
         var dataObject = {
             email: email,
             password: password,
@@ -35,11 +34,16 @@ var AuthenticationService = (function () {
         return this.http.post('/api/auth', dataObject)
             .map(function (response) {
             var user = response.json();
+            console.log(user);
+            console.log(dataObject);
             if (user && user.token) {
-                //JSON.stringify(user) konwentuje model na jsona
-                //setitem przypisuje do localstorga pole currentuser z danynmi sparsowanymi do jsona
-                var logInUser = _this.http.get('/api/auth', dataObject);
-                localStorage.setItem('currentUser', JSON.stringify(logInUser));
+                var loginUser = {
+                    id: user.id,
+                    email: user.email,
+                    name: user.firstName + " " + user.lastName,
+                };
+                console.log(loginUser);
+                localStorage.setItem('currentUser', JSON.stringify(loginUser));
             }
         });
     };

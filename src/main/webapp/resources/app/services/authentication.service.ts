@@ -17,7 +17,7 @@ export class AuthenticationService {
 
     login(email: string, password: string) {
 
-        var dataObject = {
+        let dataObject = {
             email: email,
             password: password,
         }
@@ -25,11 +25,17 @@ export class AuthenticationService {
         return this.http.post('/api/auth', dataObject)
             .map((response: Response) => {
                 let user = response.json();
+                console.log(user);
+                console.log(dataObject);
                 if (user && user.token) {
-                  //JSON.stringify(user) konwentuje model na jsona
-                  //setitem przypisuje do localstorga pole currentuser z danynmi sparsowanymi do jsona
-                  var logInUser = this.http.get('/api/auth', dataObject)
-                    localStorage.setItem('currentUser', JSON.stringify(logInUser));
+                  let loginUser = {
+                    id: user.id,
+                    email: user.email,
+                    name: user.firstName + " " + user.lastName,
+                  //  token: 'fake-jwt-token'
+                  }
+                  console.log(loginUser);
+                  localStorage.setItem('currentUser', JSON.stringify(loginUser));
                 }
             });
 
