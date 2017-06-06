@@ -34,15 +34,12 @@ var AuthenticationService = (function () {
         return this.http.post('/api/auth', dataObject)
             .map(function (response) {
             var user = response.json();
-            console.log(user);
-            console.log(dataObject);
             if (user && user.token) {
                 var loginUser = {
                     id: user.id,
                     email: user.email,
                     name: user.firstName + " " + user.lastName,
                 };
-                console.log(loginUser);
                 localStorage.setItem('currentUser', JSON.stringify(loginUser));
             }
         });

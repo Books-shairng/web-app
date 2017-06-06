@@ -1,23 +1,20 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-
             <a class="navbar-brand" href="#">BOOKS SHARING</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
-             <ul *ngIf="true" class="nav navbar-nav navbar-right">
-               <li><a  routerLink="search">Szukaj</a></li>
-               <li><a  routerLink="search">Lista książek</a></li>
-               <li><a  routerLink="search">Dodaj książkę</a></li>
-               <li><a  routerLink="notifications">Powiadomienia</a></li>
-               <li><a  routerLink="search">Konto</a></li>
-             </ul>
+            <ul *ngIf="true" class="nav navbar-nav navbar-right">
+                <li><a routerLink="search">Szukaj</a></li>
+                <li><a routerLink="search">Lista książek</a></li>
+                <li><a routerLink="search">Dodaj książkę</a></li>
+                <li><a routerLink="notifications">Powiadomienia</a></li>
+                <li><a routerLink="search">Konto</a></li>
+            </ul>
         </div>
 
     </div>
 </nav>
-<div class="container main-content logging-section">
-    <div class="">
-        <router-outlet></router-outlet>
-    </div>
+<div class="container main-content">
+    <router-outlet></router-outlet>
 </div>

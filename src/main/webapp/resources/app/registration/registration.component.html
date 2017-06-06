@@ -1,22 +1,26 @@
-<div class="col-md-8 reg-div">
-<form class="form" fole="form" #f="ngForm" (ngSubmit)="register()">
-  <div class="form-group">
-<label for="firstName">Imię</label>
-<input type="text" name="firstName" [(ngModel)]="model.firstName" placeholder="Imię" required #firstName = "ngModel">
+<div class="center-section">
+<div class="registration-section">
+    <div class="col-md-8 reg-div">
+        <form class="form" fole="form" #f="ngForm" (ngSubmit)="register()">
+            <div class="form-group">
+                <label for="firstName">Imię</label>
+                <input type="text" name="firstName" [(ngModel)]="model.firstName" placeholder="Imię" required #firstName="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Nazwisko</label>
+                <input type="text" name="lastName" [(ngModel)]="model.lastName" placeholder="Nazwisko" required #lastName="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="email">Adres e-mail</label>
+                <input type="text" name="email" [(ngModel)]="model.email" placeholder="twojadres@buziaczek.pl" required #email="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="password">Hasło</label>
+                <input type="password" name="password" [(ngModel)]="model.password" placeholder="Hasło" required #password="ngModel">
+            </div>
+            <button class="btn btn-primary btn-md btn-reg active">Rejestracja</button>
+            <p> <a [routerLink]="['/login']"> Anuluj </a></p>
+        </form>
+    </div>
 </div>
-<div class="form-group">
-<label for="lastName">Nazwisko</label>
-<input type="text" name="lastName"  [(ngModel)]="model.lastName" placeholder="Nazwisko" required #lastName = "ngModel">
-</div>
-  <div class="form-group">
-  <label for="email">Adres e-mail</label>
-  <input type="text" name="email" [(ngModel)]="model.email" placeholder="twojadres@buziaczek.pl" required #email = "ngModel">
-</div>
-  <div class="form-group">
-  <label for="password">Hasło</label>
-  <input type="password" name="password" [(ngModel)]="model.password" placeholder="Hasło" required  #password = "ngModel">
-</div>
-  <button class="btn btn-primary btn-md btn-reg active">Rejestracja</button>
-  <p> <a [routerLink]="['/login']"> Anuluj </a></p>
-</form>
 </div>
