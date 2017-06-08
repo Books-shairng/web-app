@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * @author Piotr 'pitrecki' Nowak
- *         Created by Pitrecki on 2017-05-30.
+ * @since 1.0
  */
 public class BookControllerTest
 {
@@ -46,8 +46,8 @@ public class BookControllerTest
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        objectMapperMock = new ObjectMapper();
-        bookControllerMock = new BookController(bookServiceMock, objectMapperMock);
+        this.objectMapperMock = new ObjectMapper();
+        this.bookControllerMock = new BookController(bookServiceMock, objectMapperMock);
 
         this.mockMvc= MockMvcBuilders.standaloneSetup(bookControllerMock).build();
     }
