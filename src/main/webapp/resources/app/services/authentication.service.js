@@ -10,22 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-var Subject_1 = require("rxjs/Subject");
 require("rxjs/add/operator/map");
 var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
-        // change loggedIn to a subject
-        this.loggedIn = new Subject_1.Subject();
     }
-    Object.defineProperty(AuthenticationService.prototype, "isLoggedIn", {
-        // make isLoggedIn public readonly
-        get: function () {
-            return this.loggedIn.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
     AuthenticationService.prototype.login = function (email, password) {
         var dataObject = {
             email: email,

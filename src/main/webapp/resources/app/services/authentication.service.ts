@@ -6,41 +6,32 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
-    // change loggedIn to a subject
-    private loggedIn: Subject<boolean> = new Subject<boolean>();
-
-    // make isLoggedIn public readonly
-    get isLoggedIn() {
-        return this.loggedIn.asObservable();
+    public token: string;
+    constructor(private http: Http) {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'))
+        this.token = currentUser && currentUser.token
     }
-    constructor(private http: Http) { }
 
-    login(email: string, password: string) {
-
-        let dataObject = {
-            email: email,
-            password: password,
-        }
-
-        return this.http.post('/api/auth', dataObject)
+    login(email: string, password: string): Observable<boolean> {
+        return this.http.post('/api/auth', { email: email, password: password })
             .map((response: Response) => {
-                let user = response.json();
-                if (user && user.token) {
-                    let loginUser = {
-                        id: user.id,
-                        email: user.email,
-                        name: user.firstName + " " + user.lastName,
-                        //  token: 'fake-jwt-token'
-                    }
-                    localStorage.setItem('currentUser', JSON.stringify(loginUser));
+                let token = response.json() && response.json().token;
+                if (token) {
+                    this.token = token
                 }
-            });
+                localStorage.setItem('currentUser', JSON.stringify({ email: email, token: token }));
+                return true;
+            }
 
-    }
+            )
+    };
+
+
 
 
     logout() {
         // remove user from local storage to log user out
+        this.token = null;
         localStorage.removeItem('currentUser');
     }
 

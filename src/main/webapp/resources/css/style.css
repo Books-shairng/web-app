@@ -5,6 +5,7 @@ html, body {
 body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
+    background-image: "background.png";
 }
 
 .navbar-brand {
@@ -102,10 +103,14 @@ form p, form a {
 form p a {
     color: #000000;
 }
-
+.search-section {
+  margin-top: 200px;
+  display: inline;
+}
 .search-form input {
     height: 60px;
     width: 500px;
+    display: inline;
 }
 
 .search-form button {
@@ -129,4 +134,8 @@ tr, td {
 }
 tr td:last-child {
   background-color:  white;
+}
+#search-btn {
+  background-color:white;
+  height:60px;
 }

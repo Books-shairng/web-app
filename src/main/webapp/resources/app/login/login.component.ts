@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     returnUrl: string;
+    error = '';
 
     constructor(
         private route: ActivatedRoute,
@@ -28,12 +29,13 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
-            .subscribe(
-            data => {
+            .subscribe( result => {
+              if (result === true){
                 this.router.navigate([this.returnUrl]);
-            },
-            error => {
+              } else {
+                this.error = 'Username or pass is incorect';
                 this.loading = false;
+              }
             });
     }
 

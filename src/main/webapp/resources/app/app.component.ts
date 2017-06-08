@@ -8,10 +8,6 @@ import { Router } from '@angular/router';
     templateUrl: `app.component.html`,
 })
 export class AppComponent {
-    loggedIn: any;
 
-    constructor(private auth: AuthenticationService, private router: Router) {
-        this.loggedIn = this.auth.isLoggedIn;
-    }
 
 }
