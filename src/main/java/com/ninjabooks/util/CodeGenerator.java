@@ -1,7 +1,8 @@
 package com.ninjabooks.util;
 
-import com.ninjabooks.domain.Book;
 import org.springframework.stereotype.Component;
+
+import java.security.SecureRandom;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -18,17 +19,21 @@ public class CodeGenerator
         fillCoordinates();
     }
 
-    //todo implent algorithm and write javadocs
-
     /**
-     * Generate QR code data with following book. QR code length equals 5.
+     * Generate QR code data for new book. QR code length equals 5.
      *
-     * @param book
-     * @return
+     * @return random generated QR code.
      */
 
-    public String generateCode(Book book) {
-        return "";
+    public String generateCode() {
+        StringBuilder builder = new StringBuilder();
+        SecureRandom secureRandom = new SecureRandom();
+        for (int i = 0; i < DEFAULT_QR_CODE_LENGTH; i++) {
+            int index = secureRandom.nextInt(asciCoordinates.length);
+            builder.append(asciCoordinates[index]);
+        }
+
+        return builder.toString();
     }
 
     /**
@@ -40,6 +45,5 @@ public class CodeGenerator
         for (int i = 0; i < asciCoordinates.length; i++)
             asciCoordinates[i] = (char) ('!' + i);
     }
-
 
 }
