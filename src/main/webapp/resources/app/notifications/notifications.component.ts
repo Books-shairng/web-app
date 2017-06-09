@@ -8,22 +8,16 @@ import { UserService } from '../services/index';
 })
 
 export class NotificationComponent implements OnInit {
-    currentUser: User;
-    users: User[] = [];
+  users: User[] = [];
 
-    constructor(private userService: UserService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    }
+   constructor(private userService: UserService) { }
 
-    ngOnInit() {
-        this.loadAllUsers();
-    }
+   ngOnInit() {
+       // get users from secure api end point
+       this.userService.getUsers()
+           .subscribe(users => {
+               this.users = users;
+           });
+   }
 
-    deleteUser(id: number) {
-        this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
-    }
-
-    private loadAllUsers() {
-        this.userService.getAll().subscribe(users => { this.users = users; });
-    }
 }

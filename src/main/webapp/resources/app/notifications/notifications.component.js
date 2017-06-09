@@ -14,18 +14,14 @@ var NotificationComponent = (function () {
     function NotificationComponent(userService) {
         this.userService = userService;
         this.users = [];
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
     NotificationComponent.prototype.ngOnInit = function () {
-        this.loadAllUsers();
-    };
-    NotificationComponent.prototype.deleteUser = function (id) {
         var _this = this;
-        this.userService.delete(id).subscribe(function () { _this.loadAllUsers(); });
-    };
-    NotificationComponent.prototype.loadAllUsers = function () {
-        var _this = this;
-        this.userService.getAll().subscribe(function (users) { _this.users = users; });
+        // get users from secure api end point
+        this.userService.getUsers()
+            .subscribe(function (users) {
+            _this.users = users;
+        });
     };
     return NotificationComponent;
 }());

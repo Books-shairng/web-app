@@ -12,27 +12,31 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var index_1 = require("../services/index");
 var LoginComponent = (function () {
-    function LoginComponent(route, router, authenticationService) {
-        this.route = route;
+    function LoginComponent(router, authenticationService) {
         this.router = router;
         this.authenticationService = authenticationService;
         this.model = {};
         this.loading = false;
+        this.error = '';
     }
     LoginComponent.prototype.ngOnInit = function () {
         // reset login status
         this.authenticationService.logout();
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
-            .subscribe(function (data) {
-            _this.router.navigate([_this.returnUrl]);
-        }, function (error) {
-            _this.loading = false;
+            .subscribe(function (result) {
+            if (result === true) {
+                // login successful
+                _this.router.navigate(['/']);
+            }
+            else {
+                // login failed
+                _this.error = 'Username or password is incorrect';
+                _this.loading = false;
+            }
         });
     };
     return LoginComponent;
@@ -42,8 +46,7 @@ LoginComponent = __decorate([
         moduleId: module.id,
         templateUrl: 'login.component.html'
     }),
-    __metadata("design:paramtypes", [router_1.ActivatedRoute,
-        router_1.Router,
+    __metadata("design:paramtypes", [router_1.Router,
         index_1.AuthenticationService])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;

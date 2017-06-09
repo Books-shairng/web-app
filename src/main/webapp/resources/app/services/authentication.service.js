@@ -14,27 +14,33 @@ require("rxjs/add/operator/map");
 var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
+        // set token if saved in local storage
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.token = currentUser && currentUser.token;
     }
     AuthenticationService.prototype.login = function (email, password) {
-        var dataObject = {
-            email: email,
-            password: password,
-        };
-        return this.http.post('/api/auth', dataObject)
+        var _this = this;
+        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
             .map(function (response) {
-            var user = response.json();
-            if (user && user.token) {
-                var loginUser = {
-                    id: user.id,
-                    email: user.email,
-                    name: user.firstName + " " + user.lastName,
-                };
-                localStorage.setItem('currentUser', JSON.stringify(loginUser));
+            // login successful if there's a jwt token in the response
+            var token = response.json() && response.json().token;
+            if (token) {
+                // set token property
+                _this.token = token;
+                // store username and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('currentUser', JSON.stringify({ email: email, token: token }));
+                // return true to indicate successful login
+                return true;
+            }
+            else {
+                // return false to indicate failed login
+                return false;
             }
         });
     };
     AuthenticationService.prototype.logout = function () {
-        // remove user from local storage to log user out
+        // clear token remove user from local storage to log user out
+        this.token = null;
         localStorage.removeItem('currentUser');
     };
     return AuthenticationService;
