@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public final class DateParser
      * @return converted string to local date object
      */
 
-    public static LocalDate parseStringToLcoalDate(String str) {
+    public static LocalDate parseStringToLocalDate(String str) {
         if (!str.matches("[\\d,.-]+") || str.length() > 10) {
             logger.error("String contains illegal arguments");
             throw new IllegalArgumentException("String contains illegal arguments");
@@ -65,6 +66,36 @@ public final class DateParser
         int day = convertNumberLessThanTen(date[2]);
 
         return LocalDate.of(year, month, day);
+    }
+
+    /**
+     * Convert string which contains date in the following format yyyy-MM-ddTHH:mm:ss,
+     * where T is time seperator.
+     * Accepted date separator: [-;,;.;], otherwise throws exception.
+     * Accepted time separaotr [:], otherwise throws exception.
+     * Month or day less than 10 can be entered as 01 or 1.
+     * Time also can be entered in format 01 or 1 if less than 10.
+     *
+     * @param str - string which contains date and time to convert
+     * @return converted string to local date object
+     */
+
+    public static LocalDateTime parseStringToLocalDateTime(String str) {
+        if (!str.contains("T") || str.length() > 19) {
+            logger.error("String does not contains time separator");
+            throw new IllegalArgumentException("String does not contains time separator");
+        }
+
+        String[] dateWithTime = str.split("[T]");
+        LocalDate date = parseStringToLocalDate(dateWithTime[0]);
+
+        String[] time = dateWithTime[1].split("[:]");
+        int hour = convertNumberLessThanTen(time[0]);
+        int minute = convertNumberLessThanTen(time[1]);
+        int second = convertNumberLessThanTen(time[2]);
+        LocalTime times = LocalTime.of(hour, minute, second);
+
+        return LocalDateTime.of(date, times);
     }
 
     private static int convertNumberLessThanTen(String str) {
