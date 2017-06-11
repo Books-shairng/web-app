@@ -1,6 +1,7 @@
 package com.ninjabooks.service;
 
 import com.ninjabooks.domain.Book;
+import com.ninjabooks.error.QRCodeException;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -16,5 +17,5 @@ public interface BookService
      * @return string with generated qr code
      */
 
-    String addBook(Book book);
+    String addBook(Book book) throws QRCodeException;
 }
