@@ -63,16 +63,15 @@ public class BookServiceImpl implements BookService
 
         for (int i = 0; i < DEFAULT_NUMBER_ATTEMPT; i++) {
             generatedCode = codeGenerator.generateCode();
-            if (isGeneratedCodeIsUnique(generatedCode)) {
-                String errorMessage = "Unable to generate unique QR code";
-
-                logger.warn(errorMessage);
-                throw new QRCodeException(errorMessage);
+            if (!isGeneratedCodeIsUnique(generatedCode)) {
+                logger.info("Successful generated QR code");
+                return new QRCode(generatedCode);
             }
-            logger.info("Successful generated QR code");
-            return new QRCode(generatedCode);
         }
-        return null;
+        String errorMessage = "Unable to generate unique QR code";
+
+        logger.warn(errorMessage);
+        throw new QRCodeException(errorMessage);
     }
 
     private boolean isGeneratedCodeIsUnique(String code) {
