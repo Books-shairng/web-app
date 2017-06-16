@@ -16,16 +16,6 @@ export class UserService {
         return this.http.post('/api/users', user).map((response: Response) => response.json());
     }
 
-    // private helper methods
-
-    // private jwt() {s
-    //     // create authorization header with jwt token
-    //     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    //     if (currentUser && currentUser.token) {
-    //         let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-    //         return new RequestOptions({ headers: headers });
-    //     }
-    // }
     getUsers(): Observable<User[]> {
         // add authorization header with jwt token
         let headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });

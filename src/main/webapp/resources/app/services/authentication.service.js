@@ -20,7 +20,7 @@ var AuthenticationService = (function () {
     }
     AuthenticationService.prototype.login = function (email, password) {
         var _this = this;
-        return this.http.post('/api/auth', JSON.stringify({ email: email, password: password }))
+        return this.http.post('/api/auth', { email: email, password: password })
             .map(function (response) {
             // login successful if there's a jwt token in the response
             var token = response.json() && response.json().token;
@@ -28,7 +28,7 @@ var AuthenticationService = (function () {
                 // set token property
                 _this.token = token;
                 // store username and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify({ name: name, email: email, token: token }));
+                localStorage.setItem('currentUser', JSON.stringify({ email: email, token: token }));
                 // return true to indicate successful login
                 return true;
             }

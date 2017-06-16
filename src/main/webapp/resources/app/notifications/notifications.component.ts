@@ -9,15 +9,18 @@ import { UserService } from '../services/index';
 
 export class NotificationComponent implements OnInit {
   users: User[] = [];
+  currentUser: User;
 
-   constructor(private userService: UserService) { }
+   constructor(private userService: UserService) {
+   this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+ }
 
-   ngOnInit() {
-       // get users from secure api end point
-       this.userService.getUsers()
-           .subscribe(users => {
-               this.users = users;
-           });
-   }
+  //  ngOnInit() {
+  //      // get users from secure api end point
+  //      this.userService.getUsers()
+  //          .subscribe(users => {
+  //              this.curre = users;
+  //          });
+  //  }
 
 }

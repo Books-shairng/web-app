@@ -31,7 +31,7 @@ AppModule = __decorate([
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
         declarations: [app_component_1.AppComponent, index_1.LoginComponent, index_2.RegistrationComponent, index_3.SearchComponent, index_4.NotificationComponent],
         providers: [index_5.AuthGuard, index_6.AuthenticationService, index_6.UserService,],
-        // fakeBackendProvider,
+        // fakeBackendProvider],
         // MockBackend,
         // BaseRequestOptions],
         bootstrap: [app_component_1.AppComponent]
