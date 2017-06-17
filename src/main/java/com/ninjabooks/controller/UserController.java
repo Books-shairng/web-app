@@ -64,7 +64,7 @@ public class UserController
      */
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest httpServletRequest) throws Exception {
         String header = httpServletRequest.getHeader("Authorization");
         String token = null;
 
