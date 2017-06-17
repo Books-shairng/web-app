@@ -26,7 +26,7 @@ import java.util.Properties;
 @Lazy
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value = "classpath:hibernate.properties")
+@PropertySource(value = "classpath:prod-hibernate.properties")
 @ComponentScan(basePackages = {"com.ninjabooks.dao"})
 @Profile(value = "prod")
 public class MySQLConfig implements DBConnectConfig
@@ -50,7 +50,7 @@ public class MySQLConfig implements DBConnectConfig
     @Bean
     @Override
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("hibernate.cfg.xml");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource("prod-hibernate.properties");
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
@@ -68,6 +68,9 @@ public class MySQLConfig implements DBConnectConfig
         properties.put("hibernate.hbm2ddl.auto", "update");
 //        properties.put("hibernate.current_session_context_class", "thread");
         properties.put("hibernate.rollback", "false");
+        properties.put("hibernate.search.default.directory_provider",
+            environment.getRequiredProperty("hibernate.search.default.directory_provider"));
+        properties.put("hibernate.search.default.indexBase", environment.getRequiredProperty("hibernate.search.default.indexBase"));
         return properties;
     }
 

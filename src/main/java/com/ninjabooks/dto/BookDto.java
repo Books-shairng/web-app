@@ -4,7 +4,7 @@ package com.ninjabooks.dto;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class BookDto
+public class BookDto extends BaseEntityDto
 {
     private String author;
     private String title;

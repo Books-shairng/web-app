@@ -1,5 +1,8 @@
 package com.ninjabooks.domain;
 
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +14,28 @@ import java.util.List;
  * @author Andrzej Zajst
  * @since 1.0
  */
+//@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+//    filters = {
+//        @TokenFilterDef(factory = StandardFilterFactory.class),
+//        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+//        @TokenFilterDef(factory = StopFilterFactory.class, params = {
+//            @Parameter(name = "ignoreCase", value = "true")})})
+//@Analyzer(definition = "searchtokenanalyzer")
+
 @Entity
+@Indexed
 @Table(name = "BOOK")
 public class Book extends BaseEntity
 {
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(name = "TITLE")
     private String title;
 
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(name = "AUTHOR")
     private String author;
 
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(name = "ISBN")
     private String isbn;
 
@@ -46,13 +61,17 @@ public class Book extends BaseEntity
      * @param title
      * @param author
      * @param isbn
-     *
      */
 
     public Book(String title, String author, String isbn) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
+    }
+
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO, name = "searchField")
+    public String getSearchQuery() {
+        return author + " " + title + " " + isbn;
     }
 
     public String getTitle() {
@@ -114,10 +133,10 @@ public class Book extends BaseEntity
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + getId() +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isbn='" + isbn + '\'' +
-                '}';
+            "id=" + getId() +
+            ", title='" + title + '\'' +
+            ", author='" + author + '\'' +
+            ", isbn='" + isbn + '\'' +
+            '}';
     }
 }

@@ -30,6 +30,7 @@ import java.util.Properties;
 @Lazy
 @Configuration
 @EnableTransactionManagement
+@PropertySource(value = "classpath:dev-hibernate.properties")
 @ComponentScan(basePackages = {"com.ninjabooks.dao"})
 @Profile(value = {"dev", "test"})
 public class HSQLConfig implements DBConnectConfig
@@ -79,6 +80,8 @@ public class HSQLConfig implements DBConnectConfig
         properties.put("hibernate.hbm2ddl.auto", "create");
 //        properties.put("hibernate.current_session_context_class", "thread");
         properties.put("hibernate.rollback", "false");
+        properties.put("hibernate.search.default.directory_provider",
+            environment.getRequiredProperty("hibernate.search.default.directory_provider"));
         return properties;
     }
 
