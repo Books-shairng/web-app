@@ -29,6 +29,8 @@ public class BookServiceImplTest
     private static final String TITLE = "Effective Java";
     private static final String ISBN = "978-0321356680";
 
+    private final Book book = new Book(TITLE, AUTHOR, ISBN);
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -40,7 +42,6 @@ public class BookServiceImplTest
 
     @Mock
     private CodeGenerator codeGeneratorMock;
-
     private BookService bookService;
 
     @Before
@@ -51,7 +52,6 @@ public class BookServiceImplTest
 
     @Test
     public void testAddNewBookShouldGenerateQRCode() throws Exception {
-        Book book = new Book(TITLE, AUTHOR, ISBN);
 
         //given
         when(codeGeneratorMock.generateCode()).thenReturn("generated code");
@@ -68,7 +68,6 @@ public class BookServiceImplTest
 
     @Test
     public void testAddNewBookShouldThrowsException_whenUnableToGenerateNewQrCode() throws Exception {
-        Book book = new Book(TITLE, AUTHOR, ISBN);
         QRCode qrCode = new QRCode("data");
 
         //given
@@ -83,4 +82,17 @@ public class BookServiceImplTest
         verify(qrCodeDaoMock, atLeastOnce()).getByData("data");
     }
 
+    @Test
+    public void testGetBookByIdShouldSucceed() throws Exception {
+
+        //given
+        when(bookDaoMock.getById(anyLong())).thenReturn(book);
+
+        //when
+        Book actualBook = bookService.getBookById(anyLong());
+
+        //then
+        verify(bookDaoMock, atLeastOnce()).getById(anyLong());
+        assertThat(actualBook).isEqualTo(book);
+    }
 }

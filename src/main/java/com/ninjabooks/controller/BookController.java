@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.json.book.BookInfResponse;
 import com.ninjabooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -37,5 +35,13 @@ public class BookController
         objectNode.put("generatedCode", generatedCode);
 
         return new ResponseEntity<>(objectNode, HttpStatus.CREATED);
+    }
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/api/books/{bookID}", method = RequestMethod.GET)
+    public BookInfResponse getDetailedInformationAboutBook(@PathVariable Long bookID) {
+        Book book = bookService.getBookById(bookID);
+        return new BookInfResponse(book);
     }
 }

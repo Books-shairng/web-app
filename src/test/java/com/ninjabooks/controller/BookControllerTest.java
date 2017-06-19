@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,6 +29,7 @@ public class BookControllerTest
     private static final String TITLE = "Effective Java";
     private static final String ISBN = "978-0321356680";
 
+    private final Book book = new Book(TITLE, AUTHOR, ISBN);
 
     private final String json =
         "{" +
@@ -35,7 +37,6 @@ public class BookControllerTest
             "\"author\":\""+ AUTHOR+ "\"," +
             "\"isbn\":\""+ ISBN+ "\"" +
         "}";
-
     @Mock
     private BookService bookServiceMock;
     private ObjectMapper objectMapperMock;
@@ -64,5 +65,16 @@ public class BookControllerTest
             .andExpect(status().isCreated());
 
         verify(bookServiceMock, atLeastOnce()).addBook(any(Book.class));
+    }
+
+    @Test
+    public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
+        when(bookServiceMock.getBookById(anyLong())).thenReturn(book);
+
+        mockMvc.perform(get("/api/books/{bookID}", 1L))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        verify(bookServiceMock, atLeastOnce()).getBookById(anyLong());
     }
 }

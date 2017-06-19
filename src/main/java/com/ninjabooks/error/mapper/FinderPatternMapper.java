@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak
- *         Created by Pitrecki on 2017-06-18.
+ * @since 1.0
  */
 @ControllerAdvice(basePackageClasses = {UserController.class, AuthenticationController.class})
 public class FinderPatternMapper

@@ -13,9 +13,18 @@ public interface BookService
      * Add new book to database, if operation succeed then return string with generated
      * qr code data.
      *
-     * @param book which will be added to system
+     * @param book - which will be added to system
      * @return string with generated qr code
      */
 
     String addBook(Book book) throws QRCodeException;
+
+    /**
+     * Return book by specified id.
+     *
+     * @param id - of the book which will fetched
+     * @return the searched book
+     */
+
+    Book getBookById(Long id);
 }

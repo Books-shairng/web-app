@@ -47,6 +47,11 @@ public class BookServiceImpl implements BookService
         return createdQrCode.getData();
     }
 
+    @Override
+    public Book getBookById(Long id) {
+        logger.info("Looking for book with id: {" + id + "}");
+        return bookDao.getById(id);
+    }
 
     /**
      * Try 5 times to create new unique qr code, if fails throws exception.
