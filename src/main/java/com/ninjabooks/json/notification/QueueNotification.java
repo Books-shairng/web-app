@@ -11,10 +11,20 @@ import com.ninjabooks.domain.Queue;
 public class QueueNotification extends GenericNotification
 {
     private String orderDate;
+    private int positionInQueue;
 
-    public QueueNotification(Queue queue) {
-        convertDataToString(queue);
+    public QueueNotification(Queue queue, int positionInQueue) {
+        convertDateToString(queue);
         obtainBookFromGenericType(queue.getBook());
+        this.positionInQueue = positionInQueue;
+    }
+
+    public int getPositionInQueue() {
+        return positionInQueue;
+    }
+
+    public void setPositionInQueue(int positionInQueue) {
+        this.positionInQueue = positionInQueue;
     }
 
     public String getOrderDate() {
@@ -25,7 +35,7 @@ public class QueueNotification extends GenericNotification
         this.orderDate = orderDate;
     }
 
-    private void convertDataToString(Queue queue) {
+    private void convertDateToString(Queue queue) {
         orderDate = queue.getOrderDate().toString();
     }
 

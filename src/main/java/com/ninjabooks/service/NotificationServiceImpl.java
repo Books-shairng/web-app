@@ -8,10 +8,12 @@ import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,11 +50,28 @@ public class NotificationServiceImpl implements  NotificationService
         List<Queue> queues = currentUser.getQueues();
 
         return queues.stream()
-            .map(QueueNotification::new)
+            .map(queue -> new QueueNotification(queue, computePositionInQueue(queue, currentUser)))
             .collect(Collectors.toList());
     }
 
     private User findUser(Long id) {
         return userDao.getById(id);
+    }
+
+    private int computePositionInQueue(Queue queue, User user) {
+        Long bookID = queue.getBook().getId();
+        String query = "SELECT order_date, user_id FROM Queue WHERE book_id =:id";
+        Query<?> queueQuery = userDao.getCurrentSession().createNativeQuery(query);
+        queueQuery.setParameter("id", bookID);
+
+        List<Object[]> queues = (List<Object[]>) queueQuery.list();
+
+        for (Object[] objects : queues) {
+            BigInteger bigInteger = (BigInteger) objects[1];
+            if (bigInteger.equals(BigInteger.valueOf(user.getId())))
+                return queues.indexOf(objects) + 1;
+        }
+
+        return 0;
     }
 }

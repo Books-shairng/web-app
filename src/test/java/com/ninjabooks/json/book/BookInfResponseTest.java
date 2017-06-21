@@ -73,4 +73,11 @@ public class BookInfResponseTest
             assertThat(actual.getIsbn()).isEqualTo(ISBN);
         });
     }
+
+    @Test
+    public void testBookDecscriptionShouldNotBeEmpty() throws Exception {
+        String actaul = bookInfResponse.getDescription();
+
+        assertThat(actaul).isNotEmpty();
+    }
 }
