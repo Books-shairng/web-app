@@ -22,7 +22,10 @@ public class Borrow extends BaseEntity
     private LocalDate returnDate;
 
     @Column(name = "STATUS")
-    private Boolean status;
+    private boolean isBorrowed;
+
+    @Column(name = "EXTENDED_BORROW")
+    private boolean canExtendBorrow;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -45,6 +48,11 @@ public class Borrow extends BaseEntity
         calculateReturnDate(borrowDate);
     }
 
+    public Borrow(Book book, User user) {
+        this.book = book;
+        this.user = user;
+    }
+
     public LocalDate getBorrowDate() {
         return borrowDate;
     }
@@ -52,12 +60,6 @@ public class Borrow extends BaseEntity
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
         calculateReturnDate(borrowDate);
-    }
-
-    public Borrow(Book book, User user) {
-        this.book = book;
-        this.user = user;
-        this.status = Boolean.TRUE;
     }
 
     public LocalDate getReturnDate() {
@@ -84,20 +86,39 @@ public class Borrow extends BaseEntity
         this.user = user;
     }
 
-    public Boolean getStatus() {
-        return status;
+
+    public boolean getIsBorrowed() {
+        return isBorrowed;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setIsBorrowed(boolean borrowed) {
+        this.isBorrowed = borrowed;
+    }
+
+    public boolean getCanExtendBorrow() {
+        return canExtendBorrow;
+    }
+
+    public void setCanExtendBorrow(boolean canExtendBorrow) {
+        this.canExtendBorrow = canExtendBorrow;
+    }
+
+    public void extendReturnDate() {
+        LocalDate tmpDate = returnDate.plusDays(14);
+        returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 
     private void calculateReturnDate(LocalDate borrowDate) {
         LocalDate tmpDate = borrowDate.plusDays(30);
-        if (tmpDate.getDayOfWeek() == DayOfWeek.SATURDAY || tmpDate.getDayOfWeek() == DayOfWeek.SUNDAY)
-            tmpDate = tmpDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
 
-        returnDate = tmpDate;
+        returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
+    }
+
+    public LocalDate checkIfReturnDateEndOnWeekend(LocalDate returnDate) {
+        if (returnDate.getDayOfWeek() == DayOfWeek.SATURDAY || returnDate.getDayOfWeek() == DayOfWeek.SUNDAY)
+            return returnDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+
+        return returnDate;
     }
 
     @Override

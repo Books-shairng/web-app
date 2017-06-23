@@ -34,4 +34,16 @@ public class BorrowTest
 
         assertThat(actual).isEqualTo(date.plusDays(30).with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
     }
+
+    @Test
+    public void testExtendedReturnDateShouldMoveReturnDayByTwoWeeks() throws Exception {
+        LocalDate date = LocalDate.of(2017, 3, 2);
+
+        borrow = new Borrow(date);
+        borrow.extendReturnDate();
+
+        LocalDate actual = borrow.getReturnDate();
+
+        assertThat(actual).isEqualTo(date.plusDays(44).with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
+    }
 }
