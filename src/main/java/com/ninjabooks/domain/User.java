@@ -1,9 +1,6 @@
 package com.ninjabooks.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +30,13 @@ public class User extends BaseEntity
     @Column(name = "AUTHORITY")
     private final String authoritiy = "USER";
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
     private List<Queue> queues = new ArrayList<>(0);
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
     private List<Borrow> borrows = new ArrayList<>(0);
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
     private List<History> histories = new ArrayList<>(0);
 
     public User() {

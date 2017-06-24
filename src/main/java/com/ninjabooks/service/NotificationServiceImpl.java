@@ -40,6 +40,8 @@ public class NotificationServiceImpl implements  NotificationService
         List<Borrow> borrows = currentUser.getBorrows();
 
         return borrows.stream()
+            .filter(borrow -> borrow.getReturnDate() != null)
+            .filter(borrow -> borrow.getBorrowDate() != null)
             .map(BorrowNotification::new)
             .collect(Collectors.toList());
     }

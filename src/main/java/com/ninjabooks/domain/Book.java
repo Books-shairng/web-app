@@ -43,13 +43,13 @@ public class Book extends BaseEntity
     @JoinColumn(name = "QR_code_id")
     private QRCode QRCode;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<Queue> queues = new ArrayList<>(0);
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<Borrow> borrows = new ArrayList<>(0);
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<History> histories = new ArrayList<>(0);
 
     public Book() {

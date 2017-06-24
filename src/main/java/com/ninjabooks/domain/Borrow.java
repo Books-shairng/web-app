@@ -24,7 +24,7 @@ public class Borrow extends BaseEntity
     @Column(name = "STATUS")
     private boolean isBorrowed;
 
-    @Column(name = "EXTENDED_RETURN_DATE")
+    @Column(name = "CAN_EXTEND_RETURN_DATE")
     private boolean canExtendBorrow;
 
     @ManyToOne
