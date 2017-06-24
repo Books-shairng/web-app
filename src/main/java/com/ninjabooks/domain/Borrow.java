@@ -104,7 +104,7 @@ public class Borrow extends BaseEntity
     }
 
     public void extendReturnDate() {
-        LocalDate tmpDate = returnDate.plusDays(14);
+        LocalDate tmpDate = LocalDate.now().plusDays(14);
         returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 
