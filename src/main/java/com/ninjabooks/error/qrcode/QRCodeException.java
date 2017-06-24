@@ -1,4 +1,4 @@
-package com.ninjabooks.error;
+package com.ninjabooks.error.qrcode;
 
 /**
  * @author Piotr 'pitrecki' Nowak

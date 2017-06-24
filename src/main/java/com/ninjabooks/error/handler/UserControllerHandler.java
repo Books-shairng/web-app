@@ -1,7 +1,7 @@
-package com.ninjabooks.error.mapper;
+package com.ninjabooks.error.handler;
 
-import com.ninjabooks.controller.BookController;
-import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.controller.UserController;
+import com.ninjabooks.error.user.UserAlreadyExistException;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@ControllerAdvice(basePackageClasses = {BookController.class})
-public class QRCodeMapper
+@ControllerAdvice(basePackageClasses = UserController.class)
+public class UserControllerHandler
 {
-    @ExceptionHandler(value = QRCodeException.class)
+    @ExceptionHandler(value = UserAlreadyExistException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> qrCodeCannotGenerate(HttpServletRequest request, QRCodeException e) throws  Exception {
+    public ResponseEntity<ErrorResponse> userAlreadyExist(UserAlreadyExistException e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(new ErrorResponse(
                 HttpStatus.BAD_REQUEST,

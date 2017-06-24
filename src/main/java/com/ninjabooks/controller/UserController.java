@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.UserAlreadyExistException;
+import com.ninjabooks.error.user.UserAlreadyExistException;
 import com.ninjabooks.json.user.UserRequest;
 import com.ninjabooks.json.user.UserResponse;
 import com.ninjabooks.security.SpringSecurityUser;

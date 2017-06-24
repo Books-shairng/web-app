@@ -1,6 +1,7 @@
 package com.ninjabooks.service;
 
 import com.ninjabooks.domain.User;
+import com.ninjabooks.error.user.UserAlreadyExistException;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -14,5 +15,5 @@ public interface UserService
      * @return created user
      */
 
-   User createUser(User user);
+   User createUser(User user) throws UserAlreadyExistException;
 }

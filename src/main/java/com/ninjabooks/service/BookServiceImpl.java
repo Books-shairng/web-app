@@ -4,7 +4,7 @@ import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
 import com.ninjabooks.util.CodeGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService
     }
 
     @Override
-    public String addBook(Book book) throws QRCodeException {
+    public String addBook(Book book) throws QRCodeUnableToCreateException {
         QRCode createdQrCode = createNewQRCode();
         qrCodeDao.add(createdQrCode);
 
@@ -59,10 +59,10 @@ public class BookServiceImpl implements BookService
      * eventuality.
      *
      * @return unique qr code
-     * @throws QRCodeException if after 5th time cannot generate new qr code
+     * @throws QRCodeUnableToCreateException if after 5th time cannot generate new qr code
      */
 
-    private QRCode createNewQRCode() throws QRCodeException {
+    private QRCode createNewQRCode() throws QRCodeUnableToCreateException {
         String generatedCode;
         logger.info("Try generate new QR code");
 
@@ -75,8 +75,8 @@ public class BookServiceImpl implements BookService
         }
         String errorMessage = "Unable to generate unique QR code";
 
-        logger.warn(errorMessage);
-        throw new QRCodeException(errorMessage);
+        logger.error(errorMessage);
+        throw new QRCodeUnableToCreateException(errorMessage);
     }
 
     private boolean isGeneratedCodeIsUnique(String code) {

@@ -2,7 +2,7 @@ package com.ninjabooks.service;
 
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.UserAlreadyExistException;
+import com.ninjabooks.error.user.UserAlreadyExistException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    @Transactional
-    public User createUser(User user) {
+    public User createUser(User user) throws UserAlreadyExistException {
         logger.info("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
 
         if (checkIfUserAlreadyExist(user)) {

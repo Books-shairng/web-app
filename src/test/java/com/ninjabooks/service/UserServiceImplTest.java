@@ -2,7 +2,7 @@ package com.ninjabooks.service;
 
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.UserAlreadyExistException;
+import com.ninjabooks.error.user.UserAlreadyExistException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

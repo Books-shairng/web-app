@@ -3,7 +3,7 @@ package com.ninjabooks.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfResponse;
 import com.ninjabooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;

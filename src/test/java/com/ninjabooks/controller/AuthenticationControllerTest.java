@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.configuration.AppConfig;
-import com.ninjabooks.error.mapper.AuthenticationMapper;
+import com.ninjabooks.error.handler.AuthenticationControllerHandler;
 import com.ninjabooks.security.AuthenticationTokenFilter;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class AuthenticationControllerTest
             .setCustomArgumentResolvers(
                 new ServletWebArgumentResolverAdapter(new DeviceWebArgumentResolver()),
                 new SitePreferenceHandlerMethodArgumentResolver())
-            .setControllerAdvice(new AuthenticationMapper())
+            .setControllerAdvice(new AuthenticationControllerHandler())
             .build();
 
     }

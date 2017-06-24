@@ -1,7 +1,7 @@
-package com.ninjabooks.error.mapper;
+package com.ninjabooks.error.handler;
 
-import com.ninjabooks.controller.AuthenticationController;
-import com.ninjabooks.controller.UserController;
+import com.ninjabooks.controller.BookController;
+import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@ControllerAdvice(basePackageClasses = {UserController.class, AuthenticationController.class})
-public class FinderPatternMapper
+@ControllerAdvice(basePackageClasses = {BookController.class})
+public class BookControllerHandler
 {
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> wrongSecurityPattern(HttpServletRequest request, IllegalArgumentException e) throws Exception {
+    @ExceptionHandler(value = QRCodeUnableToCreateException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> qrCodeCannotGenerate(HttpServletRequest request, QRCodeUnableToCreateException e) throws  Exception {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(new ErrorResponse(
                 HttpStatus.BAD_REQUEST,

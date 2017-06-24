@@ -1,7 +1,7 @@
 package com.ninjabooks.service;
 
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.error.qrcode.QRCodeException;
 
 /**
  * @author Piotr 'pitrecki' Nowak

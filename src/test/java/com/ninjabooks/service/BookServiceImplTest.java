@@ -4,7 +4,7 @@ import com.ninjabooks.dao.db.DBBookDao;
 import com.ninjabooks.dao.db.DBQRCodeDao;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.error.QRCodeException;
+import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.util.CodeGenerator;
 import org.junit.Before;
 import org.junit.Rule;
