@@ -14,6 +14,7 @@ var NotificationComponent = (function () {
     function NotificationComponent(userService) {
         this.userService = userService;
         this.users = [];
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
     NotificationComponent.prototype.ngOnInit = function () {
         var _this = this;

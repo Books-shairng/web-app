@@ -15,12 +15,12 @@ export class NotificationComponent implements OnInit {
    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
  }
 
-  //  ngOnInit() {
-  //      // get users from secure api end point
-  //      this.userService.getUsers()
-  //          .subscribe(users => {
-  //              this.curre = users;
-  //          });
-  //  }
+   ngOnInit() {
+       // get users from secure api end point
+       this.userService.getUsers()
+           .subscribe(users => {
+               this.users = users;
+           });
+   }
 
 }

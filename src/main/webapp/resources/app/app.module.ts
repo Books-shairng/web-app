@@ -11,6 +11,10 @@ import { SearchComponent } from './search/index';
 import { NotificationComponent } from './notifications/index';
 import { AuthGuard } from './guards/index';
 import { AuthenticationService, UserService } from './services/index';
+import { AddBookComponent } from './addbook/index';
+import { BookInfoComponent } from './bookinfo/index';
+import { BooksListComponent } from './bookslist/index';
+import { SettingsComponent } from './settings/index';
 // used to create fake backend
 // import { fakeBackendProvider } from './fakebackend/index';
 // import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -19,7 +23,7 @@ import { AuthenticationService, UserService } from './services/index';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, routes, HttpModule],
-    declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent],
+    declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AddBookComponent, BookInfoComponent, BooksListComponent, SettingsComponent],
     providers: [AuthGuard, AuthenticationService, UserService,],
     // fakeBackendProvider],
     // MockBackend,
