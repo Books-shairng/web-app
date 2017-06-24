@@ -29,28 +29,20 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     private enum DBColumnName {ORDER_DATE}
 
     private final SessionFactory sessionFactory;
-    private Session currentSession;
 
     @Autowired
     public DBQueueDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        try {
-            logger.info("Try obtain current session");
-            this.currentSession = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            logger.error(e);
-            logger.info("Open new session");
-            this.currentSession = sessionFactory.openSession();
-        }
-    }
+        this.sessionFactory = sessionFactory;}
 
     @Override
     public Stream<Queue> getAll() {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.Queue q", Queue.class).stream();
     }
 
     @Override
     public Queue getById(Long id) {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.get(Queue.class, id);
     }
 
@@ -61,29 +53,35 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
 
     @Override
     public void add(Queue queue) {
+        Session currentSession = sessionFactory.openSession();
         currentSession.save(queue);
     }
 
     @Override
-    public void update(Long id) {
-        Queue queue = getById(id);
+    public void update(Queue queue) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.update(queue);
+        currentSession.getTransaction().commit();
     }
 
     @Override
-    public void delete(Long id) {
-        Queue queue = getById(id);
+    public void delete(Queue queue) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.delete(queue);
+        currentSession.getTransaction().commit();
     }
 
     @Override
     public Session getCurrentSession() {
-        return currentSession;
+        return sessionFactory.openSession();
     }
 
     @Override
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        Session currentSession = sessionFactory.openSession();
         String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
         Query<Queue> queueQuery = currentSession.createQuery(query, Queue.class);
         queueQuery.setParameter("parameter", parameter);

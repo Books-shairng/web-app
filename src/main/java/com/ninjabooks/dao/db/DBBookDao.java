@@ -27,28 +27,21 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     private enum DBColumnName {TITLE, AUTHOR, ISBN}
 
     private final SessionFactory sessionFactory;
-    private Session currentSession;
 
     @Autowired
     public DBBookDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        try {
-            logger.info("Try obtain current session");
-            this.currentSession = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            logger.error(e);
-            logger.info("Open new session");
-            this.currentSession = sessionFactory.openSession();
-        }
     }
 
     @Override
     public Stream<Book> getAll() {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("select book from com.ninjabooks.domain.Book book",Book.class).stream();
     }
 
     @Override
     public Book getById(Long id) {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.get(Book.class, id);
     }
 
@@ -69,29 +62,35 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
 
     @Override
     public void add(Book book) {
+        Session currentSession = sessionFactory.openSession();
         currentSession.save(book);
     }
 
     @Override
-    public void update(Long id) {
-        Book book = getById(id);
+    public void update(Book book) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.update(book);
+        currentSession.getTransaction().commit();
     }
 
     @Override
-    public void delete(Long id) {
-        Book book = getById(id);
+    public void delete(Book book) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.delete(book);
+        currentSession.getTransaction().commit();
     }
 
     @Override
     public Session getCurrentSession() {
-        return currentSession;
+        return sessionFactory.getCurrentSession();
     }
 
     @Override
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        Session currentSession = sessionFactory.openSession();
         String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
         Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
         bookQuery.setParameter("parameter", parameter);

@@ -28,28 +28,20 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     private enum DBColumnName {DATA}
 
     private final SessionFactory sessionFactory;
-    private Session currentSession;
 
     @Autowired
     public DBQRCodeDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        try {
-            logger.info("Try obtain current session");
-            this.currentSession = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            logger.error(e);
-            logger.info("Open new session");
-            this.currentSession = sessionFactory.openSession();
-        }
-    }
+        this.sessionFactory = sessionFactory;}
 
     @Override
     public Stream<QRCode> getAll() {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.QRCode q", QRCode.class).stream();
     }
 
     @Override
     public QRCode getById(Long id) {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.get(QRCode.class, id);
     }
 
@@ -60,29 +52,35 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
 
     @Override
     public void add(QRCode qrCode) {
+        Session currentSession = sessionFactory.openSession();
         currentSession.save(qrCode);
     }
 
     @Override
-    public void update(Long id) {
-        QRCode qrCode = getById(id);
+    public void update(QRCode qrCode) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.update(qrCode);
+        currentSession.getTransaction().commit();
     }
 
     @Override
-    public void delete(Long id) {
-        QRCode qrCode = getById(id);
+    public void delete(QRCode qrCode) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.delete(qrCode);
+        currentSession.getTransaction().commit();
     }
 
     @Override
     public Session getCurrentSession() {
-        return currentSession;
+        return sessionFactory.openSession();
     }
 
     @Override
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        Session currentSession = sessionFactory.openSession();
         String query = "select qr_code from com.ninjabooks.domain.QRCode qr_code where " + columnName + "=:parameter";
         Query<QRCode> qrCodeQuery = currentSession.createQuery(query, QRCode.class);
         qrCodeQuery.setParameter("parameter", parameter);

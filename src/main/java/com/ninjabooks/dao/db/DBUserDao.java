@@ -28,28 +28,21 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     private enum DBColumnName {NAME, EMAIL}
 
     private final SessionFactory sessionFactory;
-    private Session currentSession;
 
     @Autowired
     public DBUserDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        try {
-            logger.info("Try obtain current session");
-            this.currentSession = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            logger.error(e);
-            logger.info("Open new session");
-            this.currentSession = sessionFactory.openSession();
-        }
     }
 
     @Override
     public Stream<User> getAll() {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("SELECT u FROM  com.ninjabooks.domain.User u", User.class).stream();
     }
 
     @Override
     public User getById(Long id) {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.get(User.class, id);
     }
 
@@ -65,29 +58,35 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
 
     @Override
     public void add(User user) {
+        Session currentSession = sessionFactory.openSession();
         currentSession.save(user);
     }
 
     @Override
-    public void update(Long id) {
-        User user = getById(id);
+    public void update(User user) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.update(user);
+        currentSession.getTransaction().commit();
     }
 
     @Override
-    public void delete(Long id) {
-        User user = getById(id);
+    public void delete(User user) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.delete(user);
+        currentSession.getTransaction().commit();
     }
 
     @Override
     public Session getCurrentSession() {
-        return currentSession;
+        return sessionFactory.openSession();
     }
 
     @Override
     @SuppressWarnings("unchecked t cast")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+        Session currentSession = sessionFactory.openSession();
         String query = "select user from User user where " + columnName + "=:parameter";
         Query<User> userQuery = currentSession.createQuery(query, User.class);
         userQuery.setParameter("parameter", parameter);

@@ -43,7 +43,7 @@ public interface GenericDao<T, K extends Serializable>
      * @return query with specified id
      */
 
-    T getById(Long id);
+    T getById(K id);
 
     /**
      * Add entity type element to table.
@@ -56,18 +56,18 @@ public interface GenericDao<T, K extends Serializable>
     /**
      * Update entity type element in table with specified id.
      *
-     * @param id of element which will be edited
+     * @param enity of element which will be edited
      */
 
-    void update(K id);
+    void update(T enity);
 
     /**
      * Delete entity type element in table with specified id.
      *
-     * @param id of element which will be removed
+     * @param entity element which will be removed
      */
 
-    void delete(K id);
+    void delete(T entity);
 
     /**
      * This method return current session status, which is necessary in

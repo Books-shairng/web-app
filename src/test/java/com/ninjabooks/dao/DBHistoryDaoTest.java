@@ -2,19 +2,16 @@ package com.ninjabooks.dao;
 
 import com.ninjabooks.configuration.HSQLConfig;
 import com.ninjabooks.domain.History;
-import com.ninjabooks.util.TransactionManager;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -23,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -31,63 +29,48 @@ public class DBHistoryDaoTest
     @Autowired
     private HistoryDao historyDao;
 
-    private List<History> histories;
-    private TransactionManager transactionManager;
+    private static final String COMMENT = "Nice book";
+    private static final LocalDate BORROW_DATE = LocalDate.now().minusDays(25);
+    private static final LocalDate RETURN_DATE = LocalDate.now();
+
+    private History history;
 
     @Before
     public void setUp() throws Exception {
-        histories = createRecords();
-        transactionManager = new TransactionManager(historyDao.getCurrentSession());
-        transactionManager.beginTransaction();
+        this.history  = new History(BORROW_DATE, RETURN_DATE);
     }
 
-    private List<History> createRecords() {
-        histories = new ArrayList<>();
-
-        History firstHistory = new History();
-        firstHistory.setComment("Nice book");
-        firstHistory.setBorrowDate(LocalDate.now().minusDays(25));
-        firstHistory.setReturnedDate(LocalDate.now());
-
-        History secondHistory = new History();
-        secondHistory.setComment("Awfull");
-        secondHistory.setBorrowDate(LocalDate.now().minusDays(10));
-        secondHistory.setReturnedDate(LocalDate.now());
-
-        histories.add(firstHistory);
-        histories.add(secondHistory);
-
-        return histories;
-    }
 
     @Test
     public void testAddHistory() throws Exception {
-        historyDao.add(histories.get(0));
+        historyDao.add(history);
 
-        assertThat(historyDao.getAll()).containsExactly(histories.get(0));
+        History actual = historyDao.getAll().findFirst().get();
+        assertThat(actual.getId()).isEqualTo(history.getId());
     }
 
     @Test
     public void testDeleteHistory() throws Exception {
-        historyDao.add(histories.get(0));
+        historyDao.add(history);
 
-        Long idToDelete = historyDao.getAll().findFirst().get().getId();
-        historyDao.delete(idToDelete);
+        historyDao.delete(history);
 
         assertThat(historyDao.getAll()).isEmpty();
     }
 
     @Test
     public void testDeleteHistoryWhichNotExistShouldThorwsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.delete(555L))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.delete(null))
             .withNoCause();
     }
 
     @Test
     public void testFindAllHistoriesShouldReturnsAllRecords() throws Exception {
-        histories.forEach(history -> historyDao.add(history));
+        historyDao.add(history);
 
-        assertThat(historyDao.getAll()).containsExactly(histories.get(0), histories.get(1));
+        History actual = historyDao.getAll().findFirst().get();
+
+        assertThat(actual.getId()).isEqualTo(history.getId());
     }
 
     @Test
@@ -97,11 +80,11 @@ public class DBHistoryDaoTest
 
     @Test
     public void testUpdateHistory() throws Exception {
-        History historyBeforeUpdate = histories.get(0);
+        History historyBeforeUpdate = history;
         historyDao.add(historyBeforeUpdate);
 
         historyBeforeUpdate.setComment("Nice");
-        historyDao.update(historyBeforeUpdate.getId());
+        historyDao.update(historyBeforeUpdate);
 
         History historyAfterUpdate = historyDao.getAll().findFirst().get();
 
@@ -110,13 +93,9 @@ public class DBHistoryDaoTest
 
     @Test
     public void testUpdateHistoryNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.update(666L))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.update(null))
             .withMessage("attempt to create saveOrUpdate event with null entity")
             .withNoCause();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        transactionManager.rollback();
-    }
 }

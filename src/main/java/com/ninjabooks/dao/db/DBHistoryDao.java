@@ -24,50 +24,48 @@ public class DBHistoryDao implements HistoryDao
     private final static Logger logger = LogManager.getLogger(DBHistoryDao.class);
 
     private final SessionFactory sessionFactory;
-    private Session currentSession;
 
     @Autowired
     public DBHistoryDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        try {
-            logger.info("Try obtain current session");
-            this.currentSession = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            logger.error(e);
-            logger.info("Open new session");
-            this.currentSession = sessionFactory.openSession();
-        }
     }
 
     @Override
     public History getById(Long id) {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.get(History.class, id);
     }
 
     @Override
     public Stream<History> getAll() {
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("SELECT h FROM com.ninjabooks.domain.History h", History.class).stream();
     }
 
     @Override
     public void add(History history) {
+        Session currentSession = sessionFactory.openSession();
         currentSession.save(history);
     }
 
     @Override
-    public void update(Long id) {
-        History history = getById(id);
+    public void update(History history) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.update(history);
+        currentSession.getTransaction().commit();
     }
 
     @Override
-    public void delete(Long id) {
-        History history = getById(id);
+    public void delete(History history) {
+        Session currentSession = sessionFactory.openSession();
+        currentSession.getTransaction().begin();
         currentSession.delete(history);
+        currentSession.getTransaction().commit();
     }
 
     @Override
     public Session getCurrentSession() {
-        return currentSession;
+        return sessionFactory.openSession();
     }
 }

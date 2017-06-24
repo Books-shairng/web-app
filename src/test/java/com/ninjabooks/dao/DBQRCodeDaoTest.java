@@ -2,18 +2,15 @@ package com.ninjabooks.dao;
 
 import com.ninjabooks.configuration.HSQLConfig;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.util.TransactionManager;
-import org.junit.After;
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -22,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -30,50 +28,38 @@ public class DBQRCodeDaoTest
     @Autowired
     private QRCodeDao qrCodeDao;
 
-    private List<QRCode> qrCodes;
-    private TransactionManager transactionManager;
+    private static final String DATA = "12345";
+
+    private QRCode qrCode;
 
     @Before
     public void setUp() throws Exception {
-        createRecords();
-        transactionManager = new TransactionManager(qrCodeDao.getCurrentSession());
-        transactionManager.beginTransaction();
-    }
-
-    private void createRecords() {
-        qrCodes = new ArrayList<>();
-
-        QRCode firstQrcode = new QRCode();
-        QRCode secondQrcode = new QRCode();
-
-        firstQrcode.setData("alala");
-        secondQrcode.setData("12345");
-
-        qrCodes.add(firstQrcode);
-        qrCodes.add(secondQrcode);
+        this.qrCode = new QRCode(DATA);
     }
 
     @Test
     public void testAddQRCode() throws Exception {
-        qrCodeDao.add(qrCodes.get(0));
+        qrCodeDao.add(qrCode);
 
-        QRCode actual = qrCodeDao.getByData(qrCodes.get(0).getData());
-        assertThat(actual).isEqualTo(qrCodes.get(0));
+        QRCode actual = qrCodeDao.getByData(qrCode.getData());
+        assertThat(actual).isEqualTo(qrCode);
     }
 
     @Test
     public void testGetAllQrCodesShouldReturnsAllRecords() throws Exception {
-        qrCodes.forEach(qrCode -> qrCodeDao.add(qrCode));
+        qrCodeDao.add(qrCode);
 
-        assertThat(qrCodeDao.getAll()).containsExactly(qrCodes.get(0), qrCodes.get(1));
+        QRCode actual = qrCodeDao.getAll().findFirst().get();
+
+        assertThat(actual.getId()).isEqualTo(actual.getId());
     }
 
     @Test
     public void testGetByData() throws Exception {
-        qrCodes.forEach(qrCode -> qrCodeDao.add(qrCode));
+        qrCodeDao.add(qrCode);
 
-        String data = qrCodes.get(0).getData();
-        assertThat(qrCodeDao.getByData(data)).isEqualTo(qrCodes.get(0));
+        String data = qrCode.getData();
+        assertThat(qrCodeDao.getByData(data)).isEqualTo(qrCode.getData());
     }
 
     @Test
@@ -83,12 +69,16 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testUpdateQRCode() throws Exception {
-        QRCode beforeUpdate = qrCodes.get(0);
-        qrCodeDao.add(beforeUpdate);
+        qrCodeDao.add(qrCode);
+
+        QRCode beforeUpdate = qrCodeDao.getById(1L);
 
         String newData = "54312";
         beforeUpdate.setData(newData);
-        qrCodeDao.update(beforeUpdate.getId());
+        Session currentSession = qrCodeDao.getCurrentSession();
+        currentSession.getTransaction().begin();
+        qrCodeDao.update(beforeUpdate);
+        currentSession.getTransaction().commit();
 
         QRCode afterUpdate = qrCodeDao.getAll().findFirst().get();
 
@@ -98,27 +88,21 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testUpdateQRCodeNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.update(555L))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.update(null))
             .withNoCause();
     }
 
     @Test
     public void testDeleteQRCode() throws Exception {
-        qrCodeDao.add(qrCodes.get(0));
-
-        qrCodeDao.delete(qrCodes.get(0).getId());
+        qrCodeDao.add(qrCode);
+        qrCodeDao.delete(qrCode);
 
         assertThat(qrCodeDao.getAll()).isEmpty();
     }
 
     @Test
     public void testDeleteQRCodeWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.delete(555L))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.delete(null))
             .withNoCause();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        transactionManager.rollback();
     }
 }
