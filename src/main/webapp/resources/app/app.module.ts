@@ -15,17 +15,17 @@ import { AddBookComponent } from './addbook/index';
 import { BookInfoComponent } from './bookinfo/index';
 import { BooksListComponent } from './bookslist/index';
 import { SettingsComponent } from './settings/index';
-// used to create fake backend
-// import { fakeBackendProvider } from './fakebackend/index';
-// import { MockBackend, MockConnection } from '@angular/http/testing';
-// import { BaseRequestOptions } from '@angular/http';
+//used to create fake backend
+import { fakeBackendProvider } from './fakebackend/index';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { BaseRequestOptions } from '@angular/http';;
 
 
 @NgModule({
     imports: [BrowserModule, FormsModule, routes, HttpModule],
     declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AddBookComponent, BookInfoComponent, BooksListComponent, SettingsComponent],
-    providers: [AuthGuard, AuthenticationService, UserService,],
-    // fakeBackendProvider],
+    providers: [AuthGuard, AuthenticationService, UserService],
+    // fakeBackendProvider,
     // MockBackend,
     // BaseRequestOptions],
     bootstrap: [AppComponent]

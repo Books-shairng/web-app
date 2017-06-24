@@ -14,9 +14,9 @@ export class NotificationComponent implements OnInit {
    constructor(private userService: UserService) {
    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
  }
-
    ngOnInit() {
        // get users from secure api end point
+       console.log(this.currentUser); //name blank ??
        this.userService.getUsers()
            .subscribe(users => {
                this.users = users;

@@ -4,7 +4,7 @@
             <a class="navbar-brand" href="#">BOOKS SHARING</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+            <ul *ngIf="loggedIn | async" class="nav navbar-nav navbar-right">
                 <li><a routerLink="search">Szukaj</a></li>
                 <li><a routerLink="bookslist">Lista książek</a></li>
                 <li><a routerLink="addbook">Dodaj książkę</a></li>

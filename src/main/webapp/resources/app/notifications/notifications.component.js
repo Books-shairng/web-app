@@ -19,6 +19,7 @@ var NotificationComponent = (function () {
     NotificationComponent.prototype.ngOnInit = function () {
         var _this = this;
         // get users from secure api end point
+        console.log(this.currentUser); //name blank ??
         this.userService.getUsers()
             .subscribe(function (users) {
             _this.users = users;

@@ -10,14 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
+var Subject_1 = require("rxjs/Subject");
 require("rxjs/add/operator/map");
 var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
+        this.loggedIn = new Subject_1.Subject();
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
+        this.loggedIn.next(!!localStorage.getItem(this.token));
     }
+    Object.defineProperty(AuthenticationService.prototype, "isLoggedIn", {
+        get: function () {
+            return this.loggedIn.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
     AuthenticationService.prototype.login = function (email, password) {
         var _this = this;
         return this.http.post('/api/auth', { email: email, password: password })
@@ -30,6 +40,7 @@ var AuthenticationService = (function () {
                 // store username and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify({ name: name, email: email, token: token }));
                 // return true to indicate successful login
+                _this.loggedIn.next(true);
                 return true;
             }
             else {
@@ -42,6 +53,7 @@ var AuthenticationService = (function () {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
+        this.loggedIn.next(false);
     };
     return AuthenticationService;
 }());
