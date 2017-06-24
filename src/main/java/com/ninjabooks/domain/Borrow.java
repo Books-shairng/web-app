@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 /**
- * This class represent borrow in databes
+ * This class represent borrow in database
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -24,7 +24,7 @@ public class Borrow extends BaseEntity
     @Column(name = "STATUS")
     private boolean isBorrowed;
 
-    @Column(name = "EXTENDED_BORROW")
+    @Column(name = "EXTENDED_RETURN_DATE")
     private boolean canExtendBorrow;
 
     @ManyToOne

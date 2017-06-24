@@ -17,7 +17,7 @@ public class Queue extends BaseEntity
     private LocalDateTime orderDate;
 
     @Column(name = "STATUS")
-    private Boolean status;
+    private boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -28,6 +28,7 @@ public class Queue extends BaseEntity
     private User user;
 
     public Queue() {
+        this.isActive = true;
     }
 
     /**
@@ -38,6 +39,7 @@ public class Queue extends BaseEntity
 
     public Queue(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+        this.isActive = true;
     }
 
     public LocalDateTime getOrderDate() {
@@ -62,5 +64,13 @@ public class Queue extends BaseEntity
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

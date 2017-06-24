@@ -60,8 +60,9 @@ public class NotificationServiceImpl implements  NotificationService
 
     private int computePositionInQueue(Queue queue, User user) {
         Long bookID = queue.getBook().getId();
-        String query = "SELECT order_date, user_id FROM Queue WHERE book_id =:id";
+        String query = "SELECT order_date, user_id FROM Queue WHERE status =:stat and book_id =:id";
         Query<?> queueQuery = userDao.getCurrentSession().createNativeQuery(query);
+        queueQuery.setParameter("stat", true);
         queueQuery.setParameter("id", bookID);
 
         List<Object[]> queues = (List<Object[]>) queueQuery.list();

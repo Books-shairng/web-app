@@ -70,12 +70,13 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
 
     @Override
     public void update(Long id) {
-        currentSession.update(id);
+        Borrow borrow = getById(id);
+        currentSession.update(borrow);
     }
 
     @Override
     public void delete(Long id) {
-        Borrow borrow =currentSession.get(Borrow.class, id);
+        Borrow borrow = getById(id);
         currentSession.delete(borrow);
     }
 

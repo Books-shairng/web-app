@@ -14,11 +14,13 @@ public class BorrowNotification extends GenericNotification
 {
     private String borrowDate;
     private String returnDate;
+    private boolean canExtendBookBorrow;
 
 
     public BorrowNotification(Borrow borrow) {
         obtainBookFromGenericType(borrow.getBook());
         obtainDatesAsStrings(borrow);
+        this.canExtendBookBorrow = borrow.getCanExtendBorrow();
     }
 
     public String getBorrowDate() {
@@ -37,6 +39,13 @@ public class BorrowNotification extends GenericNotification
         this.returnDate = returnDate;
     }
 
+    public boolean isCanExtendBookBorrow() {
+        return canExtendBookBorrow;
+    }
+
+    public void setCanExtendBookBorrow(boolean canExtendBookBorrow) {
+        this.canExtendBookBorrow = canExtendBookBorrow;
+    }
 
     private void obtainDatesAsStrings(Borrow borrow) {
         borrowDate = borrow.getBorrowDate().toString();
