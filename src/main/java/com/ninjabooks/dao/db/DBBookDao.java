@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@javax.transaction.Transactional
 public class DBBookDao implements BookDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBBookDao.class);
@@ -36,7 +36,7 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     @Override
     public Stream<Book> getAll() {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.createQuery("select book from com.ninjabooks.domain.Book book",Book.class).stream();
+        return currentSession.createQuery("select book from com.ninjabooks.domain.Book book", Book.class).stream();
     }
 
     @Override
@@ -64,6 +64,7 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     public void add(Book book) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(book);
+        currentSession.close();
     }
 
     @Override
@@ -72,6 +73,7 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.update(book);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -80,6 +82,7 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.delete(book);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -94,7 +97,6 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
         String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
         Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
         bookQuery.setParameter("parameter", parameter);
-
         return (T) bookQuery.stream();
     }
 }

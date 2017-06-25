@@ -4,7 +4,6 @@ import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,7 @@ public class DBHistoryDao implements HistoryDao
     public void add(History history) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(history);
+        currentSession.close();
     }
 
     @Override
@@ -54,6 +54,7 @@ public class DBHistoryDao implements HistoryDao
         currentSession.getTransaction().begin();
         currentSession.update(history);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -62,6 +63,7 @@ public class DBHistoryDao implements HistoryDao
         currentSession.getTransaction().begin();
         currentSession.delete(history);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override

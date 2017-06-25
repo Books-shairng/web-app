@@ -60,8 +60,8 @@ public class DBBookDaoTest
 
     @Test
     public void testTryDeleteBookWhichNotExistShouldThrowsException() throws Exception {
-            assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(null))
-                .withNoCause();
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(null))
+            .withNoCause();
     }
 
     @Test
@@ -123,12 +123,9 @@ public class DBBookDaoTest
         bookDao.add(beforeUpdate);
         beforeUpdate.setTitle("New Title");
 
-//        bookDao.getCurrentSession().flush();
         bookDao.update(beforeUpdate);
-//        bookDao.getCurrentSession().getTransaction().commit();
 
         Book updatedBook =  bookDao.getById(book.getId());
-//        bookDao.getCurrentSession().getTransaction().commit();
 
         assertThat(updatedBook.getTitle()).isEqualTo("New Title");
     }

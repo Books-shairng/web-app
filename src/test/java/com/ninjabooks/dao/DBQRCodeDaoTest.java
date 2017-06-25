@@ -2,7 +2,6 @@ package com.ninjabooks.dao;
 
 import com.ninjabooks.configuration.HSQLConfig;
 import com.ninjabooks.domain.QRCode;
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +10,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -48,10 +49,11 @@ public class DBQRCodeDaoTest
     @Test
     public void testGetAllQrCodesShouldReturnsAllRecords() throws Exception {
         qrCodeDao.add(qrCode);
+        qrCodeDao.add(qrCode);
 
-        QRCode actual = qrCodeDao.getAll().findFirst().get();
+        Stream<QRCode> actual = qrCodeDao.getAll();
 
-        assertThat(actual.getId()).isEqualTo(actual.getId());
+        assertThat(actual).containsExactly(qrCode, qrCode);
     }
 
     @Test
@@ -59,7 +61,9 @@ public class DBQRCodeDaoTest
         qrCodeDao.add(qrCode);
 
         String data = qrCode.getData();
-        assertThat(qrCodeDao.getByData(data)).isEqualTo(qrCode.getData());
+
+        QRCode actual = qrCodeDao.getByData(data);
+        assertThat(actual.getData()).isEqualTo(qrCode.getData());
     }
 
     @Test
@@ -75,10 +79,7 @@ public class DBQRCodeDaoTest
 
         String newData = "54312";
         beforeUpdate.setData(newData);
-        Session currentSession = qrCodeDao.getCurrentSession();
-        currentSession.getTransaction().begin();
         qrCodeDao.update(beforeUpdate);
-        currentSession.getTransaction().commit();
 
         QRCode afterUpdate = qrCodeDao.getAll().findFirst().get();
 

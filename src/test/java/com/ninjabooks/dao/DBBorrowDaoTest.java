@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,11 +14,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(classes = HSQLConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -73,7 +76,7 @@ public class DBBorrowDaoTest
     public void testGetBorrowDate() throws Exception {
         borrowDao.add(borrow);
         LocalDate returnDate = borrow.getBorrowDate();
-        Borrow actual = borrowDao.getByReturnDate(returnDate);
+        Borrow actual = borrowDao.getByBorrowDate(returnDate);
 
         assertThat(actual.getReturnDate()).isEqualTo(borrow.getReturnDate());
     }

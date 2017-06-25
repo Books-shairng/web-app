@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -38,7 +39,7 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
     @Override
     public Stream<Borrow> getAll() {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.createQuery("SELECT b FROM com.ninjabooks.domain.Borrow b",Borrow.class).stream();
+        return currentSession.createQuery("SELECT b FROM com.ninjabooks.domain.Borrow b", Borrow.class).stream();
     }
 
     @Override
@@ -61,6 +62,7 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
     public void add(Borrow borrow) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(borrow);
+        currentSession.close();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.update(borrow);
         currentSession.getTransaction().commit();
-
+        currentSession.close();
     }
 
     @Override
@@ -78,6 +80,7 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.delete(borrow);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -93,9 +96,9 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
         Query<Borrow> bookQuery = currentSession.createQuery(query, Borrow.class);
         bookQuery.setParameter("parameter", parameter);
 
-        if (bookQuery.getSingleResult() != null)
+        if (bookQuery.getSingleResult() != null) {
             return (T) bookQuery.getSingleResult();
-        else
-            return null;
+        }
+        return null;
     }
 }

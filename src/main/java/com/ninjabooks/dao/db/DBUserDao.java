@@ -60,6 +60,7 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     public void add(User user) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(user);
+        currentSession.close();
     }
 
     @Override
@@ -68,6 +69,7 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.update(user);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -76,6 +78,7 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.delete(user);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -92,10 +95,9 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
         userQuery.setParameter("parameter", parameter);
 
         List<User> results = userQuery.getResultList();
-        if (!results.isEmpty())
+        if (!results.isEmpty()) {
             return (T) results.get(0);
-        else
-            return null;
-
+        }
+        return null;
     }
 }

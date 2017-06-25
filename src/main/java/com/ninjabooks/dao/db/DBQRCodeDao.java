@@ -54,6 +54,7 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     public void add(QRCode qrCode) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(qrCode);
+        currentSession.close();
     }
 
     @Override
@@ -62,6 +63,7 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.update(qrCode);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -70,6 +72,7 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.delete(qrCode);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -86,9 +89,10 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
         qrCodeQuery.setParameter("parameter", parameter);
 
         List<QRCode> results = qrCodeQuery.getResultList();
-        if (!results.isEmpty())
+        if (!results.isEmpty()) {
             return (T) results.get(0);
-        else
-            return null;
+        }
+        return null;
     }
+
 }

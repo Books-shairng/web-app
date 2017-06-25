@@ -55,6 +55,7 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     public void add(Queue queue) {
         Session currentSession = sessionFactory.openSession();
         currentSession.save(queue);
+        currentSession.close();
     }
 
     @Override
@@ -63,6 +64,7 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.update(queue);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -71,6 +73,7 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
         currentSession.getTransaction().begin();
         currentSession.delete(queue);
         currentSession.getTransaction().commit();
+        currentSession.close();
     }
 
     @Override
@@ -87,9 +90,9 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
         queueQuery.setParameter("parameter", parameter);
 
         List<Queue> results = queueQuery.getResultList();
-        if (!results.isEmpty())
+        if (!results.isEmpty()) {
             return (T) results.get(0);
-        else
-            return null;
+        }
+        return null;
     }
 }
