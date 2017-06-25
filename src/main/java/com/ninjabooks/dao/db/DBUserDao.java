@@ -4,7 +4,6 @@ import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

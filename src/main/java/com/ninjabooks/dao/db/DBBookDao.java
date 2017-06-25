@@ -4,7 +4,6 @@ import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.domain.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -19,7 +18,7 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@javax.transaction.Transactional
+@Transactional
 public class DBBookDao implements BookDao, SpecifiedElementFinder
 {
     private final static Logger logger = LogManager.getLogger(DBBookDao.class);
