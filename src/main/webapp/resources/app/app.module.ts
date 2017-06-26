@@ -10,7 +10,7 @@ import { RegistrationComponent } from './registration/index';
 import { SearchComponent } from './search/index';
 import { NotificationComponent } from './notifications/index';
 import { AuthGuard } from './guards/index';
-import { AuthenticationService, UserService } from './services/index';
+import { AuthenticationService, UserService, BookService } from './services/index';
 import { AddBookComponent } from './addbook/index';
 import { BookInfoComponent } from './bookinfo/index';
 import { BooksListComponent } from './bookslist/index';
@@ -24,7 +24,7 @@ import { BaseRequestOptions } from '@angular/http';;
 @NgModule({
     imports: [BrowserModule, FormsModule, routes, HttpModule],
     declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AddBookComponent, BookInfoComponent, BooksListComponent, SettingsComponent],
-    providers: [AuthGuard, AuthenticationService, UserService],
+    providers: [AuthGuard, AuthenticationService, UserService, BookService,],
     // fakeBackendProvider,
     // MockBackend,
     // BaseRequestOptions],

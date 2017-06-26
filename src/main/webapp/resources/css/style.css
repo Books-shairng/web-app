@@ -106,7 +106,6 @@ form p a {
     color: #000000;
 }
 .search-section {
-  margin-top: 200px;
   display: inline;
 }
 .search-form input {
@@ -121,13 +120,15 @@ form p a {
 .notification {
   margin-top: 100px;
   text-align:  center;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 .notification p a {
     color: #000000;
 }
 table {
   border: 3px solid white;
-  width: 700px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -143,7 +144,7 @@ tr td:last-child {
 }
 .add-section {
   width: 100%;
-  margin-top:120px;
+  padding-top:60px;
   min-height:100%;
   height:100%;
 }
@@ -154,6 +155,7 @@ tr td:last-child {
 }
 .add-section left-side, .add-section right-side {
   margin-top:30px;
+  padding-bottom: 40px;
 }
 .add-section form label {
   display: block;
@@ -165,6 +167,9 @@ tr td:last-child {
 }
 .add-book-form {
   padding-left:50px;
+}
+.add-book-form button {
+  margin: 0;
 }
 .QRsection {
   width:400px;

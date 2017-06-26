@@ -4,4 +4,6 @@ function __export(m) {
 }
 __export(require("./authentication.service"));
 __export(require("./user.service"));
+__export(require("./book.service"));
+//export * from './validation.service';
 //# sourceMappingURL=index.js.map

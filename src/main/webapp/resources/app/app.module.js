@@ -21,10 +21,6 @@ var index_7 = require("./addbook/index");
 var index_8 = require("./bookinfo/index");
 var index_9 = require("./bookslist/index");
 var index_10 = require("./settings/index");
-//used to create fake backend
-var index_11 = require("./fakebackend/index");
-var testing_1 = require("@angular/http/testing");
-var http_2 = require("@angular/http");
 ;
 var AppModule = (function () {
     function AppModule() {
@@ -35,10 +31,10 @@ AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, app_routes_1.routes, http_1.HttpModule],
         declarations: [app_component_1.AppComponent, index_1.LoginComponent, index_2.RegistrationComponent, index_3.SearchComponent, index_4.NotificationComponent, index_7.AddBookComponent, index_8.BookInfoComponent, index_9.BooksListComponent, index_10.SettingsComponent],
-        providers: [index_5.AuthGuard, index_6.AuthenticationService, index_6.UserService,
-            index_11.fakeBackendProvider,
-            testing_1.MockBackend,
-            http_2.BaseRequestOptions],
+        providers: [index_5.AuthGuard, index_6.AuthenticationService, index_6.UserService, index_6.BookService,],
+        // fakeBackendProvider,
+        // MockBackend,
+        // BaseRequestOptions],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);

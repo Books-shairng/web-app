@@ -11,18 +11,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../services/index");
 var NotificationComponent = (function () {
-    function NotificationComponent(userService) {
+    function NotificationComponent(userService, bookService) {
         this.userService = userService;
+        this.bookService = bookService;
         this.users = [];
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
     NotificationComponent.prototype.ngOnInit = function () {
         var _this = this;
         // get users from secure api end point
-        console.log(this.currentUser); //name blank ??
         this.userService.getUsers()
             .subscribe(function (users) {
             _this.users = users;
+        });
+    };
+    NotificationComponent.prototype.notification = function () {
+        this.bookService.notification(this.currentUser.id)
+            .subscribe(function (result) {
         });
     };
     return NotificationComponent;
@@ -32,7 +37,8 @@ NotificationComponent = __decorate([
         moduleId: module.id,
         templateUrl: 'notifications.component.html'
     }),
-    __metadata("design:paramtypes", [index_1.UserService])
+    __metadata("design:paramtypes", [index_1.UserService,
+        index_1.BookService])
 ], NotificationComponent);
 exports.NotificationComponent = NotificationComponent;
 //# sourceMappingURL=notifications.component.js.map
