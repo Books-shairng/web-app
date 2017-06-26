@@ -24,11 +24,11 @@ var NotificationComponent = (function () {
             .subscribe(function (users) {
             _this.users = users;
         });
-    };
-    NotificationComponent.prototype.notification = function () {
-        this.bookService.notification(this.currentUser.id)
-            .subscribe(function (result) {
-        });
+        // this.bookService.notification(this.currentUser.id).
+        // subscribe(data => {
+        //   this.data = data;
+        //   console.log(this.data);
+        // })
     };
     return NotificationComponent;
 }());

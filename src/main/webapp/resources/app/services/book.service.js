@@ -17,11 +17,9 @@ var BookService = (function () {
         var currentUserId = JSON.parse(localStorage.getItem('currentUser.id'));
     }
     BookService.prototype.notification = function (id) {
-        return this.http.get('/api/notification/{' + id + '}', {})
-            .map(function (response) {
-            var books = response.json();
-        });
+        //    return this.http.get('/api/notification/{'+ id +'}', book).map((response: Response) => response.json());
     };
+    ;
     return BookService;
 }());
 BookService = __decorate([

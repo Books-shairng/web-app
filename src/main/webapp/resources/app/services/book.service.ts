@@ -10,9 +10,6 @@ export class BookService {
       var currentUserId = JSON.parse(localStorage.getItem('currentUser.id'));
   }
   notification(id: number) {
-    return this.http.get('/api/notification/{'+ id +'}', {})
-       .map((response: Response) => {
-           let books = response.json();
-});
+//    return this.http.get('/api/notification/{'+ id +'}', book).map((response: Response) => response.json());
+    };
   }
-}

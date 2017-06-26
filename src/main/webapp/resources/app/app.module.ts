@@ -24,7 +24,7 @@ import { BaseRequestOptions } from '@angular/http';;
 @NgModule({
     imports: [BrowserModule, FormsModule, routes, HttpModule],
     declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent, AddBookComponent, BookInfoComponent, BooksListComponent, SettingsComponent],
-    providers: [AuthGuard, AuthenticationService, UserService, BookService,],
+    providers: [AuthGuard, AuthenticationService, UserService, BookService],
     // fakeBackendProvider,
     // MockBackend,
     // BaseRequestOptions],

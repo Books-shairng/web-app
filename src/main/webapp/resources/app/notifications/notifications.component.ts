@@ -21,11 +21,10 @@ export class NotificationComponent implements OnInit {
            .subscribe(users => {
                this.users = users;
            });
+      // this.bookService.notification(this.currentUser.id).
+      // subscribe(data => {
+      //   this.data = data;
+      //   console.log(this.data);
+      // })
    }
-   notification() {
-     this.bookService.notification(this.currentUser.id)
-         .subscribe(result => {
-
-         });
  }
-   }
