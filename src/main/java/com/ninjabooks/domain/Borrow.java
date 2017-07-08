@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Objects;
 
 /**
  * This class represent borrow in database
@@ -114,7 +115,7 @@ public class Borrow extends BaseEntity
         returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 
-    public LocalDate checkIfReturnDateEndOnWeekend(LocalDate returnDate) {
+    private LocalDate checkIfReturnDateEndOnWeekend(LocalDate returnDate) {
         if (returnDate.getDayOfWeek() == DayOfWeek.SATURDAY || returnDate.getDayOfWeek() == DayOfWeek.SUNDAY)
             return returnDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
 
@@ -122,11 +123,32 @@ public class Borrow extends BaseEntity
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Borrow borrow = (Borrow) o;
+        return isBorrowed == borrow.isBorrowed &&
+            canExtendBorrow == borrow.canExtendBorrow &&
+            Objects.equals(borrowDate, borrow.borrowDate) &&
+            Objects.equals(returnDate, borrow.returnDate) &&
+            Objects.equals(book, borrow.book) &&
+            Objects.equals(user, borrow.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(borrowDate, returnDate, isBorrowed, canExtendBorrow, book, user);
+    }
+
+    @Override
     public String toString() {
         return "Borrow{" +
-                "id=" + getId() +
-                ", borrowDate=" + borrowDate +
-                ", returnDate=" + returnDate +
-                '}';
+            "borrowDate=" + borrowDate +
+            ", returnDate=" + returnDate +
+            ", isBorrowed=" + isBorrowed +
+            ", canExtendBorrow=" + canExtendBorrow +
+            ", book=" + book +
+            ", user=" + user +
+            '}';
     }
 }

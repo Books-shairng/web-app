@@ -46,19 +46,24 @@ public class QRCode extends BaseEntity
     }
 
     @Override
-    public String toString() {
-        return "QRCode{" +
-                "id=" + getId() +
-                ", data=" + data +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QRCode qrCode = (QRCode) o;
-        return Objects.equals(data, qrCode.data);
+        return Objects.equals(data, qrCode.data) &&
+            Objects.equals(book, qrCode.book);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, book);
+    }
+
+    @Override
+    public String toString() {
+        return "QRCode{" +
+            "data='" + data + '\'' +
+            ", book=" + book +
+            '}';
+    }
 }

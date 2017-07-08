@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represent user in database
@@ -120,12 +121,36 @@ public class User extends BaseEntity
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(name, user.name) &&
+            Objects.equals(email, user.email) &&
+            Objects.equals(password, user.password) &&
+            Objects.equals(lastPasswordReset, user.lastPasswordReset) &&
+            Objects.equals(authoritiy, user.authoritiy) &&
+            Objects.equals(queues, user.queues) &&
+            Objects.equals(borrows, user.borrows) &&
+            Objects.equals(histories, user.histories);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, password, lastPasswordReset, authoritiy, queues, borrows, histories);
+    }
+
+    @Override
     public String toString() {
         return "User{" +
-                "id=" + getId() +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+            "name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", lastPasswordReset=" + lastPasswordReset +
+            ", authoritiy='" + authoritiy + '\'' +
+            ", queues=" + queues +
+            ", borrows=" + borrows +
+            ", histories=" + histories +
+            '}';
     }
 }

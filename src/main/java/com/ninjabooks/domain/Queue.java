@@ -2,6 +2,7 @@ package com.ninjabooks.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * This class represent queue in database
@@ -72,5 +73,31 @@ public class Queue extends BaseEntity
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Queue queue = (Queue) o;
+        return isActive == queue.isActive &&
+            Objects.equals(orderDate, queue.orderDate) &&
+            Objects.equals(book, queue.book) &&
+            Objects.equals(user, queue.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderDate, isActive, book, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Queue{" +
+            "orderDate=" + orderDate +
+            ", isActive=" + isActive +
+            ", book=" + book +
+            ", user=" + user +
+            '}';
     }
 }

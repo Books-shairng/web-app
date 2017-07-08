@@ -6,6 +6,7 @@ import org.hibernate.search.annotations.Index;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represent book in database
@@ -131,12 +132,34 @@ public class Book extends BaseEntity
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(title, book.title) &&
+            Objects.equals(author, book.author) &&
+            Objects.equals(isbn, book.isbn) &&
+            Objects.equals(QRCode, book.QRCode) &&
+            Objects.equals(queues, book.queues) &&
+            Objects.equals(borrows, book.borrows) &&
+            Objects.equals(histories, book.histories);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author, isbn, QRCode, queues, borrows, histories);
+    }
+
+    @Override
     public String toString() {
         return "Book{" +
-            "id=" + getId() +
-            ", title='" + title + '\'' +
+            "title='" + title + '\'' +
             ", author='" + author + '\'' +
             ", isbn='" + isbn + '\'' +
+            ", QRCode=" + QRCode +
+            ", queues=" + queues +
+            ", borrows=" + borrows +
+            ", histories=" + histories +
             '}';
     }
 }

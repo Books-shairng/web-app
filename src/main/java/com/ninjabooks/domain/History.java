@@ -2,6 +2,7 @@ package com.ninjabooks.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * This class represent history table in database.
@@ -76,6 +77,23 @@ public class History extends BaseEntity
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        History history = (History) o;
+        return Objects.equals(borrowDate, history.borrowDate) &&
+            Objects.equals(returnedDate, history.returnedDate) &&
+            Objects.equals(comment, history.comment) &&
+            Objects.equals(book, history.book) &&
+            Objects.equals(user, history.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(borrowDate, returnedDate, comment, book, user);
     }
 
     @Override
