@@ -1,6 +1,7 @@
 package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.QueueDao;
+import com.ninjabooks.domain.History;
 import com.ninjabooks.domain.Queue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +29,13 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     private enum DBColumnName {ORDER_DATE}
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<Queue> daoHelper;
 
     @Autowired
-    public DBQueueDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;}
+    public DBQueueDao(SessionFactory sessionFactory, DBDaoHelper<Queue> daoHelper) {
+        this.sessionFactory = sessionFactory;
+        this.daoHelper = daoHelper;
+    }
 
     @Override
     public Stream<Queue> getAll() {
@@ -60,20 +64,18 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     @Override
     public void update(Queue queue) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(queue);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.update(queue);
     }
+
 
     @Override
     public void delete(Queue queue) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(queue);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.delete(queue);
     }
+
 
     @Override
     public Session getCurrentSession() {

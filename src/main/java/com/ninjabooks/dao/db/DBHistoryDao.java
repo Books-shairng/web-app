@@ -23,10 +23,12 @@ public class DBHistoryDao implements HistoryDao
     private final static Logger logger = LogManager.getLogger(DBHistoryDao.class);
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<History> daoHelper;
 
     @Autowired
-    public DBHistoryDao(SessionFactory sessionFactory) {
+    public DBHistoryDao(SessionFactory sessionFactory, DBDaoHelper<History> daoHelper) {
         this.sessionFactory = sessionFactory;
+        this.daoHelper = daoHelper;
     }
 
     @Override
@@ -51,20 +53,17 @@ public class DBHistoryDao implements HistoryDao
     @Override
     public void update(History history) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(history);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.update(history);
     }
 
     @Override
     public void delete(History history) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(history);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.delete(history);
     }
+
 
     @Override
     public Session getCurrentSession() {

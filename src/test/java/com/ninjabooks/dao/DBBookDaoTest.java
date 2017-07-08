@@ -35,6 +35,7 @@ public class DBBookDaoTest
     private static final String ISBN = "978-1430261513";
 
     private Book book;
+    private Book nullBook = null;
 
     @Before
 
@@ -60,7 +61,7 @@ public class DBBookDaoTest
 
     @Test
     public void testTryDeleteBookWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(null))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(nullBook))
             .withNoCause();
     }
 
@@ -118,7 +119,7 @@ public class DBBookDaoTest
     }
 
     @Test
-    public void testUpdateBook() throws Exception {
+    public void testUpdateBookByEnity() throws Exception {
         Book beforeUpdate = book;
         bookDao.add(beforeUpdate);
         beforeUpdate.setTitle("New Title");
@@ -132,7 +133,7 @@ public class DBBookDaoTest
 
     @Test
     public void testTryUpdateBookWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.update(null))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.update(nullBook))
             .withMessage("attempt to create saveOrUpdate event with null entity")
             .withNoCause();
     }

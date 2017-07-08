@@ -28,10 +28,10 @@ public class DBQRCodeDaoTest
 {
     @Autowired
     private QRCodeDao qrCodeDao;
-
     private static final String DATA = "12345";
 
     private QRCode qrCode;
+    private QRCode nullQueue = null;
 
     @Before
     public void setUp() throws Exception {
@@ -87,9 +87,10 @@ public class DBQRCodeDaoTest
 
     }
 
+
     @Test
-    public void testUpdateQRCodeNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.update(null))
+    public void testUpdateQRCodeWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.update(nullQueue))
             .withNoCause();
     }
 
@@ -103,7 +104,7 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testDeleteQRCodeWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.delete(null))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> qrCodeDao.delete(nullQueue))
             .withNoCause();
     }
 }

@@ -34,6 +34,7 @@ public class DBHistoryDaoTest
     private static final LocalDate RETURN_DATE = LocalDate.now();
 
     private History history;
+    private History nullHistory = null;
 
     @Before
     public void setUp() throws Exception {
@@ -50,7 +51,7 @@ public class DBHistoryDaoTest
     }
 
     @Test
-    public void testDeleteHistory() throws Exception {
+    public void testDeleteHistoryByEnity() throws Exception {
         historyDao.add(history);
 
         historyDao.delete(history);
@@ -59,9 +60,8 @@ public class DBHistoryDaoTest
     }
 
     @Test
-    public void testDeleteHistoryWhichNotExistShouldThorwsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.delete(null))
-            .withNoCause();
+    public void testDeleteHistoryWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.delete(nullHistory));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class DBHistoryDaoTest
     }
 
     @Test
-    public void testUpdateHistory() throws Exception {
+    public void testUpdateHistoryByEntity() throws Exception {
         History historyBeforeUpdate = history;
         historyDao.add(historyBeforeUpdate);
 
@@ -92,10 +92,18 @@ public class DBHistoryDaoTest
     }
 
     @Test
-    public void testUpdateHistoryNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.update(null))
-            .withMessage("attempt to create saveOrUpdate event with null entity")
-            .withNoCause();
+    public void testUpdateHistoryWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> historyDao.update(nullHistory));
     }
 
+    @Test
+    public void testAddCommentShouldUpdateQuery() throws Exception {
+        historyDao.add(history);
+        history.setComment(COMMENT);
+
+        historyDao.update(history);
+
+        History actual = historyDao.getAll().findFirst().get();
+        assertThat(actual.getComment()).isEqualTo(COMMENT);
+    }
 }

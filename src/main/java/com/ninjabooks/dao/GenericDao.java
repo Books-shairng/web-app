@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 
-public interface GenericDao<T, K extends Serializable>
+public interface GenericDao<E, K extends Serializable>
 {
     /**
      * Return all mathching elements from T type table.
@@ -34,7 +34,7 @@ public interface GenericDao<T, K extends Serializable>
      * @return stream with matching elements.
      */
 
-    Stream<T> getAll();
+    Stream<E> getAll();
 
     /**
      * Return matched element by id from T table.
@@ -43,31 +43,32 @@ public interface GenericDao<T, K extends Serializable>
      * @return query with specified id
      */
 
-    T getById(K id);
+    E getById(K id);
 
     /**
      * Add entity type element to table.
      *
-     * @param entity
+     * @param entity of object which will be added into system
      */
 
-    void add(T entity);
+    void add(E entity);
 
     /**
-     * Update entity type element in table with specified id.
+     * Update entity type element in table with specified enity object.
      *
-     * @param enity of element which will be edited
+     * @param enity of object which will be edited
      */
 
-    void update(T enity);
+    void update(E enity);
+
 
     /**
-     * Delete entity type element in table with specified id.
+     * Delete entity type element in table with specified entity object.
      *
      * @param entity element which will be removed
      */
 
-    void delete(T entity);
+    void delete(E entity);
 
     /**
      * This method return current session status, which is necessary in

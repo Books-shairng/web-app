@@ -26,10 +26,12 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     private enum DBColumnName {TITLE, AUTHOR, ISBN}
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<Book> daoHelper;
 
     @Autowired
-    public DBBookDao(SessionFactory sessionFactory) {
+    public DBBookDao(SessionFactory sessionFactory, DBDaoHelper<Book> daoHelper) {
         this.sessionFactory = sessionFactory;
+        this.daoHelper = daoHelper;
     }
 
     @Override
@@ -69,19 +71,15 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     @Override
     public void update(Book book) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(book);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.update(book);
     }
 
     @Override
     public void delete(Book book) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(book);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.delete(book);
     }
 
     @Override

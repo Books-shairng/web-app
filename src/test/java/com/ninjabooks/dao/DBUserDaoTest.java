@@ -26,12 +26,13 @@ public class DBUserDaoTest
 {
     @Autowired
     private UserDao userDao;
-
     private static final String NAME = "harry_potta";
+
     private static final String EMAIL = "harry_potta@gmail.com";
     private static final String PASSWORD = "kamehameha";
 
     private User user;
+    private User nullUser = null;
 
     @Before
     public void setUp() throws Exception {
@@ -47,7 +48,7 @@ public class DBUserDaoTest
     }
 
     @Test
-    public void testDeleteUser() throws Exception {
+    public void testDeleteByEnityUser() throws Exception {
         userDao.add(user);
         userDao.delete(user);
 
@@ -56,7 +57,7 @@ public class DBUserDaoTest
 
     @Test
     public void testDeleteUserNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.delete(null))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.delete(nullUser))
             .withNoCause();
     }
 
@@ -74,9 +75,10 @@ public class DBUserDaoTest
         assertThat(afterUpdate.getName()).isEqualTo(newName);
     }
 
+
     @Test
     public void testUpdateUserNotExist() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.update(null))
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userDao.update(nullUser))
             .withNoCause();
     }
 

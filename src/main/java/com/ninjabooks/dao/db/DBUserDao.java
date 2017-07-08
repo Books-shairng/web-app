@@ -27,10 +27,12 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     private enum DBColumnName {NAME, EMAIL}
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<User> daoHelper;
 
     @Autowired
-    public DBUserDao(SessionFactory sessionFactory) {
+    public DBUserDao(SessionFactory sessionFactory, DBDaoHelper<User> daoHelper) {
         this.sessionFactory = sessionFactory;
+        this.daoHelper = daoHelper;
     }
 
     @Override
@@ -65,19 +67,15 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     @Override
     public void update(User user) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(user);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.update(user);
     }
 
     @Override
     public void delete(User user) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(user);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.delete(user);
     }
 
     @Override

@@ -33,6 +33,7 @@ public class DBQueueDaoTest
     private final static LocalDateTime ORDER_DATE  = LocalDateTime.of(2017,  3, 21, 8, 17);
 
     private Queue queue;
+    private Queue nullQueue = null;
 
     @Before
     public void setUp() throws Exception {
@@ -56,9 +57,10 @@ public class DBQueueDaoTest
         assertThat(queueDao.getAll()).isEmpty();
     }
 
+
     @Test
-    public void testDeleteQueueNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.delete(null))
+    public void testDeleteQueueWhichNotExistShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.delete(nullQueue))
             .withNoCause();
     }
 
@@ -75,9 +77,10 @@ public class DBQueueDaoTest
         assertThat(afterUpdate.getOrderDate()).isEqualTo(newOrderDate);
     }
 
+
     @Test
-    public void testUpdateQueueNotExistShouldThorwsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.update(null))
+    public void testUpdateQueueWhichNotExistShouldThorwsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.update(nullQueue))
             .withNoCause();
     }
 

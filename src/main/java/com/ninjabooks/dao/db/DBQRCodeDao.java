@@ -27,10 +27,13 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     private enum DBColumnName {DATA}
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<QRCode> daoHelper;
 
     @Autowired
-    public DBQRCodeDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;}
+    public DBQRCodeDao(SessionFactory sessionFactory, DBDaoHelper<QRCode> daoHelper) {
+        this.sessionFactory = sessionFactory;
+        this.daoHelper = daoHelper;
+    }
 
     @Override
     public Stream<QRCode> getAll() {
@@ -59,19 +62,16 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     @Override
     public void update(QRCode qrCode) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(qrCode);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.update(qrCode);
     }
+
 
     @Override
     public void delete(QRCode qrCode) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(qrCode);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        daoHelper.setCurrentSession(currentSession);
+        daoHelper.delete(qrCode);
     }
 
     @Override

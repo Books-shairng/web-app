@@ -27,10 +27,12 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
     private enum DBColumnName {BORROW_DATE, RETURN_DATE}
 
     private final SessionFactory sessionFactory;
+    private final DBDaoHelper<Borrow> dbDaoHelper;
 
     @Autowired
-    public DBBorrowDao(SessionFactory sessionFactory) {
+    public DBBorrowDao(SessionFactory sessionFactory, DBDaoHelper<Borrow> dbDaoHelper) {
         this.sessionFactory = sessionFactory;
+        this.dbDaoHelper = dbDaoHelper;
     }
 
     @Override
@@ -65,19 +67,15 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
     @Override
     public void update(Borrow borrow) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.update(borrow);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        dbDaoHelper.setCurrentSession(currentSession);
+        dbDaoHelper.update(borrow);
     }
 
     @Override
     public void delete(Borrow borrow) {
         Session currentSession = sessionFactory.openSession();
-        currentSession.getTransaction().begin();
-        currentSession.delete(borrow);
-        currentSession.getTransaction().commit();
-        currentSession.close();
+        dbDaoHelper.setCurrentSession(currentSession);
+        dbDaoHelper.delete(borrow);
     }
 
     @Override
