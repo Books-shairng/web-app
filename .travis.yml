@@ -4,7 +4,7 @@ sudo: false
 
 script:
   - npm test && npm run build
-  - mvn validate clean install | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  - mvn validate clean install | grep -v "(^\[INFO\]|^\[DEBUG\])^\[ERROR\])"
 cache:
   directories:
   - "$HOME/.m2"
