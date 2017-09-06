@@ -3,7 +3,7 @@ language: java
 sudo: false
 
 script:
-  - mvn clean install -q 
+  mvn validate clean install -q | egrep -v "(^\[INFO\])"
 cache:
   directories:
   - "$HOME/.m2"
