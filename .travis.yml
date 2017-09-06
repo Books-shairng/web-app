@@ -2,12 +2,12 @@ language: java
 
 sudo: false
 
-before-script:
+before_script:
  - cd webapp/
  - npm test && npm run build
 
 script:
-  - mvn validate clean install | grep -v "(^\[ERROR\])"
+  mvn validate clean install | egrep -v "(^\[INFO\]|^\[DEBUG\]^\INFO\)"
 cache:
   directories:
   - "$HOME/.m2"
@@ -15,7 +15,7 @@ cache:
 jdk:
   - oraclejdk8
 
-before-install:
+before_install:
   - cd webapp/
 
 install:
