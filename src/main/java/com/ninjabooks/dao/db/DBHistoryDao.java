@@ -2,14 +2,13 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -20,8 +19,6 @@ import java.util.stream.Stream;
 @Transactional
 public class DBHistoryDao implements HistoryDao
 {
-    private final static Logger logger = LogManager.getLogger(DBHistoryDao.class);
-
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<History> daoHelper;
 
@@ -32,9 +29,10 @@ public class DBHistoryDao implements HistoryDao
     }
 
     @Override
-    public History getById(Long id) {
+    public Optional<History> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(History.class, id);
+        History history = currentSession.get(History.class, id);
+        return Optional.ofNullable(history);
     }
 
     @Override

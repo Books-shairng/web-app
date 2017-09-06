@@ -74,7 +74,7 @@ public class AuthenticationController
     /**
      * This method perform authorization based on jwt tokens.
      *
-     * @param authenticationRequest - this object represnt request from frontend
+     * @param authenticationRequest - this object represent request from frontend
      * @param device - automatically detects type device which is needed to generate token
      * @return HTTP status 200 (ok) with  generated token
      * @throws AuthenticationException if any exception with authorization ocurs
@@ -82,20 +82,21 @@ public class AuthenticationController
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+        logger.info("User:{" + authenticationRequest.getEmail() + "} initiates authorization on the system");
 
-        // Perform the authentication
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Reload password post-authentication so we can generate token
+        performAuthentication(authenticationRequest);
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         String token = tokenUtils.generateToken(userDetails, device);
 
         logger.info("Successful generate token");
-        // Return the token
         return ResponseEntity.ok(new AuthenticationResponse(token));
+    }
+
+    private void performAuthentication(AuthenticationRequest authenticationRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     /**
@@ -107,20 +108,28 @@ public class AuthenticationController
 
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+        logger.info("Start refreshing the token");
         String header = request.getHeader("Authorization");
-        String token = null;
-
-        if (securityHeaderFinder.hasSecurityPattern(header))
-            token = securityHeaderFinder.extractToken(header);
+        String token = obtainTokenFromHeader(header);
 
         String username = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
         if (tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = tokenUtils.refreshToken(token);
+            logger.info("Correctly refresh token");
             return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
         }
         else {
+            logger.error("Failed to refresh the token");
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    private String obtainTokenFromHeader(String header) {
+        String token = null;
+        if (securityHeaderFinder.hasSecurityPattern(header))
+            token = securityHeaderFinder.extractToken(header);
+
+        return token;
     }
 }

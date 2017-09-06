@@ -1,19 +1,17 @@
 package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.QueueDao;
-import com.ninjabooks.domain.History;
 import com.ninjabooks.domain.Queue;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -22,19 +20,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBQueueDao implements QueueDao, SpecifiedElementFinder
+public class DBQueueDao implements QueueDao
 {
-    private final static Logger logger = LogManager.getLogger(DBQueueDao.class);
-
     private enum DBColumnName {ORDER_DATE}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<Queue> daoHelper;
+    private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBQueueDao(SessionFactory sessionFactory, DBDaoHelper<Queue> daoHelper) {
+    public DBQueueDao(SessionFactory sessionFactory, DBDaoHelper<Queue> daoHelper, @Qualifier(value = "queryFinder")
+        SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.daoHelper = daoHelper;
+        this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
@@ -44,14 +43,14 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
     }
 
     @Override
-    public Queue getById(Long id) {
+    public Optional<Queue> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(Queue.class, id);
+        return Optional.ofNullable(currentSession.get(Queue.class, id));
     }
 
     @Override
-    public Queue getByOrderDate(LocalDateTime orderDate) {
-        return findSpecifiedElementInDB(orderDate, DBColumnName.ORDER_DATE);
+    public Stream<Queue> getByOrderDate(LocalDateTime orderDate) {
+        return specifiedElementFinder.findSpecifiedElementInDB(orderDate, DBColumnName.ORDER_DATE);
     }
 
     @Override
@@ -82,18 +81,17 @@ public class DBQueueDao implements QueueDao, SpecifiedElementFinder
         return sessionFactory.openSession();
     }
 
-    @Override
-    @SuppressWarnings("unchecked t cast")
-    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-        Session currentSession = sessionFactory.openSession();
-        String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
-        Query<Queue> queueQuery = currentSession.createQuery(query, Queue.class);
-        queueQuery.setParameter("parameter", parameter);
-
-        List<Queue> results = queueQuery.getResultList();
-        if (!results.isEmpty()) {
-            return (T) results.get(0);
-        }
-        return null;
-    }
+//    @Override
+//    @SuppressWarnings("unchecked t cast")
+//    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+//        Session currentSession = sessionFactory.openSession();
+//        String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
+//        Query<Queue> queueQuery = currentSession.createQuery(query, Queue.class);
+//        queueQuery.setParameter("parameter", parameter);
+//
+//        if (queueQuery.getSingleResult() != null)
+//            return (T) queueQuery.getSingleResult();
+//
+//        return null;
+//    }
 }

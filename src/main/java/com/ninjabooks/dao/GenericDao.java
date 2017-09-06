@@ -1,9 +1,9 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.util.TransactionManager;
 import org.hibernate.Session;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -43,7 +43,7 @@ public interface GenericDao<E, K extends Serializable>
      * @return query with specified id
      */
 
-    E getById(K id);
+    Optional<E> getById(K id);
 
     /**
      * Add entity type element to table.
@@ -72,7 +72,8 @@ public interface GenericDao<E, K extends Serializable>
 
     /**
      * This method return current session status, which is necessary in
-     * @see TransactionManager
+     * perform any operation on db.
+     * By default it should implicate <code> SessionFactory.openSession </code>
      *
      * @return current connect session to db
      */

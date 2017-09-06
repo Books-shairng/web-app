@@ -2,6 +2,8 @@ package com.ninjabooks.dao;
 
 import com.ninjabooks.domain.QRCode;
 
+import java.util.Optional;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -15,5 +17,5 @@ public interface QRCodeDao extends GenericDao<QRCode, Long>
      * @return qr data
      */
 
-    QRCode getByData(String data);
+    Optional<QRCode> getByData(String data);
 }

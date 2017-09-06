@@ -3,6 +3,7 @@ package com.ninjabooks.dao;
 import com.ninjabooks.domain.Queue;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -17,5 +18,5 @@ public interface QueueDao extends GenericDao<Queue, Long>
      * @return book order date
      */
 
-    Queue getByOrderDate(LocalDateTime orderDate);
+    Stream<Queue> getByOrderDate(LocalDateTime orderDate);
 }

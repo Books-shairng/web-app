@@ -18,6 +18,9 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint
 {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().print("{\"Error\":\"Access Denied\"}");
+//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
     }
 }

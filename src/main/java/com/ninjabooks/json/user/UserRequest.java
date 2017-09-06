@@ -1,13 +1,17 @@
 package com.ninjabooks.json.user;
 
+import java.io.Serializable;
+
 /**
  *
  *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class UserRequest
+public class UserRequest implements Serializable
 {
+    private static final long serialVersionUID = -4625305707954795378L;
+
     private String firstName;
     private String lastName;
     private String email;

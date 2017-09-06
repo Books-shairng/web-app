@@ -3,6 +3,7 @@ package com.ninjabooks.dao;
 import com.ninjabooks.domain.Borrow;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -17,7 +18,7 @@ public interface BorrowDao extends GenericDao<Borrow, Long>
      * @return desired borrow date
      */
 
-    Borrow getByBorrowDate(LocalDate borrowDate);
+    Stream<Borrow> getByBorrowDate(LocalDate borrowDate);
 
     /**
      * Find return date by specified data.
@@ -26,5 +27,5 @@ public interface BorrowDao extends GenericDao<Borrow, Long>
      * @return desired return date
      */
 
-    Borrow getByReturnDate(LocalDate returnDate);
+    Stream<Borrow> getByReturnDate(LocalDate returnDate);
 }

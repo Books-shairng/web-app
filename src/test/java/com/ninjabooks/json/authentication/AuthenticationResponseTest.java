@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AuthenticationResponseTest
 {
-    private String token = "token";
+    private static final String TOKEN = "token";
 
     @Test
     public void testConstructorWithoutArgumentsShouldCreateObjectWithEmptyFields() throws Exception {
@@ -21,8 +21,8 @@ public class AuthenticationResponseTest
 
     @Test
     public void testConstructorWithArgumentsShouldCreateExpectedObject() throws Exception {
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse(token);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(TOKEN);
 
-        assertThat(authenticationResponse.getToken()).isEqualTo(token);
+        assertThat(authenticationResponse.getToken()).isEqualTo(TOKEN);
     }
 }

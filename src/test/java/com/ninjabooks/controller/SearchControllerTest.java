@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.dto.BookDto;
-import com.ninjabooks.service.SearchService;
+import com.ninjabooks.service.rest.search.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -25,32 +25,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SearchControllerTest
 {
+    private final static String SEARCH_QUERY = "Effective Java";
+
     @Mock
     private SearchService searchServiceMock;
 
-    private SearchController searchControllerMock;
+    private SearchController sut;
 
     private MockMvc mockMvc;
-
-    private final static String SEARCH_QUERY = "Effective Java";
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.searchControllerMock = new SearchController(searchServiceMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(searchControllerMock).build();
+        this.sut = new SearchController(searchServiceMock);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 
     @Test
     public void testSearchBookShouldFoundMatchedBookWithStatusOK() throws Exception {
         List<BookDto> resultList = Collections.singletonList(new BookDto());
-        when(searchServiceMock.searchBook(SEARCH_QUERY)).thenReturn(resultList);
+//        when(searchServiceMock.search(SEARCH_QUERY)).thenReturn(resultList);
 
         mockMvc.perform(get("/api/search/{query}", SEARCH_QUERY))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
-        verify(searchServiceMock, atLeastOnce()).searchBook(anyString());
+        verify(searchServiceMock, atLeastOnce()).search(anyString());
     }
 
     @Test

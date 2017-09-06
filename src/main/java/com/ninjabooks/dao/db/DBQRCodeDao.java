@@ -2,16 +2,15 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -20,19 +19,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
+public class DBQRCodeDao implements QRCodeDao
 {
-    private final static Logger logger = LogManager.getLogger(DBQRCodeDao.class);
-
     private enum DBColumnName {DATA}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<QRCode> daoHelper;
+    private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBQRCodeDao(SessionFactory sessionFactory, DBDaoHelper<QRCode> daoHelper) {
+    public DBQRCodeDao(SessionFactory sessionFactory, DBDaoHelper<QRCode> daoHelper, @Qualifier(value = "queryFinder")
+        SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.daoHelper = daoHelper;
+        this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
@@ -42,14 +42,15 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     }
 
     @Override
-    public QRCode getById(Long id) {
+    public Optional<QRCode> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(QRCode.class, id);
+        QRCode qrCode = currentSession.get(QRCode.class, id);
+        return Optional.ofNullable(qrCode);
     }
 
     @Override
-    public QRCode getByData(String data) {
-        return findSpecifiedElementInDB(data, DBColumnName.DATA);
+    public Optional<QRCode> getByData(String data) {
+        return specifiedElementFinder.findSpecifiedElementInDB(data, DBColumnName.DATA);
     }
 
     @Override
@@ -77,21 +78,6 @@ public class DBQRCodeDao implements QRCodeDao, SpecifiedElementFinder
     @Override
     public Session getCurrentSession() {
         return sessionFactory.openSession();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked t cast")
-    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-        Session currentSession = sessionFactory.openSession();
-        String query = "select qr_code from com.ninjabooks.domain.QRCode qr_code where " + columnName + "=:parameter";
-        Query<QRCode> qrCodeQuery = currentSession.createQuery(query, QRCode.class);
-        qrCodeQuery.setParameter("parameter", parameter);
-
-        List<QRCode> results = qrCodeQuery.getResultList();
-        if (!results.isEmpty()) {
-            return (T) results.get(0);
-        }
-        return null;
     }
 
 }
