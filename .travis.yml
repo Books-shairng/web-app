@@ -3,7 +3,7 @@ language: java
 sudo: false
 
 script:
-  - maven clean install
+  - mvn clean install
 
 cache:
   directories:
