@@ -2,9 +2,12 @@ language: java
 
 sudo: false
 
+node_js:
+  - "8"
+
 before_script:
- - cd src/main/webapp/
- - npm test && npm run build
+ - npm test --coverage --prefix src/main/webapp/  
+ - npm run build --prefix src/main/webapp/
 
 script:
   mvn validate clean install | egrep -v "(^\[INFO\]|^\[DEBUG\]^\INFO\)"
@@ -15,8 +18,6 @@ cache:
 jdk:
   - oraclejdk8
 
-before-install:
- - cd src/main/webapp/
-
 install:
+  - cd src/main/webapp/
   - npm install 	
