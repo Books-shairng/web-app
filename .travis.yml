@@ -3,8 +3,7 @@ language: java
 sudo: false
 
 script:
-  - mvn clean install -q -DtrimStackTrace=false 
-
+  - mvn clean install -q 
 cache:
   directories:
   - "$HOME/.m2"
@@ -13,7 +12,7 @@ jdk:
   - oraclejdk8
 
 before-install:
-  - cd src/main/webapp/
+  - cd webapp/
 
 install:
   - npm install 	
