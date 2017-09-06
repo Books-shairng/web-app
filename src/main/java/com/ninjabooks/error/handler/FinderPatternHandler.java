@@ -1,7 +1,7 @@
 package com.ninjabooks.error.handler;
 
+import com.ninjabooks.controller.AccountController;
 import com.ninjabooks.controller.AuthenticationController;
-import com.ninjabooks.controller.UserController;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@ControllerAdvice(basePackageClasses = {UserController.class, AuthenticationController.class})
+@ControllerAdvice(basePackageClasses = {AccountController.class, AuthenticationController.class})
 public class FinderPatternHandler
 {
     @ExceptionHandler(value = IllegalArgumentException.class)

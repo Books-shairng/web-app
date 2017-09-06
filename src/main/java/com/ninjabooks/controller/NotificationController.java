@@ -2,7 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
-import com.ninjabooks.service.NotificationService;
+import com.ninjabooks.service.rest.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

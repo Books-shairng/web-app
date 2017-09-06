@@ -1,7 +1,7 @@
 package com.ninjabooks.security;
 
-import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
+import com.ninjabooks.service.dao.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,19 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserAuthService implements UserDetailsService
 {
-    private final UserDao userDao;
+    private static final String ROLE_PREFIX = "ROLE_";
+
+    private final UserService userService;
 
     @Autowired
-    public UserAuthService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserAuthService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.getByEmail(username);
-
-        if (user == null)
-            throw new UsernameNotFoundException("User not found");
+        User user = userService.getByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new SpringSecurityUser(
             user.getId(),
@@ -40,7 +40,7 @@ public class UserAuthService implements UserDetailsService
             user.getPassword(),
             user.getEmail(),
             user.getLastPasswordReset(),
-            AuthorityUtils.createAuthorityList("USER")
+            AuthorityUtils.createAuthorityList(ROLE_PREFIX + user.getAuthoritiy())
         );
     }
 }

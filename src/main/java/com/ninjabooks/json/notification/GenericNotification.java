@@ -1,6 +1,10 @@
 package com.ninjabooks.json.notification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Book;
+import com.ninjabooks.dto.BookDto;
+import org.modelmapper.ModelMapper;
 
 /**
  * Notification by default should return information about book. If notification
@@ -9,46 +13,24 @@ import com.ninjabooks.domain.Book;
  *
  * @see BorrowNotification
  * @see QueueNotification
- *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 public abstract class GenericNotification
 {
-    private String author;
-    private String title;
-    private String isbn;
+    @JsonUnwrapped
+    @JsonIgnoreProperties(value = "id")
+    private BookDto bookDto;
 
-    public GenericNotification() {
+    public GenericNotification(ModelMapper modelMapper, Book book) {
+        bookDto = modelMapper.map(book, BookDto.class);
     }
 
-    public String getAuthor() {
-        return author;
+    public BookDto getBookDto() {
+        return bookDto;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    void obtainBookFromGenericType(Book book) {
-        author = book.getAuthor();
-        title = book.getTitle();
-        isbn = book.getIsbn();
+    public void setBookDto(BookDto bookDto) {
+        this.bookDto = bookDto;
     }
 }

@@ -111,7 +111,6 @@ public class Borrow extends BaseEntity
 
     private void calculateReturnDate(LocalDate borrowDate) {
         LocalDate tmpDate = borrowDate.plusDays(30);
-
         returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 

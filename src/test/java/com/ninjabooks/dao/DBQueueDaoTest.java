@@ -1,109 +1,140 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.configuration.HSQLConfig;
+import com.ninjabooks.dao.db.DBDaoHelper;
+import com.ninjabooks.dao.db.DBQueueDao;
 import com.ninjabooks.domain.Queue;
+import com.ninjabooks.util.CommonUtils;
+import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-@ContextConfiguration(classes = HSQLConfig.class)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("test")
 public class DBQueueDaoTest
 {
-    @Autowired
-    private QueueDao queueDao;
+    private static final LocalDateTime NEW_ORDER_DATE = LocalDateTime.now();
+    private static final Supplier<Stream<Queue>> QUEUE_STREAM_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.QUEUE);
+    private static final Supplier<Stream<Object>> EMPTY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
-    private final static LocalDateTime ORDER_DATE  = LocalDateTime.of(2017,  3, 21, 8, 17);
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private Queue queue;
-    private Queue nullQueue = null;
+    @Mock
+    private SessionFactory sessionFactoryMock;
+
+    @Mock
+    private DBDaoHelper<Queue> daoHelperMock;
+
+    @Mock
+    private Session sessionMock;
+
+    @Mock
+    private Query queryMock;
+
+    @Mock
+    private SpecifiedElementFinder specifiedElementFinderMock;
+
+    private QueueDao sut;
 
     @Before
     public void setUp() throws Exception {
-        this.queue = new Queue(ORDER_DATE);
+        this.sut = new DBQueueDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
-
-
 
     @Test
     public void testAddQeueu() throws Exception {
-        queueDao.add(queue);
-        Queue actual = queueDao.getAll().findFirst().get();
-        assertThat(actual.getOrderDate()).isEqualTo(queue.getOrderDate());
+        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
+        sut.add(DomainTestConstants.QUEUE);
+
+        verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteQueue() throws Exception {
-        queueDao.add(queue);
-        queueDao.delete(queue);
+        doNothing().when(daoHelperMock).delete(DomainTestConstants.QUEUE);
+        sut.delete(DomainTestConstants.QUEUE);
 
-        assertThat(queueDao.getAll()).isEmpty();
-    }
-
-
-    @Test
-    public void testDeleteQueueWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.delete(nullQueue))
-            .withNoCause();
+        verify(daoHelperMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testUpdateQueue() throws Exception {
-        Queue beforeUpdate = queue;
+        Queue beforeUpdate = DomainTestConstants.QUEUE;
+        beforeUpdate.setOrderDate(NEW_ORDER_DATE);
+        doNothing().when(daoHelperMock).update(beforeUpdate);
+        sut.update(beforeUpdate);
 
-        LocalDateTime newOrderDate = LocalDateTime.now();
-        beforeUpdate.setOrderDate(newOrderDate);
-        queueDao.update(beforeUpdate);
-
-        Queue afterUpdate = queueDao.getAll().findFirst().get();
-
-        assertThat(afterUpdate.getOrderDate()).isEqualTo(newOrderDate);
-    }
-
-
-    @Test
-    public void testUpdateQueueWhichNotExistShouldThorwsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> queueDao.update(nullQueue))
-            .withNoCause();
+        verify(daoHelperMock, atLeastOnce()).update(any());
     }
 
     @Test
     public void testGetAllShouldReturnsAllRecord() throws Exception {
-        queueDao.add(queue);
+        when(queryMock.stream()).thenReturn(QUEUE_STREAM_SUPPLIER.get());
+        Stream<Queue> actual = sut.getAll();
 
-        Queue actual = queueDao.getAll().findFirst().get();
-        assertThat(actual.getOrderDate()).isEqualTo(queue.getOrderDate());
+        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        verify(queryMock, atLeastOnce()).stream();
+    }
+
+    @Test
+    public void testGetAllOnEmptyDBShouldReturnEmptyStream() throws Exception {
+        Stream<Queue> actual = sut.getAll();
+
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    public void testGetById() throws Exception {
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.QUEUE);
+        Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
+
+        assertThat(actual).contains(DomainTestConstants.QUEUE);
+        verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
+    }
+
+    @Test
+    public void testGetByIdWhichNotExistShouldReturnEmptyOptional() throws Exception {
+        Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
+
+        assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetOrderByDate() throws Exception {
-        queueDao.add(queue);
-        Queue actual = queueDao.getByOrderDate(queue.getOrderDate());
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any())).thenReturn(QUEUE_STREAM_SUPPLIER.get());
+        Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
 
-        assertThat(actual.getOrderDate()).isEqualTo(queue.getOrderDate());
+        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
-    public void testGetOrderByDateWhichNotExistShouldReturnNull() throws Exception {
-        Queue actual = queueDao.getByOrderDate(LocalDateTime.now());
-        assertThat(actual).isNull();
+    public void testGetOrderByDateWhichNotExistShouldReturnEmptyStream() throws Exception {
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any())).thenReturn(EMPTY_STREAM_SUPPLIER.get());
+        Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
+
+        assertThat(actual).isEmpty();
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
 }

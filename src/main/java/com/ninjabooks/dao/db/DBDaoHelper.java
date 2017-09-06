@@ -9,22 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * This helper class contains all necessary methods to deal with updates and deletes in db.
  *
- *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @Component
 @Transactional
-class DBDaoHelper<E extends BaseEntity>
+public class DBDaoHelper<E extends BaseEntity>
 {
+    private enum Task {UPDATE, DELETE}
+
     private Session currentSession;
     private Transaction transaction;
 
     public DBDaoHelper() {
-    }
-
-    public Session getCurrentSession() {
-        return currentSession;
     }
 
     void setCurrentSession(Session currentSession) {
@@ -33,17 +30,20 @@ class DBDaoHelper<E extends BaseEntity>
     }
 
     public void update(E entity) {
-       transaction.begin();
-       currentSession.update(entity);
-       transaction.commit();
-       currentSession.close();
+        performTask(entity, Task.UPDATE);
     }
 
     public void delete(E entity) {
+        performTask(entity, Task.DELETE);
+    }
+
+    private void performTask(E entity, Task task) {
         transaction.begin();
-        currentSession.delete(entity);
+        if (task == Task.UPDATE)
+            currentSession.update(entity);
+        else
+            currentSession.delete(entity);
         transaction.commit();
         currentSession.close();
     }
-
 }

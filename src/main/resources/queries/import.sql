@@ -1,4 +1,3 @@
-
 -- ################################################# USER TABLE
 INSERT INTO USER (id, NAME, EMAIL, PASSWORD) VALUES (1, 'User 0', 'email0@sb.gov', '$2a$10$hJs3yeBGLMKnimakK0tjYOWGyMBPWgtBceW6pltjEhTCTVsjWbag.')
 INSERT INTO USER (id, NAME, EMAIL, PASSWORD) VALUES (2, 'User 1', 'email1@sb.gov', '$2a$10$X1lCYm.9nnJ.LvW43pyd4eSd3UgIrZxKKxej6ZMgt4vXaqrpfuU7W')

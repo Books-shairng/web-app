@@ -12,8 +12,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
  */
 public class ErrorResponseTest
 {
-    private  ErrorResponse errorResponse;
-
+    private  ErrorResponse sut;
 
     @Test
     public void testShouldReturnCorrectData() throws Exception {
@@ -21,12 +20,12 @@ public class ErrorResponseTest
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
         String request = "/api/users";
 
-        errorResponse = new ErrorResponse(httpStatus, exception, request);
+        sut = new ErrorResponse(httpStatus, exception, request);
 
         assertSoftly(softly -> {
-            assertThat(errorResponse.getMessage()).isEqualTo(exception.getMessage());
-            assertThat(errorResponse.getRequest()).isEqualTo(request);
-            assertThat(errorResponse.getStatus()).isEqualTo(httpStatus.value());
+            assertThat(sut.getMessage()).isEqualTo(exception.getMessage());
+            assertThat(sut.getRequest()).isEqualTo(request);
+            assertThat(sut.getStatus()).isEqualTo(httpStatus.value());
         });
     }
 }

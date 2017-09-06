@@ -1,141 +1,182 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.configuration.HSQLConfig;
+import com.ninjabooks.dao.db.DBBookDao;
+import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.domain.Book;
+import com.ninjabooks.util.CommonUtils;
+import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@ContextConfiguration(classes = HSQLConfig.class)
-@RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-@ActiveProfiles("test")
 public class DBBookDaoTest
 {
-    @Autowired
-    private BookDao bookDao;
+    private static final String UPDATED_TITLE = "New title";
+    private static final Supplier<Stream<Book>> BOOK_STREAM_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.BOOK);
+    private static final Supplier<Stream<Book>> EMPTY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
-    private static final String AUTHOR = "C. Ho, R. Harrop, C. Schaefer";
-    private static final String TITLE = "Pro Spring, 4th Edition";
-    private static final String ISBN = "978-1430261513";
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private Book book;
-    private Book nullBook = null;
+    @Mock
+    private SessionFactory sessionFactoryMock;
+
+    @Mock
+    private DBDaoHelper<Book> daoHelperMock;
+
+    @Mock
+    private Session sessionMock;
+
+    @Mock
+    private Query queryMock;
+
+    @Mock
+    private SpecifiedElementFinder specifiedElementFinderMock;
+
+    private DBBookDao sut;
 
     @Before
-
     public void setUp() throws Exception {
-        this.book = new Book(TITLE, AUTHOR, ISBN);
+        this.sut = new DBBookDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
     @Test
     public void testAddBook() throws Exception {
-        bookDao.add(book);
+        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
+        sut.add(DomainTestConstants.BOOK);
 
-        Book actual = bookDao.getAll().findFirst().get();
-
-        assertThat(actual.getId()).isEqualTo(book.getId());
+        verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteBook() throws Exception {
-        bookDao.add(book);
-        bookDao.delete(book);
-        assertThat(bookDao.getAll()).isEmpty();
+        doNothing().when(daoHelperMock).delete(DomainTestConstants.BOOK);
+        sut.delete(DomainTestConstants.BOOK);
+
+        verify(daoHelperMock, atLeastOnce()).delete(any());
     }
 
     @Test
-    public void testTryDeleteBookWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.delete(nullBook))
-            .withNoCause();
+    public void testGetByID() throws Exception {
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.BOOK);
+        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+
+        assertThat(actual).contains(DomainTestConstants.BOOK);
+        verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
+    }
+
+    @Test
+    public void testGetByIdBookWhichNotExistShouldRetunEmptyOptional() throws Exception {
+        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+
+        assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetAllShouldRetrunAllRecords() throws Exception {
-        bookDao.add(book);
+        when(queryMock.stream()).thenReturn(BOOK_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getAll();
 
-        Book actual = bookDao.getAll().findFirst().get();
-        assertThat(actual.getId()).isEqualTo(book.getId());
+        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        verify(queryMock, atLeastOnce()).stream();
     }
-//
+
+    @Test
+    public void testGetAllWhenDBIsEmptyShouldReturnEmptyStream() throws Exception {
+        Stream<Book> actual = sut.getAll();
+
+        assertThat(actual).isEmpty();
+    }
+
     @Test
     public void testGetBooksByTitle() throws Exception {
-        bookDao.add(book);
-        Stream<Book> actual = bookDao.getByTitle(TITLE);
-        Book b = actual.findAny().get();
-        assertThat(b.getTitle()).isEqualTo(book.getTitle());
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(BOOK_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+
+        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testGetBooksByAuthor() throws Exception {
-        bookDao.add(book);
-        Stream<Book> actual = bookDao.getByAuthor(AUTHOR);
-        Book b = actual.findAny().get();
-        assertThat(b.getAuthor()).isEqualTo(book.getAuthor());
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(BOOK_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+
+        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testGetBooksByISBN() throws Exception {
-        bookDao.add(book);
-        Stream<Book> actual = bookDao.getByISBN(ISBN);
-        Book b = actual.findAny().get();
-        assertThat(b.getIsbn()).isEqualTo(book.getIsbn());
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(BOOK_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+
+        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testGetBookTitleWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = bookDao.getByTitle("Effective Java");
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(EMPTY_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
 
         assertThat(actual).isEmpty();
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testGetBookAuthorWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = bookDao.getByAuthor("J. Bloch");
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(EMPTY_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
 
         assertThat(actual).isEmpty();
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testGetBookISBNWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = bookDao.getByISBN("978-0321356680");
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any()))
+            .thenReturn(EMPTY_STREAM_SUPPLIER.get());
+        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
 
         assertThat(actual).isEmpty();
+        verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any());
     }
 
     @Test
     public void testUpdateBookByEnity() throws Exception {
-        Book beforeUpdate = book;
-        bookDao.add(beforeUpdate);
-        beforeUpdate.setTitle("New Title");
+        Book beforeUpdate = DomainTestConstants.BOOK;
+        beforeUpdate.setTitle(UPDATED_TITLE);
 
-        bookDao.update(beforeUpdate);
+        doNothing().when(daoHelperMock).update(beforeUpdate);
+        sut.update(beforeUpdate);
 
-        Book updatedBook =  bookDao.getById(book.getId());
-
-        assertThat(updatedBook.getTitle()).isEqualTo("New Title");
+        verify(daoHelperMock, atLeastOnce()).update(any());
     }
-
-    @Test
-    public void testTryUpdateBookWhichNotExistShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> bookDao.update(nullBook))
-            .withMessage("attempt to create saveOrUpdate event with null entity")
-            .withNoCause();
-    }
-
 }
