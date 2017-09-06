@@ -1,12 +1,9 @@
 package com.ninjabooks.service.rest.book;
 
-import com.ninjabooks.domain.Book;
-import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.service.dao.book.BookService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.CodeGenerator;
-import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,8 +54,8 @@ public class BookRestServiceImplTest
 
     @Test
     public void testAddNewBookWhenUnableToGenerateUniqueCodeShouldThrowsException() throws Exception {
-        when(qrCodeServiceMock.getByData(any())).thenReturn(Optional.of(CommonUtils.DATA));
-        assertThatExceptionOfType(QRCodeException.class).isThrownBy(() -> sut.addBook(BOOK))
+        when(qrCodeServiceMock.getByData(any())).thenReturn(Optional.of(DomainTestConstants.QR_CODE));
+        assertThatExceptionOfType(QRCodeException.class).isThrownBy(() -> sut.addBook(DomainTestConstants.BOOK))
             .withNoCause();
 
         verify(qrCodeServiceMock, atLeastOnce()).getByData(any());
