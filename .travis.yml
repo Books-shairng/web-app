@@ -15,7 +15,7 @@ cache:
 jdk:
   - oraclejdk8
 
-before-install
+before-install:
  - cd src/main/webapp/
 
 install:
