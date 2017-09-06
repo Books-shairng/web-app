@@ -3,7 +3,6 @@ language: java
 sudo: false
 
 before_script:
- - cd webapp/
  - npm test && npm run build
 
 script:
@@ -14,9 +13,6 @@ cache:
 
 jdk:
   - oraclejdk8
-
-before_install:
-  - cd webapp/
 
 install:
   - npm install 	
