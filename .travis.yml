@@ -3,7 +3,7 @@ language: java
 sudo: false
 
 before_script:
- - cd web-app/webapp
+ - ls
  - npm test && npm run build
 
 script:
