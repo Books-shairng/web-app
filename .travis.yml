@@ -13,7 +13,7 @@ jdk:
   - oraclejdk8
 	
 before-install:
-	- cd src/main/webapp/
+  - cd src/main/webapp/
 
 install:
-	- npm install 	
+  - npm install 	
