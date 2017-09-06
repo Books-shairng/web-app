@@ -6,7 +6,8 @@ node_js:
   - "8"
 
 script:
-  mvn clean install -q -Dlog4j.configurationFile=null | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  mvn clean test -q -Dlog4j.configurationFile=null | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  
 cache:
   directories:
   - "$HOME/.m2"
