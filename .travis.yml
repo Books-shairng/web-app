@@ -6,8 +6,8 @@ node_js:
   - "8"
 
 before_script:
- - npm test --coverage --prefix src/main/webapp/  
- - npm run build --prefix src/main/webapp/
+ - npm test --coverage 
+ - npm run build 
 
 script:
   mvn validate clean install | egrep -v "(^\[INFO\]|^\[DEBUG\]^\INFO\)"
