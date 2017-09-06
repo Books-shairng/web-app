@@ -3,7 +3,7 @@ language: java
 sudo: false
 
 script:
-  - mvn clean install
+  - mvn clean install -q -DtrimStackTrace=false 
 
 cache:
   directories:
