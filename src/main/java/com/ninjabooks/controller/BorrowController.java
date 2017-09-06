@@ -5,7 +5,7 @@ import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.error.qrcode.QRCodeNotFoundException;
-import com.ninjabooks.service.BorrowService;
+import com.ninjabooks.service.dao.borrow.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+//todo refactoring this shit
 @RestController
 @ResponseStatus(value = HttpStatus.OK)
 @RequestMapping(value = "/api/borrow/")

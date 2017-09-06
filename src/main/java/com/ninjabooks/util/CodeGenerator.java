@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 @Component
 public class CodeGenerator
 {
-    private final int DEFAULT_QR_CODE_LENGTH = 5;
+    private final int DEFAULT_QR_CODE_LENGTH = 10;
 
     private char[] asciCoordinates;
 
@@ -31,6 +31,8 @@ public class CodeGenerator
         for (int i = 0; i < DEFAULT_QR_CODE_LENGTH; i++) {
             int index = secureRandom.nextInt(asciCoordinates.length);
             builder.append(asciCoordinates[index]);
+            if (asciCoordinates[index] == '\\')
+                builder.append("\\");
         }
 
         return builder.toString();

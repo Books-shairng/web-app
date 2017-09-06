@@ -1,12 +1,19 @@
 package com.ninjabooks.json.notification;
 
+import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.dto.BookDto;
+import com.ninjabooks.dto.BorrowDto;
+import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.modelmapper.ModelMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -15,35 +22,50 @@ import static org.mockito.Mockito.when;
  */
 public class BorrowNotificationTest
 {
-    @Mock
-    private BorrowNotification queueNotification;
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
 
-    private static final String AUTHOR = "C. Ho, R. Harrop, C. Schaefer";
-    private static final String TITLE = "Pro Spring, 4th Edition";
-    private static final String ISBN = "978-1430261513";
-    private static final String DATE = "2017-05-03";
+    @Mock
+    private Borrow borrowMock;
+
+    @Mock
+    private ModelMapper modelMapperMock;
+
+    @Mock
+    private BorrowDto borrowDtoMock;
+
+    @Mock
+    private BookDto bookDtoMock;
+
+    private BorrowNotification sut;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        when(modelMapperMock.map(any(), any())).thenReturn(bookDtoMock, borrowDtoMock);
+        this.sut = new BorrowNotification(borrowMock, modelMapperMock);
     }
 
     @Test
-    public void testNotificationReturnCorrectData() throws Exception {
+    public void testNotificationShouldReturnCorrectReturnDate() throws Exception {
+        when(borrowDtoMock.getReturnDate()).thenReturn(DomainTestConstants.RETURN_DATE.toString());
+        BorrowDto actual = sut.getBorrowDto();
 
-        when(queueNotification.getAuthor()).thenReturn(AUTHOR);
-        when(queueNotification.getTitle()).thenReturn(TITLE);
-        when(queueNotification.getIsbn()).thenReturn(ISBN);
-        when(queueNotification.getReturnDate()).thenReturn(DATE);
-        when(queueNotification.getBorrowDate()).thenReturn(DATE);
+        assertThat(actual).extracting("returnDate").contains(DomainTestConstants.RETURN_DATE.toString());
+    }
 
+    @Test
+    public void testNotificationShouldReturnCorrectBorrowDate() throws Exception {
+        when(borrowDtoMock.getBorrowDate()).thenReturn(DomainTestConstants.BORROW_DATE.toString());
+        BorrowDto actual = sut.getBorrowDto();
 
-        assertSoftly(softly -> {
-            assertThat(queueNotification.getAuthor()).isEqualTo(AUTHOR);
-            assertThat(queueNotification.getIsbn()).isEqualTo(ISBN);
-            assertThat(queueNotification.getTitle()).isEqualTo(TITLE);
-            assertThat(queueNotification.getReturnDate()).isEqualTo(DATE);
-            assertThat(queueNotification.getBorrowDate()).isEqualTo(DATE);
-        });
+        assertThat(actual).extracting("borrowDate").contains(DomainTestConstants.BORROW_DATE.toString());
+    }
+
+    @Test
+    public void testNotificationShouldReturnExpectedBorrowStatus() throws Exception {
+        when(borrowDtoMock.getCanExtendBorrow()).thenReturn(DomainTestConstants.CAN_EXTEND);
+        BorrowDto actual = sut.getBorrowDto();
+
+        assertThat(actual).extracting("canExtendBorrow").contains(DomainTestConstants.CAN_EXTEND);
     }
 }

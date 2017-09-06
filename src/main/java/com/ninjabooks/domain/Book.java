@@ -25,6 +25,7 @@ import java.util.Objects;
 
 @Entity
 @Indexed
+@Boost(value = 2f)
 @Table(name = "BOOK")
 public class Book extends BaseEntity
 {
@@ -70,7 +71,7 @@ public class Book extends BaseEntity
         this.isbn = isbn;
     }
 
-    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO, name = "searchField")
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO, name = "allFields")
     public String getSearchQuery() {
         return author + " " + title + " " + isbn;
     }

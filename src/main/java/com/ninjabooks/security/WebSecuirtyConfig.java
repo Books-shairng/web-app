@@ -1,5 +1,6 @@
 package com.ninjabooks.security;
 
+import com.ninjabooks.util.SecurityHeaderFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,20 +25,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @since 1.0
  */
 @Configuration
-@ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class})
+@ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class, SecurityHeaderFinder.class})
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 {
     private final UserDetailsService userAuthService;
     private final EntryPointUnauthorizedHandler unauthorizedHandler;
     private final TokenUtils tokenUtils;
-
+    private final SecurityHeaderFinder securityHeaderFinder;
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils) {
+    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils, SecurityHeaderFinder securityHeaderFinder) {
         this.userAuthService = userAuthService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.tokenUtils = tokenUtils;
+        this.securityHeaderFinder = securityHeaderFinder;
     }
 
     @Autowired
@@ -45,6 +49,7 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
             .userDetailsService(userAuthService)
             .passwordEncoder(passwordEncoder());
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userAuthService).passwordEncoder(passwordEncoder());
@@ -60,9 +65,11 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers("/").anonymous()
             .antMatchers(HttpMethod.GET, "/**").permitAll()
-            .antMatchers("/auth/**").permitAll()
-            .anyRequest().authenticated();
+            .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+            .antMatchers("/api/auth", "/api/auth/**").permitAll()
+            .anyRequest().fullyAuthenticated();
 
         // Custom JWT based security filter
         http
@@ -86,8 +93,9 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 
     @Bean
     public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {
-        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(userAuthService, tokenUtils);
+        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(tokenUtils, userAuthService, securityHeaderFinder);
         authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
+
         return authenticationTokenFilter;
     }
 }

@@ -2,12 +2,16 @@ package com.ninjabooks.json.error;
 
 import org.springframework.http.HttpStatus;
 
+import java.io.Serializable;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class ErrorResponse
+public class ErrorResponse implements Serializable
 {
+    private static final long serialVersionUID = -3253330504028658177L;
+
     private int status;
     private String message;
     private String request;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfResponse;
-import com.ninjabooks.service.BookService;
+import com.ninjabooks.service.rest.book.BookRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BookController
 {
-    private final BookService bookService;
+    private final BookRestService bookService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public BookController(BookService bookService, ObjectMapper objectMapper) {
+    public BookController(BookRestService bookService, ObjectMapper objectMapper) {
         this.bookService = bookService;
         this.objectMapper = objectMapper;
     }
@@ -40,8 +40,9 @@ public class BookController
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/api/books/{bookID}", method = RequestMethod.GET)
-    public BookInfResponse getDetailedInformationAboutBook(@PathVariable Long bookID) {
-        Book book = bookService.getBookById(bookID);
-        return new BookInfResponse(book);
+    public BookInfResponse getBookInfo(@PathVariable Long bookID) {
+//        Book book = bookService.(bookID).get();
+//        return new BookInfResponse(book);
+        return null;
     }
 }

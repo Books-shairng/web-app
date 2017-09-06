@@ -2,16 +2,16 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -20,19 +20,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
+public class DBBorrowDao implements BorrowDao
 {
-    private final  static Logger logger = LogManager.getLogger(DBBorrowDao.class);
-
     private enum DBColumnName {BORROW_DATE, RETURN_DATE}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<Borrow> dbDaoHelper;
+    private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBBorrowDao(SessionFactory sessionFactory, DBDaoHelper<Borrow> dbDaoHelper) {
+    public DBBorrowDao(SessionFactory sessionFactory, DBDaoHelper<Borrow> dbDaoHelper,
+    @Qualifier(value = "streamFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.dbDaoHelper = dbDaoHelper;
+        this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
@@ -42,19 +43,20 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
     }
 
     @Override
-    public Borrow getById(Long id) {
+    public Optional<Borrow> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(Borrow.class, id);
+        Borrow borrow = currentSession.get(Borrow.class, id);
+        return Optional.ofNullable(borrow);
     }
 
     @Override
-    public Borrow getByReturnDate(LocalDate returnDate) {
-        return findSpecifiedElementInDB(returnDate, DBColumnName.RETURN_DATE);
+    public Stream<Borrow> getByReturnDate(LocalDate returnDate) {
+        return specifiedElementFinder.findSpecifiedElementInDB(returnDate, DBColumnName.RETURN_DATE);
     }
 
     @Override
-    public Borrow getByBorrowDate(LocalDate borrowDate) {
-        return findSpecifiedElementInDB(borrowDate, DBColumnName.BORROW_DATE);
+    public Stream<Borrow> getByBorrowDate(LocalDate borrowDate) {
+        return specifiedElementFinder.findSpecifiedElementInDB(borrowDate, DBColumnName.BORROW_DATE);
     }
 
     @Override
@@ -83,17 +85,4 @@ public class DBBorrowDao implements BorrowDao, SpecifiedElementFinder
         return sessionFactory.openSession();
     }
 
-    @Override
-    @SuppressWarnings("unchecked t cast")
-    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-        Session currentSession = sessionFactory.openSession();
-        String query = "select borrow from com.ninjabooks.domain.Borrow borrow where " + columnName + "=:parameter";
-        Query<Borrow> bookQuery = currentSession.createQuery(query, Borrow.class);
-        bookQuery.setParameter("parameter", parameter);
-
-        if (bookQuery.getSingleResult() != null) {
-            return (T) bookQuery.getSingleResult();
-        }
-        return null;
-    }
 }

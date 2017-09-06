@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AuthenticationRequestTest
 {
-    private String email = "email@example.com";
-    private String password = "secret";
+    private static final String EMAIL = "email@example.com";
+    private static final String PASSWORD = "secret";
 
     @Test
     public void testCallConstructorWithoutArgumentsShouldCreateObject() throws Exception {
@@ -23,9 +23,9 @@ public class AuthenticationRequestTest
 
     @Test
     public void testCallConstructorWithArgumentsShouldCreateExpectedInstance() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest(email, password);
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest(EMAIL, PASSWORD);
 
-        assertThat(authenticationRequest.getEmail()).isEqualTo(email);
-        assertThat(authenticationRequest.getPassword()).isEqualTo(password);
+        assertThat(authenticationRequest.getEmail()).isEqualTo(EMAIL);
+        assertThat(authenticationRequest.getPassword()).isEqualTo(PASSWORD);
     }
 }

@@ -1,11 +1,12 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.domain.Book;
 import com.ninjabooks.dto.BookDto;
-import com.ninjabooks.service.SearchService;
+import com.ninjabooks.service.rest.search.SearchService;
+import com.ninjabooks.util.CommonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +37,15 @@ public class SearchController
     @RequestMapping(value = "/api/search/{query}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<BookDto>>> searchBook(@PathVariable String query) {
         logger.info("An attempt to find the following book:" + query);
-        List<BookDto> searchResult = searchService.searchBook(query);
+//        List<BookDto> searchResult = searchService.search(query).collect(Collectors.toList());
+        List<Book> searchResult = searchService.search(query);
+        Map<String, List<BookDto>> searchResponse =
+            Collections.singletonMap("searchResult", CommonUtils.domainObjectAsDto(searchResult, BookDto.class));
 
-        Map<String, List<BookDto>> searchResponse = Collections.singletonMap("searchResult", searchResult);
+//        if (searchResult.isEmpty())
+//            ResponseEntity.noContent();
+//            return new ResponseEntity<>(searchResponse, HttpStatus.NO_CONTENT);
 
-        if (searchResult.isEmpty())
-            return new ResponseEntity<>(searchResponse, HttpStatus.NO_CONTENT);
-
-        return new ResponseEntity<>(searchResponse, HttpStatus.OK);
+        return ResponseEntity.ok(searchResponse);
     }
 }

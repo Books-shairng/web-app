@@ -2,6 +2,8 @@ package com.ninjabooks.dao;
 
 import com.ninjabooks.domain.User;
 
+import java.util.Optional;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -15,7 +17,7 @@ public interface UserDao extends GenericDao<User, Long>
      * @return user with desired name
      */
 
-    User getByName(String name);
+    Optional<User> getByName(String name);
 
     /**
      * Search user by his email
@@ -23,6 +25,6 @@ public interface UserDao extends GenericDao<User, Long>
      * @param email is parameter which is searched
      * @return user with desierd email
      */
-    
-    User getByEmail(String email);
+
+    Optional<User> getByEmail(String email);
 }

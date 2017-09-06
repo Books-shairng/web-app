@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "QR_CODE")
 public class QRCode extends BaseEntity
 {
-    @Column(name = "DATA", length = 5)
+    @Column(name = "DATA", length = 10)
     private String data;
 
     @OneToOne(mappedBy = "QRCode")

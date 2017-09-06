@@ -34,7 +34,6 @@ public class AppConfig extends WebMvcConfigurerAdapter
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -60,7 +59,6 @@ public class AppConfig extends WebMvcConfigurerAdapter
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-
         argumentResolvers.add(deviceConfig.deviceHandlerMethodArgumentResolver());
         argumentResolvers.add(deviceConfig.sitePreferenceHandlerMethodArgumentResolver());
     }

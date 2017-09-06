@@ -2,15 +2,15 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.domain.Book;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -19,19 +19,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBBookDao implements BookDao, SpecifiedElementFinder
+public class DBBookDao implements BookDao
 {
-    private final static Logger logger = LogManager.getLogger(DBBookDao.class);
-
     private enum DBColumnName {TITLE, AUTHOR, ISBN}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<Book> daoHelper;
+    private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBBookDao(SessionFactory sessionFactory, DBDaoHelper<Book> daoHelper) {
+    public DBBookDao(SessionFactory sessionFactory, DBDaoHelper<Book> daoHelper, @Qualifier(value = "streamFinder")
+        SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.daoHelper = daoHelper;
+        this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
@@ -41,24 +42,25 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
     }
 
     @Override
-    public Book getById(Long id) {
+    public Optional<Book> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(Book.class, id);
+        Book book = currentSession.get(Book.class, id);
+        return Optional.ofNullable(book);
     }
 
     @Override
     public Stream<Book> getByTitle(String title) {
-        return findSpecifiedElementInDB(title, DBColumnName.TITLE);
+        return specifiedElementFinder.findSpecifiedElementInDB(title, DBColumnName.TITLE);
     }
 
     @Override
     public Stream<Book> getByAuthor(String author) {
-        return findSpecifiedElementInDB(author, DBColumnName.AUTHOR);
+        return specifiedElementFinder.findSpecifiedElementInDB(author, DBColumnName.AUTHOR);
     }
 
     @Override
     public Stream<Book> getByISBN(String isbn) {
-        return findSpecifiedElementInDB(isbn, DBColumnName.ISBN);
+        return specifiedElementFinder.findSpecifiedElementInDB(isbn, DBColumnName.ISBN);
     }
 
     @Override
@@ -84,16 +86,16 @@ public class DBBookDao implements BookDao, SpecifiedElementFinder
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+        return sessionFactory.openSession();
     }
 
-    @Override
-    @SuppressWarnings("unchecked t cast")
-    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-        Session currentSession = sessionFactory.openSession();
-        String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
-        Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
-        bookQuery.setParameter("parameter", parameter);
-        return (T) bookQuery.stream();
-    }
+//    @Override
+//    @SuppressWarnings("unchecked t cast")
+//    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
+//        Session currentSession = sessionFactory.openSession();
+//        String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
+//        Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
+//        bookQuery.setParameter("parameter", parameter);
+//        return (T) bookQuery.stream();
+//    }
 }

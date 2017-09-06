@@ -1,6 +1,6 @@
 package com.ninjabooks.security;
 
-import com.ninjabooks.util.DateParser;
+import com.ninjabooks.util.DateUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,6 +8,7 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -22,11 +23,11 @@ import java.util.Map;
  * @since 1.0
  */
 @Component
-public class TokenUtils
+public class TokenUtils implements Serializable
 {
-    static final String CLAIM_KEY_USERNAME = "sub";
-    static final String CLAIM_KEY_AUDIENCE = "audience";
-    static final String CLAIM_KEY_CREATED = "created";
+    private static final String CLAIM_KEY_USERNAME = "sub";
+    private static final String CLAIM_KEY_AUDIENCE = "audience";
+    private static final String CLAIM_KEY_CREATED = "created";
 
     private static final long serialVersionUID = -3301605591108950415L;
 
@@ -53,7 +54,7 @@ public class TokenUtils
         try {
             final Claims claims = getClaimsFromToken(token);
             LinkedHashMap dataMap = (LinkedHashMap) claims.get(CLAIM_KEY_CREATED);
-            created = DateParser.parseMapToLocalDateTime(dataMap);
+            created = DateUtils.parseMapToLocalDateTime(dataMap);
         } catch (Exception e) {
             created = null;
         }

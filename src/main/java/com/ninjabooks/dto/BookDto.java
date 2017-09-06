@@ -6,6 +6,8 @@ package com.ninjabooks.dto;
  */
 public class BookDto extends BaseEntityDto
 {
+    private static final long serialVersionUID = -6767045281479130800L;
+
     private String author;
     private String title;
     private String isbn;

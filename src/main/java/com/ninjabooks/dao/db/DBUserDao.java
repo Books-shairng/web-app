@@ -2,16 +2,15 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ninjabooks.util.db.SpecifiedElementFinder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -20,19 +19,20 @@ import java.util.stream.Stream;
  */
 @Repository
 @Transactional
-public class DBUserDao implements UserDao, SpecifiedElementFinder
+public class DBUserDao implements UserDao
 {
-    private final static Logger logger = LogManager.getLogger(DBUserDao.class);
-
     private enum DBColumnName {NAME, EMAIL}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<User> daoHelper;
+    private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBUserDao(SessionFactory sessionFactory, DBDaoHelper<User> daoHelper) {
+    public DBUserDao(SessionFactory sessionFactory, DBDaoHelper<User> daoHelper, @Qualifier(value = "queryFinder")
+        SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.daoHelper = daoHelper;
+        this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
@@ -42,19 +42,20 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
     }
 
     @Override
-    public User getById(Long id) {
+    public Optional<User> getById(Long id) {
         Session currentSession = sessionFactory.openSession();
-        return currentSession.get(User.class, id);
+        User user = currentSession.get(User.class, id);
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public User getByName(String name) {
-        return findSpecifiedElementInDB(name, DBColumnName.NAME);
+    public Optional<User> getByName(String name) {
+        return specifiedElementFinder.findSpecifiedElementInDB(name, DBColumnName.NAME);
     }
 
     @Override
-    public User getByEmail(String email) {
-        return findSpecifiedElementInDB(email, DBColumnName.EMAIL);
+    public Optional<User> getByEmail(String email) {
+        return specifiedElementFinder.findSpecifiedElementInDB(email, DBColumnName.EMAIL);
     }
 
     @Override
@@ -83,18 +84,4 @@ public class DBUserDao implements UserDao, SpecifiedElementFinder
         return sessionFactory.openSession();
     }
 
-    @Override
-    @SuppressWarnings("unchecked t cast")
-    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-        Session currentSession = sessionFactory.openSession();
-        String query = "select user from User user where " + columnName + "=:parameter";
-        Query<User> userQuery = currentSession.createQuery(query, User.class);
-        userQuery.setParameter("parameter", parameter);
-
-        List<User> results = userQuery.getResultList();
-        if (!results.isEmpty()) {
-            return (T) results.get(0);
-        }
-        return null;
-    }
 }
