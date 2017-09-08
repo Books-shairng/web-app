@@ -6,8 +6,8 @@ node_js:
   - "8"
 
 script:
-  - mvn clean install -Dlog4j.configurationFile=null
-  - mvn cobertura:cobertura -Dlog4j.configurationFile=null
+  - mvn clean install -q -Dlog4j.configurationFile=null
+  - mvn cobertura:cobertura -q -Dlog4j.configurationFile=null
 
 cache:
   directories:
