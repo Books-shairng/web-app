@@ -1,11 +1,13 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.service.rest.search.SearchService;
+import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -16,6 +18,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SearchControllerTest
 {
     private final static String SEARCH_QUERY = "Effective Java";
+    private static final List SEARCH_RESULT = Collections.singletonList(DomainTestConstants.BOOK);
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private SearchService searchServiceMock;
@@ -36,15 +43,13 @@ public class SearchControllerTest
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         this.sut = new SearchController(searchServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 
     @Test
     public void testSearchBookShouldFoundMatchedBookWithStatusOK() throws Exception {
-        List<BookDto> resultList = Collections.singletonList(new BookDto());
-//        when(searchServiceMock.search(SEARCH_QUERY)).thenReturn(resultList);
+        when(searchServiceMock.search(anyString())).thenReturn(SEARCH_RESULT);
 
         mockMvc.perform(get("/api/search/{query}", SEARCH_QUERY))
             .andExpect(status().isOk())
@@ -55,8 +60,12 @@ public class SearchControllerTest
 
     @Test
     public void testSearchBookShouldReturnStatus204() throws Exception {
+        when(searchServiceMock.search(anyString())).thenReturn(Collections.emptyList());
+
         mockMvc.perform(get("/api/search/{query}", SEARCH_QUERY))
-            .andExpect(status().isNoContent())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andDo(print())
+            .andExpect(status().isNoContent());
+
+        verify(searchServiceMock, atLeastOnce()).search(anyString());
     }
 }
