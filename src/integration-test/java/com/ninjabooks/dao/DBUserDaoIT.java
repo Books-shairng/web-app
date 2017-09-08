@@ -3,6 +3,7 @@ package com.ninjabooks.dao;
 import com.ninjabooks.configuration.DBConnectConfig;
 import com.ninjabooks.configuration.TestAppContextInitializer;
 import com.ninjabooks.domain.User;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Ignore
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(classes = DBConnectConfig.class,
     initializers = TestAppContextInitializer.class)
