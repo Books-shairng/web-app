@@ -17,7 +17,7 @@ jdk:
   - oraclejdk8
 
 before_install:
-    - export TZ=Poland/Warsaw
+    - export TZ=Poland
 
 install:
   - npm install --prefix src/main/webapp/
