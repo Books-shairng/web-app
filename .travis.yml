@@ -7,7 +7,7 @@ node_js:
 
 script:
   - mvn clean install -Dlog4j.configurationFile=null
-  - mvn cobertura:cobertura -Dlog4j.configurationFile=null  
+  - mvn cobertura:cobertura -Dlog4j.configurationFile=null
 
 cache:
   directories:
@@ -16,14 +16,17 @@ cache:
 jdk:
   - oraclejdk8
 
+before_install:
+    - export TZ=Poland/Warsaw
+
 install:
   - npm install --prefix src/main/webapp/
 
 notifications:
   email: false
-  
-after_success: 
+
+after_success:
   - bash <(curl -s https://codecov.io/bash)
-  
+
 after_failure:
   - bash <(curl -s https://codecov.io/bash)
