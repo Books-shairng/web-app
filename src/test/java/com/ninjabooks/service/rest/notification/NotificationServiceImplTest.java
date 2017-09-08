@@ -1,4 +1,4 @@
-package com.ninjabooks.service.rest;
+package com.ninjabooks.service.rest.notification;
 
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.json.notification.BorrowNotification;

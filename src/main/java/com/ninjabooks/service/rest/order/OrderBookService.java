@@ -11,8 +11,8 @@ public interface OrderBookService
     /**
      * Order title chosen by user,
      *  @param userID - current user id
-     * @param title - title which will be ordered
+     *  @param bookID - book ID which will be ordered by user
      */
 
-    void orderBook(Long userID, String title) throws OrderException;
+    void orderBook(Long userID, Long bookID) throws OrderException;
 }
