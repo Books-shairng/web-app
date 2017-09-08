@@ -31,7 +31,7 @@ public class UserRequestTest
 
     @Test
     public void testgetNameWithIncorrectData() throws Exception {
-        String firstName = "12312312Jo!!@#65667&(*_)(    h     ny";
+        String firstName = "12312312Jo!!@#65667&(*_)(    h     n";
         String lastName = "31321@!#D@#!@#4@e@$!@$!@             e";
         sut.setFirstName(firstName);
         sut.setLastName(lastName);

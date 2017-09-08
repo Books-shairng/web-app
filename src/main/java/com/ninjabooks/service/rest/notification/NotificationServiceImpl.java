@@ -6,13 +6,13 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
+import com.ninjabooks.util.EntityUtils;
 import org.hibernate.query.NativeQuery;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ public class NotificationServiceImpl implements  NotificationService
     //todo refaktoryzacje tego dziadostwa
     @Override
     public List<BorrowNotification> findUserBorrows(Long userID) {
-        User currentUser = getUser(userID);
+        User currentUser = EntityUtils.getEnity(userService, userID);
         List<Borrow> borrows = currentUser.getBorrows();
 
         return borrows.stream()
@@ -50,7 +50,7 @@ public class NotificationServiceImpl implements  NotificationService
 
     @Override
     public List<QueueNotification> findUserQueues(Long userID) {
-        User currentUser = getUser(userID);
+        User currentUser = EntityUtils.getEnity(userService, userID);
         List<Queue> queues = currentUser.getQueues();
 
         return queues.stream()
@@ -79,10 +79,5 @@ public class NotificationServiceImpl implements  NotificationService
         queueQuery.setParameter("id", bookID);
 
         return queueQuery.getResultList();
-    }
-
-    private User getUser(Long id) {
-        return userService.getById(id)
-            .orElseThrow(() -> new EntityNotFoundException("User with id: " + id + " not found"));
     }
 }
