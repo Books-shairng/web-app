@@ -3,6 +3,7 @@ package com.ninjabooks.dao;
 import com.ninjabooks.configuration.DBConnectConfig;
 import com.ninjabooks.configuration.TestAppContextInitializer;
 import com.ninjabooks.domain.Book;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Ignore
 @ContextConfiguration(classes = DBConnectConfig.class,
     initializers = TestAppContextInitializer.class)
 @RunWith(SpringJUnit4ClassRunner.class)
