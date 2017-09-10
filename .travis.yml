@@ -9,9 +9,9 @@ node_js:
 before_script:
   - cd nb-frontend/
   - yarn build
+  - cd ..
 
 script:
-  - cd ..
   - cd nb-backend/
   - mvn clean test -q -Dlog4j.configurationFile=null
   - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
@@ -26,12 +26,16 @@ jdk:
 before_install:
    - export TZ=Poland
    - npm install -g yarn
-   - npm install -g @angular/cli
+   - yarn add -g @angular/cli
    - yarn add global codecov
 
 install:
-  - yarn install --check-files --cwd nb-frontend\
+  - cd nb-frontend/
+  - yarn install
 #  todo write proper configuration for frontend
+
+after_install:
+  - cd ..
 
 notifications:
   email: false
