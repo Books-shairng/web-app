@@ -7,7 +7,6 @@ node_js:
   - "6"
 
 before_script:
-  - cd nb-frontend/
   - yarn build
   - cd ..
 
