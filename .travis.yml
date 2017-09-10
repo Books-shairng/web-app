@@ -26,11 +26,11 @@ jdk:
 before_install:
    - export TZ=Poland
    - npm install -g yarn
-   - yarn add -g @angular/cli
+   - cd nb-frontend/
+   - yarn add global @angular/cli
    - yarn add global codecov
 
 install:
-  - cd nb-frontend/
   - yarn install
 #  todo write proper configuration for frontend
 
