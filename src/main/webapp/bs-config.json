@@ -1,8 +1,0 @@
-{
-  "server": {
-    "baseDir": ["WEB-INF/static/",""],
-    "routes": {
-      "/node_modules": "node_modules"
-    }
-  }
-}
