@@ -26,7 +26,7 @@ jdk:
 before_install:
    - export TZ=Poland
    - npm install -g yarn
-   - yarn add global @angular/cli
+   - npm install -g @angular/cli
    - yarn add global codecov
 
 install:
