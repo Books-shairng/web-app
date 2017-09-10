@@ -7,11 +7,12 @@ node_js:
   - "6"
 
 before_script:
-  - cd nb-frotend
+  - cd nb-frotend/
   - yarn build
 
 script:
-  - cd nb-backend
+  - cd ..
+  - cd nb-backend/
   - mvn clean test -q -Dlog4j.configurationFile=null
   - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
 cache:
