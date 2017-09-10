@@ -25,8 +25,8 @@ jdk:
 before_install:
    - export TZ=Poland
    - npm install -g yarn
-   - yarn global install ng
-   - yarn global install codecov
+   - yarn add global ng
+   - yarn add global codecov
 
 install:
   - yarn install --check-files --cwd nb-frontend\
