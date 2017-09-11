@@ -16,7 +16,7 @@ script:
   - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
   
 after_script:
-  - cd..
+  - cd ..
   
 cache:
   directories:
