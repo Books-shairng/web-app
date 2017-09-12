@@ -24,7 +24,7 @@ public abstract class SpecifiedElementFinder
      * @param <T> type which method should return
      * @param parameter specific parameter
      * @param columnName for example column name
-     * @param enityType
+     * @param enityType class type
      * @return any selected data collections
      */
 

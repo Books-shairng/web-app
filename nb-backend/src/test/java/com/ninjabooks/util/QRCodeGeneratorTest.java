@@ -11,19 +11,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class CodeGeneratorTest
+public class QRCodeGeneratorTest
 {
     private static final int EXPECTED_SIZE = 10;
+    private static final String SLASH_SIGN = "\\";
 
-    private CodeGenerator sut;
+    private QRCodeGenerator sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new CodeGenerator();
+        this.sut = new QRCodeGenerator();
     }
 
     @Test
-    public void testLengthOfGeneratedCodeEqualsDesiredNumber() throws Exception {
+    public void testLengthOfGeneratedCodeShouldEqualsExpectedSize() throws Exception {
         String actual = sut.generateCode();
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
@@ -36,6 +37,13 @@ public class CodeGeneratorTest
         Pattern pattern = Pattern.compile(regex);
 
         assertThat(actual).containsPattern(pattern);
+    }
+
+    @Test
+    public void testGenerateCodeShouldNotContainsSlashSign() throws Exception {
+        String actual = sut.generateCode();
+
+        assertThat(actual).doesNotContain(SLASH_SIGN);
     }
 
     @Test

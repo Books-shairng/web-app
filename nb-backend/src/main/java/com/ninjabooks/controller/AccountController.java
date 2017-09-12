@@ -7,7 +7,7 @@ import com.ninjabooks.json.user.UserRequest;
 import com.ninjabooks.json.user.UserResponse;
 import com.ninjabooks.security.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.util.SecurityHeaderFinder;
+import com.ninjabooks.util.SecurityHeaderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +26,10 @@ public class AccountController
     private final AccountService accountService;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderFinder securityHeaderFinder;
+    private final SecurityHeaderUtils securityHeaderFinder;
 
     @Autowired
-    public AccountController(AccountService accountService, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderFinder securityHeaderFinder) {
+    public AccountController(AccountService accountService, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderFinder) {
         this.accountService = accountService;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;

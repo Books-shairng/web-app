@@ -19,15 +19,13 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @ActiveProfiles(value = "test")
 public class DateUtilsTest
 {
-    private final LocalTime localTime = LocalTime.of(12,12,12);
-
-    private final LocalDate EXPECTED_DATE = LocalDate.of(2017, 2, 2);
-    private final LocalDateTime EXPECTED_DATE_TIME = LocalDateTime.of(EXPECTED_DATE, localTime);
+    private static final LocalTime TIME = LocalTime.of(12,12,12);
+    private static final LocalDate EXPECTED_DATE = LocalDate.of(2017, 2, 2);
+    private static final LocalDateTime EXPECTED_DATE_TIME = LocalDateTime.of(EXPECTED_DATE, TIME);
 
     @Test
     public void testParseStringToLocalDateWithDashSeparatorShouldSucceed() throws Exception {
         String date = "2017-2-2";
-
         LocalDate actual = parseStringToLocalDate(date);
 
         assertThat(actual).isEqualTo(EXPECTED_DATE);
@@ -45,7 +43,6 @@ public class DateUtilsTest
     @Test
     public void testParseStringToDateWithMonthAndDayLessThenTenShouldSucceed() throws Exception {
         String date = "2017-02-02";
-
         LocalDate actual = parseStringToLocalDate(date);
 
         assertThat(actual).isEqualTo(EXPECTED_DATE);
@@ -54,7 +51,6 @@ public class DateUtilsTest
     @Test
     public void testParseStringToLocalDateWithComaSeparatorShouldSucceed() throws Exception {
         String date = "2017,2,2";
-
         LocalDate actual = parseStringToLocalDate(date);
 
         assertThat(actual).isEqualTo(EXPECTED_DATE);
@@ -63,7 +59,6 @@ public class DateUtilsTest
     @Test
     public void testParseStringToLocalDateWithDotSeparatorShouldSucceed() throws Exception {
         String date = "2017.2.2";
-
         LocalDate actual = parseStringToLocalDate(date);
 
         assertThat(actual).isEqualTo(EXPECTED_DATE);
@@ -72,7 +67,6 @@ public class DateUtilsTest
     @Test
     public void testConvertStringToLocalDateTimeWithCorrectDataShouldSucced() throws Exception {
         String dateWithTime = "2017-02-02T12:12:12";
-
         LocalDateTime actual = parseStringToLocalDateTime(dateWithTime);
 
         assertThat(actual).isEqualTo(EXPECTED_DATE_TIME);

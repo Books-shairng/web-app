@@ -80,7 +80,6 @@ public class BorrowServiceImpl implements BorrowService
         Borrow borrow = new Borrow();
         borrow.setUser(currentUser);
         borrow.setBook(book);
-        borrow.setIsBorrowed(true);
         borrow.setCanExtendBorrow(true);
         borrow.setBorrowDate(TODAY);
 
@@ -123,7 +122,6 @@ public class BorrowServiceImpl implements BorrowService
         checkQRCodeCorrectness(qrCode);
 
         Borrow borrow = getBorrowByQRCode(qrCode);
-        borrow.setIsBorrowed(false);
         borrow.setReturnDate(TODAY);
         borrowDao.update(borrow);
     }
@@ -134,7 +132,6 @@ public class BorrowServiceImpl implements BorrowService
 
         Borrow borrow = getBorrowByQRCode(qrCode);
 
-        borrow.setIsBorrowed(true);
         borrow.setBorrowDate(TODAY);
 
         borrowDao.update(borrow);
