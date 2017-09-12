@@ -17,9 +17,6 @@ public class Queue extends BaseEntity
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
-    @Column(name = "STATUS")
-    private boolean isActive;
-
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;
@@ -29,7 +26,6 @@ public class Queue extends BaseEntity
     private User user;
 
     public Queue() {
-        this.isActive = true;
     }
 
     /**
@@ -40,7 +36,6 @@ public class Queue extends BaseEntity
 
     public Queue(LocalDateTime orderDate) {
         this.orderDate = orderDate;
-        this.isActive = true;
     }
 
     public LocalDateTime getOrderDate() {
@@ -67,35 +62,25 @@ public class Queue extends BaseEntity
         this.user = user;
     }
 
-    public boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Queue queue = (Queue) o;
-        return isActive == queue.isActive &&
-            Objects.equals(orderDate, queue.orderDate) &&
+        return Objects.equals(orderDate, queue.orderDate) &&
             Objects.equals(book, queue.book) &&
             Objects.equals(user, queue.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderDate, isActive, book, user);
+        return Objects.hash(orderDate, book, user);
     }
 
     @Override
     public String toString() {
         return "Queue{" +
             "orderDate=" + orderDate +
-            ", isActive=" + isActive +
             ", book=" + book +
             ", user=" + user +
             '}';

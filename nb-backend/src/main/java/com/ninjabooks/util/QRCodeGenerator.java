@@ -9,13 +9,13 @@ import java.security.SecureRandom;
  * @since 1.0
  */
 @Component
-public class CodeGenerator
+public class QRCodeGenerator
 {
     private final int DEFAULT_QR_CODE_LENGTH = 10;
 
     private char[] asciCoordinates;
 
-    public CodeGenerator() {
+    public QRCodeGenerator() {
         fillCoordinates();
     }
 
@@ -31,8 +31,6 @@ public class CodeGenerator
         for (int i = 0; i < DEFAULT_QR_CODE_LENGTH; i++) {
             int index = secureRandom.nextInt(asciCoordinates.length);
             builder.append(asciCoordinates[index]);
-            if (asciCoordinates[index] == '\\')
-                builder.append("\\");
         }
 
         return builder.toString();
@@ -43,9 +41,9 @@ public class CodeGenerator
      */
 
     private void fillCoordinates() {
-        asciCoordinates = new char[93];
-        for (int i = 0; i < asciCoordinates.length; i++)
-            asciCoordinates[i] = (char) ('!' + i);
+        asciCoordinates = ("qwertyuiopasdfghjkklzxccvbnm" +
+                           "QWERTYUIOPASDFGHJKLZXCVBNM" +
+                           "1234567890!@#$%^&*()-=_+~`" +
+                           "{}[];':,.<>?|/").toCharArray();
     }
-
 }

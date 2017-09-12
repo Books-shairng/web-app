@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0
  */
 @Configuration
-public class DepedencyConfig
+public class DepedencyContext
 {
     @Bean
     public ModelMapper modelMapper() {

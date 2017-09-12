@@ -89,13 +89,4 @@ public class DBBookDao implements BookDao
         return sessionFactory.openSession();
     }
 
-//    @Override
-//    @SuppressWarnings("unchecked t cast")
-//    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-//        Session currentSession = sessionFactory.openSession();
-//        String query = "select book from com.ninjabooks.domain.Book book where " + columnName + "=:parameter";
-//        Query<Book> bookQuery = currentSession.createQuery(query, Book.class);
-//        bookQuery.setParameter("parameter", parameter);
-//        return (T) bookQuery.stream();
-//    }
 }

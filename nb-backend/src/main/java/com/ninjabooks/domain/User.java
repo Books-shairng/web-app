@@ -29,15 +29,16 @@ public class User extends BaseEntity
     private LocalDateTime lastPasswordReset;
 
     @Column(name = "AUTHORITY")
-    private final String authoritiy = "USER";
+    @Enumerated(value = EnumType.STRING)
+    private Authority authoritiy;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Queue> queues = new ArrayList<>(0);
 
-    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Borrow> borrows = new ArrayList<>(0);
 
-    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<History> histories = new ArrayList<>(0);
 
     public User() {
@@ -56,6 +57,7 @@ public class User extends BaseEntity
         this.email = email;
         this.password = password;
         this.lastPasswordReset = LocalDateTime.now();
+        this.authoritiy = Authority.USER;
     }
 
 
@@ -91,10 +93,13 @@ public class User extends BaseEntity
         this.lastPasswordReset = lastPasswordReset;
     }
 
-    public String getAuthoritiy() {
+    public Authority getAuthoritiy() {
         return authoritiy;
     }
 
+    public void setAuthoritiy(Authority authoritiy) {
+        this.authoritiy = authoritiy;
+    }
 
     public List<Queue> getQueues() {
         return queues;

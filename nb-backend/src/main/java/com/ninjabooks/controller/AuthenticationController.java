@@ -4,7 +4,7 @@ import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.json.authentication.AuthenticationResponse;
 import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
-import com.ninjabooks.util.SecurityHeaderFinder;
+import com.ninjabooks.util.SecurityHeaderUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +61,10 @@ public class AuthenticationController
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderFinder securityHeaderFinder;
+    private final SecurityHeaderUtils securityHeaderFinder;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderFinder securityHeaderFinder) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderFinder) {
         this.authenticationManager = authenticationManager;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;

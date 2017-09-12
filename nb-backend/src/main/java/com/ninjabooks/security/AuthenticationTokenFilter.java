@@ -1,6 +1,6 @@
 package com.ninjabooks.security;
 
-import com.ninjabooks.util.SecurityHeaderFinder;
+import com.ninjabooks.util.SecurityHeaderUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderFinder securityHeaderFinder;
+    private final SecurityHeaderUtils securityHeaderFinder;
 
     @Autowired
-    public AuthenticationTokenFilter(TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderFinder securityHeaderFinder) {
+    public AuthenticationTokenFilter(TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderFinder) {
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
         this.securityHeaderFinder = securityHeaderFinder;
