@@ -4,7 +4,7 @@ import com.ninjabooks.error.handler.AuthenticationControllerHandler;
 import com.ninjabooks.security.AuthenticationTokenFilter;
 import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
-import com.ninjabooks.util.SecurityHeaderFinder;
+import com.ninjabooks.util.SecurityHeaderUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -54,7 +54,7 @@ public class AuthenticationControllerTest
     private UserDetailsService userDetailsServiceMock;
 
     @Mock
-    private SecurityHeaderFinder securityHeaderFinderMock;
+    private SecurityHeaderUtils securityHeaderFinderMock;
 
     private MockMvc mockMvc;
     private AuthenticationController sut;

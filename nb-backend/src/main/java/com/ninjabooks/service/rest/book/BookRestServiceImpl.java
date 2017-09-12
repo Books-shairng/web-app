@@ -5,7 +5,7 @@ import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
 import com.ninjabooks.service.dao.book.BookService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
-import com.ninjabooks.util.CodeGenerator;
+import com.ninjabooks.util.QRCodeGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,10 @@ public class BookRestServiceImpl implements BookRestService
 
     private final BookService bookService;
     private final QRCodeService qrCodeService;
-    private final CodeGenerator codeGenerator;
+    private final QRCodeGenerator codeGenerator;
 
     @Autowired
-    public BookRestServiceImpl(BookService bookService, QRCodeService qrCodeService, CodeGenerator codeGenerator) {
+    public BookRestServiceImpl(BookService bookService, QRCodeService qrCodeService, QRCodeGenerator codeGenerator) {
         this.bookService = bookService;
         this.qrCodeService = qrCodeService;
         this.codeGenerator = codeGenerator;

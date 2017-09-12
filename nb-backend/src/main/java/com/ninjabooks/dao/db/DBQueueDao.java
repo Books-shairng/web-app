@@ -81,17 +81,4 @@ public class DBQueueDao implements QueueDao
         return sessionFactory.openSession();
     }
 
-//    @Override
-//    @SuppressWarnings("unchecked t cast")
-//    public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName) {
-//        Session currentSession = sessionFactory.openSession();
-//        String query = "select queue from com.ninjabooks.domain.Queue queue where " + columnName + "=:parameter";
-//        Query<Queue> queueQuery = currentSession.createQuery(query, Queue.class);
-//        queueQuery.setParameter("parameter", parameter);
-//
-//        if (queueQuery.getSingleResult() != null)
-//            return (T) queueQuery.getSingleResult();
-//
-//        return null;
-//    }
 }

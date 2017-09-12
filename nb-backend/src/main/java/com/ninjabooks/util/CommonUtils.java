@@ -37,6 +37,5 @@ public final class CommonUtils
         return (List<T>) collection.parallelStream()
             .map(o -> modelMapper.map(o, clazz))
             .collect(Collectors.toList());
-
     }
 }

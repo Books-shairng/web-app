@@ -22,9 +22,6 @@ public class Borrow extends BaseEntity
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
-    @Column(name = "STATUS")
-    private boolean isBorrowed;
-
     @Column(name = "CAN_EXTEND_RETURN_DATE")
     private boolean canExtendBorrow;
 
@@ -87,15 +84,6 @@ public class Borrow extends BaseEntity
         this.user = user;
     }
 
-
-    public boolean getIsBorrowed() {
-        return isBorrowed;
-    }
-
-    public void setIsBorrowed(boolean borrowed) {
-        this.isBorrowed = borrowed;
-    }
-
     public boolean getCanExtendBorrow() {
         return canExtendBorrow;
     }
@@ -126,8 +114,7 @@ public class Borrow extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Borrow borrow = (Borrow) o;
-        return isBorrowed == borrow.isBorrowed &&
-            canExtendBorrow == borrow.canExtendBorrow &&
+        return canExtendBorrow == borrow.canExtendBorrow &&
             Objects.equals(borrowDate, borrow.borrowDate) &&
             Objects.equals(returnDate, borrow.returnDate) &&
             Objects.equals(book, borrow.book) &&
@@ -136,7 +123,7 @@ public class Borrow extends BaseEntity
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, returnDate, isBorrowed, canExtendBorrow, book, user);
+        return Objects.hash(borrowDate, returnDate, canExtendBorrow, book, user);
     }
 
     @Override
@@ -144,7 +131,6 @@ public class Borrow extends BaseEntity
         return "Borrow{" +
             "borrowDate=" + borrowDate +
             ", returnDate=" + returnDate +
-            ", isBorrowed=" + isBorrowed +
             ", canExtendBorrow=" + canExtendBorrow +
             ", book=" + book +
             ", user=" + user +

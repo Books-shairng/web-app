@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.ninjabooks.security.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.util.SecurityHeaderFinder;
+import com.ninjabooks.util.SecurityHeaderUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -56,7 +56,7 @@ public class AccountControllerTest
     private UserDetailsService userDetailsServiceMock;
 
     @Mock
-    private SecurityHeaderFinder securityHeaderFinder;
+    private SecurityHeaderUtils securityHeaderFinder;
 
     private MockMvc mockMvc;
     private AccountController sut;

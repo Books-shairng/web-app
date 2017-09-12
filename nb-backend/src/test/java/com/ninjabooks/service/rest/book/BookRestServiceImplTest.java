@@ -3,7 +3,7 @@ package com.ninjabooks.service.rest.book;
 import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.service.dao.book.BookService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
-import com.ninjabooks.util.CodeGenerator;
+import com.ninjabooks.util.QRCodeGenerator;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +34,7 @@ public class BookRestServiceImplTest
     private QRCodeService qrCodeServiceMock;
 
     @Mock
-    private CodeGenerator codeGeneratorMock;
+    private QRCodeGenerator codeGeneratorMock;
 
     private BookRestService sut;
 

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
  * @since 1.0
  */
 @Component
-public class SecurityHeaderFinder
+public class SecurityHeaderUtils
 {
     private final String BEARER = "Bearer";
 
-    public SecurityHeaderFinder() {
+    public SecurityHeaderUtils() {
     }
 
     public boolean hasSecurityPattern(String header) {

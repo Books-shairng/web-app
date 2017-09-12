@@ -82,7 +82,6 @@ public final class DateUtils
 
     public static LocalDateTime parseStringToLocalDateTime(String str) {
         if (!str.contains("T") || str.length() > 19) {
-            logger.error("String does not contains time separator");
             throw new IllegalArgumentException("String does not contains time separator");
         }
 
@@ -103,7 +102,7 @@ public final class DateUtils
         try {
             number = Integer.parseInt(str);
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
             String tmp = str.substring(0, 1);
             number = Integer.parseInt(tmp);
         }
