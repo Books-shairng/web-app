@@ -1,22 +1,22 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.domain.User;
 import com.ninjabooks.error.handler.AccountControllerHandler;
 import com.ninjabooks.error.user.UserAlreadyExistException;
 import com.ninjabooks.security.SpringSecurityUser;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.ninjabooks.security.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
 import com.ninjabooks.util.SecurityHeaderUtils;
+import com.ninjabooks.util.constants.DomainTestConstants;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -32,19 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class AccountControllerTest
 {
-    private static final String FIRST_NAME = "John";
-    private static final String LAST_NAME = "Dee";
-    private static final String EMAIL = "john.dee@exmaple.com";
-    private static final String PASSWORD = "Johny!Dee123";
-    private static final String NAME = FIRST_NAME + " " + LAST_NAME;
-
     private static final String JSON =
         "{" +
-            "\"firstName\":\"" + FIRST_NAME + "\"," +
-            "\"lastName\":\"" + LAST_NAME + "\"," +
-            "\"email\":\"" + EMAIL + "\"," +
-            "\"password\":\"" + PASSWORD + "\"}" +
-            "}";
+            "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
+            "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
+            "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
+            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
+        "}";
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private AccountService accountServiceMock;
@@ -63,11 +60,9 @@ public class AccountControllerTest
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.sut = new AccountController(accountServiceMock, tokenUtilsMock, userDetailsServiceMock,
-            securityHeaderFinder);
+        this.sut = new AccountController(accountServiceMock, tokenUtilsMock,
+            userDetailsServiceMock, securityHeaderFinder);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
-            .setMessageConverters(new MappingJackson2HttpMessageConverter())
             .setControllerAdvice(new AccountControllerHandler())
             .build();
     }
@@ -79,7 +74,7 @@ public class AccountControllerTest
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated());
 
-        verify(accountServiceMock, atLeastOnce()).createUser(any(User.class));
+        verify(accountServiceMock, atLeastOnce()).createUser(any());
     }
 
     @Test
@@ -92,16 +87,16 @@ public class AccountControllerTest
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isBadRequest());
 
-        verify(accountServiceMock, atLeastOnce()).createUser(any(User.class));
+        verify(accountServiceMock, atLeastOnce()).createUser(any());
     }
 
     @Test
     public void testGetAuthentationShouldReturnUserInfo() throws Exception {
-        SpringSecurityUser userMock = mockSpringUser();
-        when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(userMock);
+        SpringSecurityUser springUser = initSpringUser();
+        when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(springUser);
 
         mockMvc.perform(get("/api/users")
-            .header("Authorization", Mockito.anyString())
+            .header("Authorization", anyString())
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isFound());
@@ -110,10 +105,10 @@ public class AccountControllerTest
         verify(tokenUtilsMock, atLeastOnce()).getUsernameFromToken(any());
     }
 
-    private SpringSecurityUser mockSpringUser() {
-        SpringSecurityUser springSecurityUserMock = mock(SpringSecurityUser.class);
-        when(springSecurityUserMock.getName()).thenReturn(NAME);
-        when(springSecurityUserMock.getEmail()).thenReturn(EMAIL);
-        return springSecurityUserMock;
+    private SpringSecurityUser initSpringUser() {
+        SpringSecurityUser springSecurityUser = new SpringSecurityUser();
+        springSecurityUser.setName(DomainTestConstants.NAME);
+        springSecurityUser.setEmail(DomainTestConstants.EMAIL);
+        return springSecurityUser;
     }
 }

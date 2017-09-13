@@ -1,16 +1,15 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.error.handler.AuthenticationControllerHandler;
-import com.ninjabooks.security.AuthenticationTokenFilter;
 import com.ninjabooks.security.SpringSecurityUser;
 import com.ninjabooks.security.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.mobile.device.DeviceResolverRequestFilter;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.mobile.device.DeviceWebArgumentResolver;
 import org.springframework.mobile.device.site.SitePreferenceHandlerMethodArgumentResolver;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +43,9 @@ public class AuthenticationControllerTest
         "\"password\" : \"pass0\"" +
     "}";
 
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     @Mock
     private AuthenticationManager authenticationManagerMock;
 
@@ -61,12 +63,10 @@ public class AuthenticationControllerTest
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.sut = new AuthenticationController(authenticationManagerMock, tokenUtilsMock, userDetailsServiceMock, securityHeaderFinderMock);
-        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(tokenUtilsMock, userDetailsServiceMock, securityHeaderFinderMock);
+        this.sut = new AuthenticationController(authenticationManagerMock, tokenUtilsMock,
+            userDetailsServiceMock, securityHeaderFinderMock);
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
-            .addFilters(authenticationTokenFilter, new DeviceResolverRequestFilter())
             .setCustomArgumentResolvers(
                 new ServletWebArgumentResolverAdapter(new DeviceWebArgumentResolver()),
                 new SitePreferenceHandlerMethodArgumentResolver())
@@ -105,8 +105,8 @@ public class AuthenticationControllerTest
     }
 
     @Test
-    public void testRefreshTokenWithWrongTokenShouldReturnBadRequest() throws Exception {
-        SpringSecurityUser user = mockSpringUser();
+    public void testRefreshTokenWithWrongDataShouldReturnBadRequest() throws Exception {
+        SpringSecurityUser user = initSpringUser();
         when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(user);
 
         mockMvc.perform(get("/api/auth/refresh")
@@ -114,12 +114,12 @@ public class AuthenticationControllerTest
             .andExpect(status().isBadRequest())
             .andDo(print());
 
-        verify(user, atLeastOnce()).getLastPasswordReset();
+        verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(any());
     }
 
     @Test
     public void testRefreshTokenShouldSucceed() throws Exception {
-        SpringSecurityUser user = mockSpringUser();
+        SpringSecurityUser user = initSpringUser();
         when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(user);
         when(tokenUtilsMock.canTokenBeRefreshed(any(), any())).thenReturn(true);
         when(tokenUtilsMock.refreshToken(any())).thenReturn(any());
@@ -133,9 +133,9 @@ public class AuthenticationControllerTest
        verify(tokenUtilsMock, atLeastOnce()).refreshToken(any());
     }
 
-    private SpringSecurityUser mockSpringUser() {
-        SpringSecurityUser user = Mockito.mock(SpringSecurityUser.class);
-        when(user.getLastPasswordReset()).thenReturn(LocalDateTime.now());
+    private SpringSecurityUser initSpringUser() {
+        SpringSecurityUser user = new SpringSecurityUser();
+        user.setLastPasswordReset(LocalDateTime.now());
         return user;
     }
 }

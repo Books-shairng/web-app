@@ -48,10 +48,11 @@ public class SearchControllerTest
     }
 
     @Test
-    public void testSearchBookShouldFoundMatchedBookWithStatusOK() throws Exception {
+    public void testSearchBookWhenFoundMatchedBookShouldReturnStatusOK() throws Exception {
         when(searchServiceMock.search(anyString())).thenReturn(SEARCH_RESULT);
 
-        mockMvc.perform(get("/api/search/{query}", SEARCH_QUERY))
+        mockMvc.perform(get("/api/search/")
+            .param("query", SEARCH_QUERY))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
@@ -62,7 +63,8 @@ public class SearchControllerTest
     public void testSearchBookShouldReturnStatus204() throws Exception {
         when(searchServiceMock.search(anyString())).thenReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/api/search/{query}", SEARCH_QUERY))
+        mockMvc.perform(get("/api/search/")
+            .param("query", SEARCH_QUERY))
             .andDo(print())
             .andExpect(status().isNoContent());
 

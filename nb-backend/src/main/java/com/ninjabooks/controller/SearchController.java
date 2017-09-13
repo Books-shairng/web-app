@@ -9,10 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +32,10 @@ public class SearchController
     }
 
 
-    @RequestMapping(value = "/api/search/{query}", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<BookDto>>> searchBook(@PathVariable String query) {
+    @RequestMapping(value = "/api/search/", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<BookDto>>> searchBook(
+        @RequestParam(value = "query") String query) {
         logger.info("An attempt to find the following book: {}", query);
-//        List<BookDto> searchResult = searchService.search(query).collect(Collectors.toList());
         List<Book> searchResult = searchService.search(query);
 
         if (searchResult.isEmpty()) {
@@ -49,8 +46,5 @@ public class SearchController
             Collections.singletonMap("searchResult", CommonUtils.domainObjectAsDto(searchResult, BookDto.class));
 
         return ResponseEntity.ok(searchResponse);
-
-//            return new ResponseEntity<>(searchResponse, HttpStatus.NO_CONTENT);
-
     }
 }
