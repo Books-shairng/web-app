@@ -26,14 +26,14 @@ public class AccountController
     private final AccountService accountService;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderUtils securityHeaderFinder;
+    private final SecurityHeaderUtils securityHeaderUtils;
 
     @Autowired
-    public AccountController(AccountService accountService, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderFinder) {
+    public AccountController(AccountService accountService, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderUtils) {
         this.accountService = accountService;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
-        this.securityHeaderFinder = securityHeaderFinder;
+        this.securityHeaderUtils = securityHeaderUtils;
     }
 
     /**
@@ -65,12 +65,7 @@ public class AccountController
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<UserResponse> getAuthenticatedUser(HttpServletRequest httpServletRequest) throws Exception {
         String header = httpServletRequest.getHeader("Authorization");
-        String token = null;
-
-        if (securityHeaderFinder.hasSecurityPattern(header)) {
-            token = securityHeaderFinder.extractToken(header);
-        }
-
+        String token = securityHeaderUtils.obtainTokenFromRequest(header);
         String email = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(email);
 

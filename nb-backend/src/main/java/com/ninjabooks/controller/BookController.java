@@ -27,7 +27,7 @@ public class BookController
         this.objectMapper = objectMapper;
     }
 
-    @RequestMapping(value = "/api/books", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/books/", method = RequestMethod.POST)
     public ResponseEntity<ObjectNode> addBook(@RequestBody Book book) throws QRCodeException {
         String generatedCode = bookService.addBook(book);
 

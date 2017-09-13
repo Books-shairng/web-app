@@ -24,6 +24,8 @@ public class SpringSecurityUser implements UserDetails
     private Boolean credentialsNonExpired = true;
     private Boolean enabled = true;
 
+    public SpringSecurityUser() {
+    }
 
     public SpringSecurityUser(Long id, String name, String password, String email, LocalDateTime lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
