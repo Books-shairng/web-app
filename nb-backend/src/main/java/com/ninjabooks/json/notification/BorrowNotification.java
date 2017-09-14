@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
  */
 public class BorrowNotification extends GenericNotification
 {
+    private static final long serialVersionUID = -7981917194070092757L;
+
     @JsonUnwrapped
     private BorrowDto borrowDto;
 

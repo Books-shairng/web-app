@@ -5,7 +5,7 @@ import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.order.OrderException;
 import com.ninjabooks.error.order.OrderMaxLimitException;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.EntityUtils;
@@ -31,12 +31,12 @@ public class OrderBookServiceImpl implements OrderBookService
     private final static LocalDateTime NOW = LocalDateTime.now();
     private final static int MAXIMUM_LIMIT = 10;
 
-    private final BookService bookService;
+    private final BookDaoService bookService;
     private final UserService userService;
     private final QueueService queueService;
 
     @Autowired
-    public OrderBookServiceImpl(BookService bookService, UserService userService, QueueService queueService) {
+    public OrderBookServiceImpl(BookDaoService bookService, UserService userService, QueueService queueService) {
         this.bookService = bookService;
         this.userService = userService;
         this.queueService = queueService;

@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
  */
 public class QueueNotification extends GenericNotification
 {
+    private static final long serialVersionUID = -1474981638299034456L;
+
     @JsonUnwrapped
     private QueueDto queueDto;
     private int positionInQueue;

@@ -9,7 +9,7 @@ import java.util.stream.Stream;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public interface BookService extends GenericService<Book, Long>
+public interface BookDaoService extends GenericService<Book, Long>
 {
     /**
      * Create stream with matching book title.

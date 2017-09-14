@@ -38,8 +38,9 @@ public class NotificationController
         map.put("Books list", borrowNotifications);
         map.put("Queues list", queueNotifications);
 
-        if (borrowNotifications.isEmpty() && queueNotifications.isEmpty())
+        if (borrowNotifications.isEmpty() && queueNotifications.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }

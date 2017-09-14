@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.search;
 
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.FullTextQuery;
@@ -35,7 +35,7 @@ public class BookSearchServiceImplTest
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private BookService bookServiceMock;
+    private BookDaoService bookServiceMock;
 
     @Mock
     private SearchWrapper searchWrapper;
