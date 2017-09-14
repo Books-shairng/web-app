@@ -1,5 +1,6 @@
-package com.ninjabooks.security;
+package com.ninjabooks.security.utils;
 
+import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.util.DateUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

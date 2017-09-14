@@ -1,6 +1,6 @@
 package com.ninjabooks.util;
 
-import com.ninjabooks.security.TokenUtils;
+import com.ninjabooks.security.utils.TokenUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

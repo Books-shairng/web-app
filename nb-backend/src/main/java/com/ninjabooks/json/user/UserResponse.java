@@ -1,6 +1,6 @@
 package com.ninjabooks.json.user;
 
-import com.ninjabooks.security.SpringSecurityUser;
+import com.ninjabooks.security.user.SpringSecurityUser;
 
 import java.io.Serializable;
 
