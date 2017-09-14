@@ -13,6 +13,7 @@ import java.util.Collections;
 public final class DomainTestConstants
 {
     public static final Long ID = 1L;
+    public static final boolean ACTIVE = true;
 
     //region User field constants
     public static final String NAME = "John Dee";
@@ -24,6 +25,8 @@ public final class DomainTestConstants
     public static final String AUTHOR = "J. Bloch";
     public static final String TITLE = "Effective Java";
     public static final String ISBN = "978-0321356680";
+    public static final BookStatus BOOK_STATUS = BookStatus.FREE;
+    public static final String DESCRIPTION = "Some description";
     //endregion
 
     //region Queue field costants
@@ -52,7 +55,7 @@ public final class DomainTestConstants
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
     public static final History HISTORY = new History(BORROW_DATE, RETURN_DATE);
 
-    private DomainTestConstants() {
+    static {
         setRelationFieldsInBook();
         setRelationFieldsInBorrow();
         setRelationFieldsInHistory();

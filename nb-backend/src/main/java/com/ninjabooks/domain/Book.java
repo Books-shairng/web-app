@@ -41,6 +41,13 @@ public class Book extends BaseEntity
     @Column(name = "ISBN")
     private String isbn;
 
+    @Column(name = "STATUS")
+    @Enumerated(value = EnumType.STRING)
+    private BookStatus status = BookStatus.FREE;
+
+    @Column(name = "DESCRIPTION", length = 5000)
+    private String description;
+
     @OneToOne
     @JoinColumn(name = "QR_code_id")
     private QRCode QRCode;
@@ -132,6 +139,22 @@ public class Book extends BaseEntity
         this.histories = histories;
     }
 
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,6 +163,8 @@ public class Book extends BaseEntity
         return Objects.equals(title, book.title) &&
             Objects.equals(author, book.author) &&
             Objects.equals(isbn, book.isbn) &&
+            status == book.status &&
+            Objects.equals(description, book.description) &&
             Objects.equals(QRCode, book.QRCode) &&
             Objects.equals(queues, book.queues) &&
             Objects.equals(borrows, book.borrows) &&
@@ -148,7 +173,7 @@ public class Book extends BaseEntity
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author, isbn, QRCode, queues, borrows, histories);
+        return Objects.hash(title, author, isbn, status, description, QRCode, queues, borrows, histories);
     }
 
     @Override
@@ -157,6 +182,8 @@ public class Book extends BaseEntity
             "title='" + title + '\'' +
             ", author='" + author + '\'' +
             ", isbn='" + isbn + '\'' +
+            ", status=" + status +
+            ", description='" + description + '\'' +
             ", QRCode=" + QRCode +
             ", queues=" + queues +
             ", borrows=" + borrows +

@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.notification;
 
+import com.ninjabooks.domain.BaseEntity;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
@@ -44,6 +45,7 @@ public class NotificationServiceImpl implements  NotificationService
 //            .filter(borrow -> borrow.getReturnDate() != null)
 //            .filter(borrow -> borrow.getBorrowDate() != null)
 //            .filter(borrow -> borrow.getIsBorrowed() == true)
+            .filter(BaseEntity::getIsActive)
             .map(borrow -> new BorrowNotification(borrow, modelMapper))
             .collect(Collectors.toList());
     }
@@ -54,6 +56,7 @@ public class NotificationServiceImpl implements  NotificationService
         List<Queue> queues = currentUser.getQueues();
 
         return queues.stream()
+            .filter(BaseEntity::getIsActive)
             .map(queue -> new QueueNotification(queue, computePositionInQueue(queue, currentUser), modelMapper))
             .collect(Collectors.toList());
     }
@@ -73,7 +76,7 @@ public class NotificationServiceImpl implements  NotificationService
 
     private List<Object[]> getMatchingQueues(Queue queue) {
         Long bookID = queue.getBook().getId();
-        String query = "SELECT order_date, user_id FROM Queue WHERE status =:stat and book_id =:id";
+        String query = "SELECT order_date, user_id FROM Queue WHERE active =:stat and book_id =:id";
         NativeQuery queueQuery = userService.getSession().createNativeQuery(query);
         queueQuery.setParameter("stat", true);
         queueQuery.setParameter("id", bookID);

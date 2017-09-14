@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.search;
 
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.Query;
@@ -26,11 +26,11 @@ public class BookSearchServiceImpl implements SearchService
     private static final Logger logger = LogManager.getLogger(BookSearchServiceImpl.class);
     private static final String[] FIELDS = {"title", "author", "isbn", "allFields"};
 
-    private final BookService bookService;
+    private final BookDaoService bookService;
     private final SearchWrapper searchWrapper;
 
     @Autowired
-    public BookSearchServiceImpl(BookService bookService, SearchWrapper searchWrapper) {
+    public BookSearchServiceImpl(BookDaoService bookService, SearchWrapper searchWrapper) {
         this.bookService = bookService;
         this.searchWrapper = searchWrapper;
     }

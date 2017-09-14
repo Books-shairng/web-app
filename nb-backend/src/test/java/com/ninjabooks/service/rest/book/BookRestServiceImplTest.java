@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.book;
 
 import com.ninjabooks.error.qrcode.QRCodeException;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.QRCodeGenerator;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -28,7 +28,7 @@ public class BookRestServiceImplTest
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private BookService bookServiceMock;
+    private BookDaoService bookServiceMock;
 
     @Mock
     private QRCodeService qrCodeServiceMock;

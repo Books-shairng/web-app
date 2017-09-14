@@ -3,7 +3,7 @@ package com.ninjabooks.service.rest.book;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.QRCodeGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -24,12 +24,12 @@ public class BookRestServiceImpl implements BookRestService
     private static final Logger logger = LogManager.getLogger(BookRestServiceImpl.class);
     private static final int DEFAULT_NUMBER_ATTEMPT = 5;
 
-    private final BookService bookService;
+    private final BookDaoService bookService;
     private final QRCodeService qrCodeService;
     private final QRCodeGenerator codeGenerator;
 
     @Autowired
-    public BookRestServiceImpl(BookService bookService, QRCodeService qrCodeService, QRCodeGenerator codeGenerator) {
+    public BookRestServiceImpl(BookDaoService bookService, QRCodeService qrCodeService, QRCodeGenerator codeGenerator) {
         this.bookService = bookService;
         this.qrCodeService = qrCodeService;
         this.codeGenerator = codeGenerator;

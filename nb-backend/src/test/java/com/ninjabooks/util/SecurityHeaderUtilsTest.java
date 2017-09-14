@@ -14,6 +14,7 @@ public class SecurityHeaderUtilsTest
 {
     private static final String TOKEN = "asdasdjasjd1232asdlkasd.daskdad2ea'sda;slkdals";
     private static final String PATTERN = "Bearer";
+    private static final String REQUEST = PATTERN + " " + TOKEN;
 
     private SecurityHeaderUtils sut;
 
@@ -24,23 +25,29 @@ public class SecurityHeaderUtilsTest
 
     @Test
     public void testHasSecurityPatterShouldReturnTrue() throws Exception {
-        String header = PATTERN + "      " + TOKEN;
-        boolean actual =  sut.hasSecurityPattern(header);
+        boolean actual =  sut.hasSecurityPattern(REQUEST);
 
         assertThat(actual).isEqualTo(true);
     }
 
     @Test
     public void testHasSecurityPatternWithWrongHeaderShouldThrowsException() throws Exception {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> sut.hasSecurityPattern(TOKEN))
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> sut.hasSecurityPattern(TOKEN))
             .withNoCause()
             .withMessage("Header contains an unknow type");
     }
 
     @Test
     public void testExtractTokenShouldReturnToken() throws Exception {
-        String header = PATTERN + "        " + TOKEN;
-        String actual = sut.extractToken(header);
+        String actual = sut.extractToken(REQUEST);
+
+        assertThat(actual).isEqualTo(TOKEN);
+    }
+
+    @Test
+    public void obtainTokenFromRequestShouldExtractToken() throws Exception {
+        String actual = sut.obtainTokenFromRequest(REQUEST);
 
         assertThat(actual).isEqualTo(TOKEN);
     }

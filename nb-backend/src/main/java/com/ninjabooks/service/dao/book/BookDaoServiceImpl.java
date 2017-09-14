@@ -16,12 +16,12 @@ import java.util.stream.Stream;
  */
 @Service
 @Transactional
-public class BookServiceImpl extends GenericServiceImpl<Book, Long> implements BookService
+public class BookDaoServiceImpl extends GenericServiceImpl<Book, Long> implements BookDaoService
 {
     private final BookDao bookDao;
 
     @Autowired
-    public BookServiceImpl(GenericDao<Book, Long> genericDao, BookDao bookDao) {
+    public BookDaoServiceImpl(GenericDao<Book, Long> genericDao, BookDao bookDao) {
         super(genericDao);
         this.bookDao = bookDao;
     }

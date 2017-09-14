@@ -61,14 +61,14 @@ public class AuthenticationController
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderUtils securityHeaderFinder;
+    private final SecurityHeaderUtils securityHeaderUtils;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderFinder) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderUtils) {
         this.authenticationManager = authenticationManager;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
-        this.securityHeaderFinder = securityHeaderFinder;
+        this.securityHeaderUtils = securityHeaderUtils;
     }
 
     /**
@@ -82,7 +82,7 @@ public class AuthenticationController
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-        logger.info("User:{" + authenticationRequest.getEmail() + "} initiates authorization on the system");
+        logger.info("User: {} initiates authorization on the system", authenticationRequest.getEmail());
 
         performAuthentication(authenticationRequest);
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
@@ -110,9 +110,9 @@ public class AuthenticationController
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         logger.info("Start refreshing the token");
         String header = request.getHeader("Authorization");
-        String token = obtainTokenFromHeader(header);
-
+        String token = securityHeaderUtils.obtainTokenFromRequest(header);
         String username = tokenUtils.getUsernameFromToken(token);
+
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
         if (tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = tokenUtils.refreshToken(token);
@@ -123,13 +123,5 @@ public class AuthenticationController
             logger.error("Failed to refresh the token");
             return ResponseEntity.badRequest().body(null);
         }
-    }
-
-    private String obtainTokenFromHeader(String header) {
-        String token = null;
-        if (securityHeaderFinder.hasSecurityPattern(header))
-            token = securityHeaderFinder.extractToken(header);
-
-        return token;
     }
 }
