@@ -1,4 +1,4 @@
-package com.ninjabooks.security;
+package com.ninjabooks.security.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +12,8 @@ import java.util.Collection;
  */
 public class SpringSecurityUser implements UserDetails
 {
+    private static final long serialVersionUID = -7439396305132356738L;
+
     private Long id;
     private String email;
     private String name;
@@ -19,21 +21,44 @@ public class SpringSecurityUser implements UserDetails
 
     private LocalDateTime lastPasswordReset;
     private Collection<? extends GrantedAuthority> authorities;
-    private Boolean accountNonExpired = true;
-    private Boolean accountNonLocked = true;
-    private Boolean credentialsNonExpired = true;
-    private Boolean enabled = true;
+    private Boolean accountNonExpired;
+    private Boolean accountNonLocked;
+    private Boolean credentialsNonExpired;
+    private Boolean enabled;
 
     public SpringSecurityUser() {
+        this(0L, null, null, null, null, null, true, true, true, true);
     }
 
-    public SpringSecurityUser(Long id, String name, String password, String email, LocalDateTime lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+    public SpringSecurityUser(Long id,
+                              String name,
+                              String password,
+                              String email,
+                              LocalDateTime lastPasswordReset,
+                              Collection<? extends GrantedAuthority> authorities) {
+        this(id, email, name,  password, lastPasswordReset, authorities, true,  true, true, true);
+    }
+
+    public SpringSecurityUser(Long id,
+                              String email,
+                              String name,
+                              String password,
+                              LocalDateTime lastPasswordReset,
+                              Collection<? extends GrantedAuthority> authorities,
+                              Boolean accountNonExpired,
+                              Boolean accountNonLocked,
+                              Boolean credentialsNonExpired,
+                              Boolean enabled) {
         this.id = id;
+        this.email = email;
         this.name = name;
         this.password = password;
-        this.email = email;
         this.lastPasswordReset = lastPasswordReset;
         this.authorities = authorities;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
     }
 
     public Long getId() {

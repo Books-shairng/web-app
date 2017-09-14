@@ -1,5 +1,8 @@
-package com.ninjabooks.security;
+package com.ninjabooks.security.config;
 
+import com.ninjabooks.security.endpoint.EntryPointUnauthorizedHandler;
+import com.ninjabooks.security.filter.AuthenticationTokenFilter;
+import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @since 1.0
  */
 @Configuration
-@ComponentScan(basePackageClasses = {UserAuthService.class, EntryPointUnauthorizedHandler.class, SecurityHeaderUtils.class})
+@ComponentScan(basePackages = {"com.ninjabooks.security", "com.ninjabooks.util"})
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter

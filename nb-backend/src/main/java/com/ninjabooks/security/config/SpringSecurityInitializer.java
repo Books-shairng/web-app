@@ -1,4 +1,4 @@
-package com.ninjabooks.security;
+package com.ninjabooks.security.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

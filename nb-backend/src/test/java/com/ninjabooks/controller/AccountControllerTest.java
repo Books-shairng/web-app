@@ -2,8 +2,8 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.error.handler.AccountControllerHandler;
 import com.ninjabooks.error.user.UserAlreadyExistException;
-import com.ninjabooks.security.SpringSecurityUser;
-import com.ninjabooks.security.TokenUtils;
+import com.ninjabooks.security.user.SpringSecurityUser;
+import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
 import com.ninjabooks.util.SecurityHeaderUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
