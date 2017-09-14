@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.order;
 
 import com.ninjabooks.error.order.OrderMaxLimitException;
-import com.ninjabooks.service.dao.book.BookService;
+import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -32,7 +32,7 @@ public class OrderBookServiceImplTest
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private BookService bookServiceMock;
+    private BookDaoService bookServiceMock;
 
     @Mock
     private UserService userServiceMock;

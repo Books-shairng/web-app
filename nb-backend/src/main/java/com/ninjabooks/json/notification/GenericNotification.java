@@ -6,6 +6,8 @@ import com.ninjabooks.domain.Book;
 import com.ninjabooks.dto.BookDto;
 import org.modelmapper.ModelMapper;
 
+import java.io.Serializable;
+
 /**
  * Notification by default should return information about book. If notification
  * should return other information like order date, this class must be inherited
@@ -16,10 +18,12 @@ import org.modelmapper.ModelMapper;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public abstract class GenericNotification
+public abstract class GenericNotification implements Serializable
 {
+    private static final long serialVersionUID = -2145369478368501705L;
+
     @JsonUnwrapped
-    @JsonIgnoreProperties(value = "id")
+    @JsonIgnoreProperties(value = {"id", "active", "description", "status"})
     private BookDto bookDto;
 
     public GenericNotification(ModelMapper modelMapper, Book book) {

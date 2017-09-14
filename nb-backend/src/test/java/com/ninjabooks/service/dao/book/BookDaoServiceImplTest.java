@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class BookServiceImplTest
+public class BookDaoServiceImplTest
 {
     private static final Supplier<Stream<Book>> EXPECTED_BOOK = CommonUtils.asSupplier(DomainTestConstants.BOOK);
     private static final Supplier<Stream<Book>> EMPTY_STREAM = CommonUtils.asEmptySupplier();
@@ -37,11 +37,11 @@ public class BookServiceImplTest
     @Mock
     private GenericDao<Book, Long> genericDaoMock;
 
-    private BookServiceImpl sut;
+    private BookDaoServiceImpl sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BookServiceImpl(genericDaoMock, bookDaoMock);
+        this.sut = new BookDaoServiceImpl(genericDaoMock, bookDaoMock);
     }
 
     @Test
