@@ -117,10 +117,11 @@ public class DBQRCodeDaoTest
     }
 
     @Test
-    public void testGetDataWhichNotExistShouldReturnNull() throws Exception {
+    public void testGetDataWhichNotExistShouldReturnEmptyOptional() throws Exception {
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
         Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
 
-        assertThat(actual).isNull();
+        assertThat(actual).isEmpty();
     }
 
     @Test

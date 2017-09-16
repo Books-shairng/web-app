@@ -105,17 +105,19 @@ public class DBUserDaoTest
 
     @Test
     public void testGetUserByNameWhichNotExistShouldReturnEmptyOptional() throws Exception {
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
         Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
 
-        assertThat(actual).isNull();
+        assertThat(actual).isEmpty();
     }
 
 
     @Test
     public void testGetUserByEmailWhichNotExistShouldReturnEmptyOptional() throws Exception {
+        when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
         Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
 
-        assertThat(actual).isNull();
+        assertThat(actual).isEmpty();
     }
 
     @Test

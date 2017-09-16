@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class BookInfoTest
 {
-    private static final BookDto BOOK_DTO = new ModelMapper().map(DomainTestConstants.BOOK, BookDto.class);
+    private static final BookDto BOOK_DTO = new ModelMapper().map(DomainTestConstants.BOOK_FULL, BookDto.class);
     private static final int EXPECTED_SIZE = 1;
 
     private BookInfo sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BookInfo(DomainTestConstants.BOOK);
+        this.sut = new BookInfo(DomainTestConstants.BOOK_FULL);
     }
 
     @Test

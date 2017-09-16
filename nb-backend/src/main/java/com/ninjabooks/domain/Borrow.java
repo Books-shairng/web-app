@@ -23,7 +23,7 @@ public class Borrow extends BaseEntity
     private LocalDate returnDate;
 
     @Column(name = "CAN_EXTEND_RETURN_DATE")
-    private boolean canExtendBorrow;
+    private boolean canExtendBorrow = true;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
