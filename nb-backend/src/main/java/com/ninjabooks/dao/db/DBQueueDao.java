@@ -30,7 +30,7 @@ public class DBQueueDao implements QueueDao
 
     @Autowired
     public DBQueueDao(SessionFactory sessionFactory, DBDaoHelper<Queue> daoHelper,
-                      @Qualifier(value = "queryFinder") SpecifiedElementFinder specifiedElementFinder) {
+                      @Qualifier(value = "streamFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
         this.daoHelper = daoHelper;
         this.specifiedElementFinder = specifiedElementFinder;

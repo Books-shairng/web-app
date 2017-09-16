@@ -13,6 +13,7 @@ before_script:
 script:
   - cd nb-backend/
   - mvn clean test -q -Dlog4j.configurationFile=null
+  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
   - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
   
 after_script:
@@ -47,7 +48,7 @@ notifications:
       - books-sharing:0EAfyNQ5bGvqZSLvdFInnbs1#ci
 
 after_success:
-  - cp -fr nb-frontend/build/ nb-backend/src/main/webapp/WEB-INF/static/
+  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
   - cd nb-backend/
   - mvn verify -DskipTests=true
   - bash <(curl -s https://codecov.io/bash)
