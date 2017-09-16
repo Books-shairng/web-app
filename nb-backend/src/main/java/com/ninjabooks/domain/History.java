@@ -17,8 +17,8 @@ public class History extends BaseEntity
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @Column(name = "RETURNED_DATE")
-    private LocalDate returnedDate;
+    @Column(name = "RETURN_DATE")
+    private LocalDate returnDate;
 
     @Column(name = "COMMENT", length = 1200)
     private String comment;
@@ -34,9 +34,9 @@ public class History extends BaseEntity
     public History() {
     }
 
-    public History(LocalDate borrowDate, LocalDate returnedDate) {
+    public History(LocalDate borrowDate, LocalDate returnDate) {
         this.borrowDate = borrowDate;
-        this.returnedDate = returnedDate;
+        this.returnDate = returnDate;
     }
 
     public LocalDate getBorrowDate() {
@@ -47,12 +47,12 @@ public class History extends BaseEntity
         this.borrowDate = borrowDate;
     }
 
-    public LocalDate getReturnedDate() {
-        return returnedDate;
+    public LocalDate getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturnedDate(LocalDate returnDate) {
-        this.returnedDate = returnDate;
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
     public String getComment() {
@@ -85,7 +85,7 @@ public class History extends BaseEntity
         if (o == null || getClass() != o.getClass()) return false;
         History history = (History) o;
         return Objects.equals(borrowDate, history.borrowDate) &&
-            Objects.equals(returnedDate, history.returnedDate) &&
+            Objects.equals(returnDate, history.returnDate) &&
             Objects.equals(comment, history.comment) &&
             Objects.equals(book, history.book) &&
             Objects.equals(user, history.user);
@@ -93,14 +93,14 @@ public class History extends BaseEntity
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, returnedDate, comment, book, user);
+        return Objects.hash(borrowDate, returnDate, comment, book, user);
     }
 
     @Override
     public String toString() {
         return "History{" +
             "borrowDate=" + borrowDate +
-            ", returnedDate=" + returnedDate +
+            ", returnDate=" + returnDate +
             ", comment='" + comment + '\'' +
             ", book=" + book +
             ", user=" + user +

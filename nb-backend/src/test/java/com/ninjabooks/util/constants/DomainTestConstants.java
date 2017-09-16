@@ -34,7 +34,7 @@ public final class DomainTestConstants
     //endregion
 
     //region QRCode field constants
-    public static final String DATA = "12345";
+    public static final String DATA = "12345abcde";
     //endregion
 
     //region Borrow field constants
@@ -48,14 +48,28 @@ public final class DomainTestConstants
     public static final String LASTNAME = "Dee";
     //endregion
 
+    //region hisory field
+    public static final  String COMMENT = "any COMMENT";
+    //endregion
+
+    //region Standard entity
     public static final Book BOOK = new Book(TITLE, AUTHOR, ISBN);
     public static final User USER = new User(NAME, EMAIL, PASSWORD);
     public static final Queue QUEUE = new Queue(ORDER_DATE);
     public static final QRCode QR_CODE = new QRCode(DATA);
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
     public static final History HISTORY = new History(BORROW_DATE, RETURN_DATE);
+    //endregion
+
+    public static final Book BOOK_FULL = new Book(TITLE, AUTHOR, ISBN);
+    public static final User USER_FULL = new User(NAME, EMAIL, PASSWORD);
+    public static final Queue QUEUE_FULL = new Queue(ORDER_DATE);
+    public static final QRCode QR_CODE_FULL = new QRCode(DATA);
+    public static final Borrow BORROW_FULL = new Borrow(BORROW_DATE);
+    public static final History HISTORY_FULL = new History(BORROW_DATE, RETURN_DATE);
 
     static {
+        setIds();
         setRelationFieldsInBook();
         setRelationFieldsInBorrow();
         setRelationFieldsInHistory();
@@ -64,35 +78,44 @@ public final class DomainTestConstants
         setRelationFieldsInQueue();
     }
 
+    private static void setIds() {
+        BOOK.setId(ID);
+        USER.setId(ID);
+        QUEUE.setId(ID);
+        QR_CODE.setId(ID);
+        BORROW.setId(ID);
+        HISTORY.setId(ID);
+    }
+
     private static void setRelationFieldsInBook() {
-        BOOK.setHistories(Collections.singletonList(HISTORY));
-        BOOK.setQRCode(QR_CODE);
-        BOOK.setQueues(Collections.singletonList(QUEUE));
-        BOOK.setBorrows(Collections.singletonList(BORROW));
+        BOOK_FULL.setHistories(Collections.singletonList(HISTORY));
+        BOOK_FULL.setQRCode(QR_CODE);
+        BOOK_FULL.setQueues(Collections.singletonList(QUEUE));
+        BOOK_FULL.setBorrows(Collections.singletonList(BORROW));
     }
 
     private static void setRelationFieldsInUser() {
-        USER.setBorrows(Collections.singletonList(BORROW));
-        USER.setHistories(Collections.singletonList(HISTORY));
-        USER.setQueues(Collections.singletonList(QUEUE));
+        USER_FULL.setBorrows(Collections.singletonList(BORROW));
+        USER_FULL.setHistories(Collections.singletonList(HISTORY));
+        USER_FULL.setQueues(Collections.singletonList(QUEUE));
     }
 
     private static void setRelationFieldsInQueue() {
-        QUEUE.setBook(BOOK);
-        QUEUE.setUser(USER);
+        QUEUE_FULL.setBook(BOOK);
+        QUEUE_FULL.setUser(USER);
     }
 
     private static void setRelationFieldsInQRCode() {
-        QR_CODE.setBook(BOOK);
+        QR_CODE_FULL.setBook(BOOK);
     }
 
     private static void setRelationFieldsInBorrow() {
-        BORROW.setBook(BOOK);
-        BORROW.setUser(USER);
+        BORROW_FULL.setBook(BOOK);
+        BORROW_FULL.setUser(USER);
     }
 
     private static void setRelationFieldsInHistory() {
-        HISTORY.setBook(BOOK);
-        HISTORY.setUser(USER);
+        HISTORY_FULL.setBook(BOOK);
+        HISTORY_FULL.setUser(USER);
     }
 }

@@ -1,7 +1,7 @@
 package com.ninjabooks.service.dao.queue;
 
-import com.ninjabooks.service.dao.generic.GenericService;
 import com.ninjabooks.domain.Queue;
+import com.ninjabooks.service.dao.generic.GenericService;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
