@@ -1,7 +1,12 @@
 package com.ninjabooks.domain;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,17 +20,15 @@ import java.util.Objects;
  * @author Andrzej Zajst
  * @since 1.0
  */
-//@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-//    filters = {
-//        @TokenFilterDef(factory = StandardFilterFactory.class),
-//        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-//        @TokenFilterDef(factory = StopFilterFactory.class, params = {
-//            @Parameter(name = "ignoreCase", value = "true")})})
-//@Analyzer(definition = "searchtokenanalyzer")
-
 @Entity
 @Indexed
-@Boost(value = 2f)
+@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+    filters = {
+        @TokenFilterDef(factory = StandardFilterFactory.class),
+        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+        @TokenFilterDef(factory = StopFilterFactory.class, params = {
+            @Parameter(name = "ignoreCase", value = "true")})})
+@Analyzer(definition = "searchtokenanalyzer")
 @Table(name = "BOOK")
 public class Book extends BaseEntity
 {
