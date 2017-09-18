@@ -17,7 +17,7 @@ public class Queue extends BaseEntity
     @Column(name = "ORDER_DATE")
     private LocalDateTime orderDate;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 

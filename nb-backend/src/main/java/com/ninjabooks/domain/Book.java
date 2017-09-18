@@ -55,14 +55,17 @@ public class Book extends BaseEntity
     @JoinColumn(name = "QR_code_id")
     private QRCode QRCode;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
-    private List<Queue> queues = new ArrayList<>(0);
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    private Queue queue;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
-    private List<Borrow> borrows = new ArrayList<>(0);
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    private Borrow borrow;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<History> histories = new ArrayList<>(0);
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    private List<Comment> comments = new ArrayList<>(0);
 
     public Book() {
     }
@@ -110,38 +113,6 @@ public class Book extends BaseEntity
         this.isbn = isbn;
     }
 
-    public QRCode getQRCode() {
-        return QRCode;
-    }
-
-    public void setQRCode(QRCode QRCode) {
-        this.QRCode = QRCode;
-    }
-
-    public List<Queue> getQueues() {
-        return queues;
-    }
-
-    public void setQueues(List<Queue> queues) {
-        this.queues = queues;
-    }
-
-    public List<Borrow> getBorrows() {
-        return borrows;
-    }
-
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
-    }
-
-    public List<History> getHistories() {
-        return histories;
-    }
-
-    public void setHistories(List<History> histories) {
-        this.histories = histories;
-    }
-
     public BookStatus getStatus() {
         return status;
     }
@@ -158,6 +129,46 @@ public class Book extends BaseEntity
         this.description = description;
     }
 
+    public com.ninjabooks.domain.QRCode getQRCode() {
+        return QRCode;
+    }
+
+    public void setQRCode(com.ninjabooks.domain.QRCode QRCode) {
+        this.QRCode = QRCode;
+    }
+
+    public Queue getQueue() {
+        return queue;
+    }
+
+    public void setQueue(Queue queue) {
+        this.queue = queue;
+    }
+
+    public Borrow getBorrow() {
+        return borrow;
+    }
+
+    public void setBorrow(Borrow borrow) {
+        this.borrow = borrow;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,14 +180,14 @@ public class Book extends BaseEntity
             status == book.status &&
             Objects.equals(description, book.description) &&
             Objects.equals(QRCode, book.QRCode) &&
-            Objects.equals(queues, book.queues) &&
-            Objects.equals(borrows, book.borrows) &&
+            Objects.equals(queue, book.queue) &&
+            Objects.equals(borrow, book.borrow) &&
             Objects.equals(histories, book.histories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author, isbn, status, description, QRCode, queues, borrows, histories);
+        return Objects.hash(title, author, isbn, status, description, QRCode, queue, borrow, histories);
     }
 
     @Override
@@ -188,8 +199,8 @@ public class Book extends BaseEntity
             ", status=" + status +
             ", description='" + description + '\'' +
             ", QRCode=" + QRCode +
-            ", queues=" + queues +
-            ", borrows=" + borrows +
+            ", queue=" + queue +
+            ", borrow=" + borrow +
             ", histories=" + histories +
             '}';
     }

@@ -42,7 +42,7 @@ public class NotificationServiceImpl implements  NotificationService
         List<Borrow> borrows = currentUser.getBorrows();
 
         return borrows.stream()
-//            .filter(borrow -> borrow.getReturnDate() != null)
+//            .filter(borrow -> borrow.getRealReturnDate() != null)
 //            .filter(borrow -> borrow.getBorrowDate() != null)
 //            .filter(borrow -> borrow.getIsBorrowed() == true)
             .filter(BaseEntity::getIsActive)

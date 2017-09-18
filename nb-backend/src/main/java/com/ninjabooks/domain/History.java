@@ -14,37 +14,22 @@ import java.util.Objects;
 @Table(name = "HISTORY")
 public class History extends BaseEntity
 {
-    @Column(name = "BORROW_DATE")
-    private LocalDate borrowDate;
-
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
-    @Column(name = "COMMENT", length = 1200)
-    private String comment;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
     public History() {
     }
 
-    public History(LocalDate borrowDate, LocalDate returnDate) {
-        this.borrowDate = borrowDate;
+    public History(LocalDate returnDate) {
         this.returnDate = returnDate;
-    }
-
-    public LocalDate getBorrowDate() {
-        return borrowDate;
-    }
-
-    public void setBorrowDate(LocalDate borrowDate) {
-        this.borrowDate = borrowDate;
     }
 
     public LocalDate getReturnDate() {
@@ -53,14 +38,6 @@ public class History extends BaseEntity
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Book getBook() {
@@ -84,24 +61,20 @@ public class History extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         History history = (History) o;
-        return Objects.equals(borrowDate, history.borrowDate) &&
-            Objects.equals(returnDate, history.returnDate) &&
-            Objects.equals(comment, history.comment) &&
+        return Objects.equals(returnDate, history.returnDate) &&
             Objects.equals(book, history.book) &&
             Objects.equals(user, history.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, returnDate, comment, book, user);
+        return Objects.hash(returnDate, book, user);
     }
 
     @Override
     public String toString() {
         return "History{" +
-            "borrowDate=" + borrowDate +
-            ", returnDate=" + returnDate +
-            ", comment='" + comment + '\'' +
+            "returnDate=" + returnDate +
             ", book=" + book +
             ", user=" + user +
             '}';
