@@ -37,7 +37,7 @@ public class BookInfo implements Serializable
     }
 
     public int getQueueSize() {
-        return book.getQueue().g
+        return book.getQueues().size();
     }
 
 }
