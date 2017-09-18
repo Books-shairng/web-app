@@ -1,64 +1,45 @@
 <div class="center-section">
-<div class="add-section">
-  <div class="col-md-6 left-side">
-    <form class="add-book-form">
-      <div class="form-amazon">
+  <div class="add-section">
+    <div class="col-md-6 left-side">
+      <form class="add-book-form" #f="ngForm" (ngSubmit)="createBook()">
+        <div class="form-amazon">
           <label id="amazon" for="amazon">Amazon link</label>
           <input type="text" name="amazon">
-          <button class="btn btn-primary btn-md active"><span><img src="/resources/img/search.png"></span></button>
+          <!-- <button class="btn btn-primary btn-md active">Search</button> -->
 
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="title">Tytuł</label>
-          <input type="text" name="title">
+          <input type="text" name="title" [(ngModel)]="model.title" #title="ngModel">
 
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="author">Autor</label>
-          <input type="text" name="author">
+          <input type="text" name="author" [(ngModel)]="model.author" #author="ngModel">
+
+        </div>
+        <div class="form-group">
+          <label for="isbn">isbn</label>
+          <input type="text" name="isbn" [(ngModel)]="model.isbn" #isbn="ngModel">
+
+        </div>
+        <div class="form-group">
+          <label for="description">Opis</label>
+          <input type="text" name="description" [(ngModel)]="model.description" #description="ngModel">
+
+        </div>
+
+        <button class="btn btn-primary btn-md btn-reg active">Zatwierdz</button>
+      </form>
+    </div>
+    <div class="col-md-6 right-side">
+      <div class="QRsection">
+        <div class="QR">
+
+        </div>
+        <button class="btn btn-primary btn-md btn-reg active">Drukuj</button>
 
       </div>
-      <div class="form-group">
-          <label for="language">Język wydania</label>
-          <input type="text" name="language" disabled>
-
-      </div>
-      <div class="form-group">
-          <label for="orginallanguage">Język orginału</label>
-          <input type="text" name="orginallanguage" disabled>
-
-      </div>
-      <div class="form-group">
-          <label for="pages">Ilość stron</label>
-          <input type="text" name="pages" disabled>
-
-      </div>
-      <div class="form-group">
-          <label for="editionnumber">Numer wydania</label>
-          <input type="text" name="editionnumber" disabled>
-
-      </div>
-      <div class="form-group">
-          <label for="premieredate">Data premiery</label>
-          <input type="date" name="premieredate" disabled>
-
-      </div>
-      <!-- <div class="form-group">
-          <label for="index">Indeks</label>
-          <input type="text" name="index" disabled>
-
-      </div> -->
-      <button class="btn btn-primary btn-md btn-reg active">Zatwierdz</button>
-    </form>
-  </div>
-  <div class="col-md-6 right-side">
-    <div class="QRsection">
-      <div class="QR">
-
-      </div>
-      <button class="btn btn-primary btn-md btn-reg active">Drukuj</button>
-
     </div>
   </div>
-</div>
 </div>

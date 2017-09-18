@@ -1,200 +1,224 @@
 html, body {
-  margin:0px;
-  padding:0px;
+  margin: 0px;
+  padding: 0px;
   min-height: 100%;
-  height:100%;
+  height: 100%;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
 .navbar-brand {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-style: italic;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
+
 .navbar-default {
-    position: absolute;
-    width: 100%;
-    background-color: #0051b3;
-    border-bottom: 5px solid #0d88ee;
-    margin: 0px;
+  position: absolute;
+  width: 100%;
+  background-color: #0051b3;
+  border-bottom: 5px solid #0d88ee;
+  margin: 0px;
 }
 
 .navbar-default .container .navbar-collapse ul li a {
-    color: #ffffff;
-    font-size: 18px;
+  color: #ffffff;
+  font-size: 18px;
 }
 
 .navbar-default .container .navbar-collapse ul li a:hover {
-    background-color: #ffffff;
-    color: #000000;
-    font-size: 18px;
-    box-shadow: 0 5px #ffffff;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 18px;
+  box-shadow: 0 5px #ffffff;
 }
 
 .navbar-default .container .navbar-header a {
-    color: #ffffff;
-    font-size: 21px;
+  color: #ffffff;
+  font-size: 21px;
 }
 
 .navbar-default .navbar-toggle {
-    border-color: #ffffff;
-    text-align: center;
+  border-color: #ffffff;
+  text-align: center;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
-.main-content{
-    background-color: #0d88ee;
-    /*display: flex;
+.main-content {
+  background-color: #0d88ee;
+  /*display: flex;
     justify-content: center;
     align-items: center;*/
-    height:100%;
-    min-height:100%;
+  height: 100%;
+  min-height: 100%;
 }
 
 .login-div, .reg-div {
-    width: 100%;
+  width: 100%;
 }
 
 form {
-    display: block;
-    color: #ffffff;
+  display: block;
+  color: #ffffff;
 }
 
 label, input {
-    display: block;
+  display: block;
 }
 
 form label {
-    font-size: 21px;
-    padding-top: 10px;
+  font-size: 21px;
+  padding-top: 10px;
 }
-.center-section{
+
+.center-section {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100%;
-  height:100%;
+  height: 100%;
 }
+
 .logging-section form input, .registration-section form input {
-    color: #000000;
-    width: 500px;
-    height: 50px;
-    font-size: 21px;
+  color: #000000;
+  width: 500px;
+  height: 50px;
+  font-size: 21px;
 }
 
 .btn-login, .btn-reg {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-size: 24px;
-    float: right;
-    margin-top: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  float: right;
+  margin-top: 10px;
 }
 
 form p, form a {
-    margin-top: 20px;
-    font-size: 21px;
+  margin-top: 20px;
+  font-size: 21px;
 }
 
 form p a {
-    color: #000000;
+  color: #000000;
 }
+
 .search-section {
   display: inline;
 }
+
 .search-form input {
-    height: 60px;
-    width: 500px;
-    display: inline;
+  height: 60px;
+  width: 500px;
+  display: inline;
 }
 
 .search-form button {
-    float: right;
+  float: right;
 }
+
 .notification {
   margin-top: 100px;
-  text-align:  center;
+  text-align: center;
   padding-left: 50px;
   padding-right: 50px;
 }
+
 .notification p a {
-    color: #000000;
+  color: #000000;
 }
+
 table {
   border: 3px solid white;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
+
 tr, td {
   border: 3px solid white;
 }
+
 tr td:last-child {
-  background-color:  white;
+  background-color: white;
 }
+
 #search-btn {
-  background-color:white;
-  height:60px;
+  background-color: white;
+  height: 60px;
 }
+
 .add-section {
   width: 100%;
-  padding-top:60px;
-  min-height:100%;
-  height:100%;
+  padding-top: 60px;
+  min-height: 100%;
+  height: 100%;
 }
-.add-section left-side{
-  width:400px;
-  height:800px;
+
+.add-section left-side {
+  width: 400px;
+  height: 800px;
   background-color: #0051b3;
 }
+
 .add-section left-side, .add-section right-side {
-  margin-top:30px;
+  margin-top: 30px;
   padding-bottom: 40px;
 }
+
 .add-section form label {
   display: block;
 }
 
 .add-section input {
-  width:300px;
+  width: 300px;
   color: black;
 }
+
 .add-book-form {
-  padding-left:50px;
+  padding-left: 50px;
 }
+
 .add-book-form button {
   margin: 0;
 }
+
 .QRsection {
-  width:400px;
-  height:450px;
+  width: 400px;
+  height: 450px;
   float: right;
   background-color: #0051b3;
 }
+
 .add-book-form {
-    padding-bottom: 40px;
-    background-color: #0051b3;
+  padding-bottom: 40px;
+  background-color: #0051b3;
 }
+
 .QR {
-  width:350px;
-  height:350px;
+  width: 350px;
+  height: 350px;
   background-color: white;
   margin-top: 30px;
-  margin-left:30px;
+  margin-left: 30px;
 }
+
 .form-amazon {
-  display:inline;
+  display: inline;
 }
+
 .form-amazon label {
   display: block;
 }
+
 .form-amazon input, .form-amazon button {
   display: inline;
 }
+
 .

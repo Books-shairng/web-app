@@ -16,14 +16,10 @@ export class NotificationComponent implements OnInit {
  }
    ngOnInit() {
        // get users from secure api end point
-       this.userService.getUsers()
-           .subscribe(users => {
-               this.users = users;
-           });
-      // this.bookService.notification(this.currentUser.id).
-      // subscribe(data => {
-      //   this.data = data;
-      //   console.log(this.data);
-      // })
+      //  this.userService.getUsers()
+      //      .subscribe(users => {
+      //          this.users = users;
+      //      });
+
    }
  }

@@ -3,26 +3,26 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/index';
 
 @Component({
-    selector: 'registration-app',
-    templateUrl: `./registration.component.html`,
+  selector: 'registration-app',
+  templateUrl: `./registration.component.html`,
 })
 export class RegistrationComponent {
-    model: any = {};
-    loading = false;
+  model: any = {};
+  loading = false;
 
-    constructor(
-        private router: Router,
-        private userService: UserService) { }
+  constructor(
+    private router: Router,
+    private userService: UserService) { }
 
-    register() {
-        this.loading = true;
-        this.userService.create(this.model)
-            .subscribe(
-            data => {
-                this.router.navigate(['/login']);
-            },
-            error => {
-                this.loading = false;
-            });
-    }
+  register() {
+    this.loading = true;
+    this.userService.create(this.model)
+      .subscribe(
+      data => {
+        this.router.navigate(['/login']);
+      },
+      error => {
+        this.loading = false;
+      });
+  }
 }

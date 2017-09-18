@@ -134,7 +134,9 @@ hs_err_pid*
 #Target files #
 /target
 
-#Karol template
+#Karol template to delete?
 /src/main/webapp/node_modules
+#Karol new template
+/nb-frontend/node_modules
 #Karol backend
 /src/main/webapp/resources/app/fakebackend
