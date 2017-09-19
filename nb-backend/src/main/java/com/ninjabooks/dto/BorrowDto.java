@@ -12,7 +12,7 @@ public class BorrowDto implements Serializable
     private static final long serialVersionUID = 3445982100156009090L;
 
     private String borrowDate;
-    private String returnDate;
+    private String expectedReturnDate;
     private boolean canExtendBorrow;
 
     public BorrowDto() {
@@ -26,12 +26,12 @@ public class BorrowDto implements Serializable
         this.borrowDate = borrowDate.toString();
     }
 
-    public String getReturnDate() {
-        return returnDate;
+    public String getExpectedReturnDate() {
+        return expectedReturnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate.toString();
+    public void setExpectedReturnDate(LocalDate expectedReturnDate) {
+        this.expectedReturnDate = expectedReturnDate.toString();
     }
 
     public boolean getCanExtendBorrow() {
