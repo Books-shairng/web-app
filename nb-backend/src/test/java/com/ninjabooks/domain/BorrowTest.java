@@ -30,7 +30,7 @@ public class BorrowTest
     @Test
     public void testShouldReturnCorrectReturnDate() throws Exception {
         sut.setBorrowDate(STANDARD_DATE);
-        LocalDate actual = sut.getRealReturnDate();
+        LocalDate actual = sut.getExpectedReturnDate();
 
         assertThat(actual).isEqualTo(STANDARD_RETURN_DATE);
     }
@@ -38,7 +38,7 @@ public class BorrowTest
     @Test
     public void testWithSaturdayOrSundayAsReturnDayShouldMoveReturnDateToNextMonday() throws Exception {
         sut.setBorrowDate(DATE_MOVE_BY_NEXT_MONDAY);
-        LocalDate actual = sut.getRealReturnDate();
+        LocalDate actual = sut.getExpectedReturnDate();
 
         assertThat(actual).isEqualTo(RETURN_DATE_BY_NEXT_MONDAY);
         assertThat(actual.getDayOfWeek()).isNotIn(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
@@ -49,7 +49,7 @@ public class BorrowTest
     public void testExtendedReturnDateShouldMoveReturnDayByTwoWeeks() throws Exception {
         sut.setBorrowDate(EXTENDEND_DATE);
         sut.extendReturnDate();
-        LocalDate actual = sut.getRealReturnDate();
+        LocalDate actual = sut.getExpectedReturnDate();
 
         assertSoftly(softly -> {
             assertThat(actual).isAfterOrEqualTo(EXTENDEND_DATE.plusWeeks(2));

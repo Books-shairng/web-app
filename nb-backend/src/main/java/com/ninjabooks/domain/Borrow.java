@@ -32,7 +32,7 @@ public class Borrow extends BaseEntity
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -87,6 +87,14 @@ public class Borrow extends BaseEntity
         this.user = user;
     }
 
+    public LocalDate getExpectedReturnDate() {
+        return expectedReturnDate;
+    }
+
+    public void setExpectedReturnDate(LocalDate expectedReturnDate) {
+        this.expectedReturnDate = expectedReturnDate;
+    }
+
     public boolean getCanExtendBorrow() {
         return canExtendBorrow;
     }
@@ -120,13 +128,14 @@ public class Borrow extends BaseEntity
         return canExtendBorrow == borrow.canExtendBorrow &&
             Objects.equals(borrowDate, borrow.borrowDate) &&
             Objects.equals(realReturnDate, borrow.realReturnDate) &&
+            Objects.equals(expectedReturnDate, borrow.expectedReturnDate) &&
             Objects.equals(book, borrow.book) &&
             Objects.equals(user, borrow.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, realReturnDate, canExtendBorrow, book, user);
+        return Objects.hash(borrowDate, realReturnDate, expectedReturnDate, canExtendBorrow, book, user);
     }
 
     @Override
@@ -134,6 +143,7 @@ public class Borrow extends BaseEntity
         return "Borrow{" +
             "borrowDate=" + borrowDate +
             ", realReturnDate=" + realReturnDate +
+            ", expectedReturnDate=" + expectedReturnDate +
             ", canExtendBorrow=" + canExtendBorrow +
             ", book=" + book +
             ", user=" + user +

@@ -56,10 +56,10 @@ public class Book extends BaseEntity
     private QRCode QRCode;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
-    private Queue queue;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private Borrow borrow;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<History> histories = new ArrayList<>(0);
@@ -137,20 +137,20 @@ public class Book extends BaseEntity
         this.QRCode = QRCode;
     }
 
-    public Queue getQueue() {
-        return queue;
-    }
-
-    public void setQueue(Queue queue) {
-        this.queue = queue;
-    }
-
     public Borrow getBorrow() {
         return borrow;
     }
 
     public void setBorrow(Borrow borrow) {
         this.borrow = borrow;
+    }
+
+    public List<Queue> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
     }
 
     public List<History> getHistories() {
@@ -180,14 +180,15 @@ public class Book extends BaseEntity
             status == book.status &&
             Objects.equals(description, book.description) &&
             Objects.equals(QRCode, book.QRCode) &&
-            Objects.equals(queue, book.queue) &&
             Objects.equals(borrow, book.borrow) &&
-            Objects.equals(histories, book.histories);
+            Objects.equals(queues, book.queues) &&
+            Objects.equals(histories, book.histories) &&
+            Objects.equals(comments, book.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author, isbn, status, description, QRCode, queue, borrow, histories);
+        return Objects.hash(title, author, isbn, status, description, QRCode, borrow, queues, histories, comments);
     }
 
     @Override
@@ -199,9 +200,10 @@ public class Book extends BaseEntity
             ", status=" + status +
             ", description='" + description + '\'' +
             ", QRCode=" + QRCode +
-            ", queue=" + queue +
             ", borrow=" + borrow +
+            ", queues=" + queues +
             ", histories=" + histories +
+            ", comments=" + comments +
             '}';
     }
 }
