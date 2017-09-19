@@ -93,10 +93,10 @@ public final class DomainTestConstants
 
     private static void setRelationFieldsInBook() {
         BOOK_FULL.setHistories(Collections.singletonList(HISTORY));
-        BOOK_FULL.setQRCode(QR_CODE);
-        BOOK_FULL.setQueue(QUEUE);
-        BOOK_FULL.setBorrow(BORROW);
+        BOOK_FULL.setQueues(Collections.singletonList(QUEUE));
         BOOK_FULL.setComments(Collections.singletonList(COMMENT));
+        BOOK_FULL.setQRCode(QR_CODE);
+        BOOK_FULL.setBorrow(BORROW);
     }
 
     private static void setRelationFieldsInUser() {

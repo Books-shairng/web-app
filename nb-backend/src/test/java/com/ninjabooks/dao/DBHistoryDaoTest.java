@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.*;
  */
 public class DBHistoryDaoTest
 {
-    private static final String UPDATED_COMMENT = "Nice";
+    private static final LocalDate UPDATED_RETURN_DATE = LocalDate.now();
     private static final Supplier<Stream<History>> HISTORY_STREAM_SUPPLIER =
         CommonUtils.asSupplier(DomainTestConstants.HISTORY);
 
@@ -105,7 +106,7 @@ public class DBHistoryDaoTest
     @Test
     public void testUpdateHistoryByEntity() throws Exception {
         History historyBeforeUpdate = DomainTestConstants.HISTORY;
-        historyBeforeUpdate.setComment(UPDATED_COMMENT);
+        historyBeforeUpdate.setReturnDate(UPDATED_RETURN_DATE);
 
         doNothing().when(daoHelperMock).update(historyBeforeUpdate);
         sut.update(historyBeforeUpdate);
