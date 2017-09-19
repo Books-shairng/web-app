@@ -50,7 +50,8 @@ public class BorrowNotificationTest
         when(borrowDtoMock.getExpectedReturnDate()).thenReturn(DomainTestConstants.EXPECTED_RETURN_DATE.toString());
         BorrowDto actual = sut.getBorrowDto();
 
-        assertThat(actual).extracting("returnDate").contains(DomainTestConstants.EXPECTED_RETURN_DATE.toString());
+        assertThat(actual).extracting("expectedReturnDate")
+            .contains(DomainTestConstants.EXPECTED_RETURN_DATE.toString());
     }
 
     @Test
