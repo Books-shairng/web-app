@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DBBookDaoIT
 {
-    private static final String[] IGNORED_FIELDS = {"queues", "borrows", "histories"};
+    private static final String[] IGNORED_FIELDS = {"queues", "borrows", "histories", "comments"};
     private static final String UPDATED_TITLE = "New Title";
 
     @Autowired

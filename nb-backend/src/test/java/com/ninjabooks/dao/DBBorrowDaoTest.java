@@ -115,7 +115,7 @@ public class DBBorrowDaoTest
     public void testGetReturnDate() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BORROW_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByReturnDate(DomainTestConstants.RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
 
         assertThat(actual).containsExactly(DomainTestConstants.BORROW);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -135,7 +135,7 @@ public class DBBorrowDaoTest
     public void testGetReturnDateWhichNotExistShouldReturnsEmptyStream() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMTPY_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByReturnDate(DomainTestConstants.RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());

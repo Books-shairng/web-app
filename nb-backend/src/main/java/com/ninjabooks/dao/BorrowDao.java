@@ -27,5 +27,5 @@ public interface BorrowDao extends GenericDao<Borrow, Long>
      * @return desired return date
      */
 
-    Stream<Borrow> getByReturnDate(LocalDate returnDate);
+    Stream<Borrow> getByExpectedReturnDate(LocalDate returnDate);
 }

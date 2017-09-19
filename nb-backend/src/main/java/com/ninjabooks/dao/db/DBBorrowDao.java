@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @Transactional
 public class DBBorrowDao implements BorrowDao
 {
-    private enum DBColumnName {BORROW_DATE, RETURN_DATE}
+    private enum DBColumnName {BORROW_DATE, EXPECTED_RETURN_DATE}
 
     private final SessionFactory sessionFactory;
     private final DBDaoHelper<Borrow> dbDaoHelper;
@@ -50,8 +50,8 @@ public class DBBorrowDao implements BorrowDao
     }
 
     @Override
-    public Stream<Borrow> getByReturnDate(LocalDate returnDate) {
-        return specifiedElementFinder.findSpecifiedElementInDB(returnDate, DBColumnName.RETURN_DATE, Borrow.class);
+    public Stream<Borrow> getByExpectedReturnDate(LocalDate returnDate) {
+        return specifiedElementFinder.findSpecifiedElementInDB(returnDate, DBColumnName.EXPECTED_RETURN_DATE, Borrow.class);
     }
 
     @Override
