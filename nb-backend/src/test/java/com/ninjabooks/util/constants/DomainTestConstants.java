@@ -39,7 +39,7 @@ public final class DomainTestConstants
 
     //region Borrow field constants
     public static final LocalDate BORROW_DATE = LocalDate.of(2017, 1, 1);
-    public static final LocalDate RETURN_DATE = BORROW_DATE.plusDays(30);
+    public static final LocalDate EXPECTED_RETURN_DATE = BORROW_DATE.plusDays(30);
     public static final boolean CAN_EXTEND = true;
     //endregion
 
@@ -58,7 +58,7 @@ public final class DomainTestConstants
     public static final Queue QUEUE = new Queue(ORDER_DATE);
     public static final QRCode QR_CODE = new QRCode(DATA);
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
-    public static final History HISTORY = new History(RETURN_DATE);
+    public static final History HISTORY = new History(EXPECTED_RETURN_DATE);
     public static final Comment COMMENT = new Comment(COMMENT_CONTENT);
     //endregion
 
@@ -67,7 +67,7 @@ public final class DomainTestConstants
     public static final Queue QUEUE_FULL = new Queue(ORDER_DATE);
     public static final QRCode QR_CODE_FULL = new QRCode(DATA);
     public static final Borrow BORROW_FULL = new Borrow(BORROW_DATE);
-    public static final History HISTORY_FULL = new History(RETURN_DATE);
+    public static final History HISTORY_FULL = new History(EXPECTED_RETURN_DATE);
     public static final Comment COMMENT_FULL = new Comment(COMMENT_CONTENT);
 
     static {

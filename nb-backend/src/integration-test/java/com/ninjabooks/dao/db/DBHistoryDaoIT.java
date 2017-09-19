@@ -86,7 +86,7 @@ public class DBHistoryDaoIT
     }
 
     private History createFreshEntity() {
-        History enityToUpdate = new History(DomainTestConstants.RETURN_DATE);
+        History enityToUpdate = new History(DomainTestConstants.EXPECTED_RETURN_DATE);
         enityToUpdate.setId(DomainTestConstants.ID);
 
         return enityToUpdate;

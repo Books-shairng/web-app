@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DBUserDaoIT
 {
     private static final String NEW_NAME = "Peter Datov";
-    private static final String[] IGNORED_FILEDS = {"queues", "borrows", "histories", "lastPasswordReset"};
+    private static final String[] IGNORED_FILEDS = {"queues", "borrows", "history", "comments", "lastPasswordReset"};
 
     @Autowired
     private UserDao sut;
@@ -79,7 +79,7 @@ public class DBUserDaoIT
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<User> actual = sut.getAll();
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FILEDS).contains(DomainTestConstants.USER, DomainTestConstants.USER);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FILEDS).contains(DomainTestConstants.USER);
     }
 
     @Test

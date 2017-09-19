@@ -81,7 +81,7 @@ public class DBBorrowDaoIT
     @Test
     @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetReturnDate() throws Exception {
-        Stream<Borrow> actual = sut.getByReturnDate(DomainTestConstants.RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
 
         assertThat(actual).containsExactly(DomainTestConstants.BORROW);
     }
@@ -97,7 +97,7 @@ public class DBBorrowDaoIT
 
     @Test
     public void testGetReturnDateWhichNotExistShouldReturnsEmptyStream() throws Exception {
-        Stream<Borrow> actual = sut.getByReturnDate(DomainTestConstants.RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
 
         assertThat(actual).isEmpty();
     }
