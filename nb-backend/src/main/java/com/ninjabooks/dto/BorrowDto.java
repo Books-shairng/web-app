@@ -1,13 +1,12 @@
 package com.ninjabooks.dto;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since  1.0
  */
-public class BorrowDto implements Serializable
+public class BorrowDto extends BaseEntityDto
 {
     private static final long serialVersionUID = 3445982100156009090L;
 

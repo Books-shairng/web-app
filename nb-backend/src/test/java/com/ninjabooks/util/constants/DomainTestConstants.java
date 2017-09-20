@@ -92,41 +92,41 @@ public final class DomainTestConstants
     }
 
     private static void setRelationFieldsInBook() {
-        BOOK_FULL.setHistories(Collections.singletonList(HISTORY));
-        BOOK_FULL.setQueues(Collections.singletonList(QUEUE));
-        BOOK_FULL.setComments(Collections.singletonList(COMMENT));
-        BOOK_FULL.setQRCode(QR_CODE);
-        BOOK_FULL.setBorrow(BORROW);
+        BOOK_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
+        BOOK_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
+        BOOK_FULL.setComments(Collections.singletonList(COMMENT_FULL));
+        BOOK_FULL.setQRCode(QR_CODE_FULL);
+        BOOK_FULL.setBorrow(BORROW_FULL);
     }
 
     private static void setRelationFieldsInUser() {
-        USER_FULL.setBorrows(Collections.singletonList(BORROW));
-        USER_FULL.setQueues(Collections.singletonList(QUEUE));
-        USER_FULL.setComments(Collections.singletonList(COMMENT));
-        USER_FULL.setHistory(HISTORY);
+        USER_FULL.setBorrows(Collections.singletonList(BORROW_FULL));
+        USER_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
+        USER_FULL.setComments(Collections.singletonList(COMMENT_FULL));
+        USER_FULL.setHistory(HISTORY_FULL);
     }
 
     private static void setRelationFieldsInQueue() {
-        QUEUE_FULL.setBook(BOOK);
-        QUEUE_FULL.setUser(USER);
+        QUEUE_FULL.setBook(BOOK_FULL);
+        QUEUE_FULL.setUser(USER_FULL);
     }
 
     private static void setRelationFieldsInQRCode() {
-        QR_CODE_FULL.setBook(BOOK);
+        QR_CODE_FULL.setBook(BOOK_FULL);
     }
 
     private static void setRelationFieldsInBorrow() {
-        BORROW_FULL.setBook(BOOK);
-        BORROW_FULL.setUser(USER);
+        BORROW_FULL.setBook(BOOK_FULL);
+        BORROW_FULL.setUser(USER_FULL);
     }
 
     private static void setRelationFieldsInHistory() {
-        HISTORY_FULL.setBook(BOOK);
-        HISTORY_FULL.setUser(USER);
+        HISTORY_FULL.setBook(BOOK_FULL);
+        HISTORY_FULL.setUser(USER_FULL);
     }
 
     private static void setRelationFieldsInComment() {
-        COMMENT_FULL.setBook(BOOK);
-        COMMENT_FULL.setUser(USER);
+        COMMENT_FULL.setBook(BOOK_FULL);
+        COMMENT_FULL.setUser(USER_FULL);
     }
 }

@@ -1,6 +1,7 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.notification.NotificationService;
+import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class NotificationControllerTest
 {
     private static final List RESPONSE_CONTENT = Collections.singletonList("TEST");
-    private static final int USER_ID = 1;
+    private static final long USER_ID = DomainTestConstants.ID;
 
     @Mock
     private NotificationService notificationServiceMock;
