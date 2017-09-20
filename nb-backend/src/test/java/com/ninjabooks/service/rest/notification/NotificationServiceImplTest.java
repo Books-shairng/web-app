@@ -1,12 +1,17 @@
 package com.ninjabooks.service.rest.notification;
 
-import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.domain.User;
+import com.ninjabooks.dto.BookDto;
+import com.ninjabooks.dto.BorrowDto;
+import com.ninjabooks.dto.QueueDto;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
+import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
+import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -14,21 +19,23 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@Ignore(value = "This unit test is ingored at this momment")
 public class NotificationServiceImplTest
 {
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -38,64 +45,75 @@ public class NotificationServiceImplTest
     @Mock
     private ModelMapper modelMapperMock;
 
+    @Mock
+    private BookDto bookDtoMock;
+
+    @Mock
+    private BorrowDto borrowDtoMock;
+
+    @Mock
+    private QueueDto queueDtoMock;
+
     private NotificationService sut;
 
     @Before
     public void setUp() throws Exception {
-        initModelMapperWithProperMocks();
         this.sut = new NotificationServiceImpl(userServiceMock, modelMapperMock);
-        DomainTestConstants.USER.setBorrows(Collections.singletonList(initBorrow()));
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
-//        when(borrowNotificationMock.getBorrowDto()).thenReturn(borrowDto);
-//        when(borrowNotificationMock.getBookDto()).thenReturn(bookDto);
+        when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
     }
 
     @Test
-    public void testFindUserBorrowsShouldReturnListWithBorrows() throws Exception {
+    public void testFindUserBorrowsShouldReturnListOfBorrows() throws Exception {
+        prepareOngoingStubs(bookDtoMock, borrowDtoMock);
         List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
-        actual.size();
 
-//        Assertions.assertThat(actual).containsExactly(borrowNotification).usingRecursiveFieldByFieldElementComparator();
+        assertThat(actual).usingFieldByFieldElementComparator()
+            .extracting("bookDto", "borrowDto")
+            .containsExactly(tuple(bookDtoMock, borrowDtoMock));
 
-//        Borrow borrow = new Borrow();
-//        borrow.setBook(BOOK);
-//        when(USER.getBorrows()).thenReturn(Collections.singletonList(borrow));
-//
-//        List<BorrowNotification> actual = sut.findUserBorrows(ID);
-//        BorrowNotification borrowNotification = new BorrowNotification(borrow);
-//        Assertions.assertThat(actual).containsExactly(borrowNotification);
-//
-//        verify(userServiceMock, atLeastOnce()).getById(anyLong());
+        verify(userServiceMock, atLeastOnce()).getById(any());
+        verify(modelMapperMock, atLeastOnce()).map(any(), any());
     }
 
     @Test
-    public void testFindUserQueuesShouldRetunListWithQueues() throws Exception {
+    public void testFindUserBorrowsWhenUserNotHaveBorrowsShouldReturnEmptyList() throws Exception {
+        USER_OPTIONAL.get().setBorrows(Collections.emptyList());
+        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
+
+        assertThat(actual).isEmpty();
+
+        verify(userServiceMock, atLeastOnce()).getById(any());
+    }
+
+    @Test
+    public void testFindUserQueuesShouldReturnListOfQueues() throws Exception {
+        NativeQuery nativeQueryMock = mock(NativeQuery.class);
+        Session sessionMock = mock(Session.class);
+        when(userServiceMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.createNativeQuery(anyString())).thenReturn(nativeQueryMock);
+        prepareOngoingStubs(bookDtoMock, queueDtoMock);
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
+        assertThat(actual).usingFieldByFieldElementComparator()
+            .extracting("bookDto", "queueDto")
+            .containsExactly(tuple(bookDtoMock, queueDtoMock));
 
-        verify(userServiceMock, atLeastOnce()).getById(anyLong());
+        verify(userServiceMock, atLeastOnce()).getById(any());
+        verify(modelMapperMock, atLeastOnce()).map(any(), any());
     }
 
-    private Borrow initBorrow() {
-        Borrow borrow = new Borrow();
-        borrow.setBorrowDate(LocalDate.now());
-        borrow.setUser(DomainTestConstants.USER);
-        borrow.setBook(DomainTestConstants.BOOK);
+    @Test
+    public void testFindUserQueuesWhenUserNotHaveQueuesShouldReturnEmptyList() throws Exception {
+        USER_OPTIONAL.get().setQueues(Collections.emptyList());
+        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
-        return borrow;
+        assertThat(actual).isEmpty();
+
+        verify(userServiceMock, atLeastOnce()).getById(any());
     }
 
-    private void initModelMapperWithProperMocks() {
-//        BorrowDto borrowDtoMock = mock(BorrowDto.class);
-//        when(borrowDtoMock.getBorrowDate()).thenReturn(BORROW_DATE);
-////        borrowDtoMock.setBorrowDate(BORROW_DATE);
-//        BookDto bookDtoMock = mock(BookDto.class);
-//        when(bookDtoMock.getTitle()).thenReturn(TITLE);
-//        when(bookDtoMock.getAuthor()).thenReturn(AUTHOR);
-//        when(bookDtoMock.getIsbn()).thenReturn(ISBN);
-//        QueueDto queueDtoMock = mock(QueueDto.class);
-//        when(queueDtoMock.getOrderDate()).thenReturn(ORDER_DATE);
-//
-//        when(modelMapperMock.map(any(), any())).thenReturn(bookDtoMock, borrowDtoMock, queueDtoMock);
+    private <E, T> void prepareOngoingStubs(E e, T t) {
+        when(modelMapperMock.map(any(), any())).thenReturn(e, t);
     }
+
 }
