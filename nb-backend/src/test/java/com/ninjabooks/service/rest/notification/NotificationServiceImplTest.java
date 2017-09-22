@@ -35,6 +35,7 @@ import static org.mockito.Mockito.*;
 public class NotificationServiceImplTest
 {
     private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
+    private static final int EXPECTED_SIZE = 1;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -81,7 +82,15 @@ public class NotificationServiceImplTest
         List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();
+        verify(userServiceMock, atLeastOnce()).getById(any());
+    }
 
+    @Test
+    public void testFindUserBorrowsShouldReturnExpectedSizeOfList() throws Exception {
+        prepareOngoingStubs(bookDtoMock, borrowDtoMock);
+        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
+
+        assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());
     }
 
@@ -108,7 +117,19 @@ public class NotificationServiceImplTest
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();
+        verify(userServiceMock, atLeastOnce()).getById(any());
+    }
 
+    @Test
+    public void testFindUserQueuesShouldReturnExpectedSizeOfList() throws Exception {
+        NativeQuery nativeQueryMock = mock(NativeQuery.class);
+        Session sessionMock = mock(Session.class);
+        when(userServiceMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.createNativeQuery(anyString())).thenReturn(nativeQueryMock);
+        prepareOngoingStubs(bookDtoMock, queueDtoMock);
+        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
+
+        assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());
     }
 
