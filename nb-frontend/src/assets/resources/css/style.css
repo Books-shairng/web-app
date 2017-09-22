@@ -71,12 +71,16 @@ form {
 label, input {
   display: block;
 }
-
+textarea {
+  color: black;
+}
 form label {
   font-size: 21px;
   padding-top: 10px;
 }
-
+.search-form input {
+  color: black;
+}
 .center-section {
   display: flex;
   justify-content: center;
@@ -177,16 +181,21 @@ tr td:last-child {
 }
 
 .add-section input {
-  width: 300px;
+  width: 356px;
   color: black;
 }
 
 .add-book-form {
   padding-left: 50px;
+  padding-bottom: 80px;
+  min-height: 535px;
+  width: 450px;
 }
 
 .add-book-form button {
   margin: 0;
+  float:right;
+  margin-right: 38px;
 }
 
 .QRsection {
@@ -194,6 +203,9 @@ tr td:last-child {
   height: 450px;
   float: right;
   background-color: #0051b3;
+}
+.QRsection button {
+  margin-right: 15px;
 }
 
 .add-book-form {
@@ -220,5 +232,6 @@ tr td:last-child {
 .form-amazon input, .form-amazon button {
   display: inline;
 }
-
-.
+.qrcode img {
+  width: 100%;
+}

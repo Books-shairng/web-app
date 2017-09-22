@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Ninja Books frontend app",
   "license": "MIT",
-  "author": ["Karol Kawski", "Piotr Nowak"],
+  "author": [
+    "Karol Kawski",
+    "Piotr Nowak"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve -p 3000 -hmr true -o",
@@ -24,6 +27,7 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@techiediaries/ngx-qrcode": "0.0.5",
     "core-js": "^2.4.1",
     "global": "^4.3.2",
     "rxjs": "^5.4.2",

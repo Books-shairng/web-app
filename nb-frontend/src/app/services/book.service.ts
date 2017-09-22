@@ -13,7 +13,13 @@ export class BookService {
     let obj = JSON.parse(localStorage.getItem("currentUser"));
     let headers = new Headers({ 'Authorization': 'Bearer ' + obj.token });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post('/api/books', book, options).map((response: Response) => response.json());
+    return this.http.post('/api/books/', book, options).map((response: Response) => response.json());
   }
+  // searchSubmit(book: Book){
+  //   let obj = JSON.parse(localStorage.getItem("currentUser"));
+  //   let headers = new Headers({ 'Authorization': 'Bearer ' + obj.token });
+  //   let options = new RequestOptions({ headers: headers });
+  //   return this.http.post('/api/search/{query}', book, options).map((response: Response) => response.json());
+  // }
 
 }

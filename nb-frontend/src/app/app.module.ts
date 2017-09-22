@@ -15,9 +15,9 @@ import { AddBookComponent } from './addbook/index';
 import { BookInfoComponent } from './bookinfo/index';
 import { BooksListComponent } from './bookslist/index';
 import { SettingsComponent } from './settings/index';
-
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 @NgModule({
-  imports: [BrowserModule, FormsModule, routes, HttpModule],
+  imports: [BrowserModule, FormsModule, routes, HttpModule,NgxQRCodeModule],
   declarations: [AppComponent, LoginComponent, RegistrationComponent, SearchComponent, NotificationComponent,
     AddBookComponent, BookInfoComponent, BooksListComponent, SettingsComponent],
   providers: [AuthGuard, AuthenticationService, UserService, BookService],
