@@ -1,5 +1,10 @@
 package com.ninjabooks.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ninjabooks.util.converter.json.LocalDateTimeDeserializer;
+import com.ninjabooks.util.converter.json.LocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 
 /**
@@ -10,16 +15,18 @@ public class QueueDto extends BaseEntityDto
 {
     private static final long serialVersionUID = 8784779997262803415L;
 
-    private String orderDate;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime orderDate;
 
     public QueueDto() {
     }
 
-    public String getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
     public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate.toString();
+        this.orderDate = orderDate;
     }
 }
