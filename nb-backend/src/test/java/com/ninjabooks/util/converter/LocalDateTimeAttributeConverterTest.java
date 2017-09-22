@@ -1,5 +1,6 @@
 package com.ninjabooks.util.converter;
 
+import com.ninjabooks.util.converter.db.LocalDateTimeAttributeConverter;
 import org.junit.Before;
 import org.junit.Test;
 

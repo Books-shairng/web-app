@@ -50,10 +50,10 @@ public class QueueNotificationTest
 
     @Test
     public void testNotificationShouldReturnCorrectQueueReturnData() throws Exception {
-        when(queueDtoMock.getOrderDate()).thenReturn(DomainTestConstants.ORDER_DATE.toString());
+        when(queueDtoMock.getOrderDate()).thenReturn(DomainTestConstants.ORDER_DATE);
         QueueDto actual = sut.getQueueDto();
 
-        assertThat(actual.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE.toString());
+        assertThat(actual.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
 
     }
 

@@ -47,19 +47,19 @@ public class BorrowNotificationTest
 
     @Test
     public void testNotificationShouldReturnCorrectReturnDate() throws Exception {
-        when(borrowDtoMock.getExpectedReturnDate()).thenReturn(DomainTestConstants.EXPECTED_RETURN_DATE.toString());
+        when(borrowDtoMock.getExpectedReturnDate()).thenReturn(DomainTestConstants.EXPECTED_RETURN_DATE);
         BorrowDto actual = sut.getBorrowDto();
 
         assertThat(actual).extracting("expectedReturnDate")
-            .contains(DomainTestConstants.EXPECTED_RETURN_DATE.toString());
+            .contains(DomainTestConstants.EXPECTED_RETURN_DATE);
     }
 
     @Test
     public void testNotificationShouldReturnCorrectBorrowDate() throws Exception {
-        when(borrowDtoMock.getBorrowDate()).thenReturn(DomainTestConstants.BORROW_DATE.toString());
+        when(borrowDtoMock.getBorrowDate()).thenReturn(DomainTestConstants.BORROW_DATE);
         BorrowDto actual = sut.getBorrowDto();
 
-        assertThat(actual).extracting("borrowDate").contains(DomainTestConstants.BORROW_DATE.toString());
+        assertThat(actual).extracting("borrowDate").contains(DomainTestConstants.BORROW_DATE);
     }
 
     @Test
