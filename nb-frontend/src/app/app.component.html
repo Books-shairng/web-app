@@ -1,0 +1,26 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button *ngIf="loggedIn | async" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+            <a class="navbar-brand" href="#">NINJA BOOKS</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul *ngIf="loggedIn | async" class="nav navbar-nav navbar-right">
+                <li><a routerLink="search">Szukaj</a></li>
+                <li><a routerLink="bookslist">Lista książek</a></li>
+                <li><a routerLink="addbook">Dodaj książkę</a></li>
+                <li><a routerLink="notifications">Powiadomienia</a></li>
+                <li><a routerLink="settings">Konto</a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container main-content">
+    <router-outlet></router-outlet>
+</div>

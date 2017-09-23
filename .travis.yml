@@ -4,16 +4,54 @@ sudo: false
 
 node_js:
   - "8"
+  - "6"
+
+before_script:
+  - yarn build
+  - cd ..
 
 script:
-  mvn clean test -q -Dlog4j.configurationFile=null | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  - cd nb-backend/
+  - mvn clean test -q -Dlog4j.configurationFile=null
+  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
+  - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
+  
+after_script:
+  - cd ..
   
 cache:
   directories:
   - "$HOME/.m2"
+  - "$HOME/.yarn-cache"
 
 jdk:
   - oraclejdk8
 
+before_install:
+   - export TZ=Poland
+   - npm install -g yarn
+   - cd nb-frontend/
+   - yarn add global @angular/cli
+   - yarn add global codecov
+
 install:
-  - npm install --prefix src/main/webapp/	
+  - yarn install
+#  todo write proper configuration for frontend
+
+after_install:
+  - cd ..
+
+notifications:
+  email: false
+  slack:
+    rooms:
+      - books-sharing:0EAfyNQ5bGvqZSLvdFInnbs1#ci
+
+after_success:
+  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
+  - cd nb-backend/
+  - mvn verify -DskipTests=true
+  - bash <(curl -s https://codecov.io/bash)
+
+after_failure:
+  - bash <(curl -s https://codecov.io/bash)
