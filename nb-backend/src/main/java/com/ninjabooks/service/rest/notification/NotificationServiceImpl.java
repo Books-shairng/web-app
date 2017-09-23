@@ -57,7 +57,6 @@ public class NotificationServiceImpl implements  NotificationService
             .collect(Collectors.toList());
     }
 
-
     private int computePositionInQueue(Queue queue, User user) {
         final List<Object[]> queues = getMatchingQueues(queue);
 

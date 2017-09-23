@@ -37,10 +37,11 @@ public class NotificationControllerTest
     private NotificationService notificationServiceMock;
 
     private MockMvc mockMvc;
+    private NotificationController sut;
 
     @Before
     public void setUp() throws Exception {
-        NotificationController sut = new NotificationController(notificationServiceMock);
+        this.sut = new NotificationController(notificationServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 
