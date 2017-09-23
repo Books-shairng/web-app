@@ -23,7 +23,7 @@ public abstract class GenericNotification implements Serializable
     private static final long serialVersionUID = -2145369478368501705L;
 
     @JsonUnwrapped
-    @JsonIgnoreProperties(value = {"id", "active", "description", "status"})
+    @JsonIgnoreProperties(value = {"active", "description", "status"})
     private BookDto bookDto;
 
     public GenericNotification(ModelMapper modelMapper, Book book) {

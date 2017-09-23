@@ -1,4 +1,4 @@
-package com.ninjabooks.util.converter;
+package com.ninjabooks.util.converter.db;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

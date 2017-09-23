@@ -35,16 +35,12 @@ public class NotificationServiceImpl implements  NotificationService
         this.modelMapper = modelMapper;
     }
 
-    //todo refaktoryzacje tego dziadostwa
     @Override
     public List<BorrowNotification> findUserBorrows(Long userID) {
         User currentUser = EntityUtils.getEnity(userService, userID);
         List<Borrow> borrows = currentUser.getBorrows();
 
         return borrows.stream()
-//            .filter(borrow -> borrow.getReturnDate() != null)
-//            .filter(borrow -> borrow.getBorrowDate() != null)
-//            .filter(borrow -> borrow.getIsBorrowed() == true)
             .filter(BaseEntity::getIsActive)
             .map(borrow -> new BorrowNotification(borrow, modelMapper))
             .collect(Collectors.toList());
@@ -61,14 +57,14 @@ public class NotificationServiceImpl implements  NotificationService
             .collect(Collectors.toList());
     }
 
-
     private int computePositionInQueue(Queue queue, User user) {
-        List<Object[]> queues = getMatchingQueues(queue);
+        final List<Object[]> queues = getMatchingQueues(queue);
 
         for (Object[] object : queues) {
             Long id = ((BigInteger) object[1]).longValue();
-            if (id.equals(user.getId()))
+            if (id.equals(user.getId())) {
                 return queues.indexOf(object) + 1;
+            }
         }
 
         return 0;

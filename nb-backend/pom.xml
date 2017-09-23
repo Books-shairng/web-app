@@ -22,6 +22,7 @@
         <mockito.version>2.10.0</mockito.version>
         <hsqldb.version>2.4.0</hsqldb.version>
         <modelmapper.version>1.1.0</modelmapper.version>
+        <jayway.version>2.4.0</jayway.version>
     </properties>
 
     <build>
@@ -293,6 +294,13 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <!--Jayway JSONPath Java implementation-->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${jayway.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

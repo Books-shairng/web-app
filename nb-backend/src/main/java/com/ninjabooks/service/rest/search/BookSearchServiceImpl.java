@@ -60,7 +60,15 @@ public class BookSearchServiceImpl implements SearchService
     private Query createLuceneQuery(String query, QueryBuilder queryBuilder) {
         return queryBuilder
             .bool()
-            .should(queryBuilder.keyword().fuzzy().onFields(FIELDS).matching(query).createQuery())
+            .should(queryBuilder
+                .keyword()
+                .fuzzy()
+                .withEditDistanceUpTo(1)
+                .withPrefixLength(1)
+                .onFields(FIELDS)
+                .boostedTo(2f)
+                .matching(query)
+                .createQuery())
             .createQuery();
     }
 
@@ -80,9 +88,11 @@ public class BookSearchServiceImpl implements SearchService
     }
 
     private void logProperMessage(int resultSize) {
-        if (resultSize > 0)
+        if (resultSize > 0) {
             logger.info("Found {} records", resultSize);
-        else
+        }
+        else {
             logger.info("No match records found");
+        }
     }
 }

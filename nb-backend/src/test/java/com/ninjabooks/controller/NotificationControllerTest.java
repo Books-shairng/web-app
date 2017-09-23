@@ -1,10 +1,13 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.notification.NotificationService;
+import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,18 +27,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class NotificationControllerTest
 {
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private static final List RESPONSE_CONTENT = Collections.singletonList("TEST");
-    private static final int USER_ID = 1;
+    private static final long USER_ID = DomainTestConstants.ID;
 
     @Mock
     private NotificationService notificationServiceMock;
 
     private MockMvc mockMvc;
+    private NotificationController sut;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        NotificationController sut = new NotificationController(notificationServiceMock);
+        this.sut = new NotificationController(notificationServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 

@@ -19,17 +19,20 @@ public class Borrow extends BaseEntity
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @Column(name = "RETURN_DATE")
-    private LocalDate returnDate;
+    @Column(name = "REAL_RETURN_DATE")
+    private LocalDate realReturnDate;
+
+    @Column(name = "EXPECTED_RETURN_DATE")
+    private LocalDate expectedReturnDate;
 
     @Column(name = "CAN_EXTEND_RETURN_DATE")
     private boolean canExtendBorrow = true;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -43,7 +46,7 @@ public class Borrow extends BaseEntity
 
     public Borrow(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
-        calculateReturnDate(borrowDate);
+        calculateExpectedReturnDate(borrowDate);
     }
 
     public Borrow(Book book, User user) {
@@ -57,15 +60,15 @@ public class Borrow extends BaseEntity
 
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
-        calculateReturnDate(borrowDate);
+        calculateExpectedReturnDate(borrowDate);
     }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
+    public LocalDate getRealReturnDate() {
+        return realReturnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
+    public void setRealReturnDate(LocalDate realReturnDate) {
+        this.realReturnDate = realReturnDate;
     }
 
     public Book getBook() {
@@ -84,6 +87,14 @@ public class Borrow extends BaseEntity
         this.user = user;
     }
 
+    public LocalDate getExpectedReturnDate() {
+        return expectedReturnDate;
+    }
+
+    public void setExpectedReturnDate(LocalDate expectedReturnDate) {
+        this.expectedReturnDate = expectedReturnDate;
+    }
+
     public boolean getCanExtendBorrow() {
         return canExtendBorrow;
     }
@@ -94,12 +105,12 @@ public class Borrow extends BaseEntity
 
     public void extendReturnDate() {
         LocalDate tmpDate = LocalDate.now().plusWeeks(2);
-        returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
+        expectedReturnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 
-    private void calculateReturnDate(LocalDate borrowDate) {
+    private void calculateExpectedReturnDate(LocalDate borrowDate) {
         LocalDate tmpDate = borrowDate.plusDays(30);
-        returnDate = checkIfReturnDateEndOnWeekend(tmpDate);
+        expectedReturnDate = checkIfReturnDateEndOnWeekend(tmpDate);
     }
 
     private LocalDate checkIfReturnDateEndOnWeekend(LocalDate returnDate) {
@@ -116,21 +127,23 @@ public class Borrow extends BaseEntity
         Borrow borrow = (Borrow) o;
         return canExtendBorrow == borrow.canExtendBorrow &&
             Objects.equals(borrowDate, borrow.borrowDate) &&
-            Objects.equals(returnDate, borrow.returnDate) &&
+            Objects.equals(realReturnDate, borrow.realReturnDate) &&
+            Objects.equals(expectedReturnDate, borrow.expectedReturnDate) &&
             Objects.equals(book, borrow.book) &&
             Objects.equals(user, borrow.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, returnDate, canExtendBorrow, book, user);
+        return Objects.hash(borrowDate, realReturnDate, expectedReturnDate, canExtendBorrow, book, user);
     }
 
     @Override
     public String toString() {
         return "Borrow{" +
             "borrowDate=" + borrowDate +
-            ", returnDate=" + returnDate +
+            ", realReturnDate=" + realReturnDate +
+            ", expectedReturnDate=" + expectedReturnDate +
             ", canExtendBorrow=" + canExtendBorrow +
             ", book=" + book +
             ", user=" + user +

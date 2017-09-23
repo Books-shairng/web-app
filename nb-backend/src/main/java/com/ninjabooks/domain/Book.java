@@ -1,7 +1,12 @@
 package com.ninjabooks.domain;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,17 +20,15 @@ import java.util.Objects;
  * @author Andrzej Zajst
  * @since 1.0
  */
-//@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-//    filters = {
-//        @TokenFilterDef(factory = StandardFilterFactory.class),
-//        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-//        @TokenFilterDef(factory = StopFilterFactory.class, params = {
-//            @Parameter(name = "ignoreCase", value = "true")})})
-//@Analyzer(definition = "searchtokenanalyzer")
-
 @Entity
 @Indexed
-@Boost(value = 2f)
+@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+    filters = {
+        @TokenFilterDef(factory = StandardFilterFactory.class),
+        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+        @TokenFilterDef(factory = StopFilterFactory.class, params = {
+            @Parameter(name = "ignoreCase", value = "true")})})
+@Analyzer(definition = "searchtokenanalyzer")
 @Table(name = "BOOK")
 public class Book extends BaseEntity
 {
@@ -52,14 +55,17 @@ public class Book extends BaseEntity
     @JoinColumn(name = "QR_code_id")
     private QRCode QRCode;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    private Borrow borrow;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
-    private List<Borrow> borrows = new ArrayList<>(0);
+    private List<History> histories = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
-    private List<History> histories = new ArrayList<>(0);
+    private List<Comment> comments = new ArrayList<>(0);
 
     public Book() {
     }
@@ -107,38 +113,6 @@ public class Book extends BaseEntity
         this.isbn = isbn;
     }
 
-    public QRCode getQRCode() {
-        return QRCode;
-    }
-
-    public void setQRCode(QRCode QRCode) {
-        this.QRCode = QRCode;
-    }
-
-    public List<Queue> getQueues() {
-        return queues;
-    }
-
-    public void setQueues(List<Queue> queues) {
-        this.queues = queues;
-    }
-
-    public List<Borrow> getBorrows() {
-        return borrows;
-    }
-
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
-    }
-
-    public List<History> getHistories() {
-        return histories;
-    }
-
-    public void setHistories(List<History> histories) {
-        this.histories = histories;
-    }
-
     public BookStatus getStatus() {
         return status;
     }
@@ -155,6 +129,46 @@ public class Book extends BaseEntity
         this.description = description;
     }
 
+    public com.ninjabooks.domain.QRCode getQRCode() {
+        return QRCode;
+    }
+
+    public void setQRCode(com.ninjabooks.domain.QRCode QRCode) {
+        this.QRCode = QRCode;
+    }
+
+    public Borrow getBorrow() {
+        return borrow;
+    }
+
+    public void setBorrow(Borrow borrow) {
+        this.borrow = borrow;
+    }
+
+    public List<Queue> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,14 +180,15 @@ public class Book extends BaseEntity
             status == book.status &&
             Objects.equals(description, book.description) &&
             Objects.equals(QRCode, book.QRCode) &&
+            Objects.equals(borrow, book.borrow) &&
             Objects.equals(queues, book.queues) &&
-            Objects.equals(borrows, book.borrows) &&
-            Objects.equals(histories, book.histories);
+            Objects.equals(histories, book.histories) &&
+            Objects.equals(comments, book.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author, isbn, status, description, QRCode, queues, borrows, histories);
+        return Objects.hash(title, author, isbn, status, description, QRCode, borrow, queues, histories, comments);
     }
 
     @Override
@@ -185,9 +200,10 @@ public class Book extends BaseEntity
             ", status=" + status +
             ", description='" + description + '\'' +
             ", QRCode=" + QRCode +
+            ", borrow=" + borrow +
             ", queues=" + queues +
-            ", borrows=" + borrows +
             ", histories=" + histories +
+            ", comments=" + comments +
             '}';
     }
 }

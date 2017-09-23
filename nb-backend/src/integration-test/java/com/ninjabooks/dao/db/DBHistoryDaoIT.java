@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DBHistoryDaoIT
 {
-    private static final String UPDATED_COMMENT = "Nice";
+    private static final LocalDate UPDATED_RETURN_DATE = LocalDate.now();
 
     @Autowired
     private HistoryDao sut;
@@ -76,7 +77,7 @@ public class DBHistoryDaoIT
     @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateHistoryByEntity() throws Exception {
         History enityToUpdate = createFreshEntity();
-        enityToUpdate.setComment(UPDATED_COMMENT);
+        enityToUpdate.setReturnDate(UPDATED_RETURN_DATE);
 
         sut.update(enityToUpdate);
         Stream<History> actual = sut.getAll();
@@ -85,7 +86,7 @@ public class DBHistoryDaoIT
     }
 
     private History createFreshEntity() {
-        History enityToUpdate = new History(DomainTestConstants.BORROW_DATE, DomainTestConstants.RETURN_DATE);
+        History enityToUpdate = new History(DomainTestConstants.EXPECTED_RETURN_DATE);
         enityToUpdate.setId(DomainTestConstants.ID);
 
         return enityToUpdate;

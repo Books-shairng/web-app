@@ -90,7 +90,7 @@ public class BorrowServiceImpl implements BorrowService
     @Override
     public void extendReturnDate(Long userID, Book book) throws BorrowException {
         logger.info("User:{" + userID + "} want extend return date of this book:{" + book.getTitle() + "}");
-        Borrow borrow = bookDao.getById(book.getId()).get().getBorrows().get(0);
+        Borrow borrow = bookDao.getById(book.getId()).get().getBorrow();
 
         checkExtendStatus(borrow);
         borrow.extendReturnDate();
@@ -122,7 +122,7 @@ public class BorrowServiceImpl implements BorrowService
         checkQRCodeCorrectness(qrCode);
 
         Borrow borrow = getBorrowByQRCode(qrCode);
-        borrow.setReturnDate(TODAY);
+        borrow.setRealReturnDate(TODAY);
         borrowDao.update(borrow);
     }
 
@@ -170,7 +170,7 @@ public class BorrowServiceImpl implements BorrowService
     private void checkQRCodeCorrectness(QRCode qrCode) throws QRCodeNotFoundException {
         String errorMessage;
         if (isScannedQrCodeIsCorrect(qrCode)) {
-            errorMessage = "QR Code:{" + qrCode.getData() +"} is not recognized";
+            errorMessage = "QR Code:{" + qrCode.getData() + "} is not recognized";
             logger.error(errorMessage);
             throw new QRCodeNotFoundException(errorMessage);
         }
@@ -190,7 +190,7 @@ public class BorrowServiceImpl implements BorrowService
         int borrows = currentUser.getBorrows().size();
 
         if (borrows > MAXIMUM_BORROW_NUMBER) {
-            String errorMessage = "User:{" + userID +"} reach maximum borrow size";
+            String errorMessage = "User:{" + userID + "} reach maximum borrow size";
             logger.error(errorMessage);
             throw new BorrowMaximumLimitException(errorMessage);
         }

@@ -1,37 +1,46 @@
 package com.ninjabooks.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ninjabooks.util.converter.json.LocalDateDeserializer;
+import com.ninjabooks.util.converter.json.LocalDateSerializer;
+
 import java.time.LocalDate;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since  1.0
  */
-public class BorrowDto implements Serializable
+public class BorrowDto extends BaseEntityDto
 {
     private static final long serialVersionUID = 3445982100156009090L;
 
-    private String borrowDate;
-    private String returnDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate borrowDate;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate expectedReturnDate;
     private boolean canExtendBorrow;
 
     public BorrowDto() {
     }
 
-    public String getBorrowDate() {
+    public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
     public void setBorrowDate(LocalDate borrowDate) {
-        this.borrowDate = borrowDate.toString();
+        this.borrowDate = borrowDate;
     }
 
-    public String getReturnDate() {
-        return returnDate;
+    public LocalDate getExpectedReturnDate() {
+        return expectedReturnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate.toString();
+    public void setExpectedReturnDate(LocalDate expectedReturnDate) {
+        this.expectedReturnDate = expectedReturnDate;
     }
 
     public boolean getCanExtendBorrow() {

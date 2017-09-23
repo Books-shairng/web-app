@@ -1,5 +1,6 @@
 package com.ninjabooks.json.notification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.dto.BorrowDto;
@@ -18,6 +19,7 @@ public class BorrowNotification extends GenericNotification
     private static final long serialVersionUID = -7981917194070092757L;
 
     @JsonUnwrapped
+    @JsonIgnoreProperties(value = {"active", "id"})
     private BorrowDto borrowDto;
 
     public BorrowNotification(Borrow borrow, ModelMapper modelMapper) {

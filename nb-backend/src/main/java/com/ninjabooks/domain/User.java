@@ -39,7 +39,11 @@ public class User extends BaseEntity
     private List<Borrow> borrows = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    private List<History> histories = new ArrayList<>(0);
+    private List<Comment> comments = new ArrayList<>(0);
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    private History history;
+
 
     public User() {
     }
@@ -59,7 +63,6 @@ public class User extends BaseEntity
         this.lastPasswordReset = LocalDateTime.now();
         this.authoritiy = Authority.USER;
     }
-
 
     public String getName() {
         return name;
@@ -117,12 +120,20 @@ public class User extends BaseEntity
         this.borrows = borrows;
     }
 
-    public List<History> getHistories() {
-        return histories;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setHistories(List<History> histories) {
-        this.histories = histories;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public History getHistory() {
+        return history;
+    }
+
+    public void setHistory(History history) {
+        this.history = history;
     }
 
     @Override
@@ -134,15 +145,16 @@ public class User extends BaseEntity
             Objects.equals(email, user.email) &&
             Objects.equals(password, user.password) &&
             Objects.equals(lastPasswordReset, user.lastPasswordReset) &&
-            Objects.equals(authoritiy, user.authoritiy) &&
+            authoritiy == user.authoritiy &&
             Objects.equals(queues, user.queues) &&
             Objects.equals(borrows, user.borrows) &&
-            Objects.equals(histories, user.histories);
+            Objects.equals(comments, user.comments) &&
+            Objects.equals(history, user.history);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, password, lastPasswordReset, authoritiy, queues, borrows, histories);
+        return Objects.hash(name, email, password, lastPasswordReset, authoritiy, queues, borrows, comments, history);
     }
 
     @Override
@@ -152,10 +164,11 @@ public class User extends BaseEntity
             ", email='" + email + '\'' +
             ", password='" + password + '\'' +
             ", lastPasswordReset=" + lastPasswordReset +
-            ", authoritiy='" + authoritiy + '\'' +
+            ", authoritiy=" + authoritiy +
             ", queues=" + queues +
             ", borrows=" + borrows +
-            ", histories=" + histories +
+            ", comments=" + comments +
+            ", history=" + history +
             '}';
     }
 }

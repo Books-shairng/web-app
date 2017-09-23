@@ -1,5 +1,6 @@
 package com.ninjabooks.json.notification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.dto.QueueDto;
@@ -17,6 +18,7 @@ public class QueueNotification extends GenericNotification
     private static final long serialVersionUID = -1474981638299034456L;
 
     @JsonUnwrapped
+    @JsonIgnoreProperties(value = {"active", "id"})
     private QueueDto queueDto;
     private int positionInQueue;
 
