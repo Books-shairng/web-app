@@ -125,17 +125,17 @@ public class Borrow extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Borrow borrow = (Borrow) o;
-        return canExtendBorrow == borrow.canExtendBorrow &&
+        return
+            Objects.equals(this.getId(), borrow.getId()) &&
+            canExtendBorrow == borrow.canExtendBorrow &&
             Objects.equals(borrowDate, borrow.borrowDate) &&
             Objects.equals(realReturnDate, borrow.realReturnDate) &&
-            Objects.equals(expectedReturnDate, borrow.expectedReturnDate) &&
-            Objects.equals(book, borrow.book) &&
-            Objects.equals(user, borrow.user);
+            Objects.equals(expectedReturnDate, borrow.expectedReturnDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(borrowDate, realReturnDate, expectedReturnDate, canExtendBorrow, book, user);
+        return Objects.hash(borrowDate, realReturnDate, expectedReturnDate, canExtendBorrow);
     }
 
     @Override
@@ -145,8 +145,6 @@ public class Borrow extends BaseEntity
             ", realReturnDate=" + realReturnDate +
             ", expectedReturnDate=" + expectedReturnDate +
             ", canExtendBorrow=" + canExtendBorrow +
-            ", book=" + book +
-            ", user=" + user +
             '}';
     }
 }

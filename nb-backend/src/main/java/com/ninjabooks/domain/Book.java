@@ -174,21 +174,18 @@ public class Book extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(title, book.title) &&
+        return
+            Objects.equals(this.getId(), book.getId()) &&
+            Objects.equals(title, book.title) &&
             Objects.equals(author, book.author) &&
             Objects.equals(isbn, book.isbn) &&
             status == book.status &&
-            Objects.equals(description, book.description) &&
-            Objects.equals(QRCode, book.QRCode) &&
-            Objects.equals(borrow, book.borrow) &&
-            Objects.equals(queues, book.queues) &&
-            Objects.equals(histories, book.histories) &&
-            Objects.equals(comments, book.comments);
+            Objects.equals(description, book.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author, isbn, status, description, QRCode, borrow, queues, histories, comments);
+        return Objects.hash(title, author, isbn, status, description);
     }
 
     @Override
@@ -200,10 +197,6 @@ public class Book extends BaseEntity
             ", status=" + status +
             ", description='" + description + '\'' +
             ", QRCode=" + QRCode +
-            ", borrow=" + borrow +
-            ", queues=" + queues +
-            ", histories=" + histories +
-            ", comments=" + comments +
             '}';
     }
 }

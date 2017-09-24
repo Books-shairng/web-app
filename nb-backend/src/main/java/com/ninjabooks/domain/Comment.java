@@ -58,22 +58,20 @@ public class Comment extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return Objects.equals(content, comment.content) &&
-            Objects.equals(user, comment.user) &&
-            Objects.equals(book, comment.book);
+        return
+            Objects.equals(this.getId(), comment.getId()) &&
+            Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, user, book);
+        return Objects.hash(content);
     }
 
     @Override
     public String toString() {
         return "Comment{" +
             "content='" + content + '\'' +
-            ", user=" + user +
-            ", book=" + book +
             '}';
     }
 }

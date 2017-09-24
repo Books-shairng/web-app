@@ -67,9 +67,9 @@ public class Queue extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Queue queue = (Queue) o;
-        return Objects.equals(orderDate, queue.orderDate) &&
-            Objects.equals(book, queue.book) &&
-            Objects.equals(user, queue.user);
+        return
+            Objects.equals(this.getId(), queue.getId()) &&
+            Objects.equals(orderDate, queue.orderDate);
     }
 
     @Override
@@ -81,8 +81,6 @@ public class Queue extends BaseEntity
     public String toString() {
         return "Queue{" +
             "orderDate=" + orderDate +
-            ", book=" + book +
-            ", user=" + user +
             '}';
     }
 }
