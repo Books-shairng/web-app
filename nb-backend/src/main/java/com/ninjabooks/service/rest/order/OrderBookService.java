@@ -9,7 +9,7 @@ import com.ninjabooks.error.order.OrderException;
 public interface OrderBookService
 {
     /**
-     * Order title chosen by user,
+     * Order title chosen by user, and put it into queue
      *  @param userID - current user id
      *  @param bookID - book ID which will be ordered by user
      */

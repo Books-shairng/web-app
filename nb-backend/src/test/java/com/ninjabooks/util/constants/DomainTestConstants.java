@@ -91,6 +91,16 @@ public final class DomainTestConstants
         COMMENT.setId(ID);
     }
 
+    private static void setIdsInFullEntities() {
+        BOOK_FULL.setId(ID);
+        USER_FULL.setId(ID);
+        QUEUE_FULL.setId(ID);
+        QR_CODE_FULL.setId(ID);
+        BORROW_FULL.setId(ID);
+        HISTORY_FULL.setId(ID);
+        COMMENT_FULL.setId(ID);
+    }
+
     private static void setRelationFieldsInBook() {
         BOOK_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
         BOOK_FULL.setQueues(Collections.singletonList(QUEUE_FULL));

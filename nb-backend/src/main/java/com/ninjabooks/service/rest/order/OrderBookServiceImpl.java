@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = OrderMaxLimitException.class)
 public class OrderBookServiceImpl implements OrderBookService
 {
     private static final Logger logger = LogManager.getLogger(OrderBookServiceImpl.class);
@@ -54,24 +54,34 @@ public class OrderBookServiceImpl implements OrderBookService
     private void createQueue(Book book, User user) throws OrderException {
         Queue queue = new Queue(NOW);
 
-        if (isLimitExceed(user)) {
-            throw new OrderMaxLimitException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
-        }
-        else if (isUserOrderBook(book, user)) {
+        if (hasUserOrderedBook(book, user)) {
             throw new OrderException(MessageFormat.format("User: {0} has already ordered this book", user.getId()));
         }
 
         queue.setUser(user);
         queue.setBook(book);
         queueService.add(queue);
+
+        if (isLimitExceed(user)) {
+            throw new OrderMaxLimitException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
+        }
     }
 
-    private boolean isUserOrderBook(Book book, User user) {
+    /**
+     * It perform simple matching, and find if user already ordered book.
+     *
+     * @param book - book to search
+     * @param user - user on which should be perform searching
+     * @return matched book
+     */
+
+    private boolean hasUserOrderedBook(Book book, User user) {
         return user.getQueues().parallelStream()
             .anyMatch(queue -> queue.getBook().equals(book));
     }
 
     private boolean isLimitExceed(User user) {
-        return user.getBorrows().size() > MAXIMUM_LIMIT;
+        int size = user.getBorrows().size();
+        return size >= MAXIMUM_LIMIT;
     }
 }

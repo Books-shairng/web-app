@@ -1,13 +1,13 @@
 package com.ninjabooks.service.rest.order;
 
+import com.ninjabooks.domain.User;
+import com.ninjabooks.error.order.OrderException;
 import com.ninjabooks.error.order.OrderMaxLimitException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.constants.DomainTestConstants;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -23,7 +24,6 @@ import static org.mockito.Mockito.*;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@Ignore(value = "Write new test implementation for this class")
 public class OrderBookServiceImplTest
 {
     @Rule
@@ -47,29 +47,39 @@ public class OrderBookServiceImplTest
 
     @Test
     public void testOrderBookShouldAddBookToTheUserQueue() throws Exception {
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.ofNullable(DomainTestConstants.USER));
-        when(queueServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.ofNullable(DomainTestConstants.QUEUE));
+        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
+        when(bookServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.BOOK));
 
         sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID);
 
         verify(queueServiceMock, atLeastOnce()).add(any());
+        verify(userServiceMock, atLeastOnce()).getById(any());
+        verify(bookServiceMock, atLeastOnce()).getById(any());
     }
 
     @Test
     public void testOrderBookWithExceedLimitShouldThrowsException() throws Exception {
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.ofNullable(DomainTestConstants.USER));
-        when(DomainTestConstants.USER.getBorrows().size()).thenReturn(20);
+        User user = DomainTestConstants.USER;
+        when(user.getBorrows().size()).thenReturn(11);
 
-        Assertions.assertThatExceptionOfType(OrderMaxLimitException.class).
-            isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+        assertThatExceptionOfType(OrderMaxLimitException.class)
+            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());
     }
 
     @Test
-    public void testOrderBookWithMultipleBooksShouldChooseShortestQueue() throws Exception {
+    public void testOrderBookWhenUserHasAlreadyOrderedShouldThorwsException() throws Exception {
+        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER_FULL));
+        when(bookServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.BOOK_FULL));
 
+        assertThatExceptionOfType(OrderException.class)
+            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause();
+
+        verify(userServiceMock, atLeastOnce()).getById(any());
+        verify(bookServiceMock, atLeastOnce()).getById(any());
     }
 
 }
