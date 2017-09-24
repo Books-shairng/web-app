@@ -141,20 +141,18 @@ public class User extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) &&
+        return
+            Objects.equals(this.getId(), user.getId()) &&
+            Objects.equals(name, user.name) &&
             Objects.equals(email, user.email) &&
             Objects.equals(password, user.password) &&
             Objects.equals(lastPasswordReset, user.lastPasswordReset) &&
-            authoritiy == user.authoritiy &&
-            Objects.equals(queues, user.queues) &&
-            Objects.equals(borrows, user.borrows) &&
-            Objects.equals(comments, user.comments) &&
-            Objects.equals(history, user.history);
+            authoritiy == user.authoritiy;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, password, lastPasswordReset, authoritiy, queues, borrows, comments, history);
+        return Objects.hash(name, email, password, lastPasswordReset, authoritiy);
     }
 
     @Override
@@ -165,10 +163,6 @@ public class User extends BaseEntity
             ", password='" + password + '\'' +
             ", lastPasswordReset=" + lastPasswordReset +
             ", authoritiy=" + authoritiy +
-            ", queues=" + queues +
-            ", borrows=" + borrows +
-            ", comments=" + comments +
-            ", history=" + history +
             '}';
     }
 }

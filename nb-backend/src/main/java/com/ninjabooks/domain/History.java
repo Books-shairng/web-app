@@ -61,22 +61,20 @@ public class History extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         History history = (History) o;
-        return Objects.equals(returnDate, history.returnDate) &&
-            Objects.equals(book, history.book) &&
-            Objects.equals(user, history.user);
+        return
+            Objects.equals(this.getId(), history.getId()) &&
+            Objects.equals(returnDate, history.returnDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(returnDate, book, user);
+        return Objects.hash(returnDate);
     }
 
     @Override
     public String toString() {
         return "History{" +
             "returnDate=" + returnDate +
-            ", book=" + book +
-            ", user=" + user +
             '}';
     }
 }

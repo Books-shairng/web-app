@@ -50,20 +50,20 @@ public class QRCode extends BaseEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QRCode qrCode = (QRCode) o;
-        return Objects.equals(data, qrCode.data) &&
-            Objects.equals(book, qrCode.book);
+        return
+            Objects.equals(this.getId(), qrCode.getId()) &&
+            Objects.equals(data, qrCode.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(data, book);
+        return Objects.hash(data);
     }
 
     @Override
     public String toString() {
         return "QRCode{" +
             "data='" + data + '\'' +
-            ", book=" + book +
             '}';
     }
 }
