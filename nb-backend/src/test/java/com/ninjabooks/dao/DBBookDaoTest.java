@@ -171,12 +171,16 @@ public class DBBookDaoTest
 
     @Test
     public void testUpdateBookByEnity() throws Exception {
-        Book beforeUpdate = DomainTestConstants.BOOK;
+        Book beforeUpdate = createFreshEntity();
         beforeUpdate.setTitle(UPDATED_TITLE);
 
         doNothing().when(daoHelperMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
         verify(daoHelperMock, atLeastOnce()).update(any());
+    }
+
+    private Book createFreshEntity() {
+        return new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
     }
 }

@@ -95,7 +95,7 @@ public class DBUserDaoTest
 
     @Test
     public void testUpdateUser() throws Exception {
-        User userBeforeUpdate = DomainTestConstants.USER;
+        User userBeforeUpdate = createFreshEntity();
         userBeforeUpdate.setName(NEW_NAME);
         doNothing().when(daoHelperMock).update(userBeforeUpdate);
         sut.update(userBeforeUpdate);
@@ -152,6 +152,10 @@ public class DBUserDaoTest
 
         assertThat(actual).contains(DomainTestConstants.USER);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
+    }
+
+    private User createFreshEntity() {
+        return new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
     }
 
 }

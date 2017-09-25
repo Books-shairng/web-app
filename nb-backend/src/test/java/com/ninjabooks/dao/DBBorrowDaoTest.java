@@ -153,12 +153,16 @@ public class DBBorrowDaoTest
 
     @Test
     public void testUpdateBorrow() throws Exception {
-        Borrow beforeUpdate = DomainTestConstants.BORROW;
+        Borrow beforeUpdate = createFreshEntity();
         beforeUpdate.setBorrowDate(UPDATED_BORROW_DATE);
 
         doNothing().when(daoHelperMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
         verify(daoHelperMock, atLeastOnce()).update(any());
+    }
+
+    private Borrow createFreshEntity() {
+        return new Borrow(DomainTestConstants.BORROW_DATE);
     }
 }

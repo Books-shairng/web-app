@@ -49,7 +49,7 @@ public final class DomainTestConstants
     //endregion
 
     //region Comment constants
-    public static final  String COMMENT_CONTENT = "any comment content";
+    public static final String COMMENT_CONTENT = "any comment content";
     //endregion
 
     //region Standard entity

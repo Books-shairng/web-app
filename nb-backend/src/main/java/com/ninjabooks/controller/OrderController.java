@@ -22,7 +22,7 @@ public class OrderController
 
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/api/orderd/{userID}/", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/order/{userID}/", method = RequestMethod.POST)
     public void orderBook(@PathVariable Long userID,
                           @RequestParam(value = "bookID") Long bookID)
         throws OrderException {

@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
  */
 public class DBCommentDaoTest
 {
-    private static final String  UPDATED_COMMENT_CONTENT = "new Comment";
+    private static final String UPDATED_COMMENT_CONTENT = "new Comment";
     private static final Supplier<Stream<Comment>> COMMENT_STREAM_SUPPLIER =
         CommonUtils.asSupplier(DomainTestConstants.COMMENT);
 
@@ -111,12 +111,16 @@ public class DBCommentDaoTest
 
     @Test
     public void testUpdateComment() throws Exception {
-        Comment beforeUpdate = DomainTestConstants.COMMENT;
+        Comment beforeUpdate = createFreshEntity();
         beforeUpdate.setContent(UPDATED_COMMENT_CONTENT);
 
         doNothing().when(daoHelperMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
         verify(daoHelperMock, atLeastOnce()).update(any());
+    }
+
+    private Comment createFreshEntity() {
+        return new Comment(DomainTestConstants.COMMENT_CONTENT);
     }
 }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
  */
 public class ErrorResponseTest
 {
-    private  ErrorResponse sut;
+    private ErrorResponse sut;
 
     @Test
     public void testShouldReturnCorrectData() throws Exception {

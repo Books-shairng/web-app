@@ -37,11 +37,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationControllerTest
 {
     private static final String HEADER_WITH_TOKEN = "Bearer test_token";
-    private final static  String JSON_REQUEST =
-    "{" +
-        "\"email\" : \"user_not_exist@dd.gov\"," +
-        "\"password\" : \"pass0\"" +
-    "}";
+    private final static String JSON_REQUEST =
+        "{" +
+            "\"email\" : \"user_not_exist@dd.gov\"," +
+            "\"password\" : \"pass0\"" +
+            "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -80,12 +80,12 @@ public class AuthenticationControllerTest
         when(tokenUtilsMock.generateToken(any(), any())).thenReturn(token);
 
         mockMvc.perform(post("/api/auth")
-                .content(JSON_REQUEST)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string(  "{\"token\":\""+ token +"\"}"));
+            .content(JSON_REQUEST)
+            .contentType(APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(content().string("{\"token\":\"" + token + "\"}"));
 
         verify(tokenUtilsMock, atLeastOnce()).generateToken(any(), any());
     }
@@ -95,11 +95,11 @@ public class AuthenticationControllerTest
         when(userDetailsServiceMock.loadUserByUsername(any())).thenThrow(UsernameNotFoundException.class);
 
         mockMvc.perform(post("/api/auth")
-                .content(JSON_REQUEST)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andDo(print())
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
+            .content(JSON_REQUEST)
+            .contentType(APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8));
 
         verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(anyString());
     }
@@ -130,7 +130,7 @@ public class AuthenticationControllerTest
             .andDo(print())
             .andExpect(content().contentType(APPLICATION_JSON_UTF8));
 
-       verify(tokenUtilsMock, atLeastOnce()).refreshToken(any());
+        verify(tokenUtilsMock, atLeastOnce()).refreshToken(any());
     }
 
     private SpringSecurityUser initSpringUser() {
