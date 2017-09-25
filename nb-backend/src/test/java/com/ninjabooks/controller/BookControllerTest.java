@@ -35,10 +35,10 @@ public class BookControllerTest
     private static final Optional<Book> BOOK_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.BOOK);
     private static final String JSON =
         "{" +
-            "\"title\":\""+ DomainTestConstants.TITLE + "\"," +
-            "\"author\":\""+ DomainTestConstants.AUTHOR+ "\"," +
-            "\"isbn\":\""+ DomainTestConstants.ISBN+ "\"" +
-        "}";
+            "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
+            "\"author\":\"" + DomainTestConstants.AUTHOR + "\"," +
+            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"" +
+            "}";
 
     @Mock
     private BookRestService bookRestServiceMock;

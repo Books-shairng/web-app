@@ -52,6 +52,10 @@ public class OrderBookServiceImpl implements OrderBookService
     }
 
     private void createQueue(Book book, User user) throws OrderException {
+        if (isLimitExceed(user)) {
+            throw new OrderMaxLimitException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
+        }
+
         Queue queue = new Queue(NOW);
 
         if (hasUserOrderedBook(book, user)) {
@@ -61,10 +65,6 @@ public class OrderBookServiceImpl implements OrderBookService
         queue.setUser(user);
         queue.setBook(book);
         queueService.add(queue);
-
-        if (isLimitExceed(user)) {
-            throw new OrderMaxLimitException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
-        }
     }
 
     /**
@@ -81,7 +81,6 @@ public class OrderBookServiceImpl implements OrderBookService
     }
 
     private boolean isLimitExceed(User user) {
-        int size = user.getBorrows().size();
-        return size >= MAXIMUM_LIMIT;
+        return user.getQueues().size() >= MAXIMUM_LIMIT;
     }
 }

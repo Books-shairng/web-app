@@ -38,7 +38,7 @@ public class AccountControllerTest
             "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
             "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
             "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
-        "}";
+            "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();

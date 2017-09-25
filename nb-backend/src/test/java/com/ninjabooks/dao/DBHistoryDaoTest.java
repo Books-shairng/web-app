@@ -105,13 +105,17 @@ public class DBHistoryDaoTest
 
     @Test
     public void testUpdateHistoryByEntity() throws Exception {
-        History historyBeforeUpdate = DomainTestConstants.HISTORY;
+        History historyBeforeUpdate = createFreshEntity();
         historyBeforeUpdate.setReturnDate(UPDATED_RETURN_DATE);
 
         doNothing().when(daoHelperMock).update(historyBeforeUpdate);
         sut.update(historyBeforeUpdate);
 
         verify(daoHelperMock, atLeastOnce()).update(any());
+    }
+
+    private History createFreshEntity() {
+        return new History(DomainTestConstants.EXPECTED_RETURN_DATE);
     }
 
 }
