@@ -96,8 +96,8 @@ public class NotificationControllerIT
     @Sql(value = "classpath:it_import.sql", statements = {SQL_UPDATE_BORROW_QUERY, SQL_UPDATE_QUEUE_QUERY})
     public void testUserNotificationShouldReturnStatusNotContent() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
-        .andDo(print())
-        .andExpect(status().isNoContent());
+            .andDo(print())
+            .andExpect(status().isNoContent());
     }
 
     @Test
