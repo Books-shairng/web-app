@@ -27,12 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class NotificationControllerTest
 {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     private static final List RESPONSE_CONTENT = Collections.singletonList("TEST");
     private static final long USER_ID = DomainTestConstants.ID;
-
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock
     private NotificationService notificationServiceMock;
 

@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class LocalDateAttributeConverterTest
 {
-    private static final LocalDate LOCAL_DATE = LocalDate.of(2017,1,1);
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2017, 1, 1);
     private static final Date DATE = Date.valueOf(LOCAL_DATE);
 
     private LocalDateAttributeConverter sut;

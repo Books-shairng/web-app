@@ -79,7 +79,7 @@ public class DBQueueDaoTest
 
     @Test
     public void testUpdateQueue() throws Exception {
-        Queue beforeUpdate = DomainTestConstants.QUEUE;
+        Queue beforeUpdate = createFreshEntity();
         beforeUpdate.setOrderDate(NEW_ORDER_DATE);
         doNothing().when(daoHelperMock).update(beforeUpdate);
         sut.update(beforeUpdate);
@@ -135,6 +135,10 @@ public class DBQueueDaoTest
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
+    }
+
+    private Queue createFreshEntity() {
+        return new Queue(DomainTestConstants.ORDER_DATE);
     }
 
 }

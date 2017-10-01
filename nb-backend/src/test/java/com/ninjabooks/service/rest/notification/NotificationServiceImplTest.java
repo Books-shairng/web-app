@@ -19,7 +19,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.modelmapper.ModelMapper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,8 @@ import static org.mockito.Mockito.*;
  */
 public class NotificationServiceImplTest
 {
-    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
+    private static final Optional<User> FULL_USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
     private static final int EXPECTED_SIZE = 1;
 
     @Rule
@@ -60,7 +60,7 @@ public class NotificationServiceImplTest
     @Before
     public void setUp() throws Exception {
         this.sut = new NotificationServiceImpl(userServiceMock, modelMapperMock);
-        when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
+        when(userServiceMock.getById(any())).thenReturn(FULL_USER_OPTIONAL);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class NotificationServiceImplTest
 
     @Test
     public void testFindUserBorrowsWhenUserNotHaveBorrowsShouldReturnEmptyList() throws Exception {
-        USER_OPTIONAL.get().setBorrows(Collections.emptyList());
+        when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
         List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();
@@ -113,7 +113,7 @@ public class NotificationServiceImplTest
 
     @Test
     public void testFindUserQueuesWhenUserNotHaveQueuesShouldReturnEmptyList() throws Exception {
-        USER_OPTIONAL.get().setQueues(Collections.emptyList());
+        when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();

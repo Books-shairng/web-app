@@ -126,7 +126,7 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testUpdateQRCode() throws Exception {
-        QRCode beforeUpdate = DomainTestConstants.QR_CODE;
+        QRCode beforeUpdate = createFreshEntity();
         beforeUpdate.setData(NEW_DATA);
 
         doNothing().when(daoHelperMock).update(beforeUpdate);
@@ -135,4 +135,7 @@ public class DBQRCodeDaoTest
         verify(daoHelperMock, atLeastOnce()).update(any());
     }
 
+    private QRCode createFreshEntity() {
+        return new QRCode(DomainTestConstants.DATA);
+    }
 }

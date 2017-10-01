@@ -49,7 +49,7 @@ public final class DomainTestConstants
     //endregion
 
     //region Comment constants
-    public static final  String COMMENT_CONTENT = "any comment content";
+    public static final String COMMENT_CONTENT = "any comment content";
     //endregion
 
     //region Standard entity
@@ -89,6 +89,16 @@ public final class DomainTestConstants
         BORROW.setId(ID);
         HISTORY.setId(ID);
         COMMENT.setId(ID);
+    }
+
+    private static void setIdsInFullEntities() {
+        BOOK_FULL.setId(ID);
+        USER_FULL.setId(ID);
+        QUEUE_FULL.setId(ID);
+        QR_CODE_FULL.setId(ID);
+        BORROW_FULL.setId(ID);
+        HISTORY_FULL.setId(ID);
+        COMMENT_FULL.setId(ID);
     }
 
     private static void setRelationFieldsInBook() {

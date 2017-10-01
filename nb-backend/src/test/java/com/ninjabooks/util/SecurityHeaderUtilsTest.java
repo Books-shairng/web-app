@@ -25,7 +25,7 @@ public class SecurityHeaderUtilsTest
 
     @Test
     public void testHasSecurityPatterShouldReturnTrue() throws Exception {
-        boolean actual =  sut.hasSecurityPattern(REQUEST);
+        boolean actual = sut.hasSecurityPattern(REQUEST);
 
         assertThat(actual).isEqualTo(true);
     }
