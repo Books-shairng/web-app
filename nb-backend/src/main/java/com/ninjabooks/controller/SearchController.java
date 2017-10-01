@@ -34,7 +34,6 @@ public class SearchController
         this.searchService = searchService;
     }
 
-
     @RequestMapping(value = "/api/search/", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<BookDto>>> searchBook(
         @RequestParam(value = "query") String query) {
