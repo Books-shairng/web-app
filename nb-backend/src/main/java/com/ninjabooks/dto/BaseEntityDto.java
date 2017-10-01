@@ -1,5 +1,7 @@
 package com.ninjabooks.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,8 @@ public abstract class BaseEntityDto implements Serializable
     private static final long serialVersionUID = -8303931784541468748L;
 
     private Long id;
+
+    @JsonIgnore
     private boolean active;
 
     public BaseEntityDto() {
