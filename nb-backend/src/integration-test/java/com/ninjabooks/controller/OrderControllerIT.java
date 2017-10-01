@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.text.MessageFormat;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -57,6 +59,7 @@ public class OrderControllerIT
             .param("bookID", "1"))
             .andDo(print())
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("User: 1 has already ordered this book"));
+            .andExpect(jsonPath("$.message")
+                .value(MessageFormat.format("User: {} has already ordered this book", DomainTestConstants.ID)));
     }
 }
