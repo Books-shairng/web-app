@@ -60,6 +60,6 @@ public class OrderControllerIT
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("User: {} has already ordered this book", DomainTestConstants.ID)));
+                .value(MessageFormat.format("User: {0} has already ordered this book", DomainTestConstants.ID)));
     }
 }
