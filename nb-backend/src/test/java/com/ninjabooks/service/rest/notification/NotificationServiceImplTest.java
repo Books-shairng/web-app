@@ -8,6 +8,7 @@ import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
+import com.ninjabooks.util.QueueUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -55,11 +56,14 @@ public class NotificationServiceImplTest
     @Mock
     private QueueDto queueDtoMock;
 
+    @Mock
+    private QueueUtils queueUtilsMock;
+
     private NotificationService sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new NotificationServiceImpl(userServiceMock, modelMapperMock);
+        this.sut = new NotificationServiceImpl(userServiceMock, modelMapperMock, queueUtilsMock);
         when(userServiceMock.getById(any())).thenReturn(FULL_USER_OPTIONAL);
     }
 

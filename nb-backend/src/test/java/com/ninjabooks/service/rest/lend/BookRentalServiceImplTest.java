@@ -1,7 +1,6 @@
 package com.ninjabooks.service.rest.lend;
 
 import com.ninjabooks.service.dao.borrow.BorrowService;
-import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
@@ -31,13 +30,13 @@ public class BookRentalServiceImplTest
     private UserService userServiceMock;
 
     @Mock
-    private QRCodeService qrCodeServiceMock;
+    private RentalHelper rentalHelperMock;
 
     private BookRentalService sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock, qrCodeServiceMock);
+        this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock,rentalHelperMock);
     }
 
     @Test

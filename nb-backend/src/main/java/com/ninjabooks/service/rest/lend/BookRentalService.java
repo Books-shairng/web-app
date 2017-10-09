@@ -1,6 +1,7 @@
 package com.ninjabooks.service.rest.lend;
 
 import com.ninjabooks.domain.QRCode;
+import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.qrcode.QRCodeException;
 
 /**
@@ -18,7 +19,7 @@ public interface BookRentalService
      * @param qrCodeData - scanned QR code
      */
 
-    void rentBook(Long userID, String qrCodeData) throws QRCodeException;
+    void rentBook(Long userID, String qrCodeData) throws QRCodeException, BorrowException;
 
     /**
      * Return book and changes borrowed status to false.
