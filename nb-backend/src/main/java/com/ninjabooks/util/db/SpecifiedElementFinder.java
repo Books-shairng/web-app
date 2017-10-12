@@ -30,7 +30,7 @@ public abstract class SpecifiedElementFinder
 
     @SuppressWarnings("unchecked")
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName, Class<? extends BaseEntity> enityType) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         String hsqlQuery = "SELECT element FROM " + enityType.getSimpleName() + " element WHERE " + columnName + "=:parameter";
         Query<T> query = currentSession.createQuery(hsqlQuery);
         query.setParameter("parameter", parameter);

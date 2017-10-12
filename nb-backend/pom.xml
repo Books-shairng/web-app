@@ -23,6 +23,7 @@
         <hsqldb.version>2.4.0</hsqldb.version>
         <modelmapper.version>1.1.0</modelmapper.version>
         <jayway.version>2.4.0</jayway.version>
+        <jackson.datatype.version>2.9.1</jackson.datatype.version>
     </properties>
 
     <build>
@@ -253,7 +254,7 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j2.version}</version>
         </dependency>
-        <!--Hinernate-->
+        <!--Hibernate-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -302,6 +303,13 @@
             <version>${jayway.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--Jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson.datatype.version}</version>
+        </dependency>
+
     </dependencies>
 
     <developers>

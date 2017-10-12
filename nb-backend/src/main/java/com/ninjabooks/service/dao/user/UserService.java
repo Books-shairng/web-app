@@ -11,14 +11,6 @@ import java.util.Optional;
  */
 public interface UserService extends GenericService<User, Long>
 {
-//    /**
-//     * Create new user in database
-//     * @param user obtained by requested mapping
-//     * @return created user
-//     */
-//
-//   User createUser(User user) throws UserAlreadyExistException;
-
     /**
      * Search user by his name.
      *

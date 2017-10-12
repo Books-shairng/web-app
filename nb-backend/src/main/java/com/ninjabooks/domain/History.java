@@ -1,5 +1,8 @@
 package com.ninjabooks.domain;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -18,10 +21,12 @@ public class History extends BaseEntity
     private LocalDate returnDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "USER_ID")
     private User user;
 

@@ -8,8 +8,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -19,32 +20,30 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class DBBorrowDao implements BorrowDao
 {
     private enum DBColumnName {BORROW_DATE, EXPECTED_RETURN_DATE}
 
     private final SessionFactory sessionFactory;
-    private final DBDaoHelper<Borrow> dbDaoHelper;
     private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBBorrowDao(SessionFactory sessionFactory, DBDaoHelper<Borrow> dbDaoHelper,
+    public DBBorrowDao(SessionFactory sessionFactory,
                        @Qualifier(value = "streamFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
-        this.dbDaoHelper = dbDaoHelper;
         this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
     public Stream<Borrow> getAll() {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.createQuery("SELECT b FROM com.ninjabooks.domain.Borrow b", Borrow.class).stream();
     }
 
     @Override
     public Optional<Borrow> getById(Long id) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         Borrow borrow = currentSession.get(Borrow.class, id);
         return Optional.ofNullable(borrow);
     }
@@ -61,28 +60,25 @@ public class DBBorrowDao implements BorrowDao
 
     @Override
     public void add(Borrow borrow) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(borrow);
-        currentSession.close();
     }
 
     @Override
     public void update(Borrow borrow) {
-        Session currentSession = sessionFactory.openSession();
-        dbDaoHelper.setCurrentSession(currentSession);
-        dbDaoHelper.update(borrow);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.update(borrow);
     }
 
     @Override
     public void delete(Borrow borrow) {
-        Session currentSession = sessionFactory.openSession();
-        dbDaoHelper.setCurrentSession(currentSession);
-        dbDaoHelper.delete(borrow);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(borrow);
     }
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 
 }
