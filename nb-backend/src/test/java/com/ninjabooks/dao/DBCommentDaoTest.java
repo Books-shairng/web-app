@@ -1,7 +1,6 @@
 package com.ninjabooks.dao;
 
 import com.ninjabooks.dao.db.DBCommentDao;
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.domain.Comment;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -41,9 +40,6 @@ public class DBCommentDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<Comment> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -56,8 +52,8 @@ public class DBCommentDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBCommentDao(sessionFactoryMock, daoHelperMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBCommentDao(sessionFactoryMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -71,10 +67,10 @@ public class DBCommentDaoTest
 
     @Test
     public void testDeleteComment() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.COMMENT);
+        doNothing().when(sessionMock).delete(DomainTestConstants.COMMENT);
         sut.delete(DomainTestConstants.COMMENT);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -114,10 +110,10 @@ public class DBCommentDaoTest
         Comment beforeUpdate = createFreshEntity();
         beforeUpdate.setContent(UPDATED_COMMENT_CONTENT);
 
-        doNothing().when(daoHelperMock).update(beforeUpdate);
+        doNothing().when(sessionMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     private Comment createFreshEntity() {

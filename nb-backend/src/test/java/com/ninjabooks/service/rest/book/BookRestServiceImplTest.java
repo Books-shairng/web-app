@@ -1,6 +1,8 @@
 package com.ninjabooks.service.rest.book;
 
+import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.QRCodeGenerator;
@@ -61,4 +63,17 @@ public class BookRestServiceImplTest
         verify(qrCodeServiceMock, atLeastOnce()).getByData(any());
     }
 
+    @Test
+    public void testGetBookInfoShouldReturnExpectedBook() throws Exception {
+        when(bookServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.BOOK));
+        BookInfo bookInfo = sut.getBookInfo(DomainTestConstants.ID);
+        BookDto actual = bookInfo.getBookDto();
+
+        assertThat(actual).extracting("author", "title", "isbn")
+            .contains(
+                DomainTestConstants.AUTHOR,
+                DomainTestConstants.TITLE,
+                DomainTestConstants.ISBN
+            );
+    }
 }

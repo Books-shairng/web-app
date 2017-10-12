@@ -5,14 +5,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @Component
-@Transactional
 public class StreamFinder extends SpecifiedElementFinder
 {
     @Autowired

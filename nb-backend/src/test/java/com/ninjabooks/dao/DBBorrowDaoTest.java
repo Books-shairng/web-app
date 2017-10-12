@@ -1,7 +1,6 @@
 package com.ninjabooks.dao;
 
 import com.ninjabooks.dao.db.DBBorrowDao;
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -43,9 +42,6 @@ public class DBBorrowDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<Borrow> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -58,8 +54,8 @@ public class DBBorrowDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBBorrowDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBBorrowDao(sessionFactoryMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -73,10 +69,10 @@ public class DBBorrowDaoTest
 
     @Test
     public void testDeleteBorrow() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.BORROW);
+        doNothing().when(sessionMock).delete(DomainTestConstants.BORROW);
         sut.delete(DomainTestConstants.BORROW);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -156,10 +152,10 @@ public class DBBorrowDaoTest
         Borrow beforeUpdate = createFreshEntity();
         beforeUpdate.setBorrowDate(UPDATED_BORROW_DATE);
 
-        doNothing().when(daoHelperMock).update(beforeUpdate);
+        doNothing().when(sessionMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     private Borrow createFreshEntity() {

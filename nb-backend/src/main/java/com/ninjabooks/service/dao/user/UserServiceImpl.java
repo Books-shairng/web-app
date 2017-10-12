@@ -36,47 +36,4 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return userDao.getByEmail(email);
     }
 
-    //    private final static Logger logger = LogManager.getLogger(UserService.class);
-//
-//    private final UserDao userDao;
-//    private final PasswordEncoder passwordEncoder;
-//
-////    @Autowired
-////    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
-////        this.userDao = userDao;
-////        this.passwordEncoder = passwordEncoder;
-////    }
-//
-////    @Override
-////    public User createUser(User user) throws UserAlreadyExistException {
-////        logger.info("Try add new user to database, email:" + user.getEmail() + " , name:" + user.getName());
-////
-////        if (checkIfUserAlreadyExist(user)) {
-////            logger.error(user.getEmail() + " already exist in database");
-////            throw new UserAlreadyExistException("Username already exist in database");
-////        }
-////
-////        User newUserToPersistent = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()));
-////        userDao.add(newUserToPersistent);
-////        logger.info(user.getName() + " successfully added to database");
-////        return newUserToPersistent;
-////    }
-//
-//    @Override
-//    public User findUserById(Long id) {
-//        logger.info("Looking for user with id:{" + id + "}");
-//        return userDao.getById(id);
-//    }
-//
-////    /**
-////     * Check if user already exist in database
-////     *
-////     * @param user obtained by http request
-////     * @return true if exist
-////     *         false if not
-////     */
-////
-////    private boolean checkIfUserAlreadyExist(User user) {
-////        return userDao.getByEmail(user.getEmail()) != null;
-////    }
 }

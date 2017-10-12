@@ -4,6 +4,8 @@ import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Parameter;
@@ -22,7 +24,8 @@ import java.util.Objects;
  */
 @Entity
 @Indexed
-@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+@AnalyzerDef(name = "searchtokenanalyzer",
+    tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
     filters = {
         @TokenFilterDef(factory = StandardFilterFactory.class),
         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
@@ -59,12 +62,15 @@ public class Book extends BaseEntity
     private Borrow borrow;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<History> histories = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<Comment> comments = new ArrayList<>(0);
 
     public Book() {

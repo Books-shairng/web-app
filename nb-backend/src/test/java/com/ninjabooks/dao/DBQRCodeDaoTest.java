@@ -1,6 +1,5 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.dao.db.DBQRCodeDao;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.util.CommonUtils;
@@ -41,9 +40,6 @@ public class DBQRCodeDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<QRCode> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -56,8 +52,8 @@ public class DBQRCodeDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBQRCodeDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBQRCodeDao(sessionFactoryMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -71,10 +67,10 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testDeleteQRCode() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.QR_CODE);
+        doNothing().when(sessionMock).delete(DomainTestConstants.QR_CODE);
         sut.delete(DomainTestConstants.QR_CODE);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -129,10 +125,10 @@ public class DBQRCodeDaoTest
         QRCode beforeUpdate = createFreshEntity();
         beforeUpdate.setData(NEW_DATA);
 
-        doNothing().when(daoHelperMock).update(beforeUpdate);
+        doNothing().when(sessionMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     private QRCode createFreshEntity() {

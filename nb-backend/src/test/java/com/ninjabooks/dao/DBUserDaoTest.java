@@ -1,6 +1,5 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.dao.db.DBUserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.CommonUtils;
@@ -41,9 +40,6 @@ public class DBUserDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<User> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -56,8 +52,8 @@ public class DBUserDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBUserDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBUserDao(sessionFactoryMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -71,10 +67,10 @@ public class DBUserDaoTest
 
     @Test
     public void testDeleteByEnityUser() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.USER);
+        doNothing().when(sessionMock).delete(DomainTestConstants.USER);
         sut.delete(DomainTestConstants.USER);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -97,10 +93,10 @@ public class DBUserDaoTest
     public void testUpdateUser() throws Exception {
         User userBeforeUpdate = createFreshEntity();
         userBeforeUpdate.setName(NEW_NAME);
-        doNothing().when(daoHelperMock).update(userBeforeUpdate);
+        doNothing().when(sessionMock).update(userBeforeUpdate);
         sut.update(userBeforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     @Test

@@ -1,5 +1,8 @@
 package com.ninjabooks.domain;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,12 +36,15 @@ public class User extends BaseEntity
     private Authority authoritiy;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<Queue> queues = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<Borrow> borrows = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<Comment> comments = new ArrayList<>(0);
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
