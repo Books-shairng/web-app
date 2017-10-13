@@ -6,14 +6,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
-
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @Component
-@Transactional
 public class QueryFinder extends SpecifiedElementFinder
 {
     @Autowired

@@ -1,6 +1,5 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.dao.db.DBHistoryDao;
 import com.ninjabooks.domain.History;
 import com.ninjabooks.util.CommonUtils;
@@ -41,9 +40,6 @@ public class DBHistoryDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<History> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -53,8 +49,8 @@ public class DBHistoryDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBHistoryDao(sessionFactoryMock, daoHelperMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBHistoryDao(sessionFactoryMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -68,10 +64,10 @@ public class DBHistoryDaoTest
 
     @Test
     public void testDeleteHistoryByEnity() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.HISTORY);
+        doNothing().when(sessionMock).delete(DomainTestConstants.HISTORY);
         sut.delete(DomainTestConstants.HISTORY);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -108,10 +104,10 @@ public class DBHistoryDaoTest
         History historyBeforeUpdate = createFreshEntity();
         historyBeforeUpdate.setReturnDate(UPDATED_RETURN_DATE);
 
-        doNothing().when(daoHelperMock).update(historyBeforeUpdate);
+        doNothing().when(sessionMock).update(historyBeforeUpdate);
         sut.update(historyBeforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     private History createFreshEntity() {

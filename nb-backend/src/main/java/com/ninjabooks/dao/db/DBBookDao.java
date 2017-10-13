@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -18,32 +19,30 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class DBBookDao implements BookDao
 {
     private enum DBColumnName {TITLE, AUTHOR, ISBN}
 
     private final SessionFactory sessionFactory;
-    private final DBDaoHelper<Book> daoHelper;
     private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBBookDao(SessionFactory sessionFactory, DBDaoHelper<Book> daoHelper,
+    public DBBookDao(SessionFactory sessionFactory,
                      @Qualifier(value = "streamFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
-        this.daoHelper = daoHelper;
         this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
     public Stream<Book> getAll() {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.createQuery("select book from com.ninjabooks.domain.Book book", Book.class).stream();
     }
 
     @Override
     public Optional<Book> getById(Long id) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         Book book = currentSession.get(Book.class, id);
         return Optional.ofNullable(book);
     }
@@ -65,28 +64,25 @@ public class DBBookDao implements BookDao
 
     @Override
     public void add(Book book) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(book);
-        currentSession.close();
     }
 
     @Override
     public void update(Book book) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.update(book);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.update(book);
     }
 
     @Override
     public void delete(Book book) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.delete(book);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(book);
     }
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 
 }

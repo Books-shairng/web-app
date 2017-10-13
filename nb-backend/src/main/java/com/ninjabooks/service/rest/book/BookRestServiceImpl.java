@@ -3,11 +3,14 @@ package com.ninjabooks.service.rest.book;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
+import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
+import com.ninjabooks.util.EntityUtils;
 import com.ninjabooks.util.QRCodeGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +49,14 @@ public class BookRestServiceImpl implements BookRestService
 
         logger.info("Successfully added new book: {} in system", book.getTitle());
         return generatedQRCode.getData();
+    }
+
+    @Override
+    public BookInfo getBookInfo(Long id) {
+        Book book = EntityUtils.getEnity(bookService, id);
+        Hibernate.initialize(book.getQueues());
+
+        return new BookInfo(book);
     }
 
     /**

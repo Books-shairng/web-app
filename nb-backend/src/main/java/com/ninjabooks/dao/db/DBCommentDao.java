@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -16,55 +17,50 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class DBCommentDao implements CommentDao
 {
     private final SessionFactory sessionFactory;
-    private final DBDaoHelper<Comment> daoHelper;
 
     @Autowired
-    public DBCommentDao(SessionFactory sessionFactory, DBDaoHelper<Comment> daoHelper) {
+    public DBCommentDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.daoHelper = daoHelper;
     }
 
     @Override
     public Optional<Comment> getById(Long id) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         Comment comment = currentSession.get(Comment.class, id);
         return Optional.ofNullable(comment);
     }
 
     @Override
     public Stream<Comment> getAll() {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.createQuery("SELECT c FROM com.ninjabooks.domain.Comment c", Comment.class).stream();
     }
 
     @Override
     public void add(Comment comment) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(comment);
-        currentSession.close();
     }
 
     @Override
     public void update(Comment comment) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.update(comment);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.update(comment);
     }
 
     @Override
     public void delete(Comment comment) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.delete(comment);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(comment);
     }
 
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 }

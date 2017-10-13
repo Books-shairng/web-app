@@ -1,6 +1,5 @@
 package com.ninjabooks.dao;
 
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.dao.db.DBQueueDao;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.util.CommonUtils;
@@ -41,9 +40,6 @@ public class DBQueueDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<Queue> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -56,8 +52,8 @@ public class DBQueueDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBQueueDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBQueueDao(sessionFactoryMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -71,20 +67,20 @@ public class DBQueueDaoTest
 
     @Test
     public void testDeleteQueue() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.QUEUE);
+        doNothing().when(sessionMock).delete(DomainTestConstants.QUEUE);
         sut.delete(DomainTestConstants.QUEUE);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testUpdateQueue() throws Exception {
         Queue beforeUpdate = createFreshEntity();
         beforeUpdate.setOrderDate(NEW_ORDER_DATE);
-        doNothing().when(daoHelperMock).update(beforeUpdate);
+        doNothing().when(sessionMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     @Test

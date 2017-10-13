@@ -8,8 +8,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -19,32 +20,30 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class DBQueueDao implements QueueDao
 {
     private enum DBColumnName {ORDER_DATE}
 
     private final SessionFactory sessionFactory;
-    private final DBDaoHelper<Queue> daoHelper;
     private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBQueueDao(SessionFactory sessionFactory, DBDaoHelper<Queue> daoHelper,
+    public DBQueueDao(SessionFactory sessionFactory,
                       @Qualifier(value = "streamFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
-        this.daoHelper = daoHelper;
         this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
     public Stream<Queue> getAll() {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.Queue q", Queue.class).stream();
     }
 
     @Override
     public Optional<Queue> getById(Long id) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return Optional.ofNullable(currentSession.get(Queue.class, id));
     }
 
@@ -55,30 +54,27 @@ public class DBQueueDao implements QueueDao
 
     @Override
     public void add(Queue queue) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(queue);
-        currentSession.close();
     }
 
     @Override
     public void update(Queue queue) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.update(queue);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.update(queue);
     }
 
 
     @Override
     public void delete(Queue queue) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.delete(queue);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(queue);
     }
 
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 
 }

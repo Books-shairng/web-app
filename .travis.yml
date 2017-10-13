@@ -48,7 +48,7 @@ notifications:
       - books-sharing:0EAfyNQ5bGvqZSLvdFInnbs1#ci
 
 after_success:
-  - cp -fr nb-frontend/build/ nb-backend/src/main/webapp/WEB-INF/static/
+  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
   - cd nb-backend/
   - mvn verify -DskipTests=true
   - bash <(curl -s https://codecov.io/bash)

@@ -8,8 +8,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -18,32 +19,30 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class DBQRCodeDao implements QRCodeDao
 {
     private enum DBColumnName {DATA}
 
     private final SessionFactory sessionFactory;
-    private final DBDaoHelper<QRCode> daoHelper;
     private final SpecifiedElementFinder specifiedElementFinder;
 
     @Autowired
-    public DBQRCodeDao(SessionFactory sessionFactory, DBDaoHelper<QRCode> daoHelper,
+    public DBQRCodeDao(SessionFactory sessionFactory,
                        @Qualifier(value = "queryFinder") SpecifiedElementFinder specifiedElementFinder) {
         this.sessionFactory = sessionFactory;
-        this.daoHelper = daoHelper;
         this.specifiedElementFinder = specifiedElementFinder;
     }
 
     @Override
     public Stream<QRCode> getAll() {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.createQuery("SELECT q FROM com.ninjabooks.domain.QRCode q", QRCode.class).stream();
     }
 
     @Override
     public Optional<QRCode> getById(Long id) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         QRCode qrCode = currentSession.get(QRCode.class, id);
         return Optional.ofNullable(qrCode);
     }
@@ -55,29 +54,26 @@ public class DBQRCodeDao implements QRCodeDao
 
     @Override
     public void add(QRCode qrCode) {
-        Session currentSession = sessionFactory.openSession();
+        Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(qrCode);
-        currentSession.close();
     }
 
     @Override
     public void update(QRCode qrCode) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.update(qrCode);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.update(qrCode);
     }
 
 
     @Override
     public void delete(QRCode qrCode) {
-        Session currentSession = sessionFactory.openSession();
-        daoHelper.setCurrentSession(currentSession);
-        daoHelper.delete(qrCode);
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(qrCode);
     }
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 
 }

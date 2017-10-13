@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
+@Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DBQueueDaoIT

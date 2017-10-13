@@ -2,6 +2,7 @@ package com.ninjabooks.service.rest.book;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.json.book.BookInfo;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -19,4 +20,6 @@ public interface BookRestService
      */
 
     String addBook(Book book) throws QRCodeException;
+
+    BookInfo getBookInfo(Long id);
 }

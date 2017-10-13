@@ -1,5 +1,8 @@
 package com.ninjabooks.domain;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,10 +18,12 @@ public class Comment extends BaseEntity
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 

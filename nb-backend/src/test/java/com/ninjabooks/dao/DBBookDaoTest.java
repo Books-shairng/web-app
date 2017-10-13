@@ -1,7 +1,6 @@
 package com.ninjabooks.dao;
 
 import com.ninjabooks.dao.db.DBBookDao;
-import com.ninjabooks.dao.db.DBDaoHelper;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -41,9 +40,6 @@ public class DBBookDaoTest
     private SessionFactory sessionFactoryMock;
 
     @Mock
-    private DBDaoHelper<Book> daoHelperMock;
-
-    @Mock
     private Session sessionMock;
 
     @Mock
@@ -56,8 +52,8 @@ public class DBBookDaoTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new DBBookDao(sessionFactoryMock, daoHelperMock, specifiedElementFinderMock);
-        when(sessionFactoryMock.openSession()).thenReturn(sessionMock);
+        this.sut = new DBBookDao(sessionFactoryMock, specifiedElementFinderMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
     }
 
@@ -71,10 +67,10 @@ public class DBBookDaoTest
 
     @Test
     public void testDeleteBook() throws Exception {
-        doNothing().when(daoHelperMock).delete(DomainTestConstants.BOOK);
+        doNothing().when(sessionMock).delete(DomainTestConstants.BOOK);
         sut.delete(DomainTestConstants.BOOK);
 
-        verify(daoHelperMock, atLeastOnce()).delete(any());
+        verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
@@ -174,10 +170,10 @@ public class DBBookDaoTest
         Book beforeUpdate = createFreshEntity();
         beforeUpdate.setTitle(UPDATED_TITLE);
 
-        doNothing().when(daoHelperMock).update(beforeUpdate);
+        doNothing().when(sessionMock).update(beforeUpdate);
         sut.update(beforeUpdate);
 
-        verify(daoHelperMock, atLeastOnce()).update(any());
+        verify(sessionMock, atLeastOnce()).update(any());
     }
 
     private Book createFreshEntity() {
