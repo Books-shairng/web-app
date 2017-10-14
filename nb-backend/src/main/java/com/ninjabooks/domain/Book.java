@@ -24,13 +24,19 @@ import java.util.Objects;
  */
 @Entity
 @Indexed
-@AnalyzerDef(name = "searchtokenanalyzer",
-    tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+@AnalyzerDef(
+    name = "searchtokenanalyzer",
+    tokenizer = @TokenizerDef(
+        factory = StandardTokenizerFactory.class),
     filters = {
         @TokenFilterDef(factory = StandardFilterFactory.class),
         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-        @TokenFilterDef(factory = StopFilterFactory.class, params = {
-            @Parameter(name = "ignoreCase", value = "true")})})
+        @TokenFilterDef(factory = StopFilterFactory.class,
+            params = {
+                @Parameter(name = "ignoreCase", value = "true")
+            })
+    }
+)
 @Analyzer(definition = "searchtokenanalyzer")
 @Table(name = "BOOK")
 public class Book extends BaseEntity
