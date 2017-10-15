@@ -17,7 +17,6 @@ import java.util.List;
  * @since 1.0
  */
 @Component
-//@Transactional
 public class RentalHelper
 {
     private final BookDaoService bookDaoService;

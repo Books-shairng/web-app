@@ -79,6 +79,7 @@ public final class DomainTestConstants
         setRelationFieldsInUser();
         setRelationFieldsInQueue();
         setRelationFieldsInComment();
+        setIdsInFullEntities();
     }
 
     private static void setIds() {

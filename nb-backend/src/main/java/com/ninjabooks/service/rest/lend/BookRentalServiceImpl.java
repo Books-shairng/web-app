@@ -102,9 +102,8 @@ public class BookRentalServiceImpl implements BookRentalService
                 .where(builder.equal(qrCodeJoin.get("data"), qrCodeData));
 
         Optional<Book> book = currentSession.createQuery(criteriaQuery).uniqueResultOptional();
-
         String message = MessageFormat.format("Book not found by given qr code: {0}", qrCodeData);
-//        currentSession.close();
+
         return book.orElseThrow(() -> new EntityNotFoundException(message));
     }
 
