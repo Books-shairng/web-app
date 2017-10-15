@@ -91,15 +91,15 @@ public class BookRentalServiceImpl implements BookRentalService
     }
 
     private Book findBookByQRCode(String qrCodeData) {
-            Session currentSession = userService.getSession();
-            CriteriaBuilder builder = currentSession.getCriteriaBuilder();
-            CriteriaQuery<Book> criteriaQuery = builder.createQuery(Book.class);
-            Root<Book> root = criteriaQuery.from(Book.class);
-            Join<Book, QRCode> qrCodeJoin = root.join("QRCode");
+        Session currentSession = userService.getSession();
+        CriteriaBuilder builder = currentSession.getCriteriaBuilder();
+        CriteriaQuery<Book> criteriaQuery = builder.createQuery(Book.class);
+        Root<Book> root = criteriaQuery.from(Book.class);
+        Join<Book, QRCode> qrCodeJoin = root.join("QRCode");
 
-            criteriaQuery
-                .select(root)
-                .where(builder.equal(qrCodeJoin.get("data"), qrCodeData));
+        criteriaQuery
+            .select(root)
+            .where(builder.equal(qrCodeJoin.get("data"), qrCodeData));
 
         Optional<Book> book = currentSession.createQuery(criteriaQuery).uniqueResultOptional();
         String message = MessageFormat.format("Book not found by given qr code: {0}", qrCodeData);

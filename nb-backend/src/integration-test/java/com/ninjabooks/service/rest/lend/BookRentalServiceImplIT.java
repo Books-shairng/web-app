@@ -38,7 +38,6 @@ public class BookRentalServiceImplIT
     private static final String QUEUE_INSERT_QUERY =
         "INSERT INTO QUEUE (ID, ORDER_DATE, ACTIVE, BOOK_ID, USER_ID) VALUES (1, '2017-03-21 08:17:02', TRUE, 1, 1);";
     private static final String UPDATE_BOOK_BORROW_STATUS = "UPDATE BOOK SET STATUS = 'BORROWED' WHERE ID = 1;";
-    //    private static final String[] IGNORED_FILEDS = {"queues", "histories", "comments", "description", "QRCode"};
 
     @Autowired
     private BorrowService borrowService;
