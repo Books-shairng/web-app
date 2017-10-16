@@ -8,13 +8,12 @@ import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.EntityUtils;
-import org.hibernate.query.NativeQuery;
+import com.ninjabooks.util.QueueUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +27,13 @@ public class NotificationServiceImpl implements  NotificationService
 {
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final QueueUtils queueUtils;
 
     @Autowired
-    public NotificationServiceImpl(UserService userService, ModelMapper modelMapper) {
+    public NotificationServiceImpl(UserService userService, ModelMapper modelMapper, QueueUtils queueUtils) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.queueUtils = queueUtils;
     }
 
     @Override
@@ -58,25 +59,6 @@ public class NotificationServiceImpl implements  NotificationService
     }
 
     private int computePositionInQueue(Queue queue, User user) {
-        final List<Object[]> queues = getMatchingQueues(queue);
-
-        for (Object[] object : queues) {
-            Long id = ((BigInteger) object[1]).longValue();
-            if (id.equals(user.getId())) {
-                return queues.indexOf(object) + 1;
-            }
-        }
-
-        return 0;
-    }
-
-    private List<Object[]> getMatchingQueues(Queue queue) {
-        Long bookID = queue.getBook().getId();
-        String query = "SELECT order_date, user_id FROM Queue WHERE active =:stat and book_id =:id";
-        NativeQuery queueQuery = userService.getSession().createNativeQuery(query);
-        queueQuery.setParameter("stat", true);
-        queueQuery.setParameter("id", bookID);
-
-        return queueQuery.getResultList();
+        return queueUtils.computePositionInQueue(queue, user);
     }
 }
