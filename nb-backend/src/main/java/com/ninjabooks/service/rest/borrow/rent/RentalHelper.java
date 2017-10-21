@@ -1,4 +1,4 @@
-package com.ninjabooks.service.rest.borrow;
+package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;

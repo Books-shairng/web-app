@@ -1,4 +1,4 @@
-package com.ninjabooks.service.rest.borrow;
+package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.domain.*;
 import com.ninjabooks.error.borrow.BorrowException;
