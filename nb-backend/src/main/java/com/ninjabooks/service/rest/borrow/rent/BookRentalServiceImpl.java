@@ -1,27 +1,24 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.BookStatus;
+import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.domain.User;
 import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.borrow.BorrowMaximumLimitException;
 import com.ninjabooks.error.qrcode.QRCodeException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
+import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.Optional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -56,14 +53,9 @@ public class BookRentalServiceImpl implements BookRentalService
             throw new BorrowMaximumLimitException(MessageFormat.format("User: {0} has exceeded the limit", userID));
         }
 
-        Book book = findBookByQRCode(qrCodeData);
+        Book book = rentalHelper.findBookByQRCode(qrCodeData);
         checkBookIsAlreadyBorrowed(book);
         performRentBook(userID, currentUser, book);
-    }
-
-    @Override
-    public void returnBook(QRCode qrCode) {
-
     }
 
     private void performRentBook(Long userID, User currentUser, Book book) throws BorrowException {
@@ -88,23 +80,6 @@ public class BookRentalServiceImpl implements BookRentalService
             String meesage = MessageFormat.format("Book: {0} is already borrowed", book.getTitle());
             throw new BorrowException(meesage);
         }
-    }
-
-    private Book findBookByQRCode(String qrCodeData) {
-        Session currentSession = userService.getSession();
-        CriteriaBuilder builder = currentSession.getCriteriaBuilder();
-        CriteriaQuery<Book> criteriaQuery = builder.createQuery(Book.class);
-        Root<Book> root = criteriaQuery.from(Book.class);
-        Join<Book, QRCode> qrCodeJoin = root.join("QRCode");
-
-        criteriaQuery
-            .select(root)
-            .where(builder.equal(qrCodeJoin.get("data"), qrCodeData));
-
-        Optional<Book> book = currentSession.createQuery(criteriaQuery).uniqueResultOptional();
-        String message = MessageFormat.format("Book not found by given qr code: {0}", qrCodeData);
-
-        return book.orElseThrow(() -> new EntityNotFoundException(message));
     }
 
     private boolean isLimitExceed(User currentUser) {

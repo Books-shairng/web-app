@@ -5,8 +5,8 @@ import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.borrow.BorrowMaximumLimitException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
+import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.constants.DomainTestConstants;
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,46 +43,40 @@ public class BookRentalServiceImplTest
     @Mock
     private RentalHelper rentalHelperMock;
 
-    private Session sessionMock = Mockito.mock(Session.class, RETURNS_DEEP_STUBS);;
-
     private BookRentalService sut;
 
     @Before
     public void setUp() throws Exception {
         this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock,rentalHelperMock);
         when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
-        when(userServiceMock.getSession()).thenReturn(sessionMock);
+        when(rentalHelperMock.findBookByQRCode(anyString())).thenReturn(DomainTestConstants.BOOK);
     }
 
     @Test
     public void testRentBookShouldSucceed() throws Exception {
-        when(sessionMock.createQuery(any(CriteriaQuery.class)).uniqueResultOptional())
-            .thenReturn(Optional.of(DomainTestConstants.BOOK));
         when(rentalHelperMock.isNotBelongToOtherUserQueue(any(), any())).thenReturn(true);
 
         sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
 
         verify(userServiceMock, atLeastOnce()).getById(any());
-        verify(userServiceMock, atLeastOnce()).getSession();
-        verify(sessionMock, atLeastOnce()).createQuery(any(CriteriaQuery.class));
+        verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
         verify(rentalHelperMock, atLeastOnce()).isNotBelongToOtherUserQueue(any(), any());
     }
 
     @Test
     public void testRentBookShouldThrowsExceptionWhenBookNotFound() throws Exception {
+        doThrow(EntityNotFoundException.class).when(rentalHelperMock).findBookByQRCode(anyString());
+
         assertThatExceptionOfType(EntityNotFoundException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
-            .withNoCause()
-            .withMessageContaining("not found");
+            .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());
-        verify(userServiceMock, atLeastOnce()).getSession();
+        verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
     }
 
     @Test
     public void testRentBookShouldThrowsExceptionWhenBookIsAlreadyBorrowed() throws Exception {
-        when(sessionMock.createQuery(any(CriteriaQuery.class)).uniqueResultOptional())
-            .thenReturn(Optional.of(DomainTestConstants.BOOK));
         when(rentalHelperMock.isBookBorrowed(any())).thenReturn(true);
 
         assertThatExceptionOfType(BorrowException.class)
@@ -92,15 +85,12 @@ public class BookRentalServiceImplTest
             .withMessageContaining("already borrowed");
 
         verify(userServiceMock, atLeastOnce()).getById(any());
-        verify(userServiceMock, atLeastOnce()).getSession();
-        verify(sessionMock, atLeastOnce()).createQuery(any(CriteriaQuery.class));
+        verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
         verify(rentalHelperMock, atLeastOnce()).isBookBorrowed(any());
     }
 
     @Test
     public void testRentBookShouldThrowsExceptionWhenBookBelongToOtherUser() throws Exception {
-        when(sessionMock.createQuery(any(CriteriaQuery.class)).uniqueResultOptional())
-            .thenReturn(Optional.of(DomainTestConstants.BOOK));
         when(rentalHelperMock.isNotBelongToOtherUserQueue(any(), any())).thenReturn(false);
 
         assertThatExceptionOfType(BorrowException.class)
@@ -109,8 +99,7 @@ public class BookRentalServiceImplTest
             .withMessage("Unable to borrow book");
 
         verify(userServiceMock, atLeastOnce()).getById(any());
-        verify(userServiceMock, atLeastOnce()).getSession();
-        verify(sessionMock, atLeastOnce()).createQuery(any(CriteriaQuery.class));
+        verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
         verify(rentalHelperMock, atLeastOnce()).isNotBelongToOtherUserQueue(any(), any());
     }
 
