@@ -1,4 +1,4 @@
-package com.ninjabooks.service.rest.lend;
+package com.ninjabooks.service.rest.borrow;
 
 import com.ninjabooks.domain.*;
 import com.ninjabooks.error.borrow.BorrowException;
@@ -49,7 +49,7 @@ public class BookRentalServiceImpl implements BookRentalService
 
     @Override
     public void rentBook(Long userID, String qrCodeData) throws QRCodeException, BorrowException {
-        logger.info("User with id: {} want lend book with follow qr code: {}", userID, qrCodeData);
+        logger.info("User with id: {} want borrow book with follow qr code: {}", userID, qrCodeData);
 
         User currentUser = EntityUtils.getEnity(userService, userID);
         if (isLimitExceed(currentUser)) {
