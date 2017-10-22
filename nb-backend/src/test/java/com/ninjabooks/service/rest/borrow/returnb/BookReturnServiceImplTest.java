@@ -70,5 +70,6 @@ public class BookReturnServiceImplTest
 
         verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
         verify(rentalHelperMock, atLeastOnce()).isBookBorrowed(any());
+        verify(historyServiceMock, atLeastOnce()).add(any());
     }
 }
