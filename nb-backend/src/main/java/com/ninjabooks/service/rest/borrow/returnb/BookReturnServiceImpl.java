@@ -2,7 +2,6 @@ package com.ninjabooks.service.rest.borrow.returnb;
 
 import com.ninjabooks.domain.*;
 import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import org.apache.logging.log4j.LogManager;
@@ -26,17 +25,14 @@ public class BookReturnServiceImpl implements BookReturnService
 
     private static final LocalDate ACTUAL_DATE = LocalDate.now();
 
-    private final BorrowService borrowService;
     private final HistoryService historyService;
     private final RentalHelper rentalHelper;
 
     @Autowired
-    public BookReturnServiceImpl(BorrowService borrowService, HistoryService historyService, RentalHelper rentalHelper) {
-        this.borrowService = borrowService;
+    public BookReturnServiceImpl(HistoryService historyService, RentalHelper rentalHelper) {
         this.historyService = historyService;
         this.rentalHelper = rentalHelper;
     }
-
 
     @Override
     public void returnBook(String qrCode) throws BorrowException {
