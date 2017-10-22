@@ -1,4 +1,4 @@
-package com.ninjabooks.service.rest.lend;
+package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.*;

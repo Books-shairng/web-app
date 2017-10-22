@@ -1,16 +1,21 @@
-package com.ninjabooks.service.rest.lend;
+package com.ninjabooks.service.rest.borrow;
 
-import com.ninjabooks.domain.Book;
-import com.ninjabooks.domain.BookStatus;
-import com.ninjabooks.domain.Queue;
-import com.ninjabooks.domain.User;
+import com.ninjabooks.domain.*;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.QueueUtils;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -30,15 +35,15 @@ public class RentalHelper
         this.queueService = queueService;
     }
 
-    boolean isBookBorrowed(Book book) {
+    public boolean isBookBorrowed(Book book) {
         return book.getStatus() == BookStatus.BORROWED;
     }
 
-    void updateBook(Book book) {
+    public void updateBook(Book book) {
         bookDaoService.update(book);
     }
 
-    void updateQueue(User user, final Book book) {
+    public void updateQueue(User user, final Book book) {
         List<Queue> queues = user.getQueues();
 
         queues.stream()
@@ -49,10 +54,27 @@ public class RentalHelper
             });
     }
 
-    boolean isNotBelongToOtherUserQueue(final Book book, User user) {
+    public boolean isNotBelongToOtherUserQueue(final Book book, User user) {
         return (isBookContainsInUserQueue(user, book) && hasFirstPosition(user, book))
             || book.getQueues().size() == 0;
 
+    }
+
+    public Book findBookByQRCode(String qrCodeData) {
+        Session currentSession = bookDaoService.getSession();
+        CriteriaBuilder builder = currentSession.getCriteriaBuilder();
+        CriteriaQuery<Book> criteriaQuery = builder.createQuery(Book.class);
+        Root<Book> root = criteriaQuery.from(Book.class);
+        Join<Book, QRCode> qrCodeJoin = root.join("QRCode");
+
+        criteriaQuery
+            .select(root)
+            .where(builder.equal(qrCodeJoin.get("data"), qrCodeData));
+
+        Optional<Book> book = currentSession.createQuery(criteriaQuery).uniqueResultOptional();
+        String message = MessageFormat.format("Book not found by given qr code: {0}", qrCodeData);
+
+        return book.orElseThrow(() -> new EntityNotFoundException(message));
     }
 
     private boolean isBookContainsInUserQueue(final User user, final Book book) {
