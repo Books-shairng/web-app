@@ -39,10 +39,6 @@ public class RentalHelper
         return book.getStatus() == BookStatus.BORROWED;
     }
 
-    public void updateBook(Book book) {
-        bookDaoService.update(book);
-    }
-
     public void updateQueue(User user, final Book book) {
         List<Queue> queues = user.getQueues();
 

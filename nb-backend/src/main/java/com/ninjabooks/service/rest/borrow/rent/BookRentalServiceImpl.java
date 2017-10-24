@@ -66,7 +66,6 @@ public class BookRentalServiceImpl implements BookRentalService
 
             book.setStatus(BookStatus.BORROWED);
             book.setBorrow(borrow);
-//            rentalHelper.updateBook(book);
             rentalHelper.updateQueue(currentUser, book);
             logger.info("User: {} has successfully borrowed book", userID);
         }
