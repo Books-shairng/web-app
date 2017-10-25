@@ -47,7 +47,6 @@ public class BookReturnServiceImpl implements BookReturnService
     private void performReturnBook(Book book) throws BorrowException {
         if (rentalHelper.isBookBorrowed(book)) {
             book.setStatus(BookStatus.FREE);
-//            rentalHelper.updateBook(book);
             Borrow currentBorrow = book.getBorrow();
             currentBorrow.setRealReturnDate(ACTUAL_DATE);
             currentBorrow.setIsActive(false);
