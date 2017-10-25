@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
+import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.borrow.BorrowMaximumLimitException;
@@ -49,7 +50,7 @@ public class BookRentalServiceImplTest
     public void setUp() throws Exception {
         this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock,rentalHelperMock);
         when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
-        when(rentalHelperMock.findBookByQRCode(anyString())).thenReturn(DomainTestConstants.BOOK);
+        when(rentalHelperMock.findBookByQRCode(anyString())).thenReturn(createFreshEntity());
     }
 
     @Test
@@ -119,5 +120,9 @@ public class BookRentalServiceImplTest
         verify(userServiceMock, atLeastOnce()).getById(any());
         verify(userMock, atLeastOnce()).getBorrows();
         verify(listMock, atLeastOnce()).size();
+    }
+
+    private Book createFreshEntity() {
+        return new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
     }
 }

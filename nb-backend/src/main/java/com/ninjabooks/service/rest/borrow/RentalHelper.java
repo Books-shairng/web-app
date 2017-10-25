@@ -53,7 +53,6 @@ public class RentalHelper
     public boolean isNotBelongToOtherUserQueue(final Book book, User user) {
         return (isBookContainsInUserQueue(user, book) && hasFirstPosition(user, book))
             || book.getQueues().size() == 0;
-
     }
 
     public Book findBookByQRCode(String qrCodeData) {
