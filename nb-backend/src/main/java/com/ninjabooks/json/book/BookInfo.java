@@ -31,7 +31,7 @@ public class BookInfo implements Serializable
     }
 
     @JsonUnwrapped
-    @JsonIgnoreProperties(value = {"id", "active"})
+    @JsonIgnoreProperties(value = {"active"})
     public BookDto getBookDto() {
         return new ModelMapper().map(book, BookDto.class);
     }
