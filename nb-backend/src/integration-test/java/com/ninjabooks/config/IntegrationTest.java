@@ -9,7 +9,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.lang.annotation.*;
 
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -24,7 +24,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
     initializers = TestAppContextInitializer.class)
 @ActiveProfiles("test")
 @Retention(value = RetentionPolicy.RUNTIME)
-@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 @Target(value = ElementType.TYPE)
 public @interface IntegrationTest
 {
