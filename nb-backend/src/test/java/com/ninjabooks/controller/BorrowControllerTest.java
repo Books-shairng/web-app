@@ -3,6 +3,7 @@ package com.ninjabooks.controller;
 import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.handler.BorrowControllerHandler;
 import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -37,12 +38,15 @@ public class BorrowControllerTest
     @Mock
     private BookRentalService bookRentalServiceMock;
 
+    @Mock
+    private ExtendRentalService extendRentalServiceMock;
+
     private MockMvc mockMvc;
     private BorrowController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BorrowController(bookRentalServiceMock, bookReturnServiceMock);
+        this.sut = new BorrowController(bookRentalServiceMock, bookReturnServiceMock, extendRentalServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
             .setControllerAdvice(new BorrowControllerHandler())
             .build();
@@ -98,5 +102,25 @@ public class BorrowControllerTest
             .andExpect(status().isBadRequest());
 
         verify(bookReturnServiceMock, atLeastOnce()).returnBook(anyString());
+    }
+
+    @Test
+    public void testExtendReturnDateShouldSucced() throws Exception {
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
+            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testExtendReturnDateShouldFailedWhenUnableToExtendDate() throws Exception {
+        doThrow(BorrowException.class).when(extendRentalServiceMock).extendReturnDate(any(), any());
+
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
+            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
+
+        verify(extendRentalServiceMock, atLeastOnce()).extendReturnDate(any(), any());
     }
 }

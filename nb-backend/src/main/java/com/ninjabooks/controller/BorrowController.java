@@ -2,6 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.error.borrow.BorrowException;
 import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ public class BorrowController
 {
     private final BookRentalService borrowService;
     private final BookReturnService returnService;
+    private final ExtendRentalService extendRentalService;
 
     @Autowired
-    public BorrowController(BookRentalService borrowService, BookReturnService returnService) {
+    public BorrowController(BookRentalService borrowService, BookReturnService returnService,
+                            ExtendRentalService extendRentalService) {
         this.borrowService = borrowService;
         this.returnService = returnService;
+        this.extendRentalService = extendRentalService;
     }
 
     @RequestMapping(value = "{userID}/", method = RequestMethod.POST)
@@ -37,4 +41,9 @@ public class BorrowController
         returnService.returnBook(qrCode);
     }
 
+    @RequestMapping(value = "{userID}/extend/", method = RequestMethod.POST)
+    public void extendReturnDate(@PathVariable(name = "userID") Long userID,
+                                 @RequestParam(value = "bookID") Long bookID) throws BorrowException {
+        extendRentalService.extendReturnDate(userID, bookID);
+    }
 }

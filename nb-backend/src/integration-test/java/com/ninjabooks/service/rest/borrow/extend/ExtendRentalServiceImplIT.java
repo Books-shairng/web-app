@@ -36,7 +36,6 @@ public class ExtendRentalServiceImplIT
     private static final String TRUNCATE_BOOK_TABLE = "TRUNCATE TABLE BOOK ;";
     private static final String TRUNCATE_BORROW_TABLE = "TRUNCATE TABLE BORROW ;";
     private static final String UPDATE_EXTEND_STATUS = "UPDATE BORROW SET CAN_EXTEND_RETURN_DATE=FALSE WHERE ID=1 ;";
-    private static final String UPDATE_USER_IN_BORROW = "UPDATE BORROW SET USER_ID = 2 WHERE ID = 1 ;";
 
     @Autowired
     private BorrowDao borrowDao;
