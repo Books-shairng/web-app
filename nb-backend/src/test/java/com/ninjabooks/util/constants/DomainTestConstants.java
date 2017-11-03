@@ -50,6 +50,7 @@ public final class DomainTestConstants
 
     //region Comment constants
     public static final String COMMENT_CONTENT = "any comment content";
+    public static final LocalDateTime COMMENT_DATE = LocalDateTime.of(2017, 5, 5, 23, 22, 10);
     //endregion
 
     //region Standard entity
@@ -59,7 +60,7 @@ public final class DomainTestConstants
     public static final QRCode QR_CODE = new QRCode(DATA);
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
     public static final History HISTORY = new History(EXPECTED_RETURN_DATE);
-    public static final Comment COMMENT = new Comment(COMMENT_CONTENT);
+    public static final Comment COMMENT = new Comment(COMMENT_CONTENT,COMMENT_DATE);
     //endregion
 
     public static final Book BOOK_FULL = new Book(TITLE, AUTHOR, ISBN);
@@ -68,7 +69,7 @@ public final class DomainTestConstants
     public static final QRCode QR_CODE_FULL = new QRCode(DATA);
     public static final Borrow BORROW_FULL = new Borrow(BORROW_DATE);
     public static final History HISTORY_FULL = new History(EXPECTED_RETURN_DATE);
-    public static final Comment COMMENT_FULL = new Comment(COMMENT_CONTENT);
+    public static final Comment COMMENT_FULL = new Comment(COMMENT_CONTENT, COMMENT_DATE);
 
     static {
         setIds();

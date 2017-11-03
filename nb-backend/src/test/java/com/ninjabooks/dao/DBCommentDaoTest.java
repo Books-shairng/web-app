@@ -117,6 +117,6 @@ public class DBCommentDaoTest
     }
 
     private Comment createFreshEntity() {
-        return new Comment(DomainTestConstants.COMMENT_CONTENT);
+        return new Comment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.COMMENT_DATE);
     }
 }

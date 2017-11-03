@@ -92,7 +92,7 @@ public class DBCommentDaoIT
     }
 
     private Comment createFreshEnity() {
-        Comment updatedEnity = new Comment(DomainTestConstants.COMMENT_CONTENT);
+        Comment updatedEnity = new Comment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.COMMENT_DATE);
         updatedEnity.setId(DomainTestConstants.ID);
 
         return updatedEnity;
