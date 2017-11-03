@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,9 @@ public class Comment extends BaseEntity
 {
     @Column(name = "CONTENT", length = 250)
     private String content;
+
+    @Column(name = "DATE")
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @LazyToOne(LazyToOneOption.PROXY)
@@ -30,8 +34,9 @@ public class Comment extends BaseEntity
     public Comment() {
     }
 
-    public Comment(String content) {
+    public Comment(String content, LocalDateTime date) {
         this.content = content;
+        this.date = date;
     }
 
     public String getContent() {
@@ -58,6 +63,14 @@ public class Comment extends BaseEntity
         this.book = book;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,18 +78,20 @@ public class Comment extends BaseEntity
         Comment comment = (Comment) o;
         return
             Objects.equals(this.getId(), comment.getId()) &&
+            Objects.equals(date, comment.date) &&
             Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content);
+        return Objects.hash(content, date);
     }
 
     @Override
     public String toString() {
         return "Comment{" +
             "content='" + content + '\'' +
+            "date='" + date + '\'' +
             '}';
     }
 }
