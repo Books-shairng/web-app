@@ -1,4 +1,4 @@
-package com.ninjabooks.error.user;
+package com.ninjabooks.error.exception.user;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -6,6 +6,8 @@ package com.ninjabooks.error.user;
  */
 public class UserAlreadyExistException extends UserException
 {
+    private static final long serialVersionUID = 6697390192071271641L;
+
     public UserAlreadyExistException(String message) {
         super(message);
     }

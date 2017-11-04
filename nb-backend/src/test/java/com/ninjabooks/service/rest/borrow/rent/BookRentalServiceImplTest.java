@@ -2,8 +2,7 @@ package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.error.borrow.BorrowMaximumLimitException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
@@ -112,7 +111,7 @@ public class BookRentalServiceImplTest
         when(userMock.getBorrows()).thenReturn(listMock);
         when(listMock.size()).thenReturn(MAXIMUM_BORROW_LIMIT);
 
-        assertThatExceptionOfType(BorrowMaximumLimitException.class)
+        assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
             .withNoCause()
             .withMessageContaining("exceeded the limit");

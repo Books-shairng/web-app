@@ -1,4 +1,4 @@
-package com.ninjabooks.error.order;
+package com.ninjabooks.error.exception.order;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -6,6 +6,8 @@ package com.ninjabooks.error.order;
  */
 public class OrderException extends Exception
 {
+    private static final long serialVersionUID = -3486218774360654866L;
+
     public OrderException(String message) {
         super(message);
     }

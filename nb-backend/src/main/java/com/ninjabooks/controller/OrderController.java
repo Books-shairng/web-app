@@ -1,6 +1,6 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.error.order.OrderException;
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.rest.order.OrderBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

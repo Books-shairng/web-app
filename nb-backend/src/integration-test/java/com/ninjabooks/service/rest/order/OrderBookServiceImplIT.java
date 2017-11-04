@@ -2,8 +2,7 @@ package com.ninjabooks.service.rest.order;
 
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
-import com.ninjabooks.error.order.OrderException;
-import com.ninjabooks.error.order.OrderMaxLimitException;
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Test;
@@ -72,7 +71,7 @@ public class OrderBookServiceImplIT
     @Test
     @Sql(scripts = {"classpath:it_import.sql", "classpath:queue_overflow_script.sql"})
     public void testOrderBookShouldThrowsExceptionWhenQueueLimitExceed() throws Exception {
-        assertThatExceptionOfType(OrderMaxLimitException.class)
+        assertThatExceptionOfType(OrderException.class)
             .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
             .withNoCause();
     }

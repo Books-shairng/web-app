@@ -3,7 +3,7 @@ package com.ninjabooks.service.rest.borrow.extend;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;

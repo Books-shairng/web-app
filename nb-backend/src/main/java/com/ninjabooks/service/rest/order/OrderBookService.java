@@ -1,6 +1,6 @@
 package com.ninjabooks.service.rest.order;
 
-import com.ninjabooks.error.order.OrderException;
+import com.ninjabooks.error.exception.order.OrderException;
 
 /**
  * @author Piotr 'pitrecki' Nowak

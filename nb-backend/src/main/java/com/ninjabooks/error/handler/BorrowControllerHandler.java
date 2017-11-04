@@ -1,8 +1,8 @@
 package com.ninjabooks.error.handler;
 
 import com.ninjabooks.controller.BorrowController;
-import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

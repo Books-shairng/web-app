@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.account;
 
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.user.UserAlreadyExistException;
+import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -1,6 +1,6 @@
 package com.ninjabooks.service.rest.account;
 
-import com.ninjabooks.error.user.UserAlreadyExistException;
+import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;

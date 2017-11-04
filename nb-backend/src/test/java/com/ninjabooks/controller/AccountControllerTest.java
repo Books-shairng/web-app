@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.error.handler.AccountControllerHandler;
-import com.ninjabooks.error.user.UserAlreadyExistException;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;

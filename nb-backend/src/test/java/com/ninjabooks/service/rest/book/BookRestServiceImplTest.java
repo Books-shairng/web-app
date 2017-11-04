@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.book;
 
 import com.ninjabooks.dto.BookDto;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
