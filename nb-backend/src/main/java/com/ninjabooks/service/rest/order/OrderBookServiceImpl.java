@@ -3,8 +3,7 @@ package com.ninjabooks.service.rest.order;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.order.OrderException;
-import com.ninjabooks.error.order.OrderMaxLimitException;
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Service
-@Transactional(rollbackFor = OrderMaxLimitException.class)
+@Transactional(rollbackFor = OrderException.class)
 public class OrderBookServiceImpl implements OrderBookService
 {
     private static final Logger logger = LogManager.getLogger(OrderBookServiceImpl.class);
@@ -53,7 +52,7 @@ public class OrderBookServiceImpl implements OrderBookService
 
     private void createQueue(Book book, User user) throws OrderException {
         if (isLimitExceed(user)) {
-            throw new OrderMaxLimitException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
+            throw new OrderException(MessageFormat.format("User: {0} has exceeded the limit", user.getId()));
         }
 
         Queue queue = new Queue(NOW);

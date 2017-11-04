@@ -2,7 +2,7 @@ package com.ninjabooks.service.rest.borrow.returnb;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.Borrow;
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.constants.DomainTestConstants;

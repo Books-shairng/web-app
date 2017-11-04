@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;

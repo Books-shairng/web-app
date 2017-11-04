@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
-import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 
 /**
  * This service is responsible for handling book borrows.

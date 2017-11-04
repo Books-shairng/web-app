@@ -4,9 +4,8 @@ import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.borrow.BorrowException;
-import com.ninjabooks.error.borrow.BorrowMaximumLimitException;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
@@ -50,7 +49,7 @@ public class BookRentalServiceImpl implements BookRentalService
 
         User currentUser = EntityUtils.getEnity(userService, userID);
         if (isLimitExceed(currentUser)) {
-            throw new BorrowMaximumLimitException(MessageFormat.format("User: {0} has exceeded the limit", userID));
+            throw new BorrowException(MessageFormat.format("User: {0} has exceeded the limit", userID));
         }
 
         Book book = rentalHelper.findBookByQRCode(qrCodeData);

@@ -1,6 +1,6 @@
 package com.ninjabooks.service.rest.borrow.extend;
 
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 
 /**
  * @author Piotr 'pitrecki' Nowak

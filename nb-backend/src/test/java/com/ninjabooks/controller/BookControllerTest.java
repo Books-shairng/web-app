@@ -1,8 +1,8 @@
 package com.ninjabooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.error.handler.BookControllerHandler;
-import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
 import com.ninjabooks.service.rest.book.BookRestService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class BookControllerTest
 
     @Test
     public void testAddBookWithNotGeneratedQRCodeShouldFail() throws Exception {
-        when(bookRestServiceMock.addBook(any())).thenThrow(QRCodeUnableToCreateException.class);
+        when(bookRestServiceMock.addBook(any())).thenThrow(QRCodeException.class);
 
         mockMvc.perform(post("/api/books/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))

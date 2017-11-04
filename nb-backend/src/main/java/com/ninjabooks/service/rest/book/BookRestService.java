@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.book;
 
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.error.qrcode.QRCodeException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfo;
 
 /**

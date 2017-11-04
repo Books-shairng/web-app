@@ -1,4 +1,4 @@
-package com.ninjabooks.error.borrow;
+package com.ninjabooks.error.exception.borrow;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -6,6 +6,8 @@ package com.ninjabooks.error.borrow;
  */
 public class BorrowException extends Exception
 {
+    private static final long serialVersionUID = 8468038047139123270L;
+
     public BorrowException(String message) {
         super(message);
     }

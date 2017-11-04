@@ -5,7 +5,7 @@ import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.domain.History;
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.history.HistoryService;
@@ -22,9 +22,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak

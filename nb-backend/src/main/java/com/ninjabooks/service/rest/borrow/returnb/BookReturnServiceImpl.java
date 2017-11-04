@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.borrow.returnb;
 
 import com.ninjabooks.domain.*;
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import org.apache.logging.log4j.LogManager;

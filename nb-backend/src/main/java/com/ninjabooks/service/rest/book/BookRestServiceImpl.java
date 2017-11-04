@@ -2,7 +2,7 @@ package com.ninjabooks.service.rest.book;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.error.qrcode.QRCodeUnableToCreateException;
+import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-//todo poprawic wyjatki i logery
 @Service
 @Transactional
 public class BookRestServiceImpl implements BookRestService
@@ -39,7 +38,7 @@ public class BookRestServiceImpl implements BookRestService
     }
 
     @Override
-    public String addBook(Book book) throws QRCodeUnableToCreateException {
+    public String addBook(Book book) throws QRCodeException {
         logger.info("An attempt to add new book: {} into system", book.getTitle());
 
         QRCode generatedQRCode = generateQRCode();
@@ -47,7 +46,8 @@ public class BookRestServiceImpl implements BookRestService
         book.setQRCode(generatedQRCode);
         bookService.add(book);
 
-        logger.info("Successfully added new book: {} in system", book.getTitle());
+        logger.info("Successfully added new book: {} in system with follow QR code",
+            book.getTitle(), book.getQRCode());
         return generatedQRCode.getData();
     }
 
@@ -65,27 +65,24 @@ public class BookRestServiceImpl implements BookRestService
      * eventuality.
      *
      * @return unique qr code
-     * @throws QRCodeUnableToCreateException if after 5th time cannot generate new qr code
+     * @throws QRCodeException if after 5th time cannot generate new qr code
      */
-    //todo deal with exception throwing
-    private QRCode generateQRCode() throws QRCodeUnableToCreateException {
-        String generatedCode;
+    private QRCode generateQRCode() throws QRCodeException {
         logger.info("Try generate new QR code");
 
+        String generatedCode = null;
         for (int i = 0; i < DEFAULT_NUMBER_ATTEMPT; i++) {
             generatedCode = codeGenerator.generateCode();
-            if (!isGeneratedCodeIsUnique(generatedCode)) {
-                logger.info("Successfully generated QR code");
-                return new QRCode(generatedCode);
+            if (isGeneratedCodeIsNotUnique(generatedCode)) {
+                throw new QRCodeException("Unable to generate unique QR code");
             }
         }
-        String errorMessage = "Unable to generate unique QR code";
 
-        logger.error(errorMessage);
-        throw new QRCodeUnableToCreateException(errorMessage);
+        logger.info("Successfully generated QR code");
+        return new QRCode(generatedCode);
     }
 
-    private boolean isGeneratedCodeIsUnique(String code) {
+    private boolean isGeneratedCodeIsNotUnique(String code) {
         return qrCodeService.getByData(code).isPresent();
     }
 }

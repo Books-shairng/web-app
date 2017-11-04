@@ -1,7 +1,7 @@
 package com.ninjabooks.service.rest.account;
 
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.user.UserAlreadyExistException;
+import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.service.dao.user.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

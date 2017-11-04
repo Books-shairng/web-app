@@ -1,7 +1,6 @@
 package com.ninjabooks.error.handler;
 
-import com.ninjabooks.error.order.OrderException;
-import com.ninjabooks.error.order.OrderMaxLimitException;
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class OrderControllerHandler
 {
-    @ExceptionHandler(value = {OrderException.class, OrderMaxLimitException.class})
+    @ExceptionHandler(value = OrderException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> unableToCreateQueue(HttpServletRequest request, OrderException e)
         throws Exception {

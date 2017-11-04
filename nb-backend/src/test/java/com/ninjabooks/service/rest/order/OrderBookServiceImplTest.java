@@ -3,8 +3,7 @@ package com.ninjabooks.service.rest.order;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.error.order.OrderException;
-import com.ninjabooks.error.order.OrderMaxLimitException;
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
@@ -67,7 +66,7 @@ public class OrderBookServiceImplTest
     public void testOrderBookWithExceedLimitShouldThrowsException() throws Exception {
         initMocks(userWithOverflowedQueues(), DomainTestConstants.BOOK);
 
-        assertThatExceptionOfType(OrderMaxLimitException.class)
+        assertThatExceptionOfType(OrderException.class)
             .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
             .withNoCause();
 

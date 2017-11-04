@@ -1,4 +1,4 @@
-package com.ninjabooks.error.user;
+package com.ninjabooks.error.exception.user;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -6,6 +6,8 @@ package com.ninjabooks.error.user;
  */
 public class UserException extends Exception
 {
+    private static final long serialVersionUID = 4812684653468513783L;
+
     public UserException(String message) {
         super(message);
     }

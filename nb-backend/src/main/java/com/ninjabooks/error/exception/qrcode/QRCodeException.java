@@ -1,4 +1,4 @@
-package com.ninjabooks.error.qrcode;
+package com.ninjabooks.error.exception.qrcode;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -6,6 +6,8 @@ package com.ninjabooks.error.qrcode;
  */
 public class QRCodeException extends Exception
 {
+    private static final long serialVersionUID = 401589992485992680L;
+
     public QRCodeException(String message) {
         super(message);
     }

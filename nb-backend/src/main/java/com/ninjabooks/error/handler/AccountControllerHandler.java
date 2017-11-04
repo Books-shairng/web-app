@@ -1,7 +1,7 @@
 package com.ninjabooks.error.handler;
 
 import com.ninjabooks.controller.AccountController;
-import com.ninjabooks.error.user.UserAlreadyExistException;
+import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.json.error.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

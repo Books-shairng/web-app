@@ -3,7 +3,7 @@ package com.ninjabooks.service.rest.borrow.extend;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;
 import com.ninjabooks.domain.Borrow;
-import com.ninjabooks.error.borrow.BorrowException;
+import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;

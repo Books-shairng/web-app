@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.error.handler.OrderControllerHandler;
-import com.ninjabooks.error.order.OrderException;
 import com.ninjabooks.service.rest.order.OrderBookService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
