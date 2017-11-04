@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-//todo poprawic wyjatki i logery
 @Service
 @Transactional
 public class BookRestServiceImpl implements BookRestService
@@ -47,7 +46,8 @@ public class BookRestServiceImpl implements BookRestService
         book.setQRCode(generatedQRCode);
         bookService.add(book);
 
-        logger.info("Successfully added new book: {} in system", book.getTitle());
+        logger.info("Successfully added new book: {} in system with follow QR code",
+            book.getTitle(), book.getQRCode());
         return generatedQRCode.getData();
     }
 
@@ -67,25 +67,22 @@ public class BookRestServiceImpl implements BookRestService
      * @return unique qr code
      * @throws QRCodeUnableToCreateException if after 5th time cannot generate new qr code
      */
-    //todo deal with exception throwing
     private QRCode generateQRCode() throws QRCodeUnableToCreateException {
-        String generatedCode;
         logger.info("Try generate new QR code");
 
+        String generatedCode = null;
         for (int i = 0; i < DEFAULT_NUMBER_ATTEMPT; i++) {
             generatedCode = codeGenerator.generateCode();
-            if (!isGeneratedCodeIsUnique(generatedCode)) {
-                logger.info("Successfully generated QR code");
-                return new QRCode(generatedCode);
+            if (isGeneratedCodeIsNotUnique(generatedCode)) {
+                throw new QRCodeUnableToCreateException("Unable to generate unique QR code");
             }
         }
-        String errorMessage = "Unable to generate unique QR code";
 
-        logger.error(errorMessage);
-        throw new QRCodeUnableToCreateException(errorMessage);
+        logger.info("Successfully generated QR code");
+        return new QRCode(generatedCode);
     }
 
-    private boolean isGeneratedCodeIsUnique(String code) {
+    private boolean isGeneratedCodeIsNotUnique(String code) {
         return qrCodeService.getByData(code).isPresent();
     }
 }
