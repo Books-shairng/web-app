@@ -45,7 +45,7 @@ public class CommentServiceImplTest
     @Test
     public void testFetchBookCommentsShouldReturnExpectedValues() throws Exception {
         when(bookDaoServiceMock.getByISBN(DomainTestConstants.ISBN)).thenReturn(BOOK_SUPPLIER.get());
-        Set<CommentResponse> actual = sut.fetchBookComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
 
         assertThat(actual)
             .extracting("author", "date", "content", "isbn")
@@ -58,7 +58,7 @@ public class CommentServiceImplTest
     @Test
     public void testFetchBookCommentsShouldReturnEmptyStreamWhenCommentsNotFound() throws Exception {
         when(bookDaoServiceMock.getByISBN(DomainTestConstants.ISBN)).thenReturn(EMPTY_SUPPLIER.get());
-        Set<CommentResponse> actual = sut.fetchBookComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
 
         assertThat(actual).isEmpty();
     }

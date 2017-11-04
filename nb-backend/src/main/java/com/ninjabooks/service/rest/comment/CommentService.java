@@ -18,5 +18,5 @@ public interface CommentService
      * @return set of all fits books
      */
 
-    Set<CommentResponse> fetchBookComments(String isbn);
+    Set<CommentResponse> getComments(String isbn);
 }
