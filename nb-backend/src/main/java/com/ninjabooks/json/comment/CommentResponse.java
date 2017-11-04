@@ -1,5 +1,10 @@
 package com.ninjabooks.json.comment;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ninjabooks.util.converter.json.LocalDateTimeDeserializer;
+import com.ninjabooks.util.converter.json.LocalDateTimeSerializer;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -11,8 +16,10 @@ public class CommentResponse implements Serializable
 {
     private static final long serialVersionUID = 4719413999741691927L;
 
-    private String author;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime date;
+    private String author;
     private String content;
     private String isbn;
 

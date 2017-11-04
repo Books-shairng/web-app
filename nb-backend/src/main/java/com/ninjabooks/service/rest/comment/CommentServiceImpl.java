@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService
     }
 
     @Override
-    public Set<CommentResponse> fetchBookComments(String isbn) {
+    public Set<CommentResponse> getComments(String isbn) {
         return bookDaoService.getByISBN(isbn)
             .parallel()
             .map(Book::getComments)

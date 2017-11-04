@@ -30,7 +30,7 @@ public class CommentServiceImplIT
 
     @Test
     public void testFetchBookCommentsShouldReturnExpectedValues() throws Exception {
-        Set<CommentResponse> actual = sut.fetchBookComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
 
         assertThat(actual)
             .extracting("author", "date", "content", "isbn")
@@ -46,7 +46,7 @@ public class CommentServiceImplIT
         statements = TRUNCATE_COMMENT,
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFetchBookCommentsShouldReturnEmptyStreamWhenCommentsNotFound() throws Exception {
-        Set<CommentResponse> actual = sut.fetchBookComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
 
         assertThat(actual).isEmpty();
     }
