@@ -29,7 +29,7 @@ public class WebApp implements WebApplicationInitializer
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        logger.info("Application initilization: " + servletContext.getServerInfo());
+        logger.info("Application initilization: {}", servletContext.getServerInfo());
 
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
         setProfile(applicationContext);
