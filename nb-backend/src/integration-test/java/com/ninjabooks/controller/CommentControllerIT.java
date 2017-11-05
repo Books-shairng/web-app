@@ -74,15 +74,6 @@ public class CommentControllerIT
     }
 
     @Test
-    public void testFetchCommentsShouldReturnStatusNotContent() throws Exception {
-        mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
-    }
-
-    @Test
     public void testFetchCommentsShouldReturnExpectedMessageWhenBookNotContainsComments() throws Exception {
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))

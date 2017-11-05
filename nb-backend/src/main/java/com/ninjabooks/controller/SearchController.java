@@ -35,13 +35,12 @@ public class SearchController
     }
 
     @RequestMapping(value = "/api/search/", method = RequestMethod.GET)
-    public ResponseEntity<?> searchBook(
-        @RequestParam(value = "query") String query) {
+    public ResponseEntity<?> searchBook(@RequestParam(value = "query") String query) {
         logger.info("An attempt to find the following book: {}", query);
         List<Book> searchResult = searchService.search(query);
 
         if (searchResult.isEmpty()) {
-            String message = "Unfortunately search phrases not found";
+            String message = "Unfortunately search phrase not found";
             return ResponseEntity.ok(new MessageResponse(message));
         }
 

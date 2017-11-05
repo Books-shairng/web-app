@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -31,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class CommentControllerTest
 {
+    private static final String MESSAGE_NO_COMMENTS = "Book does not contains any comments";
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -61,12 +64,13 @@ public class CommentControllerTest
     }
 
     @Test
-    public void testFetchCommentsShouldReturnStatusNotContent() throws Exception {
+    public void testFetchCommentsShouldReturnMessageWhenCommentsNotFound() throws Exception {
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.message").value(MESSAGE_NO_COMMENTS));
     }
 
     private Set<CommentResponse> prepareCommentResponse() {

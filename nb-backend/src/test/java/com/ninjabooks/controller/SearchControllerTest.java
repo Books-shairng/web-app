@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -28,8 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SearchControllerTest
 {
-    private final static String SEARCH_QUERY = "Effective Java";
+    private final static String SEARCH_QUERY = DomainTestConstants.TITLE;
     private static final List SEARCH_RESULT = Collections.singletonList(DomainTestConstants.BOOK);
+    private static final String MESSAGE_NOT_FOUND_QUERY = "Unfortunately search phrase not found";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -53,6 +55,7 @@ public class SearchControllerTest
 
         mockMvc.perform(get("/api/search/")
             .param("query", SEARCH_QUERY))
+            .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
@@ -66,7 +69,7 @@ public class SearchControllerTest
         mockMvc.perform(get("/api/search/")
             .param("query", SEARCH_QUERY))
             .andDo(print())
-            .andExpect(status().isOk());
+            .andExpect(jsonPath("$.message").value(MESSAGE_NOT_FOUND_QUERY));
 
         verify(searchServiceMock, atLeastOnce()).search(anyString());
     }
