@@ -41,7 +41,6 @@ public class AccountControllerIT
             "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
         "}";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
-    private static final String AUTH_TOKEN = "Bearer 1234567sdkasdsdac";
 
     @Autowired
     private WebApplicationContext wac;
