@@ -52,8 +52,8 @@ public class AccountController
 
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public MessageResponse createUser(@RequestBody UserRequest userRequest) throws
-        UserAlreadyExistException {
+    public MessageResponse createUser(@RequestBody UserRequest userRequest)
+        throws UserAlreadyExistException {
         User userFromRequest = new User(userRequest.getName(), userRequest.getEmail(), userRequest.getPassword());
         accountService.createUser(userFromRequest);
 
