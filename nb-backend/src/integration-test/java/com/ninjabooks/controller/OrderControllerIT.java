@@ -31,6 +31,7 @@ public class OrderControllerIT
         "(1, 'John Dee', 'john.dee@exmaple.com', 'Johny!Dee123', 'USER', TRUE)";
     private static final String INSERT_BOOK = "INSERT INTO BOOK (id, TITLE, AUTHOR, ISBN, ACTIVE, STATUS, " +
     "DESCRIPTION) VALUES (1, 'Effective Java', 'J. Bloch', '978-0321356680', TRUE, 'FREE', 'Some description')";
+    private static final String ORDER_MESSAGE = "Book was corectly ordered";
 
     @Autowired
     private WebApplicationContext wac;
@@ -49,7 +50,7 @@ public class OrderControllerIT
             .param("bookID", "1"))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(content().string(""));
+            .andExpect(jsonPath("$.message").value(ORDER_MESSAGE));
     }
 
     @Test

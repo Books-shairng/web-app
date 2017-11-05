@@ -32,7 +32,7 @@ public class CommentController
         Set<CommentResponse> comments = commentService.getComments(isbn);
         if (comments.isEmpty()) {
             String message = "Book does not contains any comments";
-            return new ResponseEntity<>(new MessageResponse(message), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }
 
         return ResponseEntity.ok(comments);

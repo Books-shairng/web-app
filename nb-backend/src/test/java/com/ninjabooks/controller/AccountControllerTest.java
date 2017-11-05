@@ -72,6 +72,7 @@ public class AccountControllerTest
         mockMvc.perform(post("/api/users")
             .content(JSON)
             .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
             .andExpect(status().isCreated());
 
         verify(accountServiceMock, atLeastOnce()).createUser(any());

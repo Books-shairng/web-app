@@ -79,7 +79,7 @@ public class CommentControllerIT
             .param("isbn", DomainTestConstants.ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isNoContent());
+            .andExpect(status().isOk());
     }
 
     @Test

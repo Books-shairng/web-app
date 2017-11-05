@@ -97,7 +97,7 @@ public class NotificationControllerIT
     public void testUserNotificationShouldReturnStatusNotContent() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
             .andDo(print())
-            .andExpect(status().isNoContent());
+            .andExpect(status().isOk());
     }
 
     @Test
