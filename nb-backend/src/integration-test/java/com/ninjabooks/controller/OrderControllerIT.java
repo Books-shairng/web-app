@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderControllerIT
 {
+    private static final String ID = String.valueOf(DomainTestConstants.ID);
     private static final String INSERT_USER = "INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES " +
         "(1, 'John Dee', 'john.dee@exmaple.com', 'Johny!Dee123', 'USER', TRUE)";
     private static final String INSERT_BOOK = "INSERT INTO BOOK (id, TITLE, AUTHOR, ISBN, ACTIVE, STATUS, " +
@@ -47,7 +48,7 @@ public class OrderControllerIT
     @Sql(statements = {INSERT_USER, INSERT_BOOK}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldAddBookToUserQueue() throws Exception {
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
-            .param("bookID", "1"))
+            .param("bookID", ID))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.message").value(ORDER_MESSAGE));
@@ -57,10 +58,23 @@ public class OrderControllerIT
     @Sql(scripts = "classpath:it_import.sql")
     public void testOrderBookShouldReturnErrorMessageWhenUserAlreadyOrderedBook() throws Exception{
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
-            .param("bookID", "1"))
+            .param("bookID", ID))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
                 .value(MessageFormat.format("User: {0} has already ordered this book", DomainTestConstants.ID)));
+    }
+
+    @Test
+    @Sql(
+        scripts = {"classpath:it_import.sql", "classpath:queue_overflow_script.sql"},
+        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    public void testOrderBookShouldReturnErrorMessageWhenLimitExceed() throws Exception {
+        mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
+            .param("bookID", ID))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message")
+                .value(MessageFormat.format("User: {0} has exceeded the limit", DomainTestConstants.ID)));
     }
 }

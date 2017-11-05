@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class OrderControllerTest
 {
+    public static final String ID = String.valueOf(DomainTestConstants.ID);
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -45,7 +47,7 @@ public class OrderControllerTest
     @Test
     public void testOrderBookShouldReturnStatusOk() throws Exception {
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
-            .param("bookID", "1"))
+            .param("bookID", ID))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -55,7 +57,7 @@ public class OrderControllerTest
         doThrow(OrderException.class).when(orderBookServiceMock).orderBook(anyLong(), anyLong());
 
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
-            .param("bookID", "1"))
+            .param("bookID", ID))
             .andDo(print())
             .andExpect(status().isBadRequest());
 
