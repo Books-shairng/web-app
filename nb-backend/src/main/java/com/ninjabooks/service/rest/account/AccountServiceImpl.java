@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -35,8 +37,10 @@ public class AccountServiceImpl implements AccountService
         String email = user.getEmail();
         logger.info("Try add new user to database, email: {}, name: {}", email, userName);
 
-        if (isUserAlreadyExist(user))
-            throw new UserAlreadyExistException("Username email: " + email + " already exist in database");
+        if (isUserAlreadyExist(user)) {
+            String message = MessageFormat.format("Username email: {0} already exist in database", email);
+            throw new UserAlreadyExistException(message);
+        }
 
         User newUserToPersistent = prepareUserToPersist(user);
         userService.add(newUserToPersistent);
