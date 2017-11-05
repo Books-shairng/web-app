@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.rest.notification.NotificationService;
@@ -39,7 +40,8 @@ public class NotificationController
         map.put("Queues list", queueNotifications);
 
         if (borrowNotifications.isEmpty() && queueNotifications.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            String message = "User has no notification";
+            return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(map, HttpStatus.OK);

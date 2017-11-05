@@ -2,6 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
+import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.json.user.UserRequest;
 import com.ninjabooks.json.user.UserResponse;
 import com.ninjabooks.security.user.SpringSecurityUser;
@@ -29,7 +30,10 @@ public class AccountController
     private final SecurityHeaderUtils securityHeaderUtils;
 
     @Autowired
-    public AccountController(AccountService accountService, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderUtils) {
+    public AccountController(AccountService accountService,
+                             TokenUtils tokenUtils,
+                             UserDetailsService userDetailsService,
+                             SecurityHeaderUtils securityHeaderUtils) {
         this.accountService = accountService;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
@@ -42,13 +46,18 @@ public class AccountController
      *
      * @param userRequest - received from request
      * @throws UserAlreadyExistException if user already exist in DB
+     *
+     * @return message when user successfully created
      */
 
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createUser(@RequestBody UserRequest userRequest) throws UserAlreadyExistException {
+    public MessageResponse createUser(@RequestBody UserRequest userRequest) throws
+        UserAlreadyExistException {
         User userFromRequest = new User(userRequest.getName(), userRequest.getEmail(), userRequest.getPassword());
         accountService.createUser(userFromRequest);
+
+        return new MessageResponse("User was successfully created");
     }
 
     /**

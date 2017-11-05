@@ -66,7 +66,7 @@ public class SearchControllerTest
         mockMvc.perform(get("/api/search/")
             .param("query", SEARCH_QUERY))
             .andDo(print())
-            .andExpect(status().isNoContent());
+            .andExpect(status().isOk());
 
         verify(searchServiceMock, atLeastOnce()).search(anyString());
     }

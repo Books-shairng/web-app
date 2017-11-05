@@ -2,12 +2,12 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.dto.BookDto;
+import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.service.rest.search.SearchService;
 import com.ninjabooks.util.CommonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,13 +35,14 @@ public class SearchController
     }
 
     @RequestMapping(value = "/api/search/", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<BookDto>>> searchBook(
+    public ResponseEntity<?> searchBook(
         @RequestParam(value = "query") String query) {
         logger.info("An attempt to find the following book: {}", query);
         List<Book> searchResult = searchService.search(query);
 
         if (searchResult.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            String message = "Unfortunately search phrases not found";
+            return ResponseEntity.ok(new MessageResponse(message));
         }
 
         Map<String, List<BookDto>> searchResponse =

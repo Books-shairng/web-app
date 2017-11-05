@@ -50,6 +50,7 @@ public class NotificationControllerTest
 
         mockMvc.perform(get("/api/notification/{userID}", USER_ID))
             .andExpect(status().isOk())
+            .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
         verify(notificationServiceMock, atLeastOnce()).findUserBorrows(anyLong());
@@ -71,7 +72,8 @@ public class NotificationControllerTest
     @Test
     public void testUserNotificationNotFoundAnyBorrowsAndQueuesShouldRetunStauts204() throws Exception {
         mockMvc.perform(get("/api/notification/{userID}", USER_ID))
-            .andExpect(status().isNoContent());
+            .andDo(print())
+            .andExpect(status().isOk());
 
         verify(notificationServiceMock, atLeastOnce()).findUserQueues(anyLong());
         verify(notificationServiceMock, atLeastOnce()).findUserBorrows(anyLong());
