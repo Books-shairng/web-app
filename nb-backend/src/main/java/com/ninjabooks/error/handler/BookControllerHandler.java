@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice(basePackageClasses = {BookController.class})
 public class BookControllerHandler
 {
-    @ExceptionHandler(value = QRCodeException.class)
+    @ExceptionHandler(value = {QRCodeException.class, EntityNotFoundException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> qrCodeCannotGenerate(HttpServletRequest request, Exception e) throws  Exception {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

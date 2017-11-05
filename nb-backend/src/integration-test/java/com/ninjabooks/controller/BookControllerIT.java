@@ -1,39 +1,37 @@
 package com.ninjabooks.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ninjabooks.error.exception.qrcode.QRCodeException;
-import com.ninjabooks.error.handler.BookControllerHandler;
-import com.ninjabooks.json.book.BookInfo;
-import com.ninjabooks.service.rest.book.BookRestService;
+import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.EntityNotFoundException;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class BookControllerTest
+@IntegrationTest
+@RunWith(SpringJUnit4ClassRunner.class)
+public class BookControllerIT
 {
-    private static final BookInfo BOOK_INFO_RESPONSE = new BookInfo(DomainTestConstants.BOOK);
+    private static final int EXPECTED_SIZE = 1;
+    private static final String BOOK_STATUS = DomainTestConstants.BOOK_STATUS.toString();
+    private static final String ID = String.valueOf(DomainTestConstants.ID);
     private static final String JSON =
         "{" +
             "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
@@ -41,77 +39,63 @@ public class BookControllerTest
             "\"isbn\":\"" + DomainTestConstants.ISBN + "\"" +
         "}";
 
-    @Rule
-    public MockitoRule mockitoJUnit = MockitoJUnit.rule();
-
-    @Mock
-    private BookRestService bookRestServiceMock;
-
-    @Mock
-    private ObjectMapper objectMapperMock;
-
-    @Mock
-    private ObjectNode objectNodeMock;
+    @Autowired
+    private WebApplicationContext wac;
 
     private MockMvc mockMvc;
-    private BookController sut;
 
     @Before
     public void setUp() throws Exception {
-        when(objectMapperMock.createObjectNode()).thenReturn(objectNodeMock);
-        this.sut = new BookController(bookRestServiceMock, objectMapperMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
-            .setControllerAdvice(new BookControllerHandler())
-            .build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
     @Test
     public void testAddNewBookShouldReturnStatusCreated() throws Exception {
-        when(bookRestServiceMock.addBook(DomainTestConstants.BOOK)).thenReturn(any());
-
         mockMvc.perform(post("/api/books/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isCreated());
-
-        verify(bookRestServiceMock, atLeastOnce()).addBook(any());
     }
 
     @Test
-    public void testAddBookWithNotGeneratedQRCodeShouldFail() throws Exception {
-        when(bookRestServiceMock.addBook(any())).thenThrow(QRCodeException.class);
-
+    public void testAddNewBookShouldReturnNotEmptyQRCodeMessage() throws Exception {
         mockMvc.perform(post("/api/books/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest());
-
-        verify(bookRestServiceMock, atLeastOnce()).addBook(any());
+            .andExpect(jsonPath("$.generatedCode").isNotEmpty());
     }
 
     @Test
+    @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
-        when(bookRestServiceMock.getBookInfo(anyLong())).thenReturn(BOOK_INFO_RESPONSE);
-
         mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk());
+    }
 
-        verify(bookRestServiceMock, atLeastOnce()).getBookInfo(anyLong());
+    @Test
+    @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    public void testGetDetailsBookInfoShouldReturnExpectedMessage() throws Exception {
+        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(jsonPath("$.id").value(ID))
+            .andExpect(jsonPath("$.author").value(DomainTestConstants.AUTHOR))
+            .andExpect(jsonPath("$.title").value(DomainTestConstants.TITLE))
+            .andExpect(jsonPath("$.isbn").value(DomainTestConstants.ISBN))
+            .andExpect(jsonPath("$.description").value(DomainTestConstants.DESCRIPTION))
+            .andExpect(jsonPath("$.status").value(BOOK_STATUS))
+            .andExpect(jsonPath("$.queueSize").value(EXPECTED_SIZE));
     }
 
     @Test
     public void testGetDetailsBookInfoShouldFailWhenBookNotFound() throws Exception {
-        doThrow(EntityNotFoundException.class).when(bookRestServiceMock).getBookInfo(anyLong());
-
         mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isBadRequest());
-
-        verify(bookRestServiceMock, atLeastOnce()).getBookInfo(anyLong());
     }
 }
