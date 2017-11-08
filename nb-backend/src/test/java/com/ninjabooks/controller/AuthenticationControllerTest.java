@@ -41,7 +41,7 @@ public class AuthenticationControllerTest
         "{" +
             "\"email\" : \"user_not_exist@dd.gov\"," +
             "\"password\" : \"pass0\"" +
-            "}";
+        "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
