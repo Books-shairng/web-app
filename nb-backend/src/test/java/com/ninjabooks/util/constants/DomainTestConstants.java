@@ -109,6 +109,7 @@ public final class DomainTestConstants
         BOOK_FULL.setComments(Collections.singletonList(COMMENT_FULL));
         BOOK_FULL.setQRCode(QR_CODE_FULL);
         BOOK_FULL.setBorrow(BORROW_FULL);
+        BOOK_FULL.setDescription(DESCRIPTION);
     }
 
     private static void setRelationFieldsInUser() {
