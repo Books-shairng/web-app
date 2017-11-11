@@ -100,10 +100,7 @@ public class NotificationServiceImplTest
 
     @Test
     public void testFindUserQueuesShouldReturnListOfQueues() throws Exception {
-        NativeQuery nativeQueryMock = mock(NativeQuery.class);
-        Session sessionMock = mock(Session.class);
-        when(userServiceMock.getSession()).thenReturn(sessionMock);
-        when(sessionMock.createNativeQuery(anyString())).thenReturn(nativeQueryMock);
+        prepareSessionStubs();
         prepareOngoingStubs(bookDtoMock, queueDtoMock);
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
@@ -126,15 +123,19 @@ public class NotificationServiceImplTest
 
     @Test
     public void testFindUserQueuesShouldReturnExpectedSizeOfList() throws Exception {
-        NativeQuery nativeQueryMock = mock(NativeQuery.class);
-        Session sessionMock = mock(Session.class);
-        when(userServiceMock.getSession()).thenReturn(sessionMock);
-        when(sessionMock.createNativeQuery(anyString())).thenReturn(nativeQueryMock);
+        prepareSessionStubs();
         prepareOngoingStubs(bookDtoMock, queueDtoMock);
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());
+    }
+
+    private void prepareSessionStubs() {
+        NativeQuery nativeQueryMock = mock(NativeQuery.class);
+        Session sessionMock = mock(Session.class);
+        when(userServiceMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.createNativeQuery(anyString())).thenReturn(nativeQueryMock);
     }
 
     private <E, T> void prepareOngoingStubs(E e, T t) {
