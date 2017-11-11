@@ -47,7 +47,6 @@ public class BookSearchServiceImplTest
         this.sut = new BookSearchServiceImpl(bookServiceMock, searchWrapper);
     }
 
-
     @Test
     public void testSearchBookShouldReturnFilledList() throws Exception {
         FullTextQuery fullTextQueryMock = prepareMocksDepedencies();
