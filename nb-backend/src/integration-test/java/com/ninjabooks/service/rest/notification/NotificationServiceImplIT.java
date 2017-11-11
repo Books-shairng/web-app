@@ -25,8 +25,9 @@ import static org.assertj.core.api.Assertions.tuple;
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class NotificationServiceImplIT
 {
-    private static final long CUSTOM_ID = 2L;
     private static final int EXPECTED_SIZE = 1;
+    private static final String UPDATE_BORROW_STATUS = "UPDATE BORROW SET ACTIVE = false WHERE ID = 1 ;";
+    private static final String UPDATE_QUEUE_STATUS = "UPDATE QUEUE SET ACTIVE = false WHERE ID = 1 ;";
 
     @Autowired
     private NotificationService sut;
@@ -54,8 +55,12 @@ public class NotificationServiceImplIT
     }
 
     @Test
+    @Sql(
+        value = "classpath:it_import.sql",
+        statements = UPDATE_BORROW_STATUS,
+        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindUserBorrowsWhenUserNotHaveBorrowsShouldReturnEmptyList() throws Exception {
-        List<BorrowNotification> actual = sut.findUserBorrows(CUSTOM_ID);
+        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();
     }
@@ -88,8 +93,12 @@ public class NotificationServiceImplIT
     }
 
     @Test
+    @Sql(
+        value = "classpath:it_import.sql",
+        statements = UPDATE_QUEUE_STATUS,
+        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindUserQueuesWhenUserNotHaveQueuesShouldReturnEmptyList() throws Exception {
-        List<QueueNotification> actual = sut.findUserQueues(CUSTOM_ID);
+        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 
         assertThat(actual).isEmpty();
     }
