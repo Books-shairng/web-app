@@ -59,7 +59,6 @@ public class UserServiceImplIT
         Optional<User> actual = sut.getByName(CUSTOM_NAME);
 
         assertThat(actual).isEmpty();
-
     }
 
     @Test
@@ -70,8 +69,8 @@ public class UserServiceImplIT
     }
 
     private boolean isPasswordEqual(User user) {
-    return user.getPassword().equals(DomainTestConstants.PASSWORD);
-}
+        return user.getPassword().equals(DomainTestConstants.PASSWORD);
+    }
 
     private boolean isNameEqual(User user) {
         return user.getName().equals(DomainTestConstants.NAME);
