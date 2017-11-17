@@ -116,7 +116,7 @@ public final class DomainTestConstants
         USER_FULL.setBorrows(Collections.singletonList(BORROW_FULL));
         USER_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
         USER_FULL.setComments(Collections.singletonList(COMMENT_FULL));
-        USER_FULL.setHistory(HISTORY_FULL);
+        USER_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
     }
 
     private static void setRelationFieldsInQueue() {
