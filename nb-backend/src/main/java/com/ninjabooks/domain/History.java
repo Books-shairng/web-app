@@ -20,6 +20,9 @@ public class History extends BaseEntity
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
+    @Column(name = "COMMENTED")
+    private boolean isCommented;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "BOOK_ID")
@@ -61,6 +64,14 @@ public class History extends BaseEntity
         this.user = user;
     }
 
+    public boolean getIsCommented() {
+        return isCommented;
+    }
+
+    public void setIsCommented(boolean commented) {
+        isCommented = commented;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +91,7 @@ public class History extends BaseEntity
     public String toString() {
         return "History{" +
             "returnDate=" + returnDate +
+            "isCommented=" + isCommented +
             '}';
     }
 }
