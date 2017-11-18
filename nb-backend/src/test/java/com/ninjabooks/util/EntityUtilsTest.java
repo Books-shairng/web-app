@@ -3,6 +3,10 @@ package com.ninjabooks.util;
 import com.ninjabooks.domain.*;
 import com.ninjabooks.service.dao.generic.GenericService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,6 +32,22 @@ public class EntityUtilsTest
 
     @Mock
     private GenericService<? extends BaseEntity, Long> genericServiceMock;
+
+    @Mock
+    private SessionFactory sessionFactoryMock;
+
+    @Mock
+    private Query queryMock;
+
+    @Mock
+    private Session sessionMock;
+
+    @Before
+    public void setUp() throws Exception {
+        new EntityUtils().setSessionFactory(sessionFactoryMock);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
+        when(sessionMock.createQuery(any(), any())).thenReturn(queryMock);
+    }
 
     @Test
     public void testGetEntityShouldReturnUserObject() throws Exception {
@@ -71,7 +91,6 @@ public class EntityUtilsTest
 
         assertThat(actual).isInstanceOf(History.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
-
     }
 
     @Test
@@ -106,5 +125,30 @@ public class EntityUtilsTest
             .withMessageContaining("not found");
 
         verify(genericServiceMock, atLeastOnce()).getById(any());
+    }
+
+    @Test
+    public void testGetEntityByClassShouldReturnUserObject() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(DomainTestConstants.USER));
+        User actual = EntityUtils.getEnity(User.class, DomainTestConstants.ID);
+
+        assertThat(actual).isInstanceOf(User.class);
+        verify(sessionFactoryMock, atLeastOnce()).getCurrentSession();
+        verify(sessionMock, atLeastOnce()).createQuery(any(), any());
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
+    }
+
+    @Test
+    public void testGetEntityByClassShouldThrowsExceptionWhenObjectNotPresent() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> EntityUtils.getEnity(User.class, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessageContaining("not found");
+
+        verify(sessionFactoryMock, atLeastOnce()).getCurrentSession();
+        verify(sessionMock, atLeastOnce()).createQuery(any(), any());
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
     }
 }

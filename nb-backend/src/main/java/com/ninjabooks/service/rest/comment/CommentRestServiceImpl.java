@@ -6,6 +6,7 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
+import com.ninjabooks.util.EntityUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class CommentRestServiceImpl implements CommentRestService
         if (isDateNotOverdue(history) && history.getIsCommented()) {
             Comment comment = new Comment();
             comment.setContent(commentText);
-            comment.setBook(getEnityByID(Book.class, bookID));
-            comment.setUser(getEnityByID(User.class, userID));
+            comment.setBook(EntityUtils.getEnity(Book.class, bookID));
+            comment.setUser(EntityUtils.getEnity(User.class, userID));
             history.setIsCommented(true);
             commentDaoService.add(comment);
         }
@@ -77,13 +78,4 @@ public class CommentRestServiceImpl implements CommentRestService
         return returnDate.isBefore(returnDate.plusWeeks(2));
     }
 
-    private <E extends BaseEntity> E getEnityByID(Class<E> clazz, Long id) {
-        Session session = commentDaoService.getSession();
-        String hqlQuery = "select e from " + clazz.getSimpleName() + " e where id =:param";
-        Query<E> query = session.createQuery(hqlQuery, clazz);
-        query.setParameter("param", id);
-        final String message = MessageFormat.format("Entity with id: {0} not found", id);
-
-        return query.uniqueResultOptional().orElseThrow(() -> new EntityNotFoundException(message));
-    }
 }
