@@ -79,6 +79,7 @@ public class History extends BaseEntity
         History history = (History) o;
         return
             Objects.equals(this.getId(), history.getId()) &&
+            Objects.equals(this.getIsCommented(), history.getIsCommented()) &&
             Objects.equals(returnDate, history.returnDate);
     }
 

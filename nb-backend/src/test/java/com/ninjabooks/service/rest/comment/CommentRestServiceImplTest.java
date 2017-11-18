@@ -3,6 +3,7 @@ package com.ninjabooks.service.rest.comment;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.book.BookDaoService;
+import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class CommentServiceImplTest
+public class CommentRestServiceImplTest
 {
     private static final Supplier<Stream<Book>> BOOK_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.BOOK_FULL);
     private static final Supplier<Stream<Book>> EMPTY_SUPPLIER = CommonUtils.asEmptySupplier();
@@ -35,11 +36,14 @@ public class CommentServiceImplTest
     @Mock
     private BookDaoService bookDaoServiceMock;
 
-    private CommentService sut;
+    @Mock
+    private CommentDaoService commentDaoServiceMock;
+
+    private CommentRestService sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new CommentServiceImpl(bookDaoServiceMock);
+        this.sut = new CommentRestServiceImpl(bookDaoServiceMock, commentDaoServiceMock);
     }
 
     @Test

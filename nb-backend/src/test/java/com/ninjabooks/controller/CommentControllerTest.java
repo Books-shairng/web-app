@@ -2,7 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
-import com.ninjabooks.service.rest.comment.CommentService;
+import com.ninjabooks.service.rest.comment.CommentRestService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,21 +38,21 @@ public class CommentControllerTest
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private CommentService commentServiceMock;
+    private CommentRestService commentRestServiceMock;
 
     private MockMvc mockMvc;
     private CommentController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new CommentController(commentServiceMock);
+        this.sut = new CommentController(commentRestServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 
     @Test
     public void testFetchCommentsShouldReturnStatusOK() throws Exception {
         Set<CommentResponse> commentResponses = prepareCommentResponse();
-        when(commentServiceMock.getComments(DomainTestConstants.ISBN)).thenReturn(commentResponses);
+        when(commentRestServiceMock.getComments(DomainTestConstants.ISBN)).thenReturn(commentResponses);
 
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))
@@ -60,7 +60,7 @@ public class CommentControllerTest
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        verify(commentServiceMock, atLeastOnce()).getComments(any());
+        verify(commentRestServiceMock, atLeastOnce()).getComments(any());
     }
 
     @Test
