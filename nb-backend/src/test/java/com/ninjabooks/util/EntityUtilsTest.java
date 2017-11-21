@@ -3,6 +3,7 @@ package com.ninjabooks.util;
 import com.ninjabooks.domain.*;
 import com.ninjabooks.service.dao.generic.GenericService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.entity.EntityUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

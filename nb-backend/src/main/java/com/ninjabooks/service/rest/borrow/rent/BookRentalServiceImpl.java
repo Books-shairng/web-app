@@ -9,7 +9,7 @@ import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
-import com.ninjabooks.util.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

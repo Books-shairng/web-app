@@ -3,6 +3,7 @@ package com.ninjabooks.service.rest.comment;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Comment;
 import com.ninjabooks.domain.History;
+import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.service.dao.history.HistoryService;
@@ -14,11 +15,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
@@ -31,6 +32,10 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 public class CommentRestServiceImplIT
 {
     private static final String TRUNCATE_COMMENT = "TRUNCATE TABLE COMMENT ;";
+    private static final String UPDATE_COMMENTED_STATUS = "UPDATE HISTORY SET COMMENTED = TRUE WHERE ID = 1 ;";
+    private static final String UPDATE_RETURN_DATE =
+        "UPDATE HISTORY SET RETURN_DATE = DATE_ADD(now(), INTERVAL 1 MONTH) WHERE ID = 1 ;";
+    private static final String FLUSH_HISTORY_TABLE = "TRUNCATE TABLE HISTORY ;";
 
     @Autowired
     private CommentDaoService commentDaoService;
@@ -77,12 +82,54 @@ public class CommentRestServiceImplIT
     @Test
     @Transactional
     @Sql(scripts = "classpath:comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
-    public void testAddCommentShouldSucceedAndReturnExpectedHistoryEntity() throws Exception {
-        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+    public void testAddCommentShouldSucceedAndReturnExpectedCommentEntity() throws Exception {
+            sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<Comment> actual = commentDaoService.getAll();
 
         assertThat(actual)
             .extracting("content", "user.name", "book.isbn")
             .contains(tuple(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.NAME, DomainTestConstants.ISBN));
+    }
+
+    @Test
+    @Transactional
+    @Sql(
+        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        statements = UPDATE_COMMENTED_STATUS,
+        executionPhase = BEFORE_TEST_METHOD)
+    public void testAddCommentShouldThrowsExceptionWhenBookWasAlreadyCommented() throws Exception {
+        assertThatExceptionOfType(CommentException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessage("Unable to add new comment");
+    }
+
+    @Test
+    @Transactional
+    @Sql(
+        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        statements = UPDATE_RETURN_DATE,
+        executionPhase = BEFORE_TEST_METHOD)
+    public void testAddCommentShouldThrowsExceptionWhenDateIsOverdue() throws Exception {
+        assertThatExceptionOfType(CommentException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessage("Unable to add new comment");
+    }
+
+    @Test
+    @Transactional
+    @Sql(
+        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        statements = FLUSH_HISTORY_TABLE,
+        executionPhase = BEFORE_TEST_METHOD)
+    public void testAddChommentShouldThrowsExceptionHistoryEntityNotFound() throws Exception {
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessageContaining("enity not found");
     }
 }

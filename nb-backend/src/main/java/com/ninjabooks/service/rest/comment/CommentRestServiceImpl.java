@@ -6,7 +6,8 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
-import com.ninjabooks.util.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtilsWrapper;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,11 +31,13 @@ public class CommentRestServiceImpl implements CommentRestService
 {
     private final BookDaoService bookDaoService;
     private final CommentDaoService commentDaoService;
+    private final EntityUtilsWrapper entityUtilsWrapper;
 
     @Autowired
-    public CommentRestServiceImpl(BookDaoService bookDaoService, CommentDaoService commentDaoService) {
+    public CommentRestServiceImpl(BookDaoService bookDaoService, CommentDaoService commentDaoService, EntityUtilsWrapper entityUtilsWrapper) {
         this.bookDaoService = bookDaoService;
         this.commentDaoService = commentDaoService;
+        this.entityUtilsWrapper = entityUtilsWrapper;
     }
 
     @Override
@@ -50,11 +53,8 @@ public class CommentRestServiceImpl implements CommentRestService
     @Override
     public void addComment(String commentText, Long userID, Long bookID) throws CommentException {
         History history = findUserHistory(userID, bookID);
-        if (isDateNotOverdue(history) && history.getIsCommented()) {
-            Comment comment = new Comment();
-            comment.setContent(commentText);
-            comment.setBook(EntityUtils.getEnity(Book.class, bookID));
-            comment.setUser(EntityUtils.getEnity(User.class, userID));
+        if (isDateNotOverdue(history) && !history.getIsCommented()) {
+            Comment comment = createCommentEntity(commentText, userID, bookID);
             history.setIsCommented(true);
             commentDaoService.add(comment);
         }
@@ -75,7 +75,18 @@ public class CommentRestServiceImpl implements CommentRestService
 
     private boolean isDateNotOverdue(History history) {
         LocalDate returnDate = history.getReturnDate();
-        return returnDate.isBefore(returnDate.plusWeeks(2));
+        LocalDate today = LocalDate.now();
+        long result = returnDate.isAfter(today) ?
+            ChronoUnit.DAYS.between(today, returnDate) :
+            ChronoUnit.DAYS.between(returnDate, today);
+
+        return !(result >= 14);
+    }
+
+    private Comment createCommentEntity(String connent, Long userID, Long bookID) {
+        User user = entityUtilsWrapper.getEnity(User.class, userID);
+        Book book = entityUtilsWrapper.getEnity(Book.class, bookID);
+        return new Comment(connent, user, book);
     }
 
 }

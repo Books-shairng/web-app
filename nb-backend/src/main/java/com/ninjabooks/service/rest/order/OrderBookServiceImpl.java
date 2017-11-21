@@ -7,7 +7,7 @@ import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
-import com.ninjabooks.util.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,25 +1,34 @@
 package com.ninjabooks.service.rest.comment;
 
+import com.ninjabooks.domain.BaseEntity;
 import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.History;
+import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.entity.EntityUtilsWrapper;
+import org.hibernate.query.Query;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -36,14 +45,21 @@ public class CommentRestServiceImplTest
     @Mock
     private BookDaoService bookDaoServiceMock;
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private CommentDaoService commentDaoServiceMock;
+
+    @Mock
+    private EntityUtilsWrapper entityUtilsWrapperMock;
+
+    @Mock
+    private Query queryMock;
 
     private CommentRestService sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new CommentRestServiceImpl(bookDaoServiceMock, commentDaoServiceMock);
+        when(commentDaoServiceMock.getSession().createQuery(anyString(), any())).thenReturn(queryMock);
+        this.sut = new CommentRestServiceImpl(bookDaoServiceMock, commentDaoServiceMock, entityUtilsWrapperMock);
     }
 
     @Test
@@ -57,6 +73,7 @@ public class CommentRestServiceImplTest
                 tuple(
                     DomainTestConstants.NAME, DomainTestConstants.COMMENT_DATE, DomainTestConstants.COMMENT_CONTENT,
                     DomainTestConstants.ISBN));
+        verify(bookDaoServiceMock, atLeastOnce()).getByISBN(any());
     }
 
     @Test
@@ -65,5 +82,70 @@ public class CommentRestServiceImplTest
         Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
 
         assertThat(actual).isEmpty();
+        verify(bookDaoServiceMock, atLeastOnce()).getByISBN(any());
+    }
+
+    @Test
+    public void testAddCommentShouldSucceed() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(createFreshEnity(false, true)));
+        when(entityUtilsWrapperMock.getEnity((Class<BaseEntity>) any(), any()))
+            .thenReturn(DomainTestConstants.USER).thenReturn(DomainTestConstants.BOOK);
+
+        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+
+        verify(commentDaoServiceMock, atLeastOnce()).getSession();
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
+        verify(entityUtilsWrapperMock, atLeastOnce()).getEnity((Class<BaseEntity>) any(), any());
+    }
+
+
+    @Test
+    public void testAddCommentShouldThrowsExceptionWhenBookWasAlreadyCommented() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(createFreshEnity(true, false)));
+
+        assertThatExceptionOfType(CommentException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessage("Unable to add new comment");
+
+        verify(commentDaoServiceMock, atLeastOnce()).getSession();
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
+    }
+
+    @Test
+    public void testAddCommentShouldThrowsExceptionWhenDateIsOverdue() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(createFreshEnity(false, false)));
+
+        assertThatExceptionOfType(CommentException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessage("Unable to add new comment");
+
+        verify(commentDaoServiceMock, atLeastOnce()).getSession();
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
+    }
+
+    @Test
+    public void testAddChommentShouldThrowsExceptionHistoryEntityNotFound() throws Exception {
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() ->
+                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+            .withNoCause()
+            .withMessageContaining("enity not found");
+
+        verify(commentDaoServiceMock, atLeastOnce()).getSession();
+        verify(queryMock, atLeastOnce()).uniqueResultOptional();
+    }
+
+    private History createFreshEnity(boolean isCommented, boolean isActaulDate) {
+        History history = new History();
+        history.setIsActive(isCommented);
+        history.setReturnDate(isActaulDate ? LocalDate.now().minusDays(1) : LocalDate.now().plusMonths(1));
+
+        return history;
     }
 }
