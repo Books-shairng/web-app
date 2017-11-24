@@ -1,5 +1,7 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.error.exception.comment.CommentException;
+import com.ninjabooks.error.handler.CommentControlllerHandler;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.rest.comment.CommentRestService;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,6 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CommentControllerTest
 {
     private static final String MESSAGE_NO_COMMENTS = "Book does not contains any comments";
+    private static final String JSON_REQUEST_WITH_COMMENT =
+        "{" +
+            "\"comment\" : \"" + DomainTestConstants.COMMENT_CONTENT + "\"" +
+        "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -46,7 +53,9 @@ public class CommentControllerTest
     @Before
     public void setUp() throws Exception {
         this.sut = new CommentController(commentRestServiceMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
+            .setControllerAdvice(new CommentControlllerHandler())
+            .build();
     }
 
     @Test
@@ -71,6 +80,33 @@ public class CommentControllerTest
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.message").value(MESSAGE_NO_COMMENTS));
+    }
+
+    @Test
+    public void testAddCommentShouldSucceedAndReturnStatusOK() throws Exception {
+        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
+            .param("bookID", String.valueOf(DomainTestConstants.ID))
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JSON_REQUEST_WITH_COMMENT))
+            .andDo(print())
+            .andExpect(status().isOk());
+
+        verify(commentRestServiceMock, atLeastOnce()).addComment(anyString(), anyLong(), anyLong());
+    }
+
+    @Test
+    public void testAddCommentShouldFaildWhenUnableToAddComment() throws Exception {
+        doThrow(CommentException.class).when(commentRestServiceMock).addComment(anyString(), anyLong(), anyLong());
+
+        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
+            .param("bookID", String.valueOf(DomainTestConstants.ID))
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JSON_REQUEST_WITH_COMMENT))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+           .andExpect(status().isBadRequest());
+
+        verify(commentRestServiceMock, atLeastOnce()).addComment(anyString(), anyLong(), anyLong());
     }
 
     private Set<CommentResponse> prepareCommentResponse() {
