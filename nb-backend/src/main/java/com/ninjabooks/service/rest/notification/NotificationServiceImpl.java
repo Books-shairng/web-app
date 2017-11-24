@@ -7,7 +7,7 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
-import com.ninjabooks.util.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtils;
 import com.ninjabooks.util.QueueUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DBUserDaoIT
 {
     private static final String NEW_NAME = "Peter Datov";
-    private static final String[] IGNORED_FILEDS = {"queues", "borrows", "history", "comments", "lastPasswordReset"};
+    private static final String[] IGNORED_FILEDS = {"queues", "borrows", "histories", "comments", "lastPasswordReset"};
 
     @Autowired
     private UserDao sut;

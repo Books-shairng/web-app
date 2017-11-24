@@ -48,6 +48,10 @@ public final class DomainTestConstants
     public static final String LASTNAME = "Dee";
     //endregion
 
+    //region History field constants
+    public static final boolean IS_COMMENTED = true;
+    //endregion
+
     //region Comment constants
     public static final String COMMENT_CONTENT = "any comment content";
     public static final LocalDateTime COMMENT_DATE = LocalDateTime.of(2017, 5, 5, 23, 22, 10);
@@ -116,7 +120,7 @@ public final class DomainTestConstants
         USER_FULL.setBorrows(Collections.singletonList(BORROW_FULL));
         USER_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
         USER_FULL.setComments(Collections.singletonList(COMMENT_FULL));
-        USER_FULL.setHistory(HISTORY_FULL);
+        USER_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
     }
 
     private static void setRelationFieldsInQueue() {
@@ -136,6 +140,7 @@ public final class DomainTestConstants
     private static void setRelationFieldsInHistory() {
         HISTORY_FULL.setBook(BOOK_FULL);
         HISTORY_FULL.setUser(USER_FULL);
+        HISTORY_FULL.setIsCommented(IS_COMMENTED);
     }
 
     private static void setRelationFieldsInComment() {

@@ -5,7 +5,7 @@ import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
-import com.ninjabooks.util.EntityUtils;
+import com.ninjabooks.util.entity.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

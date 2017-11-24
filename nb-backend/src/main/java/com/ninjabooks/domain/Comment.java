@@ -39,6 +39,12 @@ public class Comment extends BaseEntity
         this.date = date;
     }
 
+    public Comment(String content, User user, Book book) {
+        this.content = content;
+        this.user = user;
+        this.book = book;
+    }
+
     public String getContent() {
         return content;
     }

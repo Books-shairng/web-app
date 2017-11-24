@@ -47,8 +47,9 @@ public class User extends BaseEntity
     @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<Comment> comments = new ArrayList<>(0);
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    private History history;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @LazyCollection(value = LazyCollectionOption.TRUE)
+    private List<History> histories;
 
 
     public User() {
@@ -134,12 +135,12 @@ public class User extends BaseEntity
         this.comments = comments;
     }
 
-    public History getHistory() {
-        return history;
+    public List<History> getHistories() {
+        return histories;
     }
 
-    public void setHistory(History history) {
-        this.history = history;
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
     }
 
     @Override
