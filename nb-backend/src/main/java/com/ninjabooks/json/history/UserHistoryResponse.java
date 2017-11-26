@@ -2,8 +2,9 @@ package com.ninjabooks.json.history;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ninjabooks.domain.History;
 import com.ninjabooks.dto.BookDto;
-import com.ninjabooks.dto.HistoryDto;
+import org.modelmapper.ModelMapper;
 
 /**
  * This response model return user history which contains
@@ -18,12 +19,12 @@ public class UserHistoryResponse extends GenericHistoryResponse
     private static final long serialVersionUID = 8744468996309968293L;
 
     @JsonProperty(value = "book")
-    @JsonIgnoreProperties(value = "isActive")
+    @JsonIgnoreProperties(value = {"active", "description", "status"})
     private BookDto bookDto;
 
-    public UserHistoryResponse(HistoryDto historyDto, BookDto bookDto) {
-        super(historyDto);
-        this.bookDto = bookDto;
+    public UserHistoryResponse(History history, ModelMapper modelMapper) {
+        super(history, modelMapper);
+        this.bookDto = modelMapper.map(history.getBook(), BookDto.class);
     }
 
     public BookDto getBookDto() {

@@ -26,9 +26,7 @@ public class UserHistoryResponseTest
 
     @Before
     public void setUp() throws Exception {
-        HistoryDto historyDto = createDtoObject(HistoryDto.class, DomainTestConstants.HISTORY_FULL);
-        BookDto bookDto = createDtoObject(BookDto.class, DomainTestConstants.BOOK_FULL);
-        this.sut = new UserHistoryResponse(historyDto, bookDto);
+        this.sut = new UserHistoryResponse(DomainTestConstants.HISTORY_FULL, new ModelMapper());
     }
 
     @Test
@@ -49,7 +47,4 @@ public class UserHistoryResponseTest
         });
     }
 
-    private <D, E> D createDtoObject(Class<D> dtoClass, E sourceEnity) {
-        return new ModelMapper().map(sourceEnity, dtoClass);
-    }
 }

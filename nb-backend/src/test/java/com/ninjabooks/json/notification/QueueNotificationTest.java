@@ -54,7 +54,6 @@ public class QueueNotificationTest
         QueueDto actual = sut.getQueueDto();
 
         assertThat(actual.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
-
     }
 
     @Test
