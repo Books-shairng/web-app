@@ -49,7 +49,7 @@ public class User extends BaseEntity
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @LazyCollection(value = LazyCollectionOption.TRUE)
-    private List<History> histories;
+    private List<History> histories = new ArrayList<>(0);
 
 
     public User() {
