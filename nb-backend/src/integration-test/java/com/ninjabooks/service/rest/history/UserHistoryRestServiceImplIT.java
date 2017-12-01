@@ -24,7 +24,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:history-scripts/it_srd_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
 public class UserHistoryRestServiceImplIT
 {
     private static final long MINUS_NUMBER_OF_DAY = 10L;
@@ -58,7 +58,7 @@ public class UserHistoryRestServiceImplIT
 
     @Test
     @Sql(
-        value = "classpath:history-scripts/it_srd_hist_script.sql",
+        value = "classpath:history-scripts/it_std_hist_script.sql",
         statements = TRUNCATE_HISTORY_TABLE,
         executionPhase = BEFORE_TEST_METHOD)
     public void testGetHistoryShouldReturnEmptyListWhenUserDontHaveAnyHistory() throws Exception {

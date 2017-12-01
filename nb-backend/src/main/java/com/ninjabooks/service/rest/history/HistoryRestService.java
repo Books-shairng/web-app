@@ -18,5 +18,5 @@ public interface HistoryRestService
      * @return - list which contains proper hirtory response
      */
 
-    <R extends GenericHistoryResponse> List<R> getHistory(long minusDaysFromToday, Long entityID);
+    <R extends GenericHistoryResponse> List<R> getHistory(final long minusDaysFromToday, final Long entityID);
 }

@@ -40,7 +40,7 @@ public class UserHistoryRestServiceImpl implements HistoryRestService
     }
 
     @Override
-    public List<UserHistoryResponse> getHistory(long minusDaysFromToday, Long entityID) {
+    public List<UserHistoryResponse> getHistory(final long minusDaysFromToday, final Long entityID) {
         logger.info("An axttempt to find user history, user id: {}", entityID);
 
         User user = EntityUtils.getEnity(userService, entityID);
