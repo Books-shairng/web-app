@@ -7,6 +7,11 @@ import com.ninjabooks.json.history.GenericHistoryResponse;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,15 +20,13 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.modelmapper.ModelMapper;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

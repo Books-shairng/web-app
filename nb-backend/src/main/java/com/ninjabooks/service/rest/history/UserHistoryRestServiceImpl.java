@@ -5,17 +5,18 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.json.history.UserHistoryResponse;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.entity.EntityUtils;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak

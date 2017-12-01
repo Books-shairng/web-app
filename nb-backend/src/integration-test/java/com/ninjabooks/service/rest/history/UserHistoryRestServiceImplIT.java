@@ -3,14 +3,15 @@ package com.ninjabooks.service.rest.history;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.history.GenericHistoryResponse;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.List;
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -29,7 +30,7 @@ public class UserHistoryRestServiceImplIT
     private static final long MINUS_NUMBER_OF_DAY = 10L;
     private static final long MINUS_ZERO_DAY = 0L;
     private static final int EXPECTED_SIZE = 1;
-    private static final long RANDOM_USER_ID  = 6666L;
+    private static final long RANDOM_USER_ID = 6666L;
     private static final String TRUNCATE_HISTORY_TABLE = "TRUNCATE TABLE HISTORY ; ";
 
     @Autowired
