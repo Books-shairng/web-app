@@ -9,13 +9,18 @@ import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
 import com.ninjabooks.util.SecurityHeaderUtils;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Piotr 'pitrecki' Nowak

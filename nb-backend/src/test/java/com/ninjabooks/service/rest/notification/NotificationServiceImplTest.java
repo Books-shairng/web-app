@@ -10,6 +10,10 @@ import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.QueueUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.junit.Before;
@@ -20,13 +24,14 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.modelmapper.ModelMapper;
 
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

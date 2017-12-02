@@ -10,14 +10,15 @@ import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.entity.EntityUtils;
+
+import java.text.MessageFormat;
+import java.time.LocalDate;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.MessageFormat;
-import java.time.LocalDate;
 
 /**
  * @author Piotr 'pitrecki' Nowak

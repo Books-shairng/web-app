@@ -1,10 +1,10 @@
 package com.ninjabooks.domain;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

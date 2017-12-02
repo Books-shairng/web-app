@@ -1,11 +1,19 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.BaseEntity;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.BookStatus;
+import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.domain.Queue;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +22,6 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -98,8 +103,8 @@ public class BookRentalServiceImplIT
 
     @Test
     @Sql(value = "classpath:rent-scripts/it_rent_import.sql",
-        statements = QUEUE_INSERT_QUERY,
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+         statements = QUEUE_INSERT_QUERY,
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldSetActiveToFalseInQueueTableAfterSucceedBorrow() throws Exception {
         sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
         Stream<Queue> actual = queueService.getAll();
@@ -109,8 +114,8 @@ public class BookRentalServiceImplIT
 
     @Test
     @Sql(value = "classpath:rent-scripts/it_rent_import.sql",
-        statements = UPDATE_BOOK_BORROW_STATUS,
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+         statements = UPDATE_BOOK_BORROW_STATUS,
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExceptionWhenBookIsAlreadyBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
@@ -120,7 +125,7 @@ public class BookRentalServiceImplIT
 
     @Test
     @Sql(value = "classpath:rent-scripts/it_rent_queue_import.sql",
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenBookWasOrderedByOtherUser() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
@@ -130,8 +135,8 @@ public class BookRentalServiceImplIT
 
     @Test
     @Sql(value = "classpath:rent-scripts/it_rent_queue_import.sql",
-        statements = QUEUE_INSERT_QUERY,
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+         statements = QUEUE_INSERT_QUERY,
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenUserOrderedBookAndNotOnFirstPosition() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
@@ -144,7 +149,7 @@ public class BookRentalServiceImplIT
         "classpath:rent-scripts/it_rent_import.sql",
         "classpath:rent-scripts/borrow_overflow_script.sql"
     },
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExcpetionWhenLimitIsExceeded() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))

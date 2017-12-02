@@ -3,15 +3,16 @@ package com.ninjabooks.service.dao.user;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

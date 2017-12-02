@@ -3,12 +3,13 @@ package com.ninjabooks.util;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.service.dao.user.UserService;
-import org.hibernate.query.NativeQuery;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
+
+import org.hibernate.query.NativeQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class QueueUtils

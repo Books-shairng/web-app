@@ -3,6 +3,9 @@ package com.ninjabooks.service.rest.borrow;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -61,7 +62,7 @@ public class RentalHelperIT
             .extracting(Book::getTitle, Book::getAuthor, Book::getIsbn, Book::getQRCode)
             .contains(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN,
                 DomainTestConstants.QR_CODE);
-}
+    }
 
     @Test
     public void testFindBookByQRCodeShouldThrowsExcpetionWhenBookNotFound() throws Exception {

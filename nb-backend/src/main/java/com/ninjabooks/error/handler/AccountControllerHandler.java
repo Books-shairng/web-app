@@ -3,6 +3,9 @@ package com.ninjabooks.error.handler;
 import com.ninjabooks.controller.AccountController;
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.json.error.ErrorResponse;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -10,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak

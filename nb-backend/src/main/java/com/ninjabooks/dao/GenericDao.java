@@ -1,10 +1,10 @@
 package com.ninjabooks.dao;
 
-import org.hibernate.Session;
-
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.hibernate.Session;
 
 /**
  * In computer software, a data access object (DAO) is an object that provides an

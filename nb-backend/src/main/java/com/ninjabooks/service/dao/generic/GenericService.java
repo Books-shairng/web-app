@@ -1,9 +1,9 @@
 package com.ninjabooks.service.dao.generic;
 
-import org.hibernate.Session;
-
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.hibernate.Session;
 
 /**
  * @author Piotr 'pitrecki' Nowak

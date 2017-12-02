@@ -1,6 +1,7 @@
 package com.ninjabooks.security.user;
 
 import com.ninjabooks.domain.User;
+
 import org.springframework.security.core.authority.AuthorityUtils;
 
 /**

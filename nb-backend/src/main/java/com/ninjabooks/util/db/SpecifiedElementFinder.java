@@ -1,6 +1,7 @@
 package com.ninjabooks.util.db;
 
 import com.ninjabooks.domain.BaseEntity;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -21,10 +22,10 @@ public abstract class SpecifiedElementFinder
      * Perform some specified operation in DB. For exmaple
      * repetive sql qeury which search almost similar data.
      *
-     * @param <T> type which method should return
-     * @param parameter specific parameter
+     * @param <T>        type which method should return
+     * @param parameter  specific parameter
      * @param columnName for example column name
-     * @param enityType class type
+     * @param enityType  class type
      * @return any selected data collections
      */
 

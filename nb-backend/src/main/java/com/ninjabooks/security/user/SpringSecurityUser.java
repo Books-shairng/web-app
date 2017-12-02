@@ -1,10 +1,10 @@
 package com.ninjabooks.security.user;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -36,7 +36,7 @@ public class SpringSecurityUser implements UserDetails
                               String email,
                               LocalDateTime lastPasswordReset,
                               Collection<? extends GrantedAuthority> authorities) {
-        this(id, email, name,  password, lastPasswordReset, authorities, true,  true, true, true);
+        this(id, email, name, password, lastPasswordReset, authorities, true, true, true, true);
     }
 
     public SpringSecurityUser(Long id,
@@ -74,7 +74,7 @@ public class SpringSecurityUser implements UserDetails
     }
 
     public void setUsername(String email) {
-       this.email = email;
+        this.email = email;
     }
 
     public String getPassword() {
@@ -114,21 +114,17 @@ public class SpringSecurityUser implements UserDetails
         return accountNonExpired;
     }
 
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
     @Override
     public boolean isAccountNonExpired() {
         return getAccountNonExpired();
     }
 
-    public Boolean getAccountNonLocked() {
-        return accountNonLocked;
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
     }
 
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
     }
 
     @Override
@@ -136,12 +132,12 @@ public class SpringSecurityUser implements UserDetails
         return getAccountNonLocked();
     }
 
-    public Boolean getCredentialsNonExpired() {
-        return credentialsNonExpired;
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
-    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
     }
 
     @Override
@@ -149,17 +145,21 @@ public class SpringSecurityUser implements UserDetails
         return getCredentialsNonExpired();
     }
 
-    public Boolean getEnabled() {
-        return enabled;
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     @Override
     public boolean isEnabled() {
         return getEnabled();
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getName() {

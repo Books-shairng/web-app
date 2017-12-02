@@ -5,6 +5,10 @@ import com.ninjabooks.domain.Queue;
 import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +17,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -49,7 +50,8 @@ public class OrderBookServiceImplIT
     @Test
     @Rollback(false)
     @Transactional
-    @Sql(value = "classpath:it_import.sql", statements = TRUNCATE_TABLE, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:it_import.sql", statements = TRUNCATE_TABLE,
+         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldAddNewQueue() throws Exception {
         sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<Queue> actual = queueService.getAll();

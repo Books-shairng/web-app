@@ -3,8 +3,6 @@ package com.ninjabooks.json.user;
 import java.io.Serializable;
 
 /**
- *
- *
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */

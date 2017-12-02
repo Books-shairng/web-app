@@ -4,6 +4,7 @@ import com.ninjabooks.domain.Queue;
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.dto.QueueDto;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

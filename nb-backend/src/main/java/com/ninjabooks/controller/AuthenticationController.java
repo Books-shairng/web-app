@@ -5,6 +5,9 @@ import com.ninjabooks.json.authentication.AuthenticationResponse;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Authenticate is based on jwt tokens.
- *
+ * <p>
  * JWT is a means of transmitting information between two parties in a compact,
  * verifiable form. The bits of information encoded in the body of a JWT are
  * called claims. The expanded form of the JWT is in a JSON format, so each claim
@@ -37,19 +38,19 @@ import javax.servlet.http.HttpServletRequest;
  * representation of a signed JWT is a string that has three parts, each separated
  * by a .:
  * exmaple:
- * @code {
- *  <b>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.ipevRNuRP6HflG8cFKnmUPtypruRC4fb1DWtoLL62SY</b>
- * }
  *
+ * @author Piotr 'pitrecki' Nowak
+ * @code {
+ * <b>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.ipevRNuRP6HflG8cFKnmUPtypruRC4fb1DWtoLL62SY</b>
+ * }
+ * <p>
  * Each section is base 64 encoded. The first section is the header, which at a minimum
  * needs to specify the algorithm used to sign the JWT. The second section is the body.
  * This section has all the claims of this JWT encoded in it. The final section is the
  * signature. It's computed by passing a combination of the header and body through
  * the algorithm specified in the header.
- *
+ * <p>
  * More detailed info, check this <a href="https://jwt.io/"> LINKI </a>
- *
- * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @RestController
@@ -75,13 +76,14 @@ public class AuthenticationController
      * This method perform authorization based on jwt tokens.
      *
      * @param authenticationRequest - this object represent request from frontend
-     * @param device - automatically detects type device which is needed to generate token
+     * @param device                - automatically detects type device which is needed to generate token
      * @return HTTP status 200 (ok) with  generated token
      * @throws AuthenticationException if any exception with authorization ocurs
      */
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+    public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest,
+                                                   Device device) throws AuthenticationException {
         logger.info("User: {} initiates authorization on the system", authenticationRequest.getEmail());
 
         performAuthentication(authenticationRequest);

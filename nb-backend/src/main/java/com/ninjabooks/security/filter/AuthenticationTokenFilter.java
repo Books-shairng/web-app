@@ -2,6 +2,14 @@ package com.ninjabooks.security.filter;
 
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +20,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -69,8 +70,9 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     }
 
     private String extractTokenIfExist(String authToken) {
-        if (authToken != null && securityHeaderFinder.hasSecurityPattern(authToken))
+        if (authToken != null && securityHeaderFinder.hasSecurityPattern(authToken)) {
             return securityHeaderFinder.extractToken(authToken);
+        }
 
         return authToken;
     }

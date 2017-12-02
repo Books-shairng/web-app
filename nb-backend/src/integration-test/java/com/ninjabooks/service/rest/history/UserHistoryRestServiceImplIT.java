@@ -4,8 +4,8 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.history.GenericHistoryResponse;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
-import java.util.List;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

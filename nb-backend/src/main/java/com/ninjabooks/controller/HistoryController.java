@@ -32,7 +32,8 @@ public class HistoryController
 
     @RequestMapping(value = "/api/history/{userID}/", method = RequestMethod.GET)
     public ResponseEntity<?> fetchUserHistory(@PathVariable(value = "userID") final Long userID,
-                                              @RequestParam(value = "minusDays", required = false, defaultValue = "0") final Long minusDays) {
+                                              @RequestParam(value = "minusDays", required = false, defaultValue = "0")
+                                              final Long minusDays) {
         List<GenericHistoryResponse> history = historyRestService.getHistory(minusDays, userID);
         if (history.isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("User has no history"), HttpStatus.OK);

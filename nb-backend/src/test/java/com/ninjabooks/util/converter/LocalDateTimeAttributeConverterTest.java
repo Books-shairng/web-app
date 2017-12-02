@@ -1,11 +1,12 @@
 package com.ninjabooks.util.converter;
 
 import com.ninjabooks.util.converter.db.LocalDateTimeAttributeConverter;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

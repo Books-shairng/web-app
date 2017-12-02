@@ -5,6 +5,11 @@ import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +17,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

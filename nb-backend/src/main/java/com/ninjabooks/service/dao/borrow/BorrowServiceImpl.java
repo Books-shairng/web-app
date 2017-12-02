@@ -4,11 +4,12 @@ import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.service.dao.generic.GenericServiceImpl;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -1,13 +1,19 @@
 package com.ninjabooks.domain;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Objects;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 /**
  * This class represent borrow in database
@@ -45,6 +51,7 @@ public class Borrow extends BaseEntity
 
     /**
      * Create new instance of borrow object
+     *
      * @param borrowDate date when user borrow book
      */
 
@@ -118,8 +125,9 @@ public class Borrow extends BaseEntity
     }
 
     private LocalDate checkIfReturnDateEndOnWeekend(LocalDate returnDate) {
-        if (returnDate.getDayOfWeek() == DayOfWeek.SATURDAY || returnDate.getDayOfWeek() == DayOfWeek.SUNDAY)
+        if (returnDate.getDayOfWeek() == DayOfWeek.SATURDAY || returnDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
             return returnDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+        }
 
         return returnDate;
     }

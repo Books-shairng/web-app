@@ -1,8 +1,8 @@
 package com.ninjabooks.util;
 
-import org.springframework.stereotype.Component;
-
 import java.security.SecureRandom;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author Piotr 'pitrecki' Nowak

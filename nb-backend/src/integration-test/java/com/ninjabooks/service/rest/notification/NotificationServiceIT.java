@@ -4,14 +4,15 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -25,7 +26,7 @@ import static org.assertj.core.groups.Tuple.tuple;
 @Sql(value = "classpath:it_import.sql")
 public class NotificationServiceIT
 {
-    private static final int EXPTECTED_SIZE  = 1;
+    private static final int EXPTECTED_SIZE = 1;
     private static final String SQL_UPDATE_BORROW_QUERY = "UPDATE BORROW SET ACTIVE=false WHERE ID=1";
     private static final String SQL_UPDATE_QUEUE_QUERY = "UPDATE QUEUE SET ACTIVE=false WHERE ID=1";
 
@@ -36,15 +37,15 @@ public class NotificationServiceIT
     public void testFindUserBorrowsShouldContainsExpectedBorrowsDto() throws Exception {
         List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
 
-         assertThat(actual).extracting(
-             "borrowDto.borrowDate",
-             "borrowDto.expectedReturnDate",
-             "borrowDto.canExtendBorrow")
-             .contains(tuple(
-                 DomainTestConstants.BORROW_DATE,
-                 DomainTestConstants.EXPECTED_RETURN_DATE,
-                 DomainTestConstants.CAN_EXTEND
-             ));
+        assertThat(actual).extracting(
+            "borrowDto.borrowDate",
+            "borrowDto.expectedReturnDate",
+            "borrowDto.canExtendBorrow")
+            .contains(tuple(
+                DomainTestConstants.BORROW_DATE,
+                DomainTestConstants.EXPECTED_RETURN_DATE,
+                DomainTestConstants.CAN_EXTEND
+            ));
     }
 
     @Test
@@ -56,9 +57,9 @@ public class NotificationServiceIT
             "bookDto.title",
             "bookDto.isbn")
             .containsExactly(tuple(
-               DomainTestConstants.AUTHOR,
-               DomainTestConstants.TITLE,
-               DomainTestConstants.ISBN
+                DomainTestConstants.AUTHOR,
+                DomainTestConstants.TITLE,
+                DomainTestConstants.ISBN
             ));
     }
 
@@ -123,4 +124,3 @@ public class NotificationServiceIT
     }
 
 }
-

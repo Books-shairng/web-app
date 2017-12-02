@@ -4,11 +4,12 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.service.dao.generic.GenericServiceImpl;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -23,7 +24,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     @Autowired
     public UserServiceImpl(GenericDao<User, Long> genericDao, UserDao userDao) {
         super(genericDao);
-        this.userDao =  userDao;
+        this.userDao = userDao;
     }
 
     @Override

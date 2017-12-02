@@ -4,6 +4,7 @@ import com.ninjabooks.security.endpoint.EntryPointUnauthorizedHandler;
 import com.ninjabooks.security.filter.AuthenticationTokenFilter;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -6,6 +6,9 @@ import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,11 +16,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import javax.persistence.EntityNotFoundException;
-
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

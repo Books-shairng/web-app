@@ -1,9 +1,10 @@
 package com.ninjabooks.json.notification;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.dto.BorrowDto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.modelmapper.ModelMapper;
 
 /**

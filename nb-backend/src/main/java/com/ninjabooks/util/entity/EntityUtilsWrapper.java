@@ -2,6 +2,7 @@ package com.ninjabooks.util.entity;
 
 import com.ninjabooks.domain.BaseEntity;
 import com.ninjabooks.service.dao.generic.GenericService;
+
 import org.springframework.stereotype.Component;
 
 /**

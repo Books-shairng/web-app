@@ -8,6 +8,12 @@ import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,14 +21,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

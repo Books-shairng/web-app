@@ -7,6 +7,7 @@ import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +19,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

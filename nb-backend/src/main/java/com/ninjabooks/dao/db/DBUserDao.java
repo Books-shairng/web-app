@@ -3,6 +3,10 @@ package com.ninjabooks.dao.db;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.db.SpecifiedElementFinder;
+
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak

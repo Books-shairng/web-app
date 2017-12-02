@@ -2,6 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

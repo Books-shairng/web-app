@@ -1,17 +1,22 @@
 package com.ninjabooks.service.rest.borrow.returnb;
 
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.BookStatus;
+import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.domain.History;
+import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
+
+import java.text.MessageFormat;
+import java.time.LocalDate;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.MessageFormat;
-import java.time.LocalDate;
 
 /**
  * @author Piotr 'pitrecki' Nowak

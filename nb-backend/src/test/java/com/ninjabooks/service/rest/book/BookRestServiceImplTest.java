@@ -7,6 +7,9 @@ import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.QRCodeGenerator;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,11 +17,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

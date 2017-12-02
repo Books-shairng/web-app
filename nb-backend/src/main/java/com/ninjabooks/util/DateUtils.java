@@ -1,8 +1,6 @@
 package com.ninjabooks.util;
 
 import com.ninjabooks.security.utils.TokenUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +8,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Piotr 'pitrecki' Nowak

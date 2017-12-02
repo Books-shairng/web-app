@@ -3,14 +3,15 @@ package com.ninjabooks.service.dao.book;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.transaction.Transactional;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.transaction.Transactional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;

@@ -11,6 +11,7 @@ public interface AccountService
 {
     /**
      * Create new user in database
+     *
      * @param user obtained by requested mapping
      * @return created user
      */

@@ -4,6 +4,9 @@ import com.ninjabooks.error.handler.AuthenticationControllerHandler;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.SecurityHeaderUtils;
+
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,10 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentResolverAdapter;
 
-import java.time.LocalDateTime;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
