@@ -63,7 +63,7 @@ public class AccountControllerIT
 
     @Test
     public void testCreateUserShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
             .content(JSON)
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
@@ -72,7 +72,7 @@ public class AccountControllerIT
 
     @Test
     public void testCreateUserShouldCreateUserAndReturnExpectedMessage() throws Exception {
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
             .content(JSON)
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
@@ -83,7 +83,7 @@ public class AccountControllerIT
     @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
         String expectedResponse = MessageFormat.format("Username email: {0} already exist in database", DomainTestConstants.EMAIL);
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -94,7 +94,7 @@ public class AccountControllerIT
     @Test
     @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAuthentationShouldSucceed() throws Exception {
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(get("/api/user")
             .header("Authorization", generateToken())
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
@@ -104,7 +104,7 @@ public class AccountControllerIT
     @Test
     @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAuthentationShouldReturnExpectedJSON() throws Exception {
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(get("/api/user")
             .header("Authorization", generateToken())
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())

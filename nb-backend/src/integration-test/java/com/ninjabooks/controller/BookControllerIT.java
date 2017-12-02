@@ -52,7 +52,7 @@ public class BookControllerIT
 
     @Test
     public void testAddNewBookShouldReturnStatusCreated() throws Exception {
-        mockMvc.perform(post("/api/books/")
+        mockMvc.perform(post("/api/book/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -61,7 +61,7 @@ public class BookControllerIT
 
     @Test
     public void testAddNewBookShouldReturnNotEmptyQRCodeMessage() throws Exception {
-        mockMvc.perform(post("/api/books/")
+        mockMvc.perform(post("/api/book/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -71,7 +71,7 @@ public class BookControllerIT
     @Test
     @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
-        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk());
@@ -80,7 +80,7 @@ public class BookControllerIT
     @Test
     @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnExpectedMessage() throws Exception {
-        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(jsonPath("$.id").value(ID))
@@ -94,7 +94,7 @@ public class BookControllerIT
 
     @Test
     public void testGetDetailsBookInfoShouldFailWhenBookNotFound() throws Exception {
-        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isBadRequest());

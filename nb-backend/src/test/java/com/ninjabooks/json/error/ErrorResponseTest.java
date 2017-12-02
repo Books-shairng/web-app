@@ -18,7 +18,7 @@ public class ErrorResponseTest
     public void testShouldReturnCorrectData() throws Exception {
         Exception exception = new Exception("Testing");
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
-        String request = "/api/users";
+        String request = "/api/user";
 
         sut = new ErrorResponse(httpStatus, exception, request);
 

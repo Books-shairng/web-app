@@ -55,7 +55,7 @@ public class AccountController
      * @return message when user successfully created
      */
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public MessageResponse createUser(@RequestBody UserRequest userRequest)
         throws UserAlreadyExistException {
@@ -76,7 +76,7 @@ public class AccountController
      * @return user info as json (content: id, fistname, lastname, email)
      */
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
     public ResponseEntity<UserResponse> getAuthenticatedUser(HttpServletRequest httpServletRequest) throws Exception {
         String header = httpServletRequest.getHeader("Authorization");
         String token = securityHeaderUtils.obtainTokenFromRequest(header);
