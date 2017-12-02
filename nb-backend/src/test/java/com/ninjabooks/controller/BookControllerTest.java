@@ -74,7 +74,7 @@ public class BookControllerTest
     public void testAddNewBookShouldReturnStatusCreated() throws Exception {
         when(bookRestServiceMock.addBook(DomainTestConstants.BOOK)).thenReturn(any());
 
-        mockMvc.perform(post("/api/books/")
+        mockMvc.perform(post("/api/book/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -87,7 +87,7 @@ public class BookControllerTest
     public void testAddBookWithNotGeneratedQRCodeShouldFail() throws Exception {
         when(bookRestServiceMock.addBook(any())).thenThrow(QRCodeException.class);
 
-        mockMvc.perform(post("/api/books/")
+        mockMvc.perform(post("/api/book/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -100,7 +100,7 @@ public class BookControllerTest
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
         when(bookRestServiceMock.getBookInfo(anyLong())).thenReturn(BOOK_INFO_RESPONSE);
 
-        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk());
@@ -112,7 +112,7 @@ public class BookControllerTest
     public void testGetDetailsBookInfoShouldFailWhenBookNotFound() throws Exception {
         doThrow(EntityNotFoundException.class).when(bookRestServiceMock).getBookInfo(anyLong());
 
-        mockMvc.perform(get("/api/books/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isBadRequest());

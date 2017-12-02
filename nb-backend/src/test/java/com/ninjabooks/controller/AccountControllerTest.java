@@ -74,7 +74,7 @@ public class AccountControllerTest
 
     @Test
     public void testCreateUserShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
             .content(JSON)
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
@@ -87,7 +87,7 @@ public class AccountControllerTest
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
         doThrow(UserAlreadyExistException.class).when(accountServiceMock).createUser(any());
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -101,7 +101,7 @@ public class AccountControllerTest
         SpringSecurityUser springUser = initSpringUser();
         when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(springUser);
 
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(get("/api/user")
             .header("Authorization", anyString())
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())

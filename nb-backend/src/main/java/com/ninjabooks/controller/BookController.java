@@ -33,7 +33,7 @@ public class BookController
         this.objectMapper = objectMapper;
     }
 
-    @RequestMapping(value = "/api/books/", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/book/", method = RequestMethod.POST)
     public ResponseEntity<ObjectNode> addBook(@RequestBody Book book) throws QRCodeException {
         String generatedCode = bookRestService.addBook(book);
 
@@ -45,7 +45,7 @@ public class BookController
 
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/api/books/{bookID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/book/{bookID}", method = RequestMethod.GET)
     public BookInfo getBookInfo(@PathVariable Long bookID) {
         return bookRestService.getBookInfo(bookID);
     }
