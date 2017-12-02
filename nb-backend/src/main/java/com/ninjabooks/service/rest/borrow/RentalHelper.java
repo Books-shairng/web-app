@@ -1,12 +1,13 @@
 package com.ninjabooks.service.rest.borrow;
 
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.BookStatus;
+import com.ninjabooks.domain.QRCode;
+import com.ninjabooks.domain.Queue;
+import com.ninjabooks.domain.User;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.QueueUtils;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -16,6 +17,10 @@ import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Piotr 'pitrecki' Nowak

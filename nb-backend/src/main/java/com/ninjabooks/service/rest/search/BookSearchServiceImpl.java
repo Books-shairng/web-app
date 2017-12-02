@@ -2,6 +2,9 @@ package com.ninjabooks.service.rest.search;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.dao.book.BookDaoService;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.Query;
@@ -12,8 +15,6 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * @author Piotr 'pitrecki' Nowak

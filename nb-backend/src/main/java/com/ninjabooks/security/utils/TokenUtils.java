@@ -2,12 +2,6 @@ package com.ninjabooks.security.utils;
 
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.util.DateUtils;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.mobile.device.Device;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +10,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 /**
  * This container create, refresh and validate JWT token.
@@ -26,11 +27,11 @@ import java.util.Map;
 @Component
 public class TokenUtils implements Serializable
 {
+    private static final long serialVersionUID = -3301605591108950415L;
+
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_AUDIENCE = "audience";
     private static final String CLAIM_KEY_CREATED = "created";
-
-    private static final long serialVersionUID = -3301605591108950415L;
 
     private static final String AUDIENCE_UNKNOWN = "unknown";
     private static final String AUDIENCE_WEB = "web";

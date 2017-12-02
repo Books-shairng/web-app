@@ -1,8 +1,8 @@
 package com.ninjabooks.json.error;
 
-import org.springframework.http.HttpStatus;
-
 import java.io.Serializable;
+
+import org.springframework.http.HttpStatus;
 
 /**
  * @author Piotr 'pitrecki' Nowak

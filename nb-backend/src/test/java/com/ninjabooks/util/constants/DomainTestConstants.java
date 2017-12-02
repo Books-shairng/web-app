@@ -1,6 +1,13 @@
 package com.ninjabooks.util.constants;
 
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.BookStatus;
+import com.ninjabooks.domain.Borrow;
+import com.ninjabooks.domain.Comment;
+import com.ninjabooks.domain.History;
+import com.ninjabooks.domain.QRCode;
+import com.ninjabooks.domain.Queue;
+import com.ninjabooks.domain.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,7 +71,7 @@ public final class DomainTestConstants
     public static final QRCode QR_CODE = new QRCode(DATA);
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
     public static final History HISTORY = new History(EXPECTED_RETURN_DATE);
-    public static final Comment COMMENT = new Comment(COMMENT_CONTENT,COMMENT_DATE);
+    public static final Comment COMMENT = new Comment(COMMENT_CONTENT, COMMENT_DATE);
     //endregion
 
     public static final Book BOOK_FULL = new Book(TITLE, AUTHOR, ISBN);

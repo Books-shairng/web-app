@@ -2,15 +2,16 @@ package com.ninjabooks.dao.db;
 
 import com.ninjabooks.dao.CommentDao;
 import com.ninjabooks.domain.Comment;
+
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -57,7 +58,6 @@ public class DBCommentDao implements CommentDao
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.delete(comment);
     }
-
 
     @Override
     public Session getCurrentSession() {

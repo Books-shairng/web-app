@@ -2,6 +2,9 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.text.MessageFormat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.text.MessageFormat;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -31,7 +33,7 @@ public class OrderControllerIT
     private static final String INSERT_USER = "INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES " +
         "(1, 'John Dee', 'john.dee@exmaple.com', 'Johny!Dee123', 'USER', TRUE)";
     private static final String INSERT_BOOK = "INSERT INTO BOOK (id, TITLE, AUTHOR, ISBN, ACTIVE, STATUS, " +
-    "DESCRIPTION) VALUES (1, 'Effective Java', 'J. Bloch', '978-0321356680', TRUE, 'FREE', 'Some description')";
+        "DESCRIPTION) VALUES (1, 'Effective Java', 'J. Bloch', '978-0321356680', TRUE, 'FREE', 'Some description')";
     private static final String ORDER_MESSAGE = "Book was corectly ordered";
 
     @Autowired
@@ -56,7 +58,7 @@ public class OrderControllerIT
 
     @Test
     @Sql(scripts = "classpath:it_import.sql")
-    public void testOrderBookShouldReturnErrorMessageWhenUserAlreadyOrderedBook() throws Exception{
+    public void testOrderBookShouldReturnErrorMessageWhenUserAlreadyOrderedBook() throws Exception {
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
             .param("bookID", ID))
             .andDo(print())

@@ -4,11 +4,12 @@ import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.dao.generic.GenericServiceImpl;
+
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Stream;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -1,21 +1,22 @@
 package com.ninjabooks.json.notification;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.dto.BookDto;
-import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.modelmapper.ModelMapper;
 
 /**
  * Notification by default should return information about book. If notification
  * should return other information like order date, this class must be inherited
  * by more elaborate class.
  *
+ * @author Piotr 'pitrecki' Nowak
  * @see BorrowNotification
  * @see QueueNotification
- * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 public abstract class GenericNotification implements Serializable

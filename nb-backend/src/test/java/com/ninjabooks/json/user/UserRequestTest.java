@@ -1,6 +1,7 @@
 package com.ninjabooks.json.user;
 
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Test;
 

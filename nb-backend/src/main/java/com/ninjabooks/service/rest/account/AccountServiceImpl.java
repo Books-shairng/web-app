@@ -3,14 +3,15 @@ package com.ninjabooks.service.rest.account;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.service.dao.user.UserService;
+
+import java.text.MessageFormat;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.MessageFormat;
 
 /**
  * @author Piotr 'pitrecki' Nowak

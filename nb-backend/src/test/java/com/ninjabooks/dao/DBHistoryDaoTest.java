@@ -4,6 +4,12 @@ import com.ninjabooks.dao.db.DBHistoryDao;
 import com.ninjabooks.domain.History;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -14,14 +20,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -1,13 +1,14 @@
 package com.ninjabooks.service.dao.generic;
 
 import com.ninjabooks.dao.GenericDao;
-import org.hibernate.Session;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.hibernate.Session;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak

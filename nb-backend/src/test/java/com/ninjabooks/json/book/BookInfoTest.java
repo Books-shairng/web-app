@@ -2,6 +2,7 @@ package com.ninjabooks.json.book;
 
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;

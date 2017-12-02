@@ -1,8 +1,8 @@
 package com.ninjabooks.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Piotr 'pitrecki' Nowak

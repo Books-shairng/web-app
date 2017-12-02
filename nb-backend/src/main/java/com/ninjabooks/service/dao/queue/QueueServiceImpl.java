@@ -4,12 +4,13 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.QueueDao;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.service.dao.generic.GenericServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak

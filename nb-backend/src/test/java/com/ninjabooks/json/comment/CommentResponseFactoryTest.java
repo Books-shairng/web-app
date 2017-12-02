@@ -1,6 +1,7 @@
 package com.ninjabooks.json.comment;
 
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -19,7 +19,7 @@ public class SecurityHeaderUtils
             throw new IllegalArgumentException("Header contains an unknow type");
         }
 
-        return  true;
+        return true;
     }
 
     public String extractToken(String header) {

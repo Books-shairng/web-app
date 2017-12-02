@@ -4,6 +4,9 @@ import com.ninjabooks.controller.BorrowController;
 import com.ninjabooks.controller.CommentController;
 import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.json.error.ErrorResponse;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -11,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -25,7 +26,7 @@ public class CommentControlllerHandler
 
     @ExceptionHandler(value = CommentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> unableToAddComment(HttpServletRequest request, Exception e) throws  Exception {
+    public ResponseEntity<ErrorResponse> unableToAddComment(HttpServletRequest request, Exception e) throws Exception {
         logger.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(new ErrorResponse(

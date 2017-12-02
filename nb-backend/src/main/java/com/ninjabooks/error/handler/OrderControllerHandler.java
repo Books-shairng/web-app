@@ -2,13 +2,14 @@ package com.ninjabooks.error.handler;
 
 import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.json.error.ErrorResponse;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak

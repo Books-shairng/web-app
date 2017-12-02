@@ -11,5 +11,5 @@ import java.util.Optional;
  */
 public interface QRCodeService extends GenericService<QRCode, Long>
 {
-    Optional<QRCode> getByData(String  data);
+    Optional<QRCode> getByData(String data);
 }

@@ -2,6 +2,7 @@ package com.ninjabooks.json.user;
 
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

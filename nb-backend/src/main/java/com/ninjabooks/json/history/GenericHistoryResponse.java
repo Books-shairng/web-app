@@ -1,11 +1,12 @@
 package com.ninjabooks.json.history;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.History;
 import com.ninjabooks.dto.HistoryDto;
-import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.modelmapper.ModelMapper;
 
 /**
  * @author Piotr 'pitrecki' Nowak

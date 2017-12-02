@@ -3,6 +3,10 @@ package com.ninjabooks.service.rest.search;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.lucene.search.Query;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -14,11 +18,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Collections;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak

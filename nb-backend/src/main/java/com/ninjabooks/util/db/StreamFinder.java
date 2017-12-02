@@ -1,6 +1,7 @@
 package com.ninjabooks.util.db;
 
 import com.ninjabooks.domain.BaseEntity;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,6 @@ public class StreamFinder extends SpecifiedElementFinder
     public <T, E> T findSpecifiedElementInDB(E parameter, Enum columnName, Class<? extends BaseEntity> enityType) {
         T query = super.findSpecifiedElementInDB(parameter, columnName, enityType);
 
-        return (T) ((Query<T>)query).stream();
+        return (T) ((Query<T>) query).stream();
     }
 }

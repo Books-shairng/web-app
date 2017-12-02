@@ -1,9 +1,9 @@
 package com.ninjabooks.util;
 
+import java.util.regex.Pattern;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

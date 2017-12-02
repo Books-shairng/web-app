@@ -3,6 +3,7 @@ package com.ninjabooks.security.service;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.security.user.SpringSecurityUserFactory;
 import com.ninjabooks.service.dao.user.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

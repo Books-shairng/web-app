@@ -4,14 +4,15 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;

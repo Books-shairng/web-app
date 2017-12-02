@@ -6,9 +6,15 @@ import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -50,7 +56,7 @@ public class BorrowController
 
     @RequestMapping(value = "{userID}/extend/", method = RequestMethod.POST)
     public MessageResponse extendReturnDate(@PathVariable(name = "userID") Long userID,
-                                 @RequestParam(value = "bookID") Long bookID) throws BorrowException {
+                                            @RequestParam(value = "bookID") Long bookID) throws BorrowException {
         extendRentalService.extendReturnDate(userID, bookID);
 
         return new MessageResponse("User successfully extend return date by two weeks");

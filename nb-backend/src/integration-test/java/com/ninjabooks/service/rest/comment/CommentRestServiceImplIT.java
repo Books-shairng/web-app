@@ -8,6 +8,11 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.Set;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +20,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
@@ -76,14 +79,14 @@ public class CommentRestServiceImplIT
         sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<History> actual = historyService.getAll();
 
-        assertThat(actual).extracting("isCommented").contains(DomainTestConstants.IS_COMMENTED);;
+        assertThat(actual).extracting("isCommented").contains(DomainTestConstants.IS_COMMENTED);
     }
 
     @Test
     @Transactional
     @Sql(scripts = "classpath:comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndReturnExpectedCommentEntity() throws Exception {
-            sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<Comment> actual = commentDaoService.getAll();
 
         assertThat(actual)

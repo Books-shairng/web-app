@@ -1,17 +1,15 @@
 package com.ninjabooks.service.rest.comment;
 
-import com.ninjabooks.domain.*;
+import com.ninjabooks.domain.Book;
+import com.ninjabooks.domain.Comment;
+import com.ninjabooks.domain.History;
+import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
-import com.ninjabooks.util.entity.EntityUtils;
 import com.ninjabooks.util.entity.EntityUtilsWrapper;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -20,6 +18,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Piotr 'pitrecki' Nowak

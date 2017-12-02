@@ -1,11 +1,12 @@
 package com.ninjabooks.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ninjabooks.util.converter.json.LocalDateDeserializer;
 import com.ninjabooks.util.converter.json.LocalDateSerializer;
 
 import java.time.LocalDate;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -8,9 +8,9 @@ import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
 import org.junit.Rule;

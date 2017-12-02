@@ -7,6 +7,11 @@ import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,13 +20,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -47,7 +52,7 @@ public class BookRentalServiceImplTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock,rentalHelperMock);
+        this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock, rentalHelperMock);
         when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
         when(rentalHelperMock.findBookByQRCode(anyString())).thenReturn(createFreshEntity());
     }

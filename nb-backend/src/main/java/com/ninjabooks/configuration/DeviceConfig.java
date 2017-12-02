@@ -2,6 +2,7 @@ package com.ninjabooks.configuration;
 
 import com.ninjabooks.controller.AuthenticationController;
 import com.ninjabooks.security.utils.TokenUtils;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mobile.device.DeviceHandlerMethodArgumentResolver;

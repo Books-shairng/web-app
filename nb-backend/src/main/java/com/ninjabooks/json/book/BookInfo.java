@@ -1,12 +1,13 @@
 package com.ninjabooks.json.book;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.dto.BookDto;
-import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.modelmapper.ModelMapper;
 
 /**
  * This class responsible for return all information about book

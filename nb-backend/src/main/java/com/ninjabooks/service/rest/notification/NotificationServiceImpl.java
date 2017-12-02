@@ -7,15 +7,16 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
-import com.ninjabooks.util.entity.EntityUtils;
 import com.ninjabooks.util.QueueUtils;
+import com.ninjabooks.util.entity.EntityUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional(readOnly = true)
-public class NotificationServiceImpl implements  NotificationService
+public class NotificationServiceImpl implements NotificationService
 {
     private final UserService userService;
     private final ModelMapper modelMapper;

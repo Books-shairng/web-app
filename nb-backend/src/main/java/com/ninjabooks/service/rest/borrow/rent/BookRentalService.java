@@ -14,7 +14,7 @@ public interface BookRentalService
     /**
      * It simple borrow book by user
      *
-     * @param userID - current user
+     * @param userID     - current user
      * @param qrCodeData - scanned QR code
      */
 

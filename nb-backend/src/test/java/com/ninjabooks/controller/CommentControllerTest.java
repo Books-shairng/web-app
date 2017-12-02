@@ -6,6 +6,11 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.rest.comment.CommentRestService;
 import com.ninjabooks.util.constants.DomainTestConstants;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,12 +21,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,7 +45,7 @@ public class CommentControllerTest
     private static final String JSON_REQUEST_WITH_COMMENT =
         "{" +
             "\"comment\" : \"" + DomainTestConstants.COMMENT_CONTENT + "\"" +
-        "}";
+            "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -104,13 +110,13 @@ public class CommentControllerTest
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-           .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest());
 
         verify(commentRestServiceMock, atLeastOnce()).addComment(anyString(), anyLong(), anyLong());
     }
 
     private Set<CommentResponse> prepareCommentResponse() {
         return Stream.of(CommentResponseFactory.makeCommentResponse(DomainTestConstants.COMMENT_FULL))
-        .collect(Collectors.toSet());
+            .collect(Collectors.toSet());
     }
 }

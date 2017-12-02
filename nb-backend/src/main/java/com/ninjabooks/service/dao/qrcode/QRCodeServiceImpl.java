@@ -4,11 +4,12 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.service.dao.generic.GenericServiceImpl;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -29,5 +30,5 @@ public class QRCodeServiceImpl extends GenericServiceImpl<QRCode, Long> implemen
     @Override
     public Optional<QRCode> getByData(String data) {
         return qrCodeDao.getByData(data);
-}
+    }
 }

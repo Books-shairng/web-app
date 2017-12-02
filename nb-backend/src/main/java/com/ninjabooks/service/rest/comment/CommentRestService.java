@@ -26,8 +26,8 @@ public interface CommentRestService
      * period to end book.
      *
      * @param comment - contet which contains proper comment
-     * @param userID - user id
-     * @param bookID - book id
+     * @param userID  - user id
+     * @param bookID  - book id
      */
 
     void addComment(String comment, Long userID, Long bookID) throws CommentException;

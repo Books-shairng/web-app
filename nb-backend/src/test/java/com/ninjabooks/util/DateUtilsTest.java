@@ -1,14 +1,15 @@
 package com.ninjabooks.util;
 
-import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
+import static com.ninjabooks.util.DateUtils.parseStringToLocalDate;
+import static com.ninjabooks.util.DateUtils.parseStringToLocalDateTime;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static com.ninjabooks.util.DateUtils.parseStringToLocalDate;
-import static com.ninjabooks.util.DateUtils.parseStringToLocalDateTime;
+import org.junit.Test;
+import org.springframework.test.context.ActiveProfiles;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
