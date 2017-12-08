@@ -1,10 +1,32 @@
 language: java
 
-sudo: false
+sudo: true
 
 node_js:
   - "8"
   - "6"
+
+cache:
+  directories:
+  - "$HOME/.m2"
+  - "$HOME/.yarn-cache"
+
+jdk:
+  - oraclejdk8
+
+
+jobs:
+  include:
+    - stage: clean repo & prepare depedency
+      script: bash ./scripts/prepare.sh
+    - stage: unit tests - backend
+      script: bash ./scripts/unit-tests-bk.sh
+    - stage: integration tests - backend
+      script: bash ./scripts/int-tests-bk.sh
+#    - stage: unit tests - frontend
+#      script:
+#    - stage: build
+#      script:
 
 before_script:
   - yarn build
@@ -19,27 +41,20 @@ script:
 after_script:
   - cd ..
 
-cache:
-  directories:
-  - "$HOME/.m2"
-  - "$HOME/.yarn-cache"
 
-jdk:
-  - oraclejdk8
+#before_install:
+#   - export TZ=Poland
+#   - npm install -g yarn
+#   - cd nb-frontend/
+#   - yarn add global @angular/cli
+#   - yarn add global codecov
 
-before_install:
-   - export TZ=Poland
-   - npm install -g yarn
-   - cd nb-frontend/
-   - yarn add global @angular/cli
-   - yarn add global codecov
-
-install:
-  - yarn install
+#install:
+#  - yarn install
 #  todo write proper configuration for frontend
 
-after_install:
-  - cd ..
+#after_install:
+#  - cd ..
 
 notifications:
   email: false
@@ -48,9 +63,9 @@ notifications:
       - books-sharing:0EAfyNQ5bGvqZSLvdFInnbs1#ci
 
 after_success:
-  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
-  - cd nb-backend/
-  - mvn verify -DskipTests=true
+#  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
+#  - cd nb-backend/
+#  - mvn verify -DskipTests=true
   - bash <(curl -s https://codecov.io/bash)
 
 after_failure:
