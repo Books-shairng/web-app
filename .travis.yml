@@ -23,16 +23,16 @@ jobs:
       script: bash ./scripts/prepare.sh
     - stage: unit tests - backend
       script: bash ./scripts/unit-tests-bk.sh
-          after_success:
-            - bash <(curl -s https://codecov.io/bash)
-          after_failure:
-            - bash <(curl -s https://codecov.io/bash)
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+      after_failure:
+        - bash <(curl -s https://codecov.io/bash)
     - stage: integration tests - backend
-          after_success:
-            - bash <(curl -s https://codecov.io/bash)
-          after_failure:
-            - bash <(curl -s https://codecov.io/bash)
       script: bash ./scripts/int-tests-bk.sh
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+      after_failure:
+        - bash <(curl -s https://codecov.io/bash)
 #    - stage: unit tests - frontend
 #      script:
 #    - stage: build
