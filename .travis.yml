@@ -28,15 +28,15 @@ jobs:
 #    - stage: build
 #      script:
 
-before_script:
-  - yarn build
-  - cd ..
-
-script:
-  - cd nb-backend/
-  - mvn clean test -q -Dlog4j.configurationFile=null
-  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
-  - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
+#before_script:
+#  - yarn build
+#  - cd ..
+#
+#script:
+#  - cd nb-backend/
+#  - mvn clean test -q -Dlog4j.configurationFile=null
+#  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
+#  - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
 
 after_script:
   - cd ..
