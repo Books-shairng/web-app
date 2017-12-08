@@ -1,6 +1,7 @@
 package com.ninjabooks.util;
 
-import org.junit.Before;
+import com.ninjabooks.security.utils.SecurityHeaderUtils;
+
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,42 +14,37 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class SecurityHeaderUtilsTest
 {
     private static final String TOKEN = "asdasdjasjd1232asdlkasd.daskdad2ea'sda;slkdals";
-    private static final String PATTERN = "Bearer";
-    private static final String REQUEST = PATTERN + " " + TOKEN;
-
-    private SecurityHeaderUtils sut;
-
-    @Before
-    public void setUp() throws Exception {
-        this.sut = new SecurityHeaderUtils();
-    }
+    private static final String SECURITY_PATTERN = "Bearer";
+    private static final String REQUEST = SECURITY_PATTERN + " " + TOKEN;
 
     @Test
-    public void testHasSecurityPatterShouldReturnTrue() throws Exception {
-        boolean actual = sut.hasSecurityPattern(REQUEST);
-
-        assertThat(actual).isEqualTo(true);
-    }
-
-    @Test
-    public void testHasSecurityPatternWithWrongHeaderShouldThrowsException() throws Exception {
+    public void testExtractTokennWithWrongHeaderShouldThrowsException() throws Exception {
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> sut.hasSecurityPattern(TOKEN))
+            .isThrownBy(() -> SecurityHeaderUtils.extractTokenFromHeader(TOKEN))
             .withNoCause()
-            .withMessage("Header contains an unknow type");
+            .withMessage("Header does not contains proper token");
+    }
+
+    @Test
+    public void testExtractTokenWithoutTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> SecurityHeaderUtils.extractTokenFromHeader(SECURITY_PATTERN))
+            .withNoCause()
+            .withMessage("Header does not contains proper token");
     }
 
     @Test
     public void testExtractTokenShouldReturnToken() throws Exception {
-        String actual = sut.extractToken(REQUEST);
+        String actual = SecurityHeaderUtils.extractTokenFromHeader(REQUEST);
 
         assertThat(actual).isEqualTo(TOKEN);
     }
 
     @Test
-    public void obtainTokenFromRequestShouldExtractToken() throws Exception {
-        String actual = sut.obtainTokenFromRequest(REQUEST);
-
-        assertThat(actual).isEqualTo(TOKEN);
+    public void testExtractTokenWithOnlySecurityPatternPlusSpaceShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> SecurityHeaderUtils.extractTokenFromHeader(SECURITY_PATTERN + " "))
+            .withNoCause()
+            .withMessage("Header does not contains proper token");
     }
 }

@@ -3,7 +3,6 @@ package com.ninjabooks.security.config;
 import com.ninjabooks.security.endpoint.EntryPointUnauthorizedHandler;
 import com.ninjabooks.security.filter.AuthenticationTokenFilter;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.SecurityHeaderUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,21 +36,17 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
     private final UserDetailsService userAuthService;
     private final EntryPointUnauthorizedHandler unauthorizedHandler;
     private final TokenUtils tokenUtils;
-    private final SecurityHeaderUtils securityHeaderFinder;
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils, SecurityHeaderUtils securityHeaderFinder) {
+    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils) {
         this.userAuthService = userAuthService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.tokenUtils = tokenUtils;
-        this.securityHeaderFinder = securityHeaderFinder;
     }
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-            .userDetailsService(userAuthService)
-            .passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(userAuthService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -62,7 +57,6 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            // we don't need CSRF because our token is invulnerable
             .csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
             .and()
@@ -73,15 +67,10 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
             .antMatchers(HttpMethod.GET, "/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/user").permitAll()
             .antMatchers("/api/auth", "/api/auth/**").permitAll()
-            .anyRequest().fullyAuthenticated();
-
-        // Custom JWT based security filter
-        http
-            .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        // disable page caching
-        http.headers().cacheControl();
-
+            .anyRequest().fullyAuthenticated()
+            .and()
+            .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+            .headers().cacheControl();
     }
 
     @Bean
@@ -97,9 +86,8 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
 
     @Bean
     public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {
-        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(tokenUtils, userAuthService, securityHeaderFinder);
+        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(tokenUtils, userAuthService);
         authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
-
         return authenticationTokenFilter;
     }
 }

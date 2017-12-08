@@ -5,7 +5,6 @@ import com.ninjabooks.error.handler.AccountControllerHandler;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.util.SecurityHeaderUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
 import org.junit.Before;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -37,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class AccountControllerTest
 {
+    private static final String TOKEN = "Bearer top_sercret_token";
     private static final String JSON =
         "{" +
             "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
@@ -57,16 +56,13 @@ public class AccountControllerTest
     @Mock
     private UserDetailsService userDetailsServiceMock;
 
-    @Mock
-    private SecurityHeaderUtils securityHeaderFinder;
-
     private MockMvc mockMvc;
     private AccountController sut;
 
     @Before
     public void setUp() throws Exception {
         this.sut = new AccountController(accountServiceMock, tokenUtilsMock,
-            userDetailsServiceMock, securityHeaderFinder);
+            userDetailsServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
             .setControllerAdvice(new AccountControllerHandler())
             .build();
@@ -102,7 +98,7 @@ public class AccountControllerTest
         when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(springUser);
 
         mockMvc.perform(get("/api/user")
-            .header("Authorization", anyString())
+            .header("Authorization", TOKEN)
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isFound());

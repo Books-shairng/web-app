@@ -4,7 +4,7 @@ import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.json.authentication.AuthenticationResponse;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.SecurityHeaderUtils;
+import com.ninjabooks.security.utils.SecurityHeaderUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,14 +62,12 @@ public class AuthenticationController
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderUtils securityHeaderUtils;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService, SecurityHeaderUtils securityHeaderUtils) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenUtils tokenUtils, UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
-        this.securityHeaderUtils = securityHeaderUtils;
     }
 
     /**
@@ -112,7 +110,7 @@ public class AuthenticationController
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         logger.info("Start refreshing the token");
         String header = request.getHeader("Authorization");
-        String token = securityHeaderUtils.obtainTokenFromRequest(header);
+        String token = SecurityHeaderUtils.extractTokenFromHeader(header);
         String username = tokenUtils.getUsernameFromToken(token);
 
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(username);
