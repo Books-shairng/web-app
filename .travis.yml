@@ -1,6 +1,6 @@
 language: java
 
-sudo: true
+sudo: false
 
 node_js:
   - "8"
@@ -23,60 +23,16 @@ jobs:
       script: bash ./scripts/prepare.sh
     - stage: unit tests - backend
       script: bash ./scripts/unit-tests-bk.sh
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-      after_failure:
-        - bash <(curl -s https://codecov.io/bash)
     - stage: integration tests - backend
       script: bash ./scripts/int-tests-bk.sh
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-      after_failure:
-        - bash <(curl -s https://codecov.io/bash)
-#    - stage: unit tests - frontend
-#      script:
-#    - stage: build
-#      script:
+      after_success: bash <(curl -s https://codecov.io/bash)
+      after_failure: bash <(curl -s https://codecov.io/bash)
+    - stage: deployment
+      branch: master
 
-#before_script:
-#  - yarn build
-#  - cd ..
-#
-#script:
-#  - cd nb-backend/
-#  - mvn clean test -q -Dlog4j.configurationFile=null
-#  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
-#  - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
-
-#after_script:
-#  - cd ..
-
-
-#before_install:
-#   - export TZ=Poland
-#   - npm install -g yarn
-#   - cd nb-frontend/
-#   - yarn add global @angular/cli
-#   - yarn add global codecov
-
-#install:
-#  - yarn install
-#  todo write proper configuration for frontend
-
-#after_install:
-#  - cd ..
 
 notifications:
   email: false
   slack:
     rooms:
       - books-sharing:0EAfyNQ5bGvqZSLvdFInnbs1#ci
-
-after_success:
-#  - cp -fr /nb-frontend/build/ /nb-backend/src/main/webapp/WEB-INF/static/
-#  - cd nb-backend/
-#  - mvn verify -DskipTests=true
-  - bash <(curl -s https://codecov.io/bash)
-
-after_failure:
-  - bash <(curl -s https://codecov.io/bash)
