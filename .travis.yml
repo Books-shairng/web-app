@@ -27,9 +27,9 @@ jobs:
       script: bash ./scripts/int-tests-bk.sh
       after_success: bash <(curl -s https://codecov.io/bash)
       after_failure: bash <(curl -s https://codecov.io/bash)
-    - stage: deployment
-      branch: master
-      script:  bash echo dd
+#    - stage: deployment
+#      branch: master
+#      script:  bash echo dd
 
 
 notifications:
