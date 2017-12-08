@@ -29,6 +29,7 @@ jobs:
       after_failure: bash <(curl -s https://codecov.io/bash)
     - stage: deployment
       branch: master
+      script:  bash echo dd
 
 
 notifications:
