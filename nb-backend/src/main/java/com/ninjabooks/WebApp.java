@@ -39,7 +39,9 @@ public class WebApp implements WebApplicationInitializer
         servletContext.addListener(new ContextLoaderListener(applicationContext));
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(applicationContext);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
         ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
+        servlet.setAsyncSupported(true);
 
         servlet.addMapping("/");
         servlet.setLoadOnStartup(1);

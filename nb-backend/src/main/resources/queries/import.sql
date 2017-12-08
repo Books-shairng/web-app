@@ -1,9 +1,9 @@
 -- ################################################# USER TABLE
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (1, 'User 0', 'email0@sb.gov', '$2a$10$hJs3yeBGLMKnimakK0tjYOWGyMBPWgtBceW6pltjEhTCTVsjWbag.', 'USER', TRUE)
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (2, 'User 1', 'email1@sb.gov', '$2a$10$X1lCYm.9nnJ.LvW43pyd4eSd3UgIrZxKKxej6ZMgt4vXaqrpfuU7W', 'USER', TRUE)
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (3, 'User 2', 'email2@sb.gov', '$2a$10$q0fSwrqVWU/M71kM/Pd.huvQpn68qmKQtSMbIWln35Ze3PVLcosBW', 'USER', TRUE)
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (4, 'User 3', 'email3@sb.gov', '$2a$10$2NoXgiZ2j6ufl2hyuxqQB.pYmSc42jaeziYSDXarptixh/.lO8/wm', 'USER', TRUE)
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (5, 'User 4', 'email4@sb.gov', '$2a$10$mdNtGaE7ae612t7QoX5suelZf2F0.HuIS4ipm78KyHi4s/oWDHEPa', 'USER', TRUE)
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE, LAST_PASSWORD_RESET) VALUES (1, 'User 0', 'email0@sb.gov','$2a$10$hJs3yeBGLMKnimakK0tjYOWGyMBPWgtBceW6pltjEhTCTVsjWbag.', 'USER', TRUE, now())
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE, LAST_PASSWORD_RESET) VALUES (2, 'User 1', 'email1@sb.gov','$2a$10$X1lCYm.9nnJ.LvW43pyd4eSd3UgIrZxKKxej6ZMgt4vXaqrpfuU7W', 'USER', TRUE, now())
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE, LAST_PASSWORD_RESET) VALUES (3, 'User 2', 'email2@sb.gov','$2a$10$q0fSwrqVWU/M71kM/Pd.huvQpn68qmKQtSMbIWln35Ze3PVLcosBW', 'USER', TRUE, now())
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE, LAST_PASSWORD_RESET) VALUES (4, 'User 3', 'email3@sb.gov','$2a$10$2NoXgiZ2j6ufl2hyuxqQB.pYmSc42jaeziYSDXarptixh/.lO8/wm', 'USER', TRUE, now())
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE, LAST_PASSWORD_RESET) VALUES (5, 'User 4', 'email4@sb.gov','$2a$10$mdNtGaE7ae612t7QoX5suelZf2F0.HuIS4ipm78KyHi4s/oWDHEPa', 'USER', TRUE, now())
 
 -- ################################################# QR_CODE TABLE
 INSERT INTO QR_CODE(id, DATA, ACTIVE) VALUES (1, '77000abcde', TRUE)

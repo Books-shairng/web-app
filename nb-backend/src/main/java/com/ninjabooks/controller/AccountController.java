@@ -8,7 +8,7 @@ import com.ninjabooks.json.user.UserResponse;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.util.SecurityHeaderUtils;
+import com.ninjabooks.security.utils.SecurityHeaderUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,17 +32,17 @@ public class AccountController
     private final AccountService accountService;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final SecurityHeaderUtils securityHeaderUtils;
+//    private final SecurityHeaderUtils securityHeaderUtils;
 
     @Autowired
     public AccountController(AccountService accountService,
                              TokenUtils tokenUtils,
-                             UserDetailsService userDetailsService,
-                             SecurityHeaderUtils securityHeaderUtils) {
+                             UserDetailsService userDetailsService/*,
+                             SecurityHeaderUtils securityHeaderUtils*/) {
         this.accountService = accountService;
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
-        this.securityHeaderUtils = securityHeaderUtils;
+//        this.securityHeaderUtils = securityHeaderUtils;
     }
 
     /**
@@ -79,7 +79,7 @@ public class AccountController
     @RequestMapping(value = "/api/user", method = RequestMethod.GET)
     public ResponseEntity<UserResponse> getAuthenticatedUser(HttpServletRequest httpServletRequest) throws Exception {
         String header = httpServletRequest.getHeader("Authorization");
-        String token = securityHeaderUtils.obtainTokenFromRequest(header);
+        String token = SecurityHeaderUtils.extractTokenFromHeader(header);
         String email = tokenUtils.getUsernameFromToken(token);
         SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(email);
 

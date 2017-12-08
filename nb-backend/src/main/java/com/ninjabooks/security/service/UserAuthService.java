@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserAuthService implements UserDetailsService
 {
-
-
     private final UserService userService;
 
     @Autowired
