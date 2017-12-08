@@ -14,6 +14,8 @@ cache:
 jdk:
   - oraclejdk8
 
+before_script:
+    - export TZ=Poland
 
 jobs:
   include:
@@ -21,7 +23,15 @@ jobs:
       script: bash ./scripts/prepare.sh
     - stage: unit tests - backend
       script: bash ./scripts/unit-tests-bk.sh
+          after_success:
+            - bash <(curl -s https://codecov.io/bash)
+          after_failure:
+            - bash <(curl -s https://codecov.io/bash)
     - stage: integration tests - backend
+          after_success:
+            - bash <(curl -s https://codecov.io/bash)
+          after_failure:
+            - bash <(curl -s https://codecov.io/bash)
       script: bash ./scripts/int-tests-bk.sh
 #    - stage: unit tests - frontend
 #      script:
@@ -38,8 +48,8 @@ jobs:
 #  - mvn failsafe:integration-test -q -Dlog4j.configurationFile=null
 #  - mvn cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
 
-after_script:
-  - cd ..
+#after_script:
+#  - cd ..
 
 
 #before_install:
