@@ -21,14 +21,14 @@ public class ErrorHandlerAdapter
      * Return new instance of {@code ErrorHandleAdapter} and create {@code BodyBuilder} object
      * which is responsible of creating error message {@code ResponseEntity}.
      * If you want enable logging on handler endpoint use an appropriate chain method.
-     *
+     * <p>
      * To create {@code ResponseEntity} invoke
-     * @see #response
      *
-     * @param status -  http status
+     * @param status  -  http status
      * @param request - request from Web
-     * @param e - exception to handle
+     * @param e       - exception to handle
      * @return new insance of ErrorHandlerAdapter
+     * @see #response
      */
 
     public static ErrorHandlerAdapter error(HttpStatus status, HttpServletRequest request, Exception e) {
@@ -37,11 +37,10 @@ public class ErrorHandlerAdapter
     }
 
     /**
-     * Default stauts is bad request (400)
-     *
+     * Default status is bad request (400)
      *
      * @param request - request from Web
-     * @param e - exception to handle
+     * @param e       - exception to handle
      * @return new insance of ErrorHandlerAdapter
      */
 
@@ -60,11 +59,22 @@ public class ErrorHandlerAdapter
         return this;
     }
 
+    /**
+     * Enable short error logs with only exception name and short message.
+     *
+     * @return instance of ErrorHandlerAdapter
+     */
 
     public ErrorHandlerAdapter withShortLogging() {
         bodyBuilder.withShortErrorLogging();
         return this;
     }
+
+    /**
+     * Enable stacktrace in logs.
+     *
+     * @return instance of ErrorHandlerAdapter
+     */
 
     public ErrorHandlerAdapter withStackTrace() {
         bodyBuilder.withStackTrace();
@@ -73,13 +83,13 @@ public class ErrorHandlerAdapter
 
     /**
      * As result of calling this method you should obtain JSON with follows structure
-     *
+     * <p>
      * <code>
-     *      {
-     *          "status" : status_code,
-     *          "message" : exception_short_meesage,
-     *          "request" : request_link_from_web
-     *      }
+     * {
+     * "status" : status_code,
+     * "message" : exception_short_meesage,
+     * "request" : request_link_from_web
+     * }
      * </code>
      *
      * @param <E> - pseudo generic argument
@@ -118,7 +128,6 @@ public class ErrorHandlerAdapter
             logger.error("Exception name: {}\n" +
                     "Exception short message: {}",
                 exception, exception.getMessage());
-
         }
 
         void withStackTrace() {
