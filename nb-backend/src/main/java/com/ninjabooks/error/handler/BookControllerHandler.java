@@ -4,13 +4,11 @@ import com.ninjabooks.controller.BookController;
 import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.error.global.ErrorHandlerAdapter;
 import com.ninjabooks.json.error.ErrorResponse;
-
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -19,8 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice(basePackageClasses = {BookController.class})
 public class BookControllerHandler
 {
-    @ExceptionHandler(value = {QRCodeException.class, EntityNotFoundException.class})
+    @ExceptionHandler(value = QRCodeException.class)
     public ResponseEntity<ErrorResponse> qrCodeCannotGenerate(HttpServletRequest request, Exception e) throws Exception {
-        return ErrorHandlerAdapter.error(request, e).withLogging().response();
+        return ErrorHandlerAdapter.error(request, e).withShortLogging().response();
     }
 }

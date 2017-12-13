@@ -4,12 +4,11 @@ import com.ninjabooks.controller.AccountController;
 import com.ninjabooks.controller.AuthenticationController;
 import com.ninjabooks.error.global.ErrorHandlerAdapter;
 import com.ninjabooks.json.error.ErrorResponse;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -21,6 +20,6 @@ public class FinderPatternHandler
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> wrongSecurityPattern(HttpServletRequest request,
                                                               IllegalArgumentException e) throws Exception {
-        return ErrorHandlerAdapter.error(request, e).withLogging().response();
+        return ErrorHandlerAdapter.error(request, e).withShortLogging().response();
     }
 }
