@@ -3,13 +3,14 @@ package com.ninjabooks.error.handler;
 import com.ninjabooks.controller.AuthenticationController;
 import com.ninjabooks.error.global.ErrorHandlerAdapter;
 import com.ninjabooks.json.error.ErrorResponse;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak

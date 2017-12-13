@@ -4,11 +4,12 @@ import com.ninjabooks.controller.CommentController;
 import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.error.global.ErrorHandlerAdapter;
 import com.ninjabooks.json.error.ErrorResponse;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Piotr 'pitrecki' Nowak
