@@ -2,6 +2,7 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.error.handler.BookControllerHandler;
+import com.ninjabooks.error.handler.EntityNotFoundHandler;
 import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.rest.book.BookRestService;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -66,7 +67,7 @@ public class BookControllerTest
         when(objectMapperMock.createObjectNode()).thenReturn(objectNodeMock);
         this.sut = new BookController(bookRestServiceMock, objectMapperMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
-            .setControllerAdvice(new BookControllerHandler())
+            .setControllerAdvice(new BookControllerHandler(), new EntityNotFoundHandler())
             .build();
     }
 
