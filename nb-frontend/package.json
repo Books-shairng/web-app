@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Ninja Books frontend app",
   "license": "MIT",
-  "author": ["Karol Kawski", "Piotr Nowak"],
+  "author": [
+    "Karol Kawski",
+    "Piotr Nowak"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve -p 3000 -hmr true -o",
