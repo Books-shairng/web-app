@@ -72,8 +72,11 @@ public class AuthenticationServiceImplIT
         Optional<String> actual = sut.refreshToken(token);
 
         assertSoftly(softly -> {
-            assertThat(actual).isNotEmpty();
-            assertThat(actual).isNotEqualTo(token);
+            assertThat(actual).isPresent();
+            assertThat(actual).hasValueSatisfying(s -> {
+                String t = token.replaceAll(SECURITY_PATTERN, "");
+                assertThat(s).isNotEqualTo(t);
+            });
         });
     }
 
