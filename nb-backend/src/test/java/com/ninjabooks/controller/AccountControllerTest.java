@@ -2,8 +2,8 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.error.handler.AccountControllerHandler;
+import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.user.SpringSecurityUser;
-import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -51,18 +50,14 @@ public class AccountControllerTest
     private AccountService accountServiceMock;
 
     @Mock
-    private TokenUtils tokenUtilsMock;
-
-    @Mock
-    private UserDetailsService userDetailsServiceMock;
+    private AuthenticationService authenticationServiceMock;
 
     private MockMvc mockMvc;
     private AccountController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new AccountController(accountServiceMock, tokenUtilsMock,
-            userDetailsServiceMock);
+        this.sut = new AccountController(accountServiceMock, authenticationServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
             .setControllerAdvice(new AccountControllerHandler())
             .build();
@@ -95,7 +90,7 @@ public class AccountControllerTest
     @Test
     public void testGetAuthentationShouldReturnUserInfo() throws Exception {
         SpringSecurityUser springUser = initSpringUser();
-        when(userDetailsServiceMock.loadUserByUsername(any())).thenReturn(springUser);
+        when(authenticationServiceMock.getAuthUser(any())).thenReturn(springUser);
 
         mockMvc.perform(get("/api/user")
             .header("Authorization", TOKEN)
@@ -103,8 +98,10 @@ public class AccountControllerTest
             .andDo(print())
             .andExpect(status().isFound());
 
-        verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(any());
-        verify(tokenUtilsMock, atLeastOnce()).getUsernameFromToken(any());
+        verify(authenticationServiceMock, atLeastOnce()).getAuthUser(any());
+
+        //        verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(any());
+//        verify(tokenUtilsMock, atLeastOnce()).getUsernameFromToken(any());
     }
 
     private SpringSecurityUser initSpringUser() {

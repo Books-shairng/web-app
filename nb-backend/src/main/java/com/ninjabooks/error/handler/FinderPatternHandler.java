@@ -1,7 +1,7 @@
 package com.ninjabooks.error.handler;
 
 import com.ninjabooks.controller.AccountController;
-import com.ninjabooks.controller.AuthenticationController;
+import com.ninjabooks.security.controller.AuthenticationController;
 import com.ninjabooks.error.global.ErrorHandlerAdapter;
 import com.ninjabooks.json.error.ErrorResponse;
 

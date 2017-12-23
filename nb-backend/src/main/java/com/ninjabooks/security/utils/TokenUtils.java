@@ -42,9 +42,9 @@ public class TokenUtils implements Serializable
     private static final String AUDIENCE_MOBILE = "mobile";
     private static final String AUDIENCE_TABLET = "tablet";
 
-    private String secretHashValue;
+    private final String secretHashValue;
 
-    public TokenUtils(@Value(value = "${jwt.hash-secret-code}") String  secretHashValue) {
+    public TokenUtils(@Value(value = "${jwt.hash-secret-code}") String secretHashValue) {
         this.secretHashValue = secretHashValue;
     }
 

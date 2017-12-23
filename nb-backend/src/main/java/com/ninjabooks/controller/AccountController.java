@@ -5,17 +5,15 @@ import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.json.user.UserRequest;
 import com.ninjabooks.json.user.UserResponse;
+import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.user.SpringSecurityUser;
-import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.security.utils.SecurityHeaderUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,20 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController
 {
+    private static final String AUTH_HEADER = "Authorization";
+
     private final AccountService accountService;
-    private final TokenUtils tokenUtils;
-    private final UserDetailsService userDetailsService;
-//    private final SecurityHeaderUtils securityHeaderUtils;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public AccountController(AccountService accountService,
-                             TokenUtils tokenUtils,
-                             UserDetailsService userDetailsService/*,
-                             SecurityHeaderUtils securityHeaderUtils*/) {
+    public AccountController(AccountService accountService, AuthenticationService authenticationService) {
         this.accountService = accountService;
-        this.tokenUtils = tokenUtils;
-        this.userDetailsService = userDetailsService;
-//        this.securityHeaderUtils = securityHeaderUtils;
+        this.authenticationService = authenticationService;
     }
 
     /**
@@ -57,11 +50,9 @@ public class AccountController
 
     @RequestMapping(value = "/api/user", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public MessageResponse createUser(@RequestBody UserRequest userRequest)
-        throws UserAlreadyExistException {
+    public MessageResponse createUser(@RequestBody UserRequest userRequest) throws UserAlreadyExistException {
         User userFromRequest = new User(userRequest.getName(), userRequest.getEmail(), userRequest.getPassword());
         accountService.createUser(userFromRequest);
-
         return new MessageResponse("User was successfully created");
     }
 
@@ -78,11 +69,8 @@ public class AccountController
 
     @RequestMapping(value = "/api/user", method = RequestMethod.GET)
     public ResponseEntity<UserResponse> getAuthenticatedUser(HttpServletRequest httpServletRequest) throws Exception {
-        String header = httpServletRequest.getHeader("Authorization");
-        String token = SecurityHeaderUtils.extractTokenFromHeader(header);
-        String email = tokenUtils.getUsernameFromToken(token);
-        SpringSecurityUser user = (SpringSecurityUser) userDetailsService.loadUserByUsername(email);
-
+        String header = httpServletRequest.getHeader(AUTH_HEADER);
+        SpringSecurityUser user = authenticationService.getAuthUser(header);
         return new ResponseEntity<>(new UserResponse(user), HttpStatus.FOUND);
     }
 }
