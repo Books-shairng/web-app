@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
@@ -70,7 +71,10 @@ public class AuthenticationServiceImplIT
         String token = generateToken();
         Optional<String> actual = sut.refreshToken(token);
 
-        assertThat(actual).isNotEmpty().isNotEqualTo(token);
+        assertSoftly(softly -> {
+            assertThat(actual).isNotEmpty();
+            assertThat(actual).isNotEqualTo(token);
+        });
     }
 
     @Test

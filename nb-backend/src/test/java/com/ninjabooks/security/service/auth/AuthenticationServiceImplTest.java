@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
@@ -87,7 +88,10 @@ public class AuthenticationServiceImplTest
         String token = generateToken();
         Optional<String> actual = sut.refreshToken(token);
 
-        assertThat(actual).isNotEmpty().isNotEqualTo(token);
+        assertSoftly(softly -> {
+            assertThat(actual).isNotEmpty();
+            assertThat(actual).isNotEqualTo(token);
+        });
         verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(anyString());
     }
 
