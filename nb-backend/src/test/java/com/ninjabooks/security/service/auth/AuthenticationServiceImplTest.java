@@ -2,11 +2,11 @@ package com.ninjabooks.security.service.auth;
 
 import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.security.user.SpringSecurityUser;
+import com.ninjabooks.security.user.SpringSecurityUserFactory;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -125,9 +125,6 @@ public class AuthenticationServiceImplTest
     }
 
     private SpringSecurityUser initSpringUser() {
-        SpringSecurityUser user = new SpringSecurityUser();
-        user.setEmail(DomainTestConstants.EMAIL);
-        user.setLastPasswordReset(LocalDateTime.now().minusSeconds(5));
-        return user;
+        return SpringSecurityUserFactory.makeSecurityUser(DomainTestConstants.USER_FULL);
     }
 }
