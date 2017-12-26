@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 public class RentalHelperTest
 {
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BookDaoService bookDaoServiceMock;

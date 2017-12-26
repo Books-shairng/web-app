@@ -46,7 +46,7 @@ public class CommentRestServiceImplTest
     private static final Supplier<Stream<Book>> EMPTY_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BookDaoService bookDaoServiceMock;

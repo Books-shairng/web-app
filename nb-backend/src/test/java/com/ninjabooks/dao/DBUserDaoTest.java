@@ -38,7 +38,7 @@ public class DBUserDaoTest
     private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;

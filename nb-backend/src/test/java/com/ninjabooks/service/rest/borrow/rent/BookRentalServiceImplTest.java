@@ -37,7 +37,7 @@ public class BookRentalServiceImplTest
     private static final int MAXIMUM_BORROW_LIMIT = 5;
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BorrowService borrowServiceMock;

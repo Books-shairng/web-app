@@ -32,7 +32,7 @@ public class BookDaoServiceImplTest
     private static final Supplier<Stream<Book>> EMPTY_STREAM = CommonUtils.asEmptySupplier();
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BookDao bookDaoMock;

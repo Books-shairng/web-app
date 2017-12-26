@@ -30,7 +30,7 @@ public class QRCodeServiceImplTest
     private static final Optional<QRCode> EXPECTED_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.QR_CODE);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private GenericDao<QRCode, Long> genericDaoMock;

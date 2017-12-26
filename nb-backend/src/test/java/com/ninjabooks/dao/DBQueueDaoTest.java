@@ -39,7 +39,7 @@ public class DBQueueDaoTest
     private static final Supplier<Stream<Object>> EMPTY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;

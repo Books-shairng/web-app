@@ -27,7 +27,7 @@ public class QueueNotificationTest
     private static final int POSITION_IN_QUEUE = 1;
 
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    public MockitoRule rule = MockitoJUnit.rule().silent();
 
     @Mock
     private Queue queueMock;

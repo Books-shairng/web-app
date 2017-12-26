@@ -40,7 +40,7 @@ public class UserHistoryRestServiceImplTest
     private static final int EXPECTED_SIZE = 1;
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private UserService userServiceMock;

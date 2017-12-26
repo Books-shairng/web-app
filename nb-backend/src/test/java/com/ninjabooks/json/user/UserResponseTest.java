@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class UserResponseTest
 {
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private SpringSecurityUser springSecurityUser;
