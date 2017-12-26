@@ -38,7 +38,7 @@ public class DBCommentDaoTest
         CommonUtils.asSupplier(DomainTestConstants.COMMENT);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;

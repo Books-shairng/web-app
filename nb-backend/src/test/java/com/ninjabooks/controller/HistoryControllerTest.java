@@ -29,7 +29,7 @@ public class HistoryControllerTest
     private static final String EMPTY_HISTORY_MESSAGE = "User has no history";
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private HistoryRestService historyRestServiceMock;

@@ -35,7 +35,7 @@ public class ExtendRentalServiceImplTest
     private static final LocalDate ACTUAL_DATE_PLUS_TWO_WEEKS = LocalDate.now().plusWeeks(2);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private BookDaoService bookDaoService;

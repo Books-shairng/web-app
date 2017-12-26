@@ -34,7 +34,7 @@ public class NotificationControllerTest
     private static final List RESPONSE_CONTENT = Collections.singletonList("TEST");
     private static final long USER_ID = DomainTestConstants.ID;
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
     @Mock
     private NotificationService notificationServiceMock;
 

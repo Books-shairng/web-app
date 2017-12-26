@@ -31,7 +31,7 @@ public class OrderControllerTest
     public static final String ID = String.valueOf(DomainTestConstants.ID);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private OrderBookService orderBookServiceMock;

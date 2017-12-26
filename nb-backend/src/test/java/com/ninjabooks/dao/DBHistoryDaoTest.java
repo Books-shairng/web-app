@@ -38,7 +38,7 @@ public class DBHistoryDaoTest
         CommonUtils.asSupplier(DomainTestConstants.HISTORY);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;

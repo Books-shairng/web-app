@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class BorrowNotificationTest
 {
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    public MockitoRule rule =MockitoJUnit.rule().silent();
 
     @Mock
     private Borrow borrowMock;

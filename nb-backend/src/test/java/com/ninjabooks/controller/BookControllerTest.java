@@ -48,7 +48,7 @@ public class BookControllerTest
         "}";
 
     @Rule
-    public MockitoRule mockitoJUnit = MockitoJUnit.rule();
+    public MockitoRule mockitoJUnit =MockitoJUnit.rule().silent();
 
     @Mock
     private BookRestService bookRestServiceMock;

@@ -48,7 +48,7 @@ public class CommentControllerTest
             "}";
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private CommentRestService commentRestServiceMock;

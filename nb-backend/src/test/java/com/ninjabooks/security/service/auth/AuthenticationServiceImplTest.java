@@ -44,7 +44,7 @@ public class AuthenticationServiceImplTest
             ".rIb7FVGxvbfzK_ljh6P3pylxThy6abn_OW0jfLtXvfWE5CTSedwONR0pE7JyS7HassRD6zOI4UpgF0jSQLHTPg";
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private AuthenticationManager authenticationManagerMock;

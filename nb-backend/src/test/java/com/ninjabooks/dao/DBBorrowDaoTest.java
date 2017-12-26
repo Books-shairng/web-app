@@ -40,7 +40,7 @@ public class DBBorrowDaoTest
     private static final Supplier<Stream<Object>> EMTPY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;

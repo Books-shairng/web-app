@@ -37,7 +37,7 @@ public class BookSearchServiceImplTest
     private static final int EXPECTED_SIZE = 1;
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private BookDaoService bookServiceMock;

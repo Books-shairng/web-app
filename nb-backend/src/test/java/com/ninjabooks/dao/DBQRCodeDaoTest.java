@@ -38,7 +38,7 @@ public class DBQRCodeDaoTest
     private static final Optional<QRCode> QR_CODE_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.QR_CODE);
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
 
     @Mock
     private SessionFactory sessionFactoryMock;
