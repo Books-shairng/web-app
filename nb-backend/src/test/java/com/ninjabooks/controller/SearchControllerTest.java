@@ -37,7 +37,7 @@ public class SearchControllerTest
     private static final String MESSAGE_NOT_FOUND_QUERY = "Unfortunately search phrase not found";
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private SearchService searchServiceMock;

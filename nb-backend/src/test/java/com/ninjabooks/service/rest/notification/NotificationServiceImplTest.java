@@ -44,7 +44,7 @@ public class NotificationServiceImplTest
     private static final int EXPECTED_SIZE = 1;
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private UserService userServiceMock;

@@ -32,7 +32,7 @@ public class UserAuthServiceTest
     private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private UserService userServiceMock;

@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 public class EntityUtilsTest
 {
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private GenericService<? extends BaseEntity, Long> genericServiceMock;

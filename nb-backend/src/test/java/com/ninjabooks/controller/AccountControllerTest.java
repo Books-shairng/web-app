@@ -44,7 +44,7 @@ public class AccountControllerTest
         "}";
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private AccountService accountServiceMock;

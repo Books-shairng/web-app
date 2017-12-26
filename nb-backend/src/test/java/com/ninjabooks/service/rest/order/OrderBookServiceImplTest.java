@@ -36,7 +36,7 @@ public class OrderBookServiceImplTest
     private static final int MAX_LIMIT_IN_ORDER = 10;
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BookDaoService bookServiceMock;

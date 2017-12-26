@@ -31,7 +31,7 @@ public class UserServiceImplTest
     private static final Optional<User> EMPTY_OPTIONAL = Optional.empty();
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private UserDao userDaoMock;

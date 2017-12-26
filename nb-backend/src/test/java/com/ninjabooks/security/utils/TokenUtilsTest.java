@@ -36,7 +36,7 @@ public class TokenUtilsTest
             ".TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private SpringSecurityUser springSecurityUserMock;

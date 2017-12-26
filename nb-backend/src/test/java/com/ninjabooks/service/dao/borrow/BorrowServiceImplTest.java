@@ -33,7 +33,7 @@ public class BorrowServiceImplTest
     private static final Supplier<Stream<Borrow>> EMPTY_STREAM = CommonUtils.asEmptySupplier();
 
     @Rule
-    public MockitoRule mockitoRule =MockitoJUnit.rule().silent();
+    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
 
     @Mock
     private BorrowDao borrowDaoMock;
