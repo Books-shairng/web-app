@@ -38,10 +38,11 @@ public class AuthenticationServiceImplTest
     private static final String SECURITY_PATTERN = "Bearer ";
     private static final String SECRET = "aaaaazzzzzxxxxccccvv";
     private static final String OLD_TOKEN =
-        "Bearer eyJhbGciOiJIUzUxMiJ9" +
-            ".eyJzdWIiOiJqb2huLmRlZUBleG1hcGxlLmNvbSIsImF1ZGllbmNlIjoidW5rbm93biIsImNyZWF0ZWQiOjE1MTM3" +
-            "MTM2MjQwODcsImV4cCI6MTUxNDMxODQyNH0" +
-            ".rIb7FVGxvbfzK_ljh6P3pylxThy6abn_OW0jfLtXvfWE5CTSedwONR0pE7JyS7HassRD6zOI4UpgF0jSQLHTPg";
+        "Bearer " +
+            "eyJhbGciOiJIUzUxMiJ9." +
+            "eyJzdWIiOiJqb2huLmRlZUBleG1hcGxlLmNvbSIsImF1ZGllbmNlIjoidW5rbm93biIsImNyZWF0ZWQiOjE1MTQ4MDk2OTY1ODIsImV" +
+            "4cCI6MTUxNTQxNDQ5Nn0." +
+            "NWgUa9mG64GgCTj9qZXkgj7HF0ZbjtcaSTZ8isNVA49kVzW9xhFpFvVg778ZC8y0Fo_GatMFaA3TYv3nj0PWug";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();

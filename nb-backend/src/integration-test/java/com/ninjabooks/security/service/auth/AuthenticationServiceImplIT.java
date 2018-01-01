@@ -37,10 +37,10 @@ public class AuthenticationServiceImplIT
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE USER ; ";
     private static final String OLD_TOKEN =
         "Bearer " +
-        "eyJhbGciOiJIUzUxMiJ9" +
-        ".eyJzdWIiOiJqb2huLmRlZUBleG1hcGxlLmNvbSIsImF1ZGllbmNlIjoidW5rbm93biIsImNyZWF0ZWQiOjE1MTQwMzA1MTgyOTQsImV" +
-        "4cCI6MTUxNDYzNTMxOH0" +
-        ".pFsrWXdAeCY37d-7jOTtesDMJZQ1UMmLV2rlZcOnT6xYhZ9sJyePb-asIHf93IKXOXQInLF4NM-eLAf1LW8caA";
+            "eyJhbGciOiJIUzUxMiJ9." +
+            "eyJzdWIiOiJqb2huLmRlZUBleG1hcGxlLmNvbSIsImF1ZGllbmNlIjoidW5rbm93biIsImNyZWF0ZWQiOjE1MTQ4MTAzMDUwMTQsImV" +
+            "4cCI6MTUxNTQxNTEwNX0." +
+            "YllmHQp_Uq8hOucwtTLA0XqSP9X4bLU0Yrp4szOqULjM9TJ-9lYzxa9fUvVCjS2BrH4CRoxqqA9pvtjX91r6Ow";
 
     @Autowired
     private UserDetailsService userDetailsService;
