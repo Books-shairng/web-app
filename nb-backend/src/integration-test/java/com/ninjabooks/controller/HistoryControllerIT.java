@@ -33,7 +33,6 @@ public class HistoryControllerIT
 {
     private static final String MINUS_DAYS = "10";
     private static final String EMPTY_HISTORY_MESSAGE = "User has no history";
-    private static final int EXPECTED_SIZE = 1;
 
     @Autowired
     private WebApplicationContext wac;

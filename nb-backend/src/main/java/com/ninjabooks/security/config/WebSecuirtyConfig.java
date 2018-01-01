@@ -38,7 +38,8 @@ public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
     private final TokenUtils tokenUtils;
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler, TokenUtils tokenUtils) {
+    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler,
+                             TokenUtils tokenUtils) {
         this.userAuthService = userAuthService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.tokenUtils = tokenUtils;

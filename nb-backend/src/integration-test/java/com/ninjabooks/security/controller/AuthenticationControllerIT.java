@@ -1,4 +1,4 @@
-package com.ninjabooks.controller;
+package com.ninjabooks.security.controller;
 
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.utils.TokenUtils;

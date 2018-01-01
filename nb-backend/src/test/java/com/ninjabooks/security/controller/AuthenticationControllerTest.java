@@ -1,7 +1,6 @@
-package com.ninjabooks.controller;
+package com.ninjabooks.security.controller;
 
 import com.ninjabooks.error.handler.AuthenticationControllerHandler;
-import com.ninjabooks.security.controller.AuthenticationController;
 import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.utils.TokenUtils;
 
