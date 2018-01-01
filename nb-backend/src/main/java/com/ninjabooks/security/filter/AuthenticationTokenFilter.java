@@ -1,7 +1,7 @@
 package com.ninjabooks.security.filter;
 
-import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.security.utils.SecurityHeaderUtils;
+import com.ninjabooks.security.utils.TokenUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +27,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter
 {
-    private final static Logger logger = LogManager.getLogger(AuthenticationTokenFilter.class);
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final TokenUtils tokenUtils;
@@ -52,8 +49,6 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
     private void performAuthentication(HttpServletRequest httpRequest, String authToken) {
         String username = tokenUtils.getUsernameFromToken(authToken);
-        logger.info("Checking authentication for user: {}", username);
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (tokenUtils.isValid(authToken, userDetails)) {
