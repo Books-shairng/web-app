@@ -10,6 +10,7 @@ import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.service.rest.account.AccountService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class AccountController
 
     @RequestMapping(value = "/api/user", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public MessageResponse createUser(@RequestBody UserRequest userRequest) throws UserAlreadyExistException {
+    public MessageResponse createUser(@Valid @RequestBody UserRequest userRequest) throws UserAlreadyExistException {
         User userFromRequest = new User(userRequest.getName(), userRequest.getEmail(), userRequest.getPassword());
         accountService.createUser(userFromRequest);
         return new MessageResponse("User was successfully created");

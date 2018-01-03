@@ -1,5 +1,8 @@
 package com.ninjabooks.json.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -10,14 +13,19 @@ public class UserRequest implements Serializable
 {
     private static final long serialVersionUID = -4625305707954795378L;
 
+    @NotNull
     private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
 
-    public UserRequest() {
-        super();
-    }
+    @NotNull
+    private String lastName;
+
+    @NotNull
+    @Email
+    private String email;
+
+    @NotNull
+    @Min(value = 8)
+    private String password;
 
     public UserRequest(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -35,7 +43,6 @@ public class UserRequest implements Serializable
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
