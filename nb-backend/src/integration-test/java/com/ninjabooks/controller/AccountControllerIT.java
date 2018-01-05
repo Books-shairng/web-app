@@ -7,6 +7,7 @@ import com.ninjabooks.utils.TestDevice;
 
 import java.text.MessageFormat;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +42,10 @@ public class AccountControllerIT
             "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
             "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
             "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
+            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"" +
         "}";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
+    private static final String SHORT_PASSWORD = "aa";
 
     @Autowired
     private WebApplicationContext wac;
@@ -77,6 +79,72 @@ public class AccountControllerIT
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(jsonPath("$.message").value(USER_CREATE_MESSAGE));
+    }
+
+    @Test
+    public void testCreateUserWithoutMailFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.email").jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("email field must be not empty"));
+    }
+
+    @Test
+    public void testCreateUserWithoutFirstNameFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.firstName").jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("firstName field must be not empty"));
+    }
+
+    @Test
+    public void testCreateUserWithoutLastNameFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.lastName").jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("lastName field must be not empty"));
+    }
+
+    @Test
+    public void testCreateUserWithoutPasswordFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.password").jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("password field must be not empty"));
+    }
+
+    @Test
+    public void testCreateUserWithShortPasswordShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).set("$.password", SHORT_PASSWORD).jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("password is too short, minimum length must equals: 8"));
+    }
+
+    @Test
+    public void testCreateUserWithMalformedEmailShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).set("$.email", DomainTestConstants.NAME).jsonString();
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("email is not a well-formated"));
     }
 
     @Test
@@ -117,7 +185,6 @@ public class AccountControllerIT
     private String generateToken() {
         UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
-
         return "Bearer " + token;
     }
 }

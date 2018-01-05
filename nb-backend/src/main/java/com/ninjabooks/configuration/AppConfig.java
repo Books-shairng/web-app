@@ -3,9 +3,11 @@ package com.ninjabooks.configuration;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.Validator;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -25,11 +27,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = "com.ninjabooks")
 public class AppConfig extends WebMvcConfigurerAdapter
 {
-    private final DeviceConfig deviceConfig;
+    private final ApplicationContext applicationContext;
 
     @Autowired
-    public AppConfig(DeviceConfig deviceConfig) {
-        this.deviceConfig = deviceConfig;
+    public AppConfig(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -58,13 +60,23 @@ public class AppConfig extends WebMvcConfigurerAdapter
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(deviceConfig.deviceHandlerMethodArgumentResolver());
-        argumentResolvers.add(deviceConfig.sitePreferenceHandlerMethodArgumentResolver());
+        argumentResolvers.add(deviceConfigBean().deviceHandlerMethodArgumentResolver());
+        argumentResolvers.add(deviceConfigBean().sitePreferenceHandlerMethodArgumentResolver());
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(deviceConfig.deviceResolverHandlerInterceptor());
-        registry.addInterceptor(deviceConfig.sitePreferenceHandlerInterceptor());
+        registry.addInterceptor(deviceConfigBean().deviceResolverHandlerInterceptor());
+        registry.addInterceptor(deviceConfigBean().sitePreferenceHandlerInterceptor());
+    }
+
+    @Override
+    public Validator getValidator() {
+        ValidatorConfig bean = applicationContext.getBean(ValidatorConfig.class);
+        return (Validator) bean.validator();
+    }
+
+    private DeviceConfig deviceConfigBean() {
+        return applicationContext.getBean(DeviceConfig.class);
     }
 }

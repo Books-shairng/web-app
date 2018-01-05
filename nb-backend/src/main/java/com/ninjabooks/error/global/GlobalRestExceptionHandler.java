@@ -1,5 +1,6 @@
 package com.ninjabooks.error.global;
 
+import com.ninjabooks.error.exception.validation.CustomMethodArgumentNotValidException;
 import com.ninjabooks.error.global.ErrorHandlerAdapter.ErrorHandlerName;
 import com.ninjabooks.json.error.ErrorResponse;
 
@@ -32,7 +33,8 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        ResponseEntity<ErrorResponse> response = ErrorHandlerAdapter.error(((ServletWebRequest) request).getRequest(), e)
+        CustomMethodArgumentNotValidException ex =  new CustomMethodArgumentNotValidException(e.getBindingResult());
+        ResponseEntity<ErrorResponse> response = ErrorHandlerAdapter.error(((ServletWebRequest) request).getRequest(), ex)
             .withLogging(ErrorHandlerName.VALID)
             .response();
         return new ResponseEntity(response.getBody(), headers, HttpStatus.BAD_REQUEST);

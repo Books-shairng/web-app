@@ -99,9 +99,6 @@ public class AccountControllerTest
             .andExpect(status().isFound());
 
         verify(authenticationServiceMock, atLeastOnce()).getAuthUser(any());
-
-        //        verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(any());
-//        verify(tokenUtilsMock, atLeastOnce()).getUsernameFromToken(any());
     }
 
     private SpringSecurityUser initSpringUser() {
