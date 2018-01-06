@@ -84,79 +84,45 @@ public class AccountControllerIT
     @Test
     public void testCreateUserWithoutMailFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.email").jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("email field must be not empty"));
+        createUserWithExpectedMessageAsResponse(json, "email field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutFirstNameFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.firstName").jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("firstName field must be not empty"));
+        createUserWithExpectedMessageAsResponse(json, "firstName field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutLastNameFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.lastName").jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("lastName field must be not empty"));
+        createUserWithExpectedMessageAsResponse(json, "lastName field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutPasswordFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.password").jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("password field must be not empty"));
+        createUserWithExpectedMessageAsResponse(json, "password field must be not empty");
     }
 
     @Test
     public void testCreateUserWithShortPasswordShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).set("$.password", SHORT_PASSWORD).jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("password is too short, minimum length must equals: 8"));
+        createUserWithExpectedMessageAsResponse(json, "password is too short, minimum length must equals: 8");
     }
 
     @Test
     public void testCreateUserWithMalformedEmailShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).set("$.email", DomainTestConstants.NAME).jsonString();
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value("email is not a well-formated"));
+        createUserWithExpectedMessageAsResponse(json, "email is not a well-formated");
     }
 
     @Test
     @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
-        String expectedResponse = MessageFormat.format("Username email: {0} already exist in database", DomainTestConstants.EMAIL);
-        mockMvc.perform(post("/api/user")
-            .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value(expectedResponse));
+        String expectedResponse = MessageFormat.format("Username email: {0} already exist in database",
+            DomainTestConstants.EMAIL);
+        createUserWithExpectedMessageAsResponse(JSON, expectedResponse);
     }
 
     @Test
@@ -186,5 +152,14 @@ public class AccountControllerIT
         UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
         return "Bearer " + token;
+    }
+
+    private void createUserWithExpectedMessageAsResponse(String json, String message) throws Exception {
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value(message));
     }
 }
