@@ -3,10 +3,14 @@ package com.ninjabooks.controller;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.error.exception.qrcode.QRCodeException;
 import com.ninjabooks.json.book.BookInfo;
+import com.ninjabooks.json.book.BookRequest;
 import com.ninjabooks.service.rest.book.BookRestService;
+
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +38,8 @@ public class BookController
     }
 
     @RequestMapping(value = "/api/book/", method = RequestMethod.POST)
-    public ResponseEntity<ObjectNode> addBook(@RequestBody Book book) throws QRCodeException {
+    public ResponseEntity<ObjectNode> addBook(@Valid @RequestBody BookRequest bookRequest) throws QRCodeException {
+        Book book = new ModelMapper().map(bookRequest, Book.class);
         String generatedCode = bookRestService.addBook(book);
 
         ObjectNode objectNode = objectMapper.createObjectNode();
