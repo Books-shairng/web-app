@@ -95,6 +95,20 @@ public class AuthenticationControllerIT
 
     @Test
     @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    public void testAuthenticationRequestWithoutEmailFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON_REQUEST).delete("$.email").jsonString();
+        authenticationRequestWithExpectedMessageAsResult(json, "email must not be empty");
+    }
+
+    @Test
+    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    public void testAuthenticationRequestWithoutPasswordFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON_REQUEST).delete("$.password").jsonString();
+        authenticationRequestWithExpectedMessageAsResult(json, "password must not be empty");
+    }
+
+    @Test
+    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRefreshTokenShouldReturnNewToken() throws Exception {
         String token = generateToken();
 
@@ -134,5 +148,14 @@ public class AuthenticationControllerIT
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
 
         return "Bearer " + token;
+    }
+
+    private void authenticationRequestWithExpectedMessageAsResult(String json, String message) throws Exception {
+        mockMvc.perform(post("/api/auth")
+            .content(json)
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value(message));
     }
 }

@@ -6,6 +6,7 @@ import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.utils.TokenUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
  * by a .:
  * exmaple:
  *
- * @author Piotr 'pitrecki' Nowak
  * @code {
  * <b>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.ipevRNuRP6HflG8cFKnmUPtypruRC4fb1DWtoLL62SY</b>
  * }
@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
  * the algorithm specified in the header.
  * <p>
  * More detailed info, check this <a href="https://jwt.io/"> LINKI </a>
+ * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
 @RestController
@@ -75,7 +76,7 @@ public class AuthenticationController
      */
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest,
+    public ResponseEntity<?> authenticationRequest(@Valid @RequestBody AuthenticationRequest authenticationRequest,
                                                    Device device) throws AuthenticationException {
         logger.info("User: {} initiates authorization on the system", authenticationRequest.getEmail());
 
