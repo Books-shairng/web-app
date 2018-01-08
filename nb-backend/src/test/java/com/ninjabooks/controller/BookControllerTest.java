@@ -44,7 +44,8 @@ public class BookControllerTest
         "{" +
             "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
             "\"author\":\"" + DomainTestConstants.AUTHOR + "\"," +
-            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"" +
+            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"," +
+            "\"description\":\"" + DomainTestConstants.DESCRIPTION + "\"" +
         "}";
 
     @Rule

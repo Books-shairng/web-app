@@ -7,6 +7,7 @@ import com.ninjabooks.utils.TestDevice;
 
 import java.text.MessageFormat;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +42,10 @@ public class AccountControllerIT
             "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
             "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
             "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
+            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"" +
         "}";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
+    private static final String SHORT_PASSWORD = "aa";
 
     @Autowired
     private WebApplicationContext wac;
@@ -80,15 +82,47 @@ public class AccountControllerIT
     }
 
     @Test
+    public void testCreateUserWithoutMailFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.email").jsonString();
+        createUserWithExpectedMessageAsResponse(json, "email field must be not empty");
+    }
+
+    @Test
+    public void testCreateUserWithoutFirstNameFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.firstName").jsonString();
+        createUserWithExpectedMessageAsResponse(json, "firstName field must be not empty");
+    }
+
+    @Test
+    public void testCreateUserWithoutLastNameFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.lastName").jsonString();
+        createUserWithExpectedMessageAsResponse(json, "lastName field must be not empty");
+    }
+
+    @Test
+    public void testCreateUserWithoutPasswordFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.password").jsonString();
+        createUserWithExpectedMessageAsResponse(json, "password field must be not empty");
+    }
+
+    @Test
+    public void testCreateUserWithShortPasswordShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).set("$.password", SHORT_PASSWORD).jsonString();
+        createUserWithExpectedMessageAsResponse(json, "password is too short, minimum length must equals: 8");
+    }
+
+    @Test
+    public void testCreateUserWithMalformedEmailShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).set("$.email", DomainTestConstants.NAME).jsonString();
+        createUserWithExpectedMessageAsResponse(json, "email is not a well-formated");
+    }
+
+    @Test
     @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
-        String expectedResponse = MessageFormat.format("Username email: {0} already exist in database", DomainTestConstants.EMAIL);
-        mockMvc.perform(post("/api/user")
-            .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value(expectedResponse));
+        String expectedResponse = MessageFormat.format("Username email: {0} already exist in database",
+            DomainTestConstants.EMAIL);
+        createUserWithExpectedMessageAsResponse(JSON, expectedResponse);
     }
 
     @Test
@@ -117,7 +151,15 @@ public class AccountControllerIT
     private String generateToken() {
         UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
-
         return "Bearer " + token;
+    }
+
+    private void createUserWithExpectedMessageAsResponse(String json, String message) throws Exception {
+        mockMvc.perform(post("/api/user")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value(message));
     }
 }

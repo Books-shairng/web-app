@@ -3,6 +3,7 @@ package com.ninjabooks.controller;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +34,14 @@ public class BookControllerIT
     private static final int EXPECTED_SIZE = 1;
     private static final String BOOK_STATUS = DomainTestConstants.BOOK_STATUS.toString();
     private static final String ID = String.valueOf(DomainTestConstants.ID);
+    private static final String INVALID_ISBN = "978-0851310415";
+    private static final int MAX_DESCRIPTION_LENGTH = 5000;
     private static final String JSON =
         "{" +
             "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
             "\"author\":\"" + DomainTestConstants.AUTHOR + "\"," +
-            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"" +
+            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"," +
+            "\"description\":\"" + DomainTestConstants.DESCRIPTION + "\"" +
         "}";
 
     @Autowired
@@ -57,6 +61,46 @@ public class BookControllerIT
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testAddNewBookWithoutTitleFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.title").jsonString();
+        addBookWithExpectedMessageAsResponse(json, "title field must be not empty");
+    }
+
+    @Test
+    public void testAddNewBookWithoutAuthorFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.author").jsonString();
+        addBookWithExpectedMessageAsResponse(json, "author field must be not empty");
+    }
+
+    @Test
+    public void testAddNewBookWithoutISBNFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.isbn").jsonString();
+        addBookWithExpectedMessageAsResponse(json, "isbn field must be not empty");
+    }
+
+    @Test
+    public void testAddNewBookWithoutDescriptionFieldShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).delete("$.description").jsonString();
+        addBookWithExpectedMessageAsResponse(json, "description field must be not empty");
+    }
+
+    @Test
+    public void testAddNewBookWithInvalidISBNShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON).set("$.isbn", INVALID_ISBN).jsonString();
+        addBookWithExpectedMessageAsResponse(json, "invalid ISBN");
+    }
+
+    @Test
+    public void testAddNewBookWithTooLongDescriptionShouldFailed() throws Exception {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i <= MAX_DESCRIPTION_LENGTH; i++) {
+            builder.append(" ");
+        }
+        String json = JsonPath.parse(JSON).set("$.description", builder.toString()).jsonString();
+        addBookWithExpectedMessageAsResponse(json, "description is too long, maximum description size: 5000");
     }
 
     @Test
@@ -98,5 +142,14 @@ public class BookControllerIT
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isBadRequest());
+    }
+
+    private void addBookWithExpectedMessageAsResponse(String json, String message) throws Exception {
+        mockMvc.perform(post("/api/book/")
+            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value(message));
     }
 }

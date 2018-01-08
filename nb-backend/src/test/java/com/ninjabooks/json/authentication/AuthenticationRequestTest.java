@@ -14,14 +14,6 @@ public class AuthenticationRequestTest
     private static final String PASSWORD = "secret";
 
     @Test
-    public void testCallConstructorWithoutArgumentsShouldCreateObject() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-
-        assertThat(authenticationRequest.getEmail()).isNull();
-        assertThat(authenticationRequest.getPassword()).isNull();
-    }
-
-    @Test
     public void testCallConstructorWithArgumentsShouldCreateExpectedInstance() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(EMAIL, PASSWORD);
 

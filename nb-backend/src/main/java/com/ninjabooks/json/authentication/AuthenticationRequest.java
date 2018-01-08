@@ -1,6 +1,10 @@
 package com.ninjabooks.json.authentication;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -10,14 +14,15 @@ public class AuthenticationRequest implements Serializable
 {
     private static final long serialVersionUID = -8445943548965154778L;
 
-    private String email;
-    private String password;
+    @NotEmpty
+    private final String email;
 
-    public AuthenticationRequest() {
-        super();
-    }
+    @NotEmpty
+    private final String password;
 
-    public AuthenticationRequest(String email, String password) {
+    @JsonCreator
+    public AuthenticationRequest(@JsonProperty(value = "name") String email,
+                                 @JsonProperty(value = "password") String password) {
         this.email = email;
         this.password = password;
     }
@@ -26,15 +31,7 @@ public class AuthenticationRequest implements Serializable
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

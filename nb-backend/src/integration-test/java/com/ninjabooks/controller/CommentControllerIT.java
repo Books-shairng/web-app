@@ -4,6 +4,7 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,7 @@ public class CommentControllerIT
             "\"comment\" : \"" + DomainTestConstants.COMMENT_CONTENT + "\"" +
         "}";
     private static final int EXPECTED_SIZE = 1;
+    private static final int COMMENT_DEFAULT_LENGTH = 250;
 
     @Autowired
     private WebApplicationContext wac;
@@ -110,6 +112,35 @@ public class CommentControllerIT
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    public void testAddCommentWithoutCommentFieldsShouldFailed() throws Exception {
+        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).delete("$.comment").jsonString();
+        addCommentWithExpectedMessageAsResponse(json, "comment field must be not empty");
+    }
+
+    @Test
+    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    public void testAddCommentWithTooLongCommentFieldsShouldFailed() throws Exception {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i <= COMMENT_DEFAULT_LENGTH; i++) {
+            builder.append(" ");
+        }
+        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).set("$.comment", builder.toString()).jsonString();
+        addCommentWithExpectedMessageAsResponse(json, "comment length must be between 1 and 250");
+    }
+
+    private void addCommentWithExpectedMessageAsResponse(String json, String message) throws Exception {
+        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
+            .param("bookID", String.valueOf(DomainTestConstants.ID))
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(json))
+            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.message").value(message))
             .andExpect(status().isBadRequest());
     }
 }
