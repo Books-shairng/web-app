@@ -1,6 +1,8 @@
 language: java
 
 sudo: false
+dist: trusty
+group: deprecated-2017Q4
 
 node_js:
   - "8"
