@@ -6,6 +6,7 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.message.MessageResponse;
 import com.ninjabooks.service.rest.comment.CommentRestService;
 
+import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class CommentController
 
     @RequestMapping(value = "/api/comment/{userID}/add")
     public ResponseEntity<MessageResponse> addComment(
-        @RequestBody CommentRequest commentRequest,
+        @Valid @RequestBody CommentRequest commentRequest,
         @PathVariable(value = "userID") Long userID,
         @RequestParam(value = "bookID") Long bookID) throws CommentException {
         commentRestService.addComment(commentRequest.getComment(), userID, bookID);
