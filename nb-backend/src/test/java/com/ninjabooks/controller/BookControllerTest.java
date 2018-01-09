@@ -10,7 +10,6 @@ import com.ninjabooks.util.constants.DomainTestConstants;
 import javax.persistence.EntityNotFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,19 +53,12 @@ public class BookControllerTest
     @Mock
     private BookRestService bookRestServiceMock;
 
-    @Mock
-    private ObjectMapper objectMapperMock;
-
-    @Mock
-    private ObjectNode objectNodeMock;
-
     private MockMvc mockMvc;
     private BookController sut;
 
     @Before
     public void setUp() throws Exception {
-        when(objectMapperMock.createObjectNode()).thenReturn(objectNodeMock);
-        this.sut = new BookController(bookRestServiceMock, objectMapperMock);
+        this.sut = new BookController(bookRestServiceMock, new ObjectMapper());
         this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
             .setControllerAdvice(new BookControllerHandler(), new EntityNotFoundHandler())
             .build();

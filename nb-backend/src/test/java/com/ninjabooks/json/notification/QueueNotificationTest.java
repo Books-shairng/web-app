@@ -1,22 +1,15 @@
 package com.ninjabooks.json.notification;
 
-import com.ninjabooks.domain.Queue;
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.dto.QueueDto;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.modelmapper.ModelMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -26,32 +19,15 @@ public class QueueNotificationTest
 {
     private static final int POSITION_IN_QUEUE = 1;
 
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule().silent();
-
-    @Mock
-    private Queue queueMock;
-
-    @Mock
-    private ModelMapper modelMapperMock;
-
-    @Mock
-    private QueueDto queueDtoMock;
-
-    @Mock
-    private BookDto bookDtoMock;
-
     private QueueNotification sut;
 
     @Before
     public void setUp() throws Exception {
-        when(modelMapperMock.map(any(), any())).thenReturn(bookDtoMock, queueDtoMock);
-        this.sut = new QueueNotification(queueMock, POSITION_IN_QUEUE, modelMapperMock);
+        this.sut = new QueueNotification(DomainTestConstants.QUEUE_FULL, POSITION_IN_QUEUE, new ModelMapper());
     }
 
     @Test
     public void testNotificationShouldReturnCorrectQueueReturnData() throws Exception {
-        when(queueDtoMock.getOrderDate()).thenReturn(DomainTestConstants.ORDER_DATE);
         QueueDto actual = sut.getQueueDto();
 
         assertThat(actual.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
@@ -66,9 +42,6 @@ public class QueueNotificationTest
 
     @Test
     public void testNotificationShouldReturnExpectedBook() throws Exception {
-        when(bookDtoMock.getAuthor()).thenReturn(DomainTestConstants.AUTHOR);
-        when(bookDtoMock.getTitle()).thenReturn(DomainTestConstants.TITLE);
-        when(bookDtoMock.getIsbn()).thenReturn(DomainTestConstants.ISBN);
         BookDto actual = sut.getBookDto();
 
         assertSoftly(softly -> {
