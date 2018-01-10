@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.borrow.extend;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
@@ -30,7 +31,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql", executionPhase = BEFORE_TEST_METHOD)
-public class ExtendRentalServiceImplIT
+public class ExtendRentalServiceImplIT extends AbstractBaseIT
 {
     private static final LocalDate ACTUAL_DATE_MOVE_BY_TWO_WEEKS = LocalDate.now().plusWeeks(2);
     private static final LocalDate ACTUAL_DATE_MOVE_BY_THREE_WEEKS = LocalDate.now().plusWeeks(3);

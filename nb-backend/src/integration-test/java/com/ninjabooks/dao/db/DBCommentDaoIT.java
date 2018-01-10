@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.CommentDao;
 import com.ninjabooks.domain.Comment;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBCommentDaoIT
+public class DBCommentDaoIT extends AbstractBaseIT
 {
     private static final String UPDATED_COMMENT_CONTENT = "new Comment";
 
@@ -41,7 +43,7 @@ public class DBCommentDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteComment() throws Exception {
         sut.delete(DomainTestConstants.COMMENT);
         Stream<Comment> actual = sut.getAll();
@@ -50,7 +52,7 @@ public class DBCommentDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Comment> actual = sut.getAll();
 
@@ -65,7 +67,7 @@ public class DBCommentDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
 
@@ -81,7 +83,7 @@ public class DBCommentDaoIT
 
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateComment() throws Exception {
         Comment entityToUpdate = createFreshEnity();
         entityToUpdate.setContent(UPDATED_COMMENT_CONTENT);

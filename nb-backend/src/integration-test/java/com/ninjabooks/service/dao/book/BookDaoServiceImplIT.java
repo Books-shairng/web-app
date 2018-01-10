@@ -1,5 +1,6 @@
 package com.ninjabooks.service.dao.book;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -24,7 +25,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
-public class BookDaoServiceImplIT
+public class BookDaoServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_TITLE = "Java for dummies";
     private static final String CUSTOM_AUTHOR = "Barry A. Burd";

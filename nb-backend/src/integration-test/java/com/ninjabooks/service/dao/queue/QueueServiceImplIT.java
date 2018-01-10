@@ -1,5 +1,6 @@
 package com.ninjabooks.service.dao.queue;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class QueueServiceImplIT
+public class QueueServiceImplIT extends AbstractBaseIT
 {
     private static final LocalDateTime CUSTOM_ORDER_DATE = LocalDateTime.now();
 

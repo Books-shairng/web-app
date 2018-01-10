@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BookControllerIT
+public class BookControllerIT extends AbstractBaseIT
 {
     private static final int EXPECTED_SIZE = 1;
     private static final String BOOK_STATUS = DomainTestConstants.BOOK_STATUS.toString();

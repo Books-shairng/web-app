@@ -1,5 +1,6 @@
 package com.ninjabooks.security.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.utils.TokenUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class AuthenticationControllerIT
+public class AuthenticationControllerIT extends AbstractBaseIT
 {
     private final static String JSON_REQUEST =
         "{" +

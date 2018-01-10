@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
@@ -27,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBBorrowDaoIT
+public class DBBorrowDaoIT extends AbstractBaseIT
 {
     private static final LocalDate UPDATED_BORROW_DATE = LocalDate.now();
 

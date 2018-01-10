@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.comment;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Comment;
 import com.ninjabooks.domain.History;
@@ -32,7 +33,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
-public class CommentRestServiceImplIT
+public class CommentRestServiceImplIT extends AbstractBaseIT
 {
     private static final String TRUNCATE_COMMENT = "TRUNCATE TABLE COMMENT ;";
     private static final String UPDATE_COMMENTED_STATUS = "UPDATE HISTORY SET COMMENTED = TRUE WHERE ID = 1 ;";

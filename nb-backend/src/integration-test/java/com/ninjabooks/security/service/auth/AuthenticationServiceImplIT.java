@@ -1,5 +1,6 @@
 package com.ninjabooks.security.service.auth;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.security.user.SpringSecurityUser;
@@ -31,7 +32,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:it_auth_import.sql", executionPhase = BEFORE_TEST_METHOD)
-public class AuthenticationServiceImplIT
+public class AuthenticationServiceImplIT extends AbstractBaseIT
 {
     private static final String SECURITY_PATTERN = "Bearer ";
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE USER ; ";

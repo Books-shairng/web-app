@@ -1,5 +1,6 @@
 package com.ninjabooks.security.service;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -24,7 +25,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UserAuthServiceIT
+public class UserAuthServiceIT extends AbstractBaseIT
 {
     @Autowired
     @Qualifier(value = "userAuthService")

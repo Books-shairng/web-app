@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.notification;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.notification.BorrowNotification;
 import com.ninjabooks.json.notification.QueueNotification;
@@ -24,7 +25,7 @@ import static org.assertj.core.groups.Tuple.tuple;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:it_import.sql")
-public class NotificationServiceIT
+public class NotificationServiceIT extends AbstractBaseIT
 {
     private static final int EXPTECTED_SIZE = 1;
     private static final String SQL_UPDATE_BORROW_QUERY = "UPDATE BORROW SET ACTIVE=false WHERE ID=1";

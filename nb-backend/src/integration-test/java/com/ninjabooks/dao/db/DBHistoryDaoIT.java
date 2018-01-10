@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBHistoryDaoIT
+public class DBHistoryDaoIT extends AbstractBaseIT
 {
     private static final LocalDate UPDATED_RETURN_DATE = LocalDate.now();
 
@@ -41,7 +43,7 @@ public class DBHistoryDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteHistoryByEnity() throws Exception {
         sut.delete(DomainTestConstants.HISTORY);
 
@@ -49,7 +51,7 @@ public class DBHistoryDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<History> actual = sut.getById(DomainTestConstants.ID);
 
@@ -64,7 +66,7 @@ public class DBHistoryDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindAllHistoriesShouldReturnsAllRecords() throws Exception {
         Stream<History> actual = sut.getAll();
 
@@ -77,7 +79,7 @@ public class DBHistoryDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateHistoryByEntity() throws Exception {
         History enityToUpdate = createFreshEntity();
         enityToUpdate.setReturnDate(UPDATED_RETURN_DATE);

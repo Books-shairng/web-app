@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBQRCodeDaoIT
+public class DBQRCodeDaoIT extends AbstractBaseIT
 {
     private static final String NEW_DATA = "abcde12345";
 
@@ -40,7 +42,7 @@ public class DBQRCodeDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQRCode() throws Exception {
         sut.delete(DomainTestConstants.QR_CODE);
 
@@ -48,7 +50,7 @@ public class DBQRCodeDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
 
@@ -63,11 +65,14 @@ public class DBQRCodeDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByData() throws Exception {
         Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE);
+        assertThat(actual).hasValueSatisfying(qr -> {
+            assertThat(qr.getId()).isEqualTo(DomainTestConstants.ID);
+            assertThat(qr.getData()).isEqualTo(DomainTestConstants.DATA);
+        });
     }
 
     @Test
@@ -78,7 +83,7 @@ public class DBQRCodeDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllQrCodesShouldReturnsAllRecords() throws Exception {
         Stream<QRCode> actual = sut.getAll();
 
@@ -93,7 +98,7 @@ public class DBQRCodeDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateQRCode() throws Exception {
         QRCode entityToUpdate = createFreshEntity();
         entityToUpdate.setData(NEW_DATA);

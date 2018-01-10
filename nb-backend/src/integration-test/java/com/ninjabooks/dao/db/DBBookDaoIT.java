@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.domain.Book;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBBookDaoIT
+public class DBBookDaoIT extends AbstractBaseIT
 {
     private static final String[] IGNORED_FIELDS = {"queues", "borrows", "histories", "comments"};
     private static final String UPDATED_TITLE = "New Title";
@@ -42,7 +44,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteBook() throws Exception {
         sut.delete(DomainTestConstants.BOOK);
         Stream<Book> actual = sut.getAll();
@@ -51,7 +53,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByID() throws Exception {
         Optional<Book> actual = sut.getById(DomainTestConstants.ID);
 
@@ -70,7 +72,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldRetrunAllRecords() throws Exception {
         Stream<Book> actual = sut.getAll();
 
@@ -78,7 +80,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByTitle() throws Exception {
         Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
 
@@ -86,7 +88,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByAuthor() throws Exception {
         Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
 
@@ -94,7 +96,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByISBN() throws Exception {
         Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
 
@@ -123,7 +125,7 @@ public class DBBookDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateBookByEnity() throws Exception {
         Book enityToUpdate = createFreshEnity();
         enityToUpdate.setTitle(UPDATED_TITLE);

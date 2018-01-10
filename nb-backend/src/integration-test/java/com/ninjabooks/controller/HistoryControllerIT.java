@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
-public class HistoryControllerIT
+public class HistoryControllerIT extends AbstractBaseIT
 {
     private static final String MINUS_DAYS = "10";
     private static final String EMPTY_HISTORY_MESSAGE = "User has no history";

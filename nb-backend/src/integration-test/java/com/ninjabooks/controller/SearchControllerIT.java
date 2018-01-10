@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class SearchControllerIT
+public class SearchControllerIT extends AbstractBaseIT
 {
     private final static String SEARCH_QUERY = DomainTestConstants.TITLE;
     private static final String BOOK_STATUS_AS_STRING = DomainTestConstants.BOOK_STATUS.toString();
