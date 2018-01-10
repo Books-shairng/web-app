@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.borrow;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -21,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @IntegrationTest
+@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class RentalHelperIT
+public class RentalHelperIT extends AbstractBaseIT
 {
     private static final String RANDOM_QR_DATA = "idjre";
 
@@ -71,3 +72,4 @@ public class RentalHelperIT
             .withNoCause();
     }
 }
+

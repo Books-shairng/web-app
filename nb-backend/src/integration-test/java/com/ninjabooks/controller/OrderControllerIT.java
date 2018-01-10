@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class OrderControllerIT
+public class OrderControllerIT extends AbstractBaseIT
 {
     private static final String ID = String.valueOf(DomainTestConstants.ID);
     private static final String INSERT_USER = "INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES " +

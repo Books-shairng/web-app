@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.history;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.history.GenericHistoryResponse;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -25,7 +26,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
-public class UserHistoryRestServiceImplIT
+public class UserHistoryRestServiceImplIT extends AbstractBaseIT
 {
     private static final long MINUS_NUMBER_OF_DAY = 10L;
     private static final long MINUS_ZERO_DAY = 0L;

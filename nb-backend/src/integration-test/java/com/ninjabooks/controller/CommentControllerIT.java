@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CommentControllerIT
+public class CommentControllerIT extends AbstractBaseIT
 {
     private static final String NO_COMMENTS_MESSAGE = "Book does not contains any comments";
     private static final String JSON_REQUEST_WITH_COMMENT =

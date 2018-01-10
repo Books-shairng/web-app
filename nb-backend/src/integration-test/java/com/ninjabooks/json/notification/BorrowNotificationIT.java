@@ -1,5 +1,6 @@
 package com.ninjabooks.json.notification;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dto.BorrowDto;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BorrowNotificationIT
+public class BorrowNotificationIT extends AbstractBaseIT
 {
     @Autowired
     private ModelMapper modelMapper;

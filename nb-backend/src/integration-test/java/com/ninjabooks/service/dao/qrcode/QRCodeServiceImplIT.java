@@ -1,5 +1,6 @@
 package com.ninjabooks.service.dao.qrcode;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class QRCodeServiceImplIT
+public class QRCodeServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTMOM_DATA = "123456ngkfcz";
 

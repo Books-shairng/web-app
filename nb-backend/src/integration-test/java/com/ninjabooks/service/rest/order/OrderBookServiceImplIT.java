@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.order;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.error.exception.order.OrderException;
@@ -28,10 +29,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class OrderBookServiceImplIT
+public class OrderBookServiceImplIT extends AbstractBaseIT
 {
-    private static final String TRUNCATE_TABLE = "TRUNCATE TABLE QUEUE AND COMMIT;";
-    private static final int EXPECTED_SIZE = 1;
+    private static final String TRUNCATE_TABLE = "TRUNCATE TABLE QUEUE";
 
     @Autowired
     private QueueService queueService;
@@ -50,7 +50,8 @@ public class OrderBookServiceImplIT
     @Test
     @Rollback(false)
     @Transactional
-    @Sql(value = "classpath:it_import.sql", statements = TRUNCATE_TABLE,
+    @Sql(value = "classpath:it_import.sql",
+         statements = TRUNCATE_TABLE,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldAddNewQueue() throws Exception {
         sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID);

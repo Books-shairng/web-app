@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.borrow.returnb;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +38,8 @@ import static org.assertj.core.api.Assertions.tuple;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(
     scripts = "classpath:rent-scripts/return-script/it_return_import.sql",
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class BookReturnServiceImplIT
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+public class BookReturnServiceImplIT extends AbstractBaseIT
 {
     private static final LocalDate EXPECTED_DATE = LocalDate.now();
     private static final String RANDOM_QR_CODE_DATA = "adasjda123asd";
@@ -67,7 +69,7 @@ public class BookReturnServiceImplIT
     @Sql(
         value = "classpath:rent-scripts/return-script/it_return_import.sql",
         statements = UPDATE_BOOK_STATUS,
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
             .isThrownBy(() -> sut.returnBook(DomainTestConstants.DATA))

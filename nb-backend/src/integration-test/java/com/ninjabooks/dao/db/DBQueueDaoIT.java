@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QueueDao;
 import com.ninjabooks.domain.Queue;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBQueueDaoIT
+public class DBQueueDaoIT extends AbstractBaseIT
 {
     private static final LocalDateTime NEW_ORDER_DATE = LocalDateTime.now();
 
@@ -41,7 +43,7 @@ public class DBQueueDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQueue() throws Exception {
         sut.delete(DomainTestConstants.QUEUE);
 
@@ -49,7 +51,7 @@ public class DBQueueDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Queue> actual = sut.getAll();
 
@@ -64,11 +66,14 @@ public class DBQueueDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
 
-        assertThat(actual).contains(DomainTestConstants.QUEUE);
+        assertThat(actual).hasValueSatisfying(queue -> {
+            assertThat(queue.getId()).isEqualTo(DomainTestConstants.ID);
+            assertThat(queue.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
+        });
     }
 
     @Test
@@ -79,7 +84,7 @@ public class DBQueueDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetOrderByDate() throws Exception {
         Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
 
@@ -94,7 +99,7 @@ public class DBQueueDaoIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateQueue() throws Exception {
         Queue entityToUpdate = creafreFreshEntity();
         entityToUpdate.setOrderDate(NEW_ORDER_DATE);

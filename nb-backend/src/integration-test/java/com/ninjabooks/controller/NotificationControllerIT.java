@@ -1,5 +1,6 @@
 package com.ninjabooks.controller;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class NotificationControllerIT
+public class NotificationControllerIT extends AbstractBaseIT
 {
     private static final String SQL_UPDATE_BORROW_QUERY = "UPDATE BORROW SET ACTIVE=false WHERE ID=1";
     private static final String SQL_UPDATE_QUEUE_QUERY = "UPDATE QUEUE SET ACTIVE=false WHERE ID=1";

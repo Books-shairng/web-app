@@ -9,13 +9,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -30,7 +27,6 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
     initializers = TestAppContextInitializer.class)
 @ActiveProfiles("test")
 @Retention(value = RetentionPolicy.RUNTIME)
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 @Target(value = ElementType.TYPE)
 public @interface IntegrationTest
 {

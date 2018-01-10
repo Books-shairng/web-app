@@ -1,5 +1,6 @@
 package com.ninjabooks.dao.db;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DBUserDaoIT
+public class DBUserDaoIT extends AbstractBaseIT
 {
     private static final String NEW_NAME = "Peter Datov";
     private static final String[] IGNORED_FILEDS = {"queues", "borrows", "histories", "comments", "lastPasswordReset"};

@@ -1,5 +1,6 @@
 package com.ninjabooks.json.notification;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.dto.QueueDto;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class QueueNotificationIT
+public class QueueNotificationIT extends AbstractBaseIT
 {
     private static final int POSITION_IN_QUEUE = 1;
 

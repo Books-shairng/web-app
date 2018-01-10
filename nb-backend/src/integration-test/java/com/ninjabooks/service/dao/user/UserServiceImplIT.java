@@ -1,5 +1,6 @@
 package com.ninjabooks.service.dao.user;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class UserServiceImplIT
+public class UserServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_NAME = "Jan Kowalski";
     private static final String CUSTOM_EMAIL = "jan@kowalski.pl";

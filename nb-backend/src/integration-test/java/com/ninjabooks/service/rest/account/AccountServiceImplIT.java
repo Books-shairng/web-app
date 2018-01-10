@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.account;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
@@ -25,9 +26,8 @@ import static org.assertj.core.api.Assertions.tuple;
  * @since 1.0
  */
 @IntegrationTest
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-public class AccountServiceImplIT
+public class AccountServiceImplIT extends AbstractBaseIT
 {
     @Autowired
     private UserDao userDao;
@@ -36,6 +36,7 @@ public class AccountServiceImplIT
     private AccountService sut;
 
     @Test
+    @Transactional
     public void testCreateUserShouldCreateNewUser() throws Exception {
         sut.createUser(DomainTestConstants.USER);
         Stream<User> actual = userDao.getAll();

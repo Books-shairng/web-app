@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.BaseEntity;
 import com.ninjabooks.domain.Book;
@@ -35,7 +36,7 @@ import static org.assertj.core.groups.Tuple.tuple;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(value = "classpath:rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class BookRentalServiceImplIT
+public class BookRentalServiceImplIT extends AbstractBaseIT
 {
     private static final int EXPECTED_SIZE = 1;
     private static final String RANDOM_QR_DATA = "sjdasd29232";

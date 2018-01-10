@@ -1,5 +1,6 @@
 package com.ninjabooks.service.dao.borrow;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class BorrowServiceImplIT
+public class BorrowServiceImplIT extends AbstractBaseIT
 {
     private static final LocalDate CUSTOM_BORRROW_DATE = LocalDate.now();
     private static final LocalDate CUSTOM_EXPECTED_RETURN_DATE = LocalDate.now();

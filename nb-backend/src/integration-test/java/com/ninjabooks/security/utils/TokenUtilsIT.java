@@ -1,5 +1,6 @@
 package com.ninjabooks.security.utils;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class TokenUtilsIT
+public class TokenUtilsIT extends AbstractBaseIT
 {
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalDate EXPECTED_EXP_DATE = TODAY.plusDays(7);

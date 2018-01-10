@@ -1,5 +1,6 @@
 package com.ninjabooks.service.rest.search;
 
+import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.constants.DomainTestConstants;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class BookSearchServiceImplIT
+public class BookSearchServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_SEARCH_QUERY = "Concurrency in practice";
     private static final String FULL_SEARCH_QUERY =
