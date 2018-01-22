@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
-import org.hsqldb.util.DatabaseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -43,14 +42,12 @@ public class DBConnectConfig
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
-        String activeProfile = environment.getActiveProfiles()[0];
-
         builder.scanPackages("com.ninjabooks.domain")
             .addProperties(hibernateProperties());
 
+        String activeProfile = environment.getActiveProfiles()[0];
         if (activeProfile.equals("dev")) {
             builder.addProperties(importDataToDB());
-            DatabaseManager.threadedDBM();
         }
 
         return builder.buildSessionFactory();
