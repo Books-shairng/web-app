@@ -13,26 +13,42 @@ Backend:
 * __Spring MVC + Spring Security + Spring Test__
 * __Hibernate__ for ORM
 * __MySQL__ as production database
-* __HSQL__ as development database
+* __HSQLDB__ as development database
 * __Tomcat__ as webserver
 * __Junit & Mockito__ for testing
 
 Frontend:
-* __Angular 4.0__
+* __Angular 4.0 witb Angular CLI__
 * __Bootstrap__
-* __QuickStart seed__
-* __Node.js__
-* __npm package menager__
+* __nginx__
+* __npm package manager__
+* __karma__
+
+Misc:
+* __Docker__
 
 ### How to run
-Maven is required. In your terminal type:
+Maven is required if you want run only backend. In your terminal type:
 ```bash
-    mvn tomcat7:run-war
+    cd nb-backend
+    mvn clean tomcat8:run-war
 ```
 
 Then open your web browser and type
 ```bash
     localhost:8080
+```
+
+For runing frontend type in your terminal
+```bash
+    cd nb-frontend
+    npm run start:proxy  
+```
+
+Then open your web browser and type
+
+```bash
+    localhost:3000
 ```
 
 Rest tbd
