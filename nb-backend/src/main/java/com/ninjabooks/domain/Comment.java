@@ -23,7 +23,7 @@ public class Comment extends BaseEntity
     @Column(name = "CONTENT", length = 250)
     private String content;
 
-    @Column(name = "DATE")
+    @Column(name = "COMMENT_DATE")
     private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
