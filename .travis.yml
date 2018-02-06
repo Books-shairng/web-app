@@ -28,7 +28,7 @@ jobs:
       after_success: bash <(curl -s https://codecov.io/bash)
       after_failure: bash <(curl -s https://codecov.io/bash)
     - stage: build docker images
-      after_success:  bash ./scripts/docker.sh
+      script:  bash ./scripts/docker.sh
 
 
 notifications:
