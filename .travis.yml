@@ -13,12 +13,9 @@ cache:
 
 jdk:
   - oraclejdk8
-  - openjdk8
 
 before_script:
     - export TZ=Poland
-    - ls -l
-    - bash ./scripts/prepare.sh
 
 jobs:
   include:
