@@ -2,6 +2,7 @@
 
 echo "########## Downaload .version ##########"
 wget https://github.com/ninja-share/ninjabooks-web/tree/$TRAVIS_BRANCH/.version
+ls -l
 
 DOCKER_TAG_VERSION=$( < ../.version )
 echo "Current Docker tag version is: $DOCKER_TAG_VERSION"
