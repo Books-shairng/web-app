@@ -29,6 +29,7 @@ jobs:
       after_failure: bash <(curl -s https://codecov.io/bash)
     - stage: build docker images
       script:
+      - pwd
       - ls -l
       - find / -name ".version"
       - bash ./scripts/docker.sh
