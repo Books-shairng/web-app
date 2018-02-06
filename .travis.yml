@@ -18,8 +18,7 @@ jdk:
 before_script:
     - export TZ=Poland
     - ls -l
-    - cd scripts
-    - ls -l
+    - bash ./scripts/prepare.sh
 
 jobs:
   include:
