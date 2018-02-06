@@ -30,6 +30,7 @@ jobs:
     - stage: build docker images
       script:
       - ls -l
+      - find / -name ".version"
       - bash ./scripts/docker.sh
 
 
