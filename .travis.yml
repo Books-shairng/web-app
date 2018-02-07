@@ -16,11 +16,13 @@ jdk:
 
 before_script:
     - export TZ=Poland
+script:
+    - bash ./scripts/ci/prepare.sh
 
 jobs:
   include:
-    - stage: clean repo & prepare depedency
-      script: bash ./scripts/ci/prepare.sh
+#    - stage: clean repo & prepare depedency
+#      script: bash ./scripts/ci/prepare.sh
     - stage: unit tests - backend
       script: bash ./scripts/ci/unit-tests-bk.sh
     - stage: integration tests - backend
