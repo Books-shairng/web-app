@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-mvn -f ./nb-backend/ clean
-npm install -g yarn
+function prepare_backend() {
+    mvn -f ./nb-backend/ clean
+    npm install -g yarn
+}
 
-cd nb-frontend/
-yarm install
-yarn add global codecov --cwd ./nb-frontend/
+function prepare_frontend() {
+    cd nb-frontend/
+    yarm install
+    yarn add global codecov --cwd ./nb-frontend/
+}
