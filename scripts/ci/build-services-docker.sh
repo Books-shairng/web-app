@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-source build.sh
-source docker.sh
-source prepare.sh
+CI_SCRIPT_PATH=$TRAVIS_BUILD_DIR/scripts/ci
+
+source $CI_SCRIPT_PATH/build.sh
+source $CI_SCRIPT_PATH/docker.sh
+source $CI_SCRIPT_PATH/prepare.sh
 
 prepare_frontend
 prepare_backend
