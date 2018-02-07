@@ -10,7 +10,7 @@ if [ "$TRAVIS_BRANCH" == "develop" ] || [ "$TRAVIS_BRANCH" == "feat-docker-confi
     for index in ${nb_services[*]}
     do
         echo "########## Build nb-$index docker image ##########"
-        docker build -t nb-$index:${DOCKER_TAG_VERSION} ../nb-$index/
+        docker build -t nb-$index:${DOCKER_TAG_VERSION} $TRAVIS_BUILD_DIR/nb-$index/
     done
 
 else
