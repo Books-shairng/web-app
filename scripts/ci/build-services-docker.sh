@@ -6,7 +6,7 @@ source $CI_SCRIPT_PATH/build.sh
 source $CI_SCRIPT_PATH/docker.sh
 source $CI_SCRIPT_PATH/prepare.sh
 
-prepare_frontend
 prepare_backend
+prepare_frontend
 build_services
 build_docker_images

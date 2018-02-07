@@ -7,6 +7,6 @@ function prepare_backend() {
 
 function prepare_frontend() {
     cd nb-frontend/
-    yarm install
+    yarn install
     yarn add global codecov --cwd ./nb-frontend/
 }
