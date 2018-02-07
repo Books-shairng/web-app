@@ -2,11 +2,10 @@
 
 function prepare_backend() {
     mvn -f ./nb-backend/ clean
-    npm install -g yarn
 }
 
 function prepare_frontend() {
-    cd nb-frontend/
-    yarn install
+    npm install -g yarn
+    yarn install --cwd ./nb-backend/
     yarn add global codecov --cwd ./nb-frontend/
 }
