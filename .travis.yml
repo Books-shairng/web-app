@@ -29,10 +29,13 @@ jobs:
       script: bash ./scripts/ci/int-tests-bk.sh
       after_success: bash <(curl -s https://codecov.io/bash)
       after_failure: bash <(curl -s https://codecov.io/bash)
-    - stage: build services
-      script: bash ./scripts/ci/build.sh
-    - stage: build docker images
-      script: bash ./scripts/ci/docker.sh
+#    - stage: build services & docker images
+#      script: bash ./scripts/ci/build.sh
+    - stage: build services & docker images
+      script:
+       - bash ./scripts/ci/prepare.sh
+       - bash ./scripts/ci/build.sh
+       - bash ./scripts/ci/docker.sh
 
 
 notifications:
