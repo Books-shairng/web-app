@@ -5,5 +5,5 @@ function build_services() {
     mvn -f ./nb-backend/ verify -q -Dlog4j.configurationFile=null -DskipTests=true
 
     echo "########## Build frontend ##########"
-    yarn run --cwd ./nb-frontend/ build
+    yarn yarn --cwd ./nb-frontend/ run build
 }

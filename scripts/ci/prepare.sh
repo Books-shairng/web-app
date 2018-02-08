@@ -6,6 +6,6 @@ function prepare_backend() {
 
 function prepare_frontend() {
     npm install -g yarn
+    yarn global add @angular/cli codecov
     yarn install --cwd ./nb-backend/
-    yarn add global codecov --cwd ./nb-frontend/
 }
