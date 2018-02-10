@@ -8,6 +8,6 @@ function bk_ut() {
 
 function bk_it() {
     echo "############# Run backend integration tests #############"
-    mvn clean -f ./nb-backend/ cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
+    mvn clean -f ./nb-backend/ verify -P integration-test -q -Dlog4j.configurationFile=null
     echo "############# Stop backend integration tests #############"
 }
