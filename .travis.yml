@@ -1,10 +1,9 @@
 language: java
 
-sudo: false
+sudo: required
 
 node_js:
   - "8"
-  - "6"
 
 cache:
   directories:
@@ -16,19 +15,18 @@ jdk:
 
 before_script:
     - export TZ=Poland
-script:
-    - bash ./scripts/ci/prepare.sh
+    - chmod +x travis.sh
 
 jobs:
   include:
     - stage: unit tests - backend
-      script: bash ./travis.sh bk_unit_test
+      script: ./travis.sh bk_unit_test
+      after_success: bash <(curl -s https://codecov.io/bash) -F unit_tests
     - stage: integration tests - backend
-      script: bash ./travis.sh bk_integration_test
-      after_success: bash <(curl -s https://codecov.io/bash)
-      after_failure: bash <(curl -s https://codecov.io/bash)
+      script: ./travis.sh bk_integration_test
+      after_success: bash <(curl -s https://codecov.io/bash) -F integration_tests
     - stage: build services & docker images
-      script: bash ./travis.sh build_services_with_docker
+      script: ./travis.sh build_services_with_docker
 
 notifications:
   email: false
