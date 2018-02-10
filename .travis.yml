@@ -21,10 +21,10 @@ jobs:
   include:
     - stage: unit tests - backend
       script: ./travis.sh bk_unit_test
-      after_success: bash <(curl -s https://codecov.io/bash) -F unit-tests
+      after_success: bash <(curl -s https://codecov.io/bash) -F unit_tests
     - stage: integration tests - backend
       script: ./travis.sh bk_integration_test
-      after_success: bash <(curl -s https://codecov.io/bash) -F integration-tests
+      after_success: bash <(curl -s https://codecov.io/bash) -F integration_tests
     - stage: build services & docker images
       script: ./travis.sh build_services_with_docker
 
