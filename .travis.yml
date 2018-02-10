@@ -15,6 +15,7 @@ jdk:
 
 before_script:
     - export TZ=Poland
+    - chmod +x travis.sh
 
 jobs:
   include:
