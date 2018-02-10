@@ -48,6 +48,14 @@
                 <skip.unit.tests>true</skip.unit.tests>
             </properties>
         </profile>
+        <profile>
+            <id>skip-tests</id>
+            <properties>
+                <build.profile.id>skip-tests</build.profile.id>
+                <skip.integration.tests>true</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
