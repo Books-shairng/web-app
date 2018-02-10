@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKER_TAG_VERSION=$( < $TRAVIS_BUILD_DIR/.version )
+DOCKER_TAG_VERSION=$( < .version )
 echo "Current Docker tag version is: $DOCKER_TAG_VERSION"
 
 nb_services=(frontend backend)
