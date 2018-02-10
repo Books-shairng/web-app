@@ -22,13 +22,13 @@ script:
 jobs:
   include:
     - stage: unit tests - backend
-      script: bash ./scripts/ci/test.sh bk_unit_test
+      script: bash ./travis.sh bk_unit_test
     - stage: integration tests - backend
-      script: bash ./scripts/ci/test.sh bk_integration_test
+      script: bash ./travis.sh bk_integration_test
       after_success: bash <(curl -s https://codecov.io/bash)
       after_failure: bash <(curl -s https://codecov.io/bash)
     - stage: build services & docker images
-      script: bash ./scripts/ci/build-services-docker.sh
+      script: bash ./travis.sh build_with_docker
 
 notifications:
   email: false

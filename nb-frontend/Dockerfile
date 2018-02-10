@@ -1,6 +1,6 @@
-FROM nginx:1.13.8
+FROM nginx:1.13.8-alpine
 
-COPY nginx.conf /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 

@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-case $@ in
-bk_unit_test)
+function bk_ut() {
+    echo "############# Run backend unit tests #############"
     mvn -f ./nb-backend/ test -q -Dlog4j.configurationFile=null
-   ;;
-bk_integration_test)
+    echo "############# Stop backend unit tests #############"
+}
+
+function bk_it() {
+    echo "############# Run backend integration tests #############"
     mvn -f ./nb-backend/ cobertura:cobertura-integration-test -q -Dlog4j.configurationFile=null
-    ;;
-esac
+    echo "############# Run backend integration tests #############"
+}
