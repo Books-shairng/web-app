@@ -10,5 +10,3 @@ function build_with_docker() {
     build_services
     build_docker_images
 }
-
-build_with_docker
