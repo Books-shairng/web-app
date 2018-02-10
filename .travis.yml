@@ -6,9 +6,6 @@ node_js:
   - "8"
   - "6"
 
-services:
-  - docker
-
 cache:
   directories:
   - "$HOME/.m2"
