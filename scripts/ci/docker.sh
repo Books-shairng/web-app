@@ -10,7 +10,7 @@ function build_docker_images() {
         for index in ${nb_services[*]}
         do
             echo "########## Build nb-$index docker image ##########"
-            sudo docker build -t nb-$index:${CURRENT_DOCKER_TAG_VERSION} $TRAVIS_BUILD_DIR/nb-$index/
+            docker build -t nb-$index:${CURRENT_DOCKER_TAG_VERSION} $TRAVIS_BUILD_DIR/nb-$index/
         done
     else
         echo "##########  Other branch than master or develop ##########"
