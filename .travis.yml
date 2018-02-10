@@ -16,19 +16,17 @@ jdk:
 
 before_script:
     - export TZ=Poland
-script:
-    - bash ./scripts/ci/prepare.sh
 
 jobs:
   include:
     - stage: unit tests - backend
-      script: bash ./travis.sh bk_unit_test
+      script: ./travis.sh bk_unit_test
     - stage: integration tests - backend
-      script: bash ./travis.sh bk_integration_test
+      script: ./travis.sh bk_integration_test
       after_success: bash <(curl -s https://codecov.io/bash)
       after_failure: bash <(curl -s https://codecov.io/bash)
     - stage: build services & docker images
-      script: bash ./travis.sh build_services_with_docker
+      script: ./travis.sh build_services_with_docker
 
 notifications:
   email: false
