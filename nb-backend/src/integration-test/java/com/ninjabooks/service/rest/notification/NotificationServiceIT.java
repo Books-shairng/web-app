@@ -24,7 +24,7 @@ import static org.assertj.core.groups.Tuple.tuple;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:it_import.sql")
+@Sql(value = "classpath:sql_query/it_import.sql")
 public class NotificationServiceIT extends AbstractBaseIT
 {
     private static final int EXPTECTED_SIZE = 1;
@@ -65,7 +65,7 @@ public class NotificationServiceIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", statements = SQL_UPDATE_BORROW_QUERY)
+    @Sql(value = "classpath:sql_query/it_import.sql", statements = SQL_UPDATE_BORROW_QUERY)
     public void testFindUserBorrowsShouldReturnEmptyListWhenNotFoundAnyBook() throws Exception {
         List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
 
@@ -110,7 +110,7 @@ public class NotificationServiceIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", statements = SQL_UPDATE_QUEUE_QUERY)
+    @Sql(value = "classpath:sql_query/it_import.sql", statements = SQL_UPDATE_QUEUE_QUERY)
     public void testFindUserQueueShouldReturnEmptyListWhenNotFoundAnyBook() throws Exception {
         List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
 

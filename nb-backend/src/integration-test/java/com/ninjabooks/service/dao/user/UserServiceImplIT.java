@@ -25,7 +25,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class UserServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_NAME = "Jan Kowalski";

@@ -42,7 +42,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQRCode() throws Exception {
         sut.delete(DomainTestConstants.QR_CODE);
 
@@ -50,7 +50,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
 
@@ -65,7 +65,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByData() throws Exception {
         Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
 
@@ -83,7 +83,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllQrCodesShouldReturnsAllRecords() throws Exception {
         Stream<QRCode> actual = sut.getAll();
 
@@ -98,7 +98,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateQRCode() throws Exception {
         QRCode entityToUpdate = createFreshEntity();
         entityToUpdate.setData(NEW_DATA);

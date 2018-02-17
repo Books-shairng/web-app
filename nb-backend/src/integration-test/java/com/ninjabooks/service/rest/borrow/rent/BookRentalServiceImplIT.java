@@ -35,7 +35,7 @@ import static org.assertj.core.groups.Tuple.tuple;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@Sql(value = "classpath:rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class BookRentalServiceImplIT extends AbstractBaseIT
 {
     private static final int EXPECTED_SIZE = 1;
@@ -103,7 +103,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/it_rent_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/it_rent_import.sql",
          statements = QUEUE_INSERT_QUERY,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldSetActiveToFalseInQueueTableAfterSucceedBorrow() throws Exception {
@@ -114,7 +114,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/it_rent_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/it_rent_import.sql",
          statements = UPDATE_BOOK_BORROW_STATUS,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExceptionWhenBookIsAlreadyBorrowed() throws Exception {
@@ -125,7 +125,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/it_rent_queue_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/it_rent_queue_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenBookWasOrderedByOtherUser() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
@@ -135,7 +135,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/it_rent_queue_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/it_rent_queue_import.sql",
          statements = QUEUE_INSERT_QUERY,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenUserOrderedBookAndNotOnFirstPosition() throws Exception {
@@ -147,8 +147,8 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(value = {
-        "classpath:rent-scripts/it_rent_import.sql",
-        "classpath:rent-scripts/borrow_overflow_script.sql"
+        "classpath:sql_query/rent-scripts/it_rent_import.sql",
+        "classpath:sql_query/rent-scripts/borrow_overflow_script.sql"
     },
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExcpetionWhenLimitIsExceeded() throws Exception {

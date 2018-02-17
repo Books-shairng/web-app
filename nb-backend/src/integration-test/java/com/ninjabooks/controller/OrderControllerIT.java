@@ -58,7 +58,7 @@ public class OrderControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(scripts = "classpath:it_import.sql")
+    @Sql(scripts = "classpath:sql_query/it_import.sql")
     public void testOrderBookShouldReturnErrorMessageWhenUserAlreadyOrderedBook() throws Exception {
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)
             .param("bookID", ID))
@@ -70,7 +70,7 @@ public class OrderControllerIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        scripts = {"classpath:it_import.sql", "classpath:queue_overflow_script.sql"},
+        scripts = {"classpath:sql_query/it_import.sql", "classpath:sql_query/queue_overflow_script.sql"},
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldReturnErrorMessageWhenLimitExceed() throws Exception {
         mockMvc.perform(post("/api/order/{userID}/", DomainTestConstants.ID)

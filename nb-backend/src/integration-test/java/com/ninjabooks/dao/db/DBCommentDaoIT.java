@@ -43,7 +43,7 @@ public class DBCommentDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteComment() throws Exception {
         sut.delete(DomainTestConstants.COMMENT);
         Stream<Comment> actual = sut.getAll();
@@ -52,7 +52,7 @@ public class DBCommentDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Comment> actual = sut.getAll();
 
@@ -67,7 +67,7 @@ public class DBCommentDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
 
@@ -83,7 +83,7 @@ public class DBCommentDaoIT extends AbstractBaseIT
 
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateComment() throws Exception {
         Comment entityToUpdate = createFreshEnity();
         entityToUpdate.setContent(UPDATED_COMMENT_CONTENT);

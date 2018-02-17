@@ -52,7 +52,7 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnStatusOK() throws Exception {
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))
@@ -62,7 +62,7 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnExpectedResponseWhenFoundComments() throws Exception {
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))
@@ -75,7 +75,7 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnExpectedResponseSizeArray() throws Exception {
         mockMvc.perform(get("/api/comment/")
             .param("isbn", DomainTestConstants.ISBN))
@@ -94,7 +94,7 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndReturnStatusOK() throws Exception {
         mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
             .param("bookID", String.valueOf(DomainTestConstants.ID))
@@ -105,7 +105,7 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldFaildWhenUnableToAddComment() throws Exception {
         mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
             .param("bookID", String.valueOf(DomainTestConstants.ID))
@@ -117,14 +117,14 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentWithoutCommentFieldsShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).delete("$.comment").jsonString();
         addCommentWithExpectedMessageAsResponse(json, "comment field must be not empty");
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentWithTooLongCommentFieldsShouldFailed() throws Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i <= COMMENT_DEFAULT_LENGTH; i++) {

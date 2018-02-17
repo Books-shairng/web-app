@@ -43,7 +43,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQueue() throws Exception {
         sut.delete(DomainTestConstants.QUEUE);
 
@@ -51,7 +51,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Queue> actual = sut.getAll();
 
@@ -66,7 +66,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
 
@@ -84,7 +84,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetOrderByDate() throws Exception {
         Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
 
@@ -99,7 +99,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateQueue() throws Exception {
         Queue entityToUpdate = creafreFreshEntity();
         entityToUpdate.setOrderDate(NEW_ORDER_DATE);

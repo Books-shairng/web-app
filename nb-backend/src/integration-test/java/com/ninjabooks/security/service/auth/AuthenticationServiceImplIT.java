@@ -31,7 +31,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:it_auth_import.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class AuthenticationServiceImplIT extends AbstractBaseIT
 {
     private static final String SECURITY_PATTERN = "Bearer ";
@@ -60,7 +60,7 @@ public class AuthenticationServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", statements = TRUNCATE_TABLE, executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", statements = TRUNCATE_TABLE, executionPhase = BEFORE_TEST_METHOD)
     public void testAuthUserShouldThrowsExceptionWhenUserDataNotValid() throws Exception {
         assertThatExceptionOfType(AuthenticationException.class)
             .isThrownBy(() -> sut.authUser(createAuthRequest()))

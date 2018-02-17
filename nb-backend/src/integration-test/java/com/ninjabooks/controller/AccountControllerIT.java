@@ -119,7 +119,7 @@ public class AccountControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
         String expectedResponse = MessageFormat.format("Username email: {0} already exist in database",
             DomainTestConstants.EMAIL);
@@ -127,7 +127,7 @@ public class AccountControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAuthentationShouldSucceed() throws Exception {
         mockMvc.perform(get("/api/user")
             .header("Authorization", generateToken())
@@ -137,7 +137,7 @@ public class AccountControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAuthentationShouldReturnExpectedJSON() throws Exception {
         mockMvc.perform(get("/api/user")
             .header("Authorization", generateToken())

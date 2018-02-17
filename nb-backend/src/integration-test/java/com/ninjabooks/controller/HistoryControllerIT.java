@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
 public class HistoryControllerIT extends AbstractBaseIT
 {
     private static final String MINUS_DAYS = "10";

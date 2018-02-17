@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class SearchControllerIT extends AbstractBaseIT
 {
     private final static String SEARCH_QUERY = DomainTestConstants.TITLE;

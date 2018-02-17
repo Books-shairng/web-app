@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.tuple;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class NotificationServiceImplIT extends AbstractBaseIT
 {
     private static final int EXPECTED_SIZE = 1;
@@ -58,7 +58,7 @@ public class NotificationServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:it_import.sql",
+        value = "classpath:sql_query/it_import.sql",
         statements = UPDATE_BORROW_STATUS,
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindUserBorrowsWhenUserNotHaveBorrowsShouldReturnEmptyList() throws Exception {
@@ -96,7 +96,7 @@ public class NotificationServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:it_import.sql",
+        value = "classpath:sql_query/it_import.sql",
         statements = UPDATE_QUEUE_STATUS,
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindUserQueuesWhenUserNotHaveQueuesShouldReturnEmptyList() throws Exception {

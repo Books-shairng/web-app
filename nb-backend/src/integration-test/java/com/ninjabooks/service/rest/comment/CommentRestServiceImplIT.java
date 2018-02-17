@@ -32,7 +32,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class CommentRestServiceImplIT extends AbstractBaseIT
 {
     private static final String TRUNCATE_COMMENT = "TRUNCATE TABLE COMMENT ;";
@@ -64,7 +64,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:it_import.sql",
+        value = "classpath:sql_query/it_import.sql",
         statements = TRUNCATE_COMMENT,
         executionPhase = BEFORE_TEST_METHOD)
     public void testFetchBookCommentsShouldReturnEmptyStreamWhenCommentsNotFound() throws Exception {
@@ -75,7 +75,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
 
     @Test
     @Transactional
-    @Sql(scripts = "classpath:comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndChangeCommentedToTrue() throws Exception {
         sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<History> actual = historyService.getAll();
@@ -85,7 +85,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
 
     @Test
     @Transactional
-    @Sql(scripts = "classpath:comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndReturnExpectedCommentEntity() throws Exception {
         sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
         Stream<Comment> actual = commentDaoService.getAll();
@@ -98,7 +98,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     @Test
     @Transactional
     @Sql(
-        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql",
         statements = UPDATE_COMMENTED_STATUS,
         executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldThrowsExceptionWhenBookWasAlreadyCommented() throws Exception {
@@ -112,7 +112,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     @Test
     @Transactional
     @Sql(
-        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql",
         statements = UPDATE_RETURN_DATE,
         executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldThrowsExceptionWhenDateIsOverdue() throws Exception {
@@ -126,7 +126,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     @Test
     @Transactional
     @Sql(
-        scripts = "classpath:comment-scripts/it_comment_script.sql",
+        scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql",
         statements = FLUSH_HISTORY_TABLE,
         executionPhase = BEFORE_TEST_METHOD)
     public void testAddChommentShouldThrowsExceptionHistoryEntityNotFound() throws Exception {

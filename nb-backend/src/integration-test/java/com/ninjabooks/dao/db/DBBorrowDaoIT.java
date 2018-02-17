@@ -44,7 +44,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteBorrow() throws Exception {
         sut.delete(DomainTestConstants.BORROW);
         Stream<Borrow> actual = sut.getAll();
@@ -53,7 +53,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Borrow> actual = sut.getAll();
 
@@ -68,7 +68,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<Borrow> actual = sut.getById(DomainTestConstants.ID);
 
@@ -83,7 +83,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetReturnDate() throws Exception {
         Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
 
@@ -91,7 +91,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBorrowDate() throws Exception {
         Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
 
@@ -114,7 +114,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateBorrow() throws Exception {
         Borrow entityToUpdate = createFreshEnity();
         entityToUpdate.setBorrowDate(UPDATED_BORROW_DATE);

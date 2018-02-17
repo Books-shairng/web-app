@@ -24,7 +24,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class BookDaoServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_TITLE = "Java for dummies";

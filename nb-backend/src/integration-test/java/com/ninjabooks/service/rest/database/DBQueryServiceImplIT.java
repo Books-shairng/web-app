@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.entry;
  */
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class DBQueryServiceImplIT extends AbstractBaseIT
 {
     private static final String EXPECTED_INSTERT_RESULT = "1";

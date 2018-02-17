@@ -48,7 +48,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          statements = UPDATE_BOOK_STATUS,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldSucceed() throws Exception {
@@ -69,7 +69,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldReturnBadRequestWhenQRCodeNotFound() throws Exception {
         mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
@@ -81,7 +81,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldReturnBadRequestWhenBookIsNotBorrowed() throws Exception {
         mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
@@ -93,7 +93,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldSucceed() throws Exception {
         mockMvc.perform(post("/api/borrow/return/")
@@ -103,7 +103,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          statements = UPDATE_BOOK_STATUS,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldFailedWhenBookIsNotBorrowed() throws Exception {
@@ -117,7 +117,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql",
+    @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testExtendReturnDateShouldSucced() throws Exception {
         mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
@@ -128,7 +128,7 @@ public class BorrowControllerIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         statements = {TRUNCATE_BORROW_TABLE, TRUNCATE_BOOK_TABLE},
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenBookNotExist() throws Exception {
@@ -143,7 +143,7 @@ public class BorrowControllerIT extends AbstractBaseIT
     @Test
     @Sql(
         statements = TRUNCATE_BORROW_TABLE,
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenBookIsNotBorrowed() throws Exception {
         mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
@@ -156,7 +156,7 @@ public class BorrowControllerIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         statements = UPDATE_EXTEND_STATUS,
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenExtendStatusIsFalse() throws Exception {
