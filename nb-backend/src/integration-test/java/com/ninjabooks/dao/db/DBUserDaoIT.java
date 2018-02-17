@@ -42,7 +42,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteByEnityUser() throws Exception {
         sut.delete(DomainTestConstants.USER);
 
@@ -50,7 +50,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<User> actual = sut.getById(DomainTestConstants.ID);
 
@@ -79,7 +79,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<User> actual = sut.getAll();
 
@@ -95,7 +95,7 @@ public class DBUserDaoIT extends AbstractBaseIT
 
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetUserByName() throws Exception {
         Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
 
@@ -103,7 +103,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetUserByEmail() throws Exception {
         Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
 
@@ -111,7 +111,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateUser() throws Exception {
         User entityToUpdate = createFreshEntity();
         entityToUpdate.setName(NEW_NAME);

@@ -40,7 +40,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
     private OrderBookService sut;
 
     @Test
-    @Sql(value = "classpath:it_import.sql")
+    @Sql(value = "classpath:sql_query/it_import.sql")
     public void testOrderBookWhenUserHasBookShouldThrowsException() throws Exception {
         assertThatExceptionOfType(OrderException.class)
             .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
@@ -50,7 +50,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
     @Test
     @Rollback(false)
     @Transactional
-    @Sql(value = "classpath:it_import.sql",
+    @Sql(value = "classpath:sql_query/it_import.sql",
          statements = TRUNCATE_TABLE,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldAddNewQueue() throws Exception {
@@ -72,7 +72,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(scripts = {"classpath:it_import.sql", "classpath:queue_overflow_script.sql"})
+    @Sql(scripts = {"classpath:sql_query/it_import.sql", "classpath:sql_query/queue_overflow_script.sql"})
     public void testOrderBookShouldThrowsExceptionWhenQueueLimitExceed() throws Exception {
         assertThatExceptionOfType(OrderException.class)
             .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))

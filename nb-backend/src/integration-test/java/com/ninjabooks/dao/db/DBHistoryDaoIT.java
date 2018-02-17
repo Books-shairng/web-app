@@ -43,7 +43,7 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteHistoryByEnity() throws Exception {
         sut.delete(DomainTestConstants.HISTORY);
 
@@ -51,7 +51,7 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
         Optional<History> actual = sut.getById(DomainTestConstants.ID);
 
@@ -66,7 +66,7 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testFindAllHistoriesShouldReturnsAllRecords() throws Exception {
         Stream<History> actual = sut.getAll();
 
@@ -79,7 +79,7 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateHistoryByEntity() throws Exception {
         History enityToUpdate = createFreshEntity();
         enityToUpdate.setReturnDate(UPDATED_RETURN_DATE);

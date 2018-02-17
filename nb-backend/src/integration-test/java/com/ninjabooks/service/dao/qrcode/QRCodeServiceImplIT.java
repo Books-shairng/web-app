@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class QRCodeServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTMOM_DATA = "123456ngkfcz";

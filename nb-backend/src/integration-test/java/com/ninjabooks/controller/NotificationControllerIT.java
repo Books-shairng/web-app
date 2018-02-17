@@ -44,7 +44,7 @@ public class NotificationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql")
+    @Sql(value = "classpath:sql_query/it_import.sql")
     public void testUserNotificationShouldFoundUserBorrowsAndQueues() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
             .andDo(print())
@@ -65,7 +65,7 @@ public class NotificationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", statements = {SQL_UPDATE_QUEUE_QUERY})
+    @Sql(value = "classpath:sql_query/it_import.sql", statements = {SQL_UPDATE_QUEUE_QUERY})
     public void testUserNotificationShouldReutnOnlyBookList() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
             .andDo(print())
@@ -82,7 +82,7 @@ public class NotificationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", statements = {SQL_UPDATE_BORROW_QUERY})
+    @Sql(value = "classpath:sql_query/it_import.sql", statements = {SQL_UPDATE_BORROW_QUERY})
     public void testUserNotificationShouldReturnOnlyQueuesList() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
             .andDo(print())
@@ -97,7 +97,7 @@ public class NotificationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", statements = {SQL_UPDATE_BORROW_QUERY, SQL_UPDATE_QUEUE_QUERY})
+    @Sql(value = "classpath:sql_query/it_import.sql", statements = {SQL_UPDATE_BORROW_QUERY, SQL_UPDATE_QUEUE_QUERY})
     public void testUserNotificationShouldReturnStatusNotContent() throws Exception {
         mockMvc.perform(get("/api/notification/1"))
             .andDo(print())

@@ -114,7 +114,7 @@ public class BookControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
         mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -123,7 +123,7 @@ public class BookControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(scripts = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnExpectedMessage() throws Exception {
         mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))

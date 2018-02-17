@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class RentalHelperIT extends AbstractBaseIT
 {
     private static final String RANDOM_QR_DATA = "idjre";
@@ -48,7 +48,7 @@ public class RentalHelperIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testIsNotBelongToOtherUserQueueShouldReturnFalseWhenBelong() throws Exception {
         boolean actual = sut.isNotBelongToOtherUserQueue(DomainTestConstants.BOOK_FULL, DomainTestConstants.USER_FULL);
 

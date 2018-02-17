@@ -64,7 +64,7 @@ public class AuthenticationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testAuthenticationWithCorrectDataShouldReturnStatus200() throws Exception {
         mockMvc.perform(post("/api/auth")
             .content(JSON_REQUEST)
@@ -74,7 +74,7 @@ public class AuthenticationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testAuthenticationWithCorrectDataShouldReturnStatusTokenWithExpectedSize() throws Exception {
         mockMvc.perform(post("/api/auth")
             .content(JSON_REQUEST)
@@ -95,21 +95,21 @@ public class AuthenticationControllerIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testAuthenticationRequestWithoutEmailFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON_REQUEST).delete("$.email").jsonString();
         authenticationRequestWithExpectedMessageAsResult(json, "email must not be empty");
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testAuthenticationRequestWithoutPasswordFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON_REQUEST).delete("$.password").jsonString();
         authenticationRequestWithExpectedMessageAsResult(json, "password must not be empty");
     }
 
     @Test
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRefreshTokenShouldReturnNewToken() throws Exception {
         String token = generateToken();
 
@@ -128,7 +128,7 @@ public class AuthenticationControllerIT extends AbstractBaseIT
 
     @Test
     @Ignore("Test is disable beacuse token is fresh")
-    @Sql(value = "classpath:it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_auth_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRefreshTokenShouldReturnBadRequestWhenUnableToRefresh() throws Exception {
         String token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRlZUBleG1hcGxlLmNvbSIsImF1ZGllbmNlIjoidW5rbm93biI" +
             "sImNyZWF0ZWQiOnsiZGF5T2ZNb250aCI6OCwiZGF5T2ZXZWVrIjoiV0VETkVTREFZIiwibW9udGgiOiJOT1ZFTUJFUiIsInllYXIiOjIwM" +

@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.tuple;
 @IntegrationTest
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(
-    scripts = "classpath:rent-scripts/return-script/it_return_import.sql",
+    scripts = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
     executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class BookReturnServiceImplIT extends AbstractBaseIT
 {
@@ -67,7 +67,7 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         statements = UPDATE_BOOK_STATUS,
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {

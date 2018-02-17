@@ -32,7 +32,7 @@ public class UserAuthServiceIT extends AbstractBaseIT
     private UserDetailsService sut;
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testLoadUserByUsernameShouldReturnExpectedFields() throws Exception {
         UserDetails details = sut.loadUserByUsername(DomainTestConstants.EMAIL);
         SpringSecurityUser actual = (SpringSecurityUser) details;

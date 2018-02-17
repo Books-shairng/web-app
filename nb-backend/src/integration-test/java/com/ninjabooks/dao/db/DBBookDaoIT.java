@@ -44,7 +44,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteBook() throws Exception {
         sut.delete(DomainTestConstants.BOOK);
         Stream<Book> actual = sut.getAll();
@@ -53,7 +53,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByID() throws Exception {
         Optional<Book> actual = sut.getById(DomainTestConstants.ID);
 
@@ -72,7 +72,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAllShouldRetrunAllRecords() throws Exception {
         Stream<Book> actual = sut.getAll();
 
@@ -80,7 +80,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByTitle() throws Exception {
         Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
 
@@ -88,7 +88,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByAuthor() throws Exception {
         Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
 
@@ -96,7 +96,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByISBN() throws Exception {
         Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
 
@@ -125,7 +125,7 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testUpdateBookByEnity() throws Exception {
         Book enityToUpdate = createFreshEnity();
         enityToUpdate.setTitle(UPDATED_TITLE);

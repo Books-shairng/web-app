@@ -30,7 +30,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@Sql(value = "classpath:rent-scripts/return-script/it_return_import.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class ExtendRentalServiceImplIT extends AbstractBaseIT
 {
     private static final LocalDate ACTUAL_DATE_MOVE_BY_TWO_WEEKS = LocalDate.now().plusWeeks(2);
@@ -64,7 +64,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         statements = {TRUNCATE_BORROW_TABLE, TRUNCATE_BOOK_TABLE},
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendReturnDateShouldThrowsExceptionWhenBookNotExist() throws Exception {
@@ -76,7 +76,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
     @Test
     @Sql(
         statements = TRUNCATE_BORROW_TABLE,
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         executionPhase = BEFORE_TEST_METHOD)
     public void testEtendReturnDateShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
@@ -87,7 +87,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     @Sql(
-        value = "classpath:rent-scripts/return-script/it_return_import.sql",
+        value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         statements = UPDATE_EXTEND_STATUS,
         executionPhase = BEFORE_TEST_METHOD)
     public void testEtendReturnDateShouldThrowsExceptionWhenExtendStatusIsFalse() throws Exception {

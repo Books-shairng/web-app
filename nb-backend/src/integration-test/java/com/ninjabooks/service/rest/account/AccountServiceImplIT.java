@@ -46,7 +46,7 @@ public class AccountServiceImplIT extends AbstractBaseIT
     }
 
     @Test
-    @Sql(value = "classpath:it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserShouldFailedWhenUserAlreadyExist() throws Exception {
         assertThatExceptionOfType(UserAlreadyExistException.class)
             .isThrownBy(() -> sut.createUser(DomainTestConstants.USER))
