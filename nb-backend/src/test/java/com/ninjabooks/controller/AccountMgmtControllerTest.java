@@ -33,10 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class AccountMngtControllerTest
+public class AccountMgmtControllerTest
 {
     private static final String API_URL_REQUEST = "/api/management/{userID}/";
-    private static final String JSON = "" +
+    private static final String JSON =
         "{" +
             "\"password\" : " + PLAIN_PASSWORD +
         "}";
