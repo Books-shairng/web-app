@@ -2,7 +2,8 @@ package com.ninjabooks.service.rest.search;
 
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.dao.book.BookDaoService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.when;
 public class BookSearchServiceImplTest
 {
     private static final String SEARCH_QUERY = "Title";
-    private static final List<Book> LIST_WITH_BOOKS = Collections.singletonList(DomainTestConstants.BOOK);
+    private static final List<Book> LIST_WITH_BOOKS = Collections.singletonList(BOOK);
     private static final List<Book> EMPTY_LIST = Collections.emptyList();
     private static final int EXPECTED_SIZE = 1;
 
@@ -60,7 +61,7 @@ public class BookSearchServiceImplTest
 
         List<Book> actual = sut.search(SEARCH_QUERY);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        assertThat(actual).containsExactly(BOOK);
         verify(fullTextQueryMock, atLeastOnce()).getResultSize();
         verify(fullTextQueryMock, atLeastOnce()).getResultList();
     }

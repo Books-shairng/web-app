@@ -4,7 +4,10 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import java.util.Optional;
 
@@ -27,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 public class UserServiceImplTest
 {
-    private static final Optional<User> EXPECTED_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
+    private static final Optional<User> EXPECTED_OPTIONAL = CommonUtils.asOptional(USER);
     private static final Optional<User> EMPTY_OPTIONAL = Optional.empty();
 
     @Rule
@@ -48,26 +51,26 @@ public class UserServiceImplTest
 
     @Test
     public void testGetByNameShouldReturnExepectedOptional() throws Exception {
-        when(userDaoMock.getByName(DomainTestConstants.NAME)).thenReturn(EXPECTED_OPTIONAL);
-        Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
+        when(userDaoMock.getByName(NAME)).thenReturn(EXPECTED_OPTIONAL);
+        Optional<User> actual = sut.getByName(NAME);
 
-        assertThat(actual).contains(DomainTestConstants.USER);
+        assertThat(actual).contains(USER);
         verify(userDaoMock, atLeastOnce()).getByName(any());
     }
 
     @Test
     public void testGetByEmailShouldReturnExpectedOptional() throws Exception {
-        when(userDaoMock.getByEmail(DomainTestConstants.EMAIL)).thenReturn(EXPECTED_OPTIONAL);
-        Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
+        when(userDaoMock.getByEmail(EMAIL)).thenReturn(EXPECTED_OPTIONAL);
+        Optional<User> actual = sut.getByEmail(EMAIL);
 
-        assertThat(actual).contains(DomainTestConstants.USER);
+        assertThat(actual).contains(USER);
         verify(userDaoMock, atLeastOnce()).getByEmail(any());
     }
 
     @Test
     public void testGetByEmailWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        when(userDaoMock.getByEmail(DomainTestConstants.EMAIL)).thenReturn(EMPTY_OPTIONAL);
-        Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
+        when(userDaoMock.getByEmail(EMAIL)).thenReturn(EMPTY_OPTIONAL);
+        Optional<User> actual = sut.getByEmail(EMAIL);
 
         assertThat(actual).isEmpty();
         verify(userDaoMock, atLeastOnce()).getByEmail(any());
@@ -75,8 +78,8 @@ public class UserServiceImplTest
 
     @Test
     public void testGetByNameWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        when(userDaoMock.getByName(DomainTestConstants.EMAIL)).thenReturn(EMPTY_OPTIONAL);
-        Optional<User> actual = sut.getByName(DomainTestConstants.EMAIL);
+        when(userDaoMock.getByName(EMAIL)).thenReturn(EMPTY_OPTIONAL);
+        Optional<User> actual = sut.getByName(EMAIL);
 
         assertThat(actual).isEmpty();
         verify(userDaoMock, atLeastOnce()).getByName(any());

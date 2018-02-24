@@ -6,7 +6,9 @@ import com.ninjabooks.error.handler.BorrowControllerHandler;
 import com.ninjabooks.service.rest.borrow.extend.ExtendRentalService;
 import com.ninjabooks.service.rest.borrow.rent.BookRentalService;
 import com.ninjabooks.service.rest.borrow.returnb.BookReturnService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -58,8 +60,8 @@ public class BorrowControllerTest
 
     @Test
     public void testBorrowBookShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -68,8 +70,8 @@ public class BorrowControllerTest
     public void testBorrowBookShouldReturnBadRequestWhenQRCodeNotFound() throws Exception {
         doThrow(QRCodeException.class).when(bookRentalServiceMock).rentBook(anyLong(), anyString());
 
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest());
 
@@ -80,8 +82,8 @@ public class BorrowControllerTest
     public void testBorrowBookShouldReturnBadRequestWhenUnableToBorrow() throws Exception {
         doThrow(BorrowException.class).when(bookRentalServiceMock).rentBook(anyLong(), anyString());
 
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest());
 
@@ -91,7 +93,7 @@ public class BorrowControllerTest
     @Test
     public void testReturnBookShouldSucceed() throws Exception {
         mockMvc.perform(post("/api/borrow/return/")
-            .param("qrCode", DomainTestConstants.DATA))
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -101,7 +103,7 @@ public class BorrowControllerTest
         doThrow(BorrowException.class).when(bookReturnServiceMock).returnBook(anyString());
 
         mockMvc.perform(post("/api/borrow/return/")
-            .param("qrCode", DomainTestConstants.DATA))
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest());
 
@@ -110,8 +112,8 @@ public class BorrowControllerTest
 
     @Test
     public void testExtendReturnDateShouldSucced() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -120,8 +122,8 @@ public class BorrowControllerTest
     public void testExtendReturnDateShouldFailedWhenUnableToExtendDate() throws Exception {
         doThrow(BorrowException.class).when(extendRentalServiceMock).extendReturnDate(any(), any());
 
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isBadRequest());
 

@@ -5,7 +5,8 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.error.exception.borrow.BorrowException;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -47,7 +48,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testExtendReturnDateShouldReturnExpectedStatus() throws Exception {
-        sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.extendReturnDate(ID, ID);
         Stream<Borrow> actual = borrowDao.getAll();
 
         assertThat(actual).extracting(Borrow::getCanExtendBorrow).containsExactly(false);
@@ -55,8 +56,8 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testExtendReturnDateShouldExtendReturnDateByTwoWeeks() throws Exception {
-        sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID);
-        Borrow actual = borrowDao.getById(DomainTestConstants.ID).get();
+        sut.extendReturnDate(ID, ID);
+        Borrow actual = borrowDao.getById(ID).get();
 
         assertThat(actual.getExpectedReturnDate())
             .isBetween(ACTUAL_DATE_MOVE_BY_TWO_WEEKS, ACTUAL_DATE_MOVE_BY_THREE_WEEKS);
@@ -69,7 +70,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendReturnDateShouldThrowsExceptionWhenBookNotExist() throws Exception {
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.extendReturnDate(ID, ID))
             .withNoCause();
     }
 
@@ -80,7 +81,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
         executionPhase = BEFORE_TEST_METHOD)
     public void testEtendReturnDateShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.extendReturnDate(ID, ID))
             .withNoCause()
             .withMessageContaining("is not borrowed");
     }
@@ -92,7 +93,7 @@ public class ExtendRentalServiceImplIT extends AbstractBaseIT
         executionPhase = BEFORE_TEST_METHOD)
     public void testEtendReturnDateShouldThrowsExceptionWhenExtendStatusIsFalse() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.extendReturnDate(ID, ID))
             .withNoCause();
     }
 

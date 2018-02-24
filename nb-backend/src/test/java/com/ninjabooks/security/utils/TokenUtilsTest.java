@@ -1,8 +1,9 @@
 package com.ninjabooks.security.utils;
 
 import com.ninjabooks.security.user.SpringSecurityUser;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,10 +58,10 @@ public class TokenUtilsTest
 
     @Test
     public void testGetUsernameShouldReturnExpectedUsername() throws Exception {
-        when(springSecurityUserMock.getUsername()).thenReturn(DomainTestConstants.EMAIL);
+        when(springSecurityUserMock.getUsername()).thenReturn(EMAIL);
         String actual = sut.getUsernameFromToken(generateToken());
 
-        assertThat(actual).isEqualTo(DomainTestConstants.EMAIL);
+        assertThat(actual).isEqualTo(EMAIL);
         verify(springSecurityUserMock, atLeastOnce()).getUsername();
     }
 
@@ -137,7 +138,7 @@ public class TokenUtilsTest
 
     @Test
     public void testIsValidateTokenShouldSuceedAndReturnTrue() throws Exception {
-        when(springSecurityUserMock.getUsername()).thenReturn(DomainTestConstants.EMAIL);
+        when(springSecurityUserMock.getUsername()).thenReturn(EMAIL);
         Boolean actual = sut.isValid(generateToken(), springSecurityUserMock);
 
         assertThat(actual).isTrue();

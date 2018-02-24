@@ -2,7 +2,10 @@ package com.ninjabooks.service.rest.database;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ENCRYPTED_PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import java.sql.SQLSyntaxErrorException;
 import java.util.List;
@@ -46,9 +49,9 @@ public class DBQueryServiceImplIT extends AbstractBaseIT
         assertThat(actual)
             .flatExtracting(Map::entrySet)
             .contains(
-                entry("EMAIL", DomainTestConstants.EMAIL),
-                entry("PASSWORD", DomainTestConstants.PASSWORD),
-                entry("NAME", DomainTestConstants.NAME)
+                entry("EMAIL", EMAIL),
+                entry("PASSWORD", ENCRYPTED_PASSWORD),
+                entry("NAME", NAME)
             );
     }
 

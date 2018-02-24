@@ -4,7 +4,10 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QueueDao;
 import com.ninjabooks.domain.Queue;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -36,16 +39,16 @@ public class DBQueueDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddQueue() throws Exception {
-        sut.add(DomainTestConstants.QUEUE);
+        sut.add(QUEUE);
         Stream<Queue> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        assertThat(actual).containsExactly(QUEUE);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQueue() throws Exception {
-        sut.delete(DomainTestConstants.QUEUE);
+        sut.delete(QUEUE);
 
         assertThat(sut.getAll()).isEmpty();
     }
@@ -55,7 +58,7 @@ public class DBQueueDaoIT extends AbstractBaseIT
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Queue> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        assertThat(actual).containsExactly(QUEUE);
     }
 
     @Test
@@ -68,17 +71,17 @@ public class DBQueueDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
-        Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Queue> actual = sut.getById(ID);
 
         assertThat(actual).hasValueSatisfying(queue -> {
-            assertThat(queue.getId()).isEqualTo(DomainTestConstants.ID);
-            assertThat(queue.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
+            assertThat(queue.getId()).isEqualTo(ID);
+            assertThat(queue.getOrderDate()).isEqualTo(ORDER_DATE);
         });
     }
 
     @Test
     public void testGetByIdWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<Queue> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Queue> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -86,14 +89,14 @@ public class DBQueueDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetOrderByDate() throws Exception {
-        Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
+        Stream<Queue> actual = sut.getByOrderDate(ORDER_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        assertThat(actual).containsExactly(QUEUE);
     }
 
     @Test
     public void testGetOrderByDateWhichNotExistShouldReturnEmptyStream() throws Exception {
-        Stream<Queue> actual = sut.getByOrderDate(DomainTestConstants.ORDER_DATE);
+        Stream<Queue> actual = sut.getByOrderDate(ORDER_DATE);
 
         assertThat(actual).isEmpty();
     }
@@ -111,8 +114,8 @@ public class DBQueueDaoIT extends AbstractBaseIT
     }
 
     private Queue creafreFreshEntity() {
-        Queue entityToUpdate = new Queue(DomainTestConstants.ORDER_DATE);
-        entityToUpdate.setId(DomainTestConstants.ID);
+        Queue entityToUpdate = new Queue(ORDER_DATE);
+        entityToUpdate.setId(ID);
 
         return entityToUpdate;
     }

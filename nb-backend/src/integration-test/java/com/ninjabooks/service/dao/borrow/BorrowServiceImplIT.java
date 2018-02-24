@@ -3,7 +3,10 @@ package com.ninjabooks.service.dao.borrow;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Borrow;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -36,16 +39,16 @@ public class BorrowServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGeyByBorrowDateShouldReturnStreamWithExpectedBorrow() throws Exception {
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
-        assertThat(actual).extracting(borrow -> borrow).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).extracting(borrow -> borrow).containsExactly(BORROW);
     }
 
     @Test
     public void testGetByExpectedReturnDateShouldReturnStreamWithExpectedBorrow() throws Exception {
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
-        assertThat(actual).extracting(borrow -> borrow).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).extracting(borrow -> borrow).containsExactly(BORROW);
     }
 
     @Test

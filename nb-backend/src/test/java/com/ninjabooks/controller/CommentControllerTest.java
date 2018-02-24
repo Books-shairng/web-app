@@ -5,7 +5,11 @@ import com.ninjabooks.error.handler.CommentControlllerHandler;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.json.comment.CommentResponseFactory;
 import com.ninjabooks.service.rest.comment.CommentRestService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,8 +48,8 @@ public class CommentControllerTest
     private static final String MESSAGE_NO_COMMENTS = "Book does not contains any comments";
     private static final String JSON_REQUEST_WITH_COMMENT =
         "{" +
-            "\"comment\" : \"" + DomainTestConstants.COMMENT_CONTENT + "\"" +
-            "}";
+            "\"comment\" : \"" + COMMENT_CONTENT + "\"" +
+        "}";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -67,10 +71,10 @@ public class CommentControllerTest
     @Test
     public void testFetchCommentsShouldReturnStatusOK() throws Exception {
         Set<CommentResponse> commentResponses = prepareCommentResponse();
-        when(commentRestServiceMock.getComments(DomainTestConstants.ISBN)).thenReturn(commentResponses);
+        when(commentRestServiceMock.getComments(ISBN)).thenReturn(commentResponses);
 
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -81,7 +85,7 @@ public class CommentControllerTest
     @Test
     public void testFetchCommentsShouldReturnMessageWhenCommentsNotFound() throws Exception {
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
@@ -90,8 +94,8 @@ public class CommentControllerTest
 
     @Test
     public void testAddCommentShouldSucceedAndReturnStatusOK() throws Exception {
-        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID))
+        mockMvc.perform(post("/api/comment/{userID}/add", ID)
+            .param("bookID", String.valueOf(ID))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
@@ -104,8 +108,8 @@ public class CommentControllerTest
     public void testAddCommentShouldFaildWhenUnableToAddComment() throws Exception {
         doThrow(CommentException.class).when(commentRestServiceMock).addComment(anyString(), anyLong(), anyLong());
 
-        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID))
+        mockMvc.perform(post("/api/comment/{userID}/add", ID)
+            .param("bookID", String.valueOf(ID))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
@@ -116,7 +120,7 @@ public class CommentControllerTest
     }
 
     private Set<CommentResponse> prepareCommentResponse() {
-        return Stream.of(CommentResponseFactory.makeCommentResponse(DomainTestConstants.COMMENT_FULL))
+        return Stream.of(CommentResponseFactory.makeCommentResponse(COMMENT_FULL))
             .collect(Collectors.toSet());
     }
 }

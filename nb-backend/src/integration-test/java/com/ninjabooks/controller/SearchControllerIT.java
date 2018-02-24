@@ -2,7 +2,13 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_STATUS;
+import static com.ninjabooks.util.constants.DomainTestConstants.DESCRIPTION;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class SearchControllerIT extends AbstractBaseIT
 {
-    private final static String SEARCH_QUERY = DomainTestConstants.TITLE;
-    private static final String BOOK_STATUS_AS_STRING = DomainTestConstants.BOOK_STATUS.toString();
+    private final static String SEARCH_QUERY = TITLE;
+    private static final String BOOK_STATUS_AS_STRING = BOOK_STATUS.toString();
     private static final String RANDOM_SEARCH_QUERY = "Dkdkasoasd kskdkak dkaskdasd";
     private static final String MESSAGE_PHRASE_NOT_FOUND = "Unfortunately search phrase not found";
 
@@ -61,11 +67,11 @@ public class SearchControllerIT extends AbstractBaseIT
             .param("query", SEARCH_QUERY))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.searchResult.[0].id").value(DomainTestConstants.ID))
-            .andExpect(jsonPath("$.searchResult.[0].author").value(DomainTestConstants.AUTHOR))
-            .andExpect(jsonPath("$.searchResult.[0].title").value(DomainTestConstants.TITLE))
-            .andExpect(jsonPath("$.searchResult.[0].isbn").value(DomainTestConstants.ISBN))
-            .andExpect(jsonPath("$.searchResult.[0].description").value(DomainTestConstants.DESCRIPTION))
+            .andExpect(jsonPath("$.searchResult.[0].id").value(ID))
+            .andExpect(jsonPath("$.searchResult.[0].author").value(AUTHOR))
+            .andExpect(jsonPath("$.searchResult.[0].title").value(TITLE))
+            .andExpect(jsonPath("$.searchResult.[0].isbn").value(ISBN))
+            .andExpect(jsonPath("$.searchResult.[0].description").value(DESCRIPTION))
             .andExpect(jsonPath("$.searchResult.[0].status").value(BOOK_STATUS_AS_STRING));
     }
 

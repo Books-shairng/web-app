@@ -1,7 +1,12 @@
 package com.ninjabooks.json.user;
 
 import com.ninjabooks.security.user.SpringSecurityUser;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.FIRSTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.LASTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,9 +35,9 @@ public class UserResponseTest
 
     @Before
     public void setUp() throws Exception {
-        when(springSecurityUser.getId()).thenReturn(DomainTestConstants.ID);
-        when(springSecurityUser.getName()).thenReturn(DomainTestConstants.NAME);
-        when(springSecurityUser.getEmail()).thenReturn(DomainTestConstants.EMAIL);
+        when(springSecurityUser.getId()).thenReturn(ID);
+        when(springSecurityUser.getName()).thenReturn(NAME);
+        when(springSecurityUser.getEmail()).thenReturn(EMAIL);
 
         this.sut = new UserResponse(springSecurityUser);
     }
@@ -40,10 +45,10 @@ public class UserResponseTest
     @Test
     public void testUserResponseShouldReturnCorrectData() throws Exception {
         assertSoftly(softly -> {
-            assertThat(sut.getId()).isEqualTo(DomainTestConstants.ID);
-            assertThat(sut.getFirstName()).isEqualTo(DomainTestConstants.FIRSTNAME);
-            assertThat(sut.getLastName()).isEqualTo(DomainTestConstants.LASTNAME);
-            assertThat(sut.getEmail()).isEqualTo(DomainTestConstants.EMAIL);
+            assertThat(sut.getId()).isEqualTo(ID);
+            assertThat(sut.getFirstName()).isEqualTo(FIRSTNAME);
+            assertThat(sut.getLastName()).isEqualTo(LASTNAME);
+            assertThat(sut.getEmail()).isEqualTo(EMAIL);
         });
 
     }

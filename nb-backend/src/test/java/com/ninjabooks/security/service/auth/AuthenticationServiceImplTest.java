@@ -4,8 +4,11 @@ import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.user.SpringSecurityUserFactory;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 
 import java.util.Optional;
 
@@ -64,18 +67,18 @@ public class AuthenticationServiceImplTest
 
     @Test
     public void testAuthUserShouldReturnUser() throws Exception {
-        when(userDetailsServiceMock.loadUserByUsername(DomainTestConstants.EMAIL)).thenReturn(initSpringUser());
+        when(userDetailsServiceMock.loadUserByUsername(EMAIL)).thenReturn(initSpringUser());
         UserDetails actual =
             sut.authUser(createAuthRequest());
 
-        assertThat(actual).extracting("username").containsExactly(DomainTestConstants.EMAIL);
+        assertThat(actual).extracting("username").containsExactly(EMAIL);
         verify(userDetailsServiceMock, atLeastOnce()).loadUserByUsername(anyString());
     }
 
     @Test
     public void testAuthUserShouldThrowsExceptionWhenUserDataNotValid() throws Exception {
         doThrow(BadCredentialsException.class)
-            .when(userDetailsServiceMock).loadUserByUsername(DomainTestConstants.EMAIL);
+            .when(userDetailsServiceMock).loadUserByUsername(EMAIL);
 
         assertThatExceptionOfType(BadCredentialsException.class)
             .isThrownBy(() -> sut.authUser(createAuthRequest()))
@@ -86,7 +89,7 @@ public class AuthenticationServiceImplTest
 
     @Test
     public void testRefreshTokenShouldReturnNewToken() throws Exception {
-        when(userDetailsServiceMock.loadUserByUsername(DomainTestConstants.EMAIL)).thenReturn(initSpringUser());
+        when(userDetailsServiceMock.loadUserByUsername(EMAIL)).thenReturn(initSpringUser());
         String token = generateToken();
         Optional<String> actual = sut.refreshToken(token);
 
@@ -103,7 +106,7 @@ public class AuthenticationServiceImplTest
     @Test
     @Ignore("Old token cause NPE")
     public void testRefreshTokenShoulReturnEmptyToken() throws Exception {
-        when(userDetailsServiceMock.loadUserByUsername(DomainTestConstants.EMAIL)).thenReturn(initSpringUser());
+        when(userDetailsServiceMock.loadUserByUsername(EMAIL)).thenReturn(initSpringUser());
         Optional<String> actual = sut.refreshToken(OLD_TOKEN);
 
         assertThat(actual).isEmpty();
@@ -112,10 +115,10 @@ public class AuthenticationServiceImplTest
 
     @Test
     public void testGetAuthUserShouldReturnExpectedSpringUser() throws Exception {
-        when(userDetailsServiceMock.loadUserByUsername(DomainTestConstants.EMAIL)).thenReturn(initSpringUser());
+        when(userDetailsServiceMock.loadUserByUsername(EMAIL)).thenReturn(initSpringUser());
         SpringSecurityUser actual = sut.getAuthUser(generateToken());
 
-        assertThat(actual).extracting("username").containsExactly(DomainTestConstants.EMAIL);
+        assertThat(actual).extracting("username").containsExactly(EMAIL);
     }
 
     private String generateToken() {
@@ -124,10 +127,10 @@ public class AuthenticationServiceImplTest
     }
 
     private AuthenticationRequest createAuthRequest() {
-        return new AuthenticationRequest(DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+        return new AuthenticationRequest(EMAIL, PLAIN_PASSWORD);
     }
 
     private SpringSecurityUser initSpringUser() {
-        return SpringSecurityUserFactory.makeSecurityUser(DomainTestConstants.USER_FULL);
+        return SpringSecurityUserFactory.makeSecurityUser(USER_FULL);
     }
 }

@@ -2,8 +2,12 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
@@ -36,7 +40,7 @@ public class CommentControllerIT extends AbstractBaseIT
     private static final String NO_COMMENTS_MESSAGE = "Book does not contains any comments";
     private static final String JSON_REQUEST_WITH_COMMENT =
         "{" +
-            "\"comment\" : \"" + DomainTestConstants.COMMENT_CONTENT + "\"" +
+            "\"comment\" : \"" + COMMENT_CONTENT + "\"" +
         "}";
     private static final int EXPECTED_SIZE = 1;
     private static final int COMMENT_DEFAULT_LENGTH = 250;
@@ -55,7 +59,7 @@ public class CommentControllerIT extends AbstractBaseIT
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnStatusOK() throws Exception {
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -65,20 +69,20 @@ public class CommentControllerIT extends AbstractBaseIT
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnExpectedResponseWhenFoundComments() throws Exception {
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.[0].date").value(JSONDateConstans.COMMENT_DATE))
-            .andExpect(jsonPath("$.[0].author").value(DomainTestConstants.NAME))
-            .andExpect(jsonPath("$.[0].content").value(DomainTestConstants.COMMENT_CONTENT))
-            .andExpect(jsonPath("$.[0].isbn").value(DomainTestConstants.ISBN));
+            .andExpect(jsonPath("$.[0].author").value(NAME))
+            .andExpect(jsonPath("$.[0].content").value(COMMENT_CONTENT))
+            .andExpect(jsonPath("$.[0].isbn").value(ISBN));
     }
 
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testFetchCommentsShouldReturnExpectedResponseSizeArray() throws Exception {
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.length()").value(EXPECTED_SIZE));
@@ -87,7 +91,7 @@ public class CommentControllerIT extends AbstractBaseIT
     @Test
     public void testFetchCommentsShouldReturnExpectedMessageWhenBookNotContainsComments() throws Exception {
         mockMvc.perform(get("/api/comment/")
-            .param("isbn", DomainTestConstants.ISBN))
+            .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.message").value(NO_COMMENTS_MESSAGE));
@@ -96,8 +100,8 @@ public class CommentControllerIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndReturnStatusOK() throws Exception {
-        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID))
+        mockMvc.perform(post("/api/comment/{userID}/add", ID)
+            .param("bookID", String.valueOf(ID))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
@@ -107,8 +111,8 @@ public class CommentControllerIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldFaildWhenUnableToAddComment() throws Exception {
-        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID))
+        mockMvc.perform(post("/api/comment/{userID}/add", ID)
+            .param("bookID", String.valueOf(ID))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JSON_REQUEST_WITH_COMMENT))
             .andDo(print())
@@ -135,8 +139,8 @@ public class CommentControllerIT extends AbstractBaseIT
     }
 
     private void addCommentWithExpectedMessageAsResponse(String json, String message) throws Exception {
-        mockMvc.perform(post("/api/comment/{userID}/add", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID))
+        mockMvc.perform(post("/api/comment/{userID}/add", ID)
+            .param("bookID", String.valueOf(ID))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(json))
             .andDo(print())

@@ -8,8 +8,15 @@ import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.service.dao.generic.GenericService;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.entity.EntityUtils;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW;
+import static com.ninjabooks.util.constants.DomainTestConstants.HISTORY;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -61,10 +68,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnUserObject() throws Exception {
-        Optional user = Optional.ofNullable(DomainTestConstants.USER);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(user);
+        Optional user = Optional.ofNullable(USER);
+        when(genericServiceMock.getById(ID)).thenReturn(user);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(User.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -72,10 +79,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnBookObject() throws Exception {
-        Optional book = Optional.ofNullable(DomainTestConstants.BOOK);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(book);
+        Optional book = Optional.ofNullable(BOOK);
+        when(genericServiceMock.getById(ID)).thenReturn(book);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(Book.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -83,10 +90,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnBorrowObject() throws Exception {
-        Optional borrow = Optional.ofNullable(DomainTestConstants.BORROW);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(borrow);
+        Optional borrow = Optional.ofNullable(BORROW);
+        when(genericServiceMock.getById(ID)).thenReturn(borrow);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(Borrow.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -94,10 +101,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnHistoryObject() throws Exception {
-        Optional history = Optional.ofNullable(DomainTestConstants.HISTORY);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(history);
+        Optional history = Optional.ofNullable(HISTORY);
+        when(genericServiceMock.getById(ID)).thenReturn(history);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(History.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -105,10 +112,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnQRCodeObject() throws Exception {
-        Optional qrCode = Optional.ofNullable(DomainTestConstants.QR_CODE);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(qrCode);
+        Optional qrCode = Optional.ofNullable(QR_CODE);
+        when(genericServiceMock.getById(ID)).thenReturn(qrCode);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(QRCode.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -116,10 +123,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldReturnQueueObject() throws Exception {
-        Optional user = Optional.ofNullable(DomainTestConstants.QUEUE);
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(user);
+        Optional user = Optional.ofNullable(QUEUE);
+        when(genericServiceMock.getById(ID)).thenReturn(user);
 
-        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID);
+        BaseEntity actual = EntityUtils.getEnity(genericServiceMock, ID);
 
         assertThat(actual).isInstanceOf(Queue.class);
         verify(genericServiceMock, atLeastOnce()).getById(any());
@@ -127,10 +134,10 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityShouldThrowsExceptionWhenObjectNotPresent() throws Exception {
-        when(genericServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.empty());
+        when(genericServiceMock.getById(ID)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> EntityUtils.getEnity(genericServiceMock, DomainTestConstants.ID))
+            .isThrownBy(() -> EntityUtils.getEnity(genericServiceMock, ID))
             .withNoCause()
             .withMessageContaining("not found");
 
@@ -139,8 +146,8 @@ public class EntityUtilsTest
 
     @Test
     public void testGetEntityByClassShouldReturnUserObject() throws Exception {
-        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(DomainTestConstants.USER));
-        User actual = EntityUtils.getEnity(User.class, DomainTestConstants.ID);
+        when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(USER));
+        User actual = EntityUtils.getEnity(User.class, ID);
 
         assertThat(actual).isInstanceOf(User.class);
         verify(sessionFactoryMock, atLeastOnce()).getCurrentSession();
@@ -153,7 +160,7 @@ public class EntityUtilsTest
         when(queryMock.uniqueResultOptional()).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> EntityUtils.getEnity(User.class, DomainTestConstants.ID))
+            .isThrownBy(() -> EntityUtils.getEnity(User.class, ID))
             .withNoCause()
             .withMessageContaining("not found");
 

@@ -8,7 +8,13 @@ import com.ninjabooks.error.exception.comment.CommentException;
 import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.service.dao.history.HistoryService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.IS_COMMENTED;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Set;
@@ -52,14 +58,11 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testFetchBookCommentsShouldReturnExpectedValues() throws Exception {
-        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(ISBN);
 
         assertThat(actual)
             .extracting("author", "date", "content", "isbn")
-            .containsExactly(
-                tuple(
-                    DomainTestConstants.NAME, DomainTestConstants.COMMENT_DATE, DomainTestConstants.COMMENT_CONTENT,
-                    DomainTestConstants.ISBN));
+            .containsExactly(tuple(NAME, COMMENT_DATE, COMMENT_CONTENT, ISBN));
     }
 
     @Test
@@ -68,7 +71,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
         statements = TRUNCATE_COMMENT,
         executionPhase = BEFORE_TEST_METHOD)
     public void testFetchBookCommentsShouldReturnEmptyStreamWhenCommentsNotFound() throws Exception {
-        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
+        Set<CommentResponse> actual = sut.getComments(ISBN);
 
         assertThat(actual).isEmpty();
     }
@@ -77,22 +80,22 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     @Transactional
     @Sql(scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndChangeCommentedToTrue() throws Exception {
-        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.addComment(COMMENT_CONTENT, ID, ID);
         Stream<History> actual = historyService.getAll();
 
-        assertThat(actual).extracting("isCommented").contains(DomainTestConstants.IS_COMMENTED);
+        assertThat(actual).extracting("isCommented").contains(IS_COMMENTED);
     }
 
     @Test
     @Transactional
     @Sql(scripts = "classpath:sql_query/comment-scripts/it_comment_script.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentShouldSucceedAndReturnExpectedCommentEntity() throws Exception {
-        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.addComment(COMMENT_CONTENT, ID, ID);
         Stream<Comment> actual = commentDaoService.getAll();
 
         assertThat(actual)
             .extracting("content", "user.name", "book.isbn")
-            .contains(tuple(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.NAME, DomainTestConstants.ISBN));
+            .contains(tuple(COMMENT_CONTENT, NAME, ISBN));
     }
 
     @Test
@@ -104,7 +107,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     public void testAddCommentShouldThrowsExceptionWhenBookWasAlreadyCommented() throws Exception {
         assertThatExceptionOfType(CommentException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessage("Unable to add new comment");
     }
@@ -118,7 +121,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     public void testAddCommentShouldThrowsExceptionWhenDateIsOverdue() throws Exception {
         assertThatExceptionOfType(CommentException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessage("Unable to add new comment");
     }
@@ -132,7 +135,7 @@ public class CommentRestServiceImplIT extends AbstractBaseIT
     public void testAddChommentShouldThrowsExceptionHistoryEntityNotFound() throws Exception {
         assertThatExceptionOfType(EntityNotFoundException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessageContaining("enity not found");
     }

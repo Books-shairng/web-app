@@ -2,8 +2,11 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.JSONDateConstans;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,26 +50,26 @@ public class HistoryControllerIT extends AbstractBaseIT
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/history/{userID}/", ID))
             .andDo(print())
             .andExpect(status().isOk());
     }
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnHistroyWithExpectedSize() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/history/{userID}/", ID))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.[0].id").value(DomainTestConstants.ID))
+            .andExpect(jsonPath("$.[0].id").value(ID))
             .andExpect(jsonPath("$.[0].returnDate").value(JSONDateConstans.RETURN_DATE))
-            .andExpect(jsonPath("$.[0].['book'].id").value(DomainTestConstants.ID))
-            .andExpect(jsonPath("$.[0].['book'].author").value(DomainTestConstants.AUTHOR))
-            .andExpect(jsonPath("$.[0].['book'].isbn").value(DomainTestConstants.ISBN));
+            .andExpect(jsonPath("$.[0].['book'].id").value(ID))
+            .andExpect(jsonPath("$.[0].['book'].author").value(AUTHOR))
+            .andExpect(jsonPath("$.[0].['book'].isbn").value(ISBN));
     }
 
     @Test
     public void testFetchUserHistoryWithParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID)
+        mockMvc.perform(get("/api/history/{userID}/", ID)
             .param("minusDays", MINUS_DAYS))
             .andDo(print())
             .andExpect(status().isOk());
@@ -74,7 +77,7 @@ public class HistoryControllerIT extends AbstractBaseIT
 
     @Test
     public void testFetchUserHistoryWithParamsShouldReturnMessageWhenUuserHasNoHistory() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID)
+        mockMvc.perform(get("/api/history/{userID}/", ID)
             .param("minusDays", MINUS_DAYS))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))

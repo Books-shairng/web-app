@@ -2,7 +2,9 @@ package com.ninjabooks.service.rest.account;
 
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
 import com.ninjabooks.service.dao.user.UserService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import java.util.Optional;
 
@@ -45,9 +47,9 @@ public class AccountServiceImplTest
 
     @Test
     public void testCreateNewUserWhenAlreadyExistShouldThrowsException() throws Exception {
-        when(userServiceMock.getByEmail(DomainTestConstants.EMAIL)).thenReturn(Optional.of(DomainTestConstants.USER));
+        when(userServiceMock.getByEmail(EMAIL)).thenReturn(Optional.of(USER));
         assertThatExceptionOfType(UserAlreadyExistException.class)
-            .isThrownBy(() -> sut.createUser(DomainTestConstants.USER))
+            .isThrownBy(() -> sut.createUser(USER))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getByEmail(any());
@@ -55,8 +57,8 @@ public class AccountServiceImplTest
 
     @Test
     public void testCreateNewUserShouldSucceed() throws Exception {
-        doNothing().when(userServiceMock).add(DomainTestConstants.USER);
-        sut.createUser(DomainTestConstants.USER);
+        doNothing().when(userServiceMock).add(USER);
+        sut.createUser(USER);
 
         verify(userServiceMock, atLeastOnce()).add(any());
     }

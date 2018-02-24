@@ -4,7 +4,12 @@ import com.ninjabooks.domain.Book;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.util.QueueUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
@@ -56,21 +61,21 @@ public class RentalHelperTest
 
     @Test
     public void testIsBookBorrowedShouldReturnFalseWhenBookIsFree() throws Exception {
-        boolean actual = sut.isBookBorrowed(DomainTestConstants.BOOK);
+        boolean actual = sut.isBookBorrowed(BOOK);
 
         assertThat(actual).isFalse();
     }
 
     @Test
     public void testIsNotBelongToOtherUserQueueShouldReturnTrueWhenNotBelong() throws Exception {
-        boolean actual = sut.isNotBelongToOtherUserQueue(DomainTestConstants.BOOK, DomainTestConstants.USER);
+        boolean actual = sut.isNotBelongToOtherUserQueue(BOOK, USER);
 
         assertThat(actual).isTrue();
     }
 
     @Test
     public void testIsNotBelongToOtherUserQueueShouldReturnFalseWhenBelong() throws Exception {
-        boolean actual = sut.isNotBelongToOtherUserQueue(DomainTestConstants.BOOK_FULL, DomainTestConstants.USER_FULL);
+        boolean actual = sut.isNotBelongToOtherUserQueue(BOOK_FULL, USER_FULL);
 
         assertThat(actual).isFalse();
     }
@@ -79,11 +84,11 @@ public class RentalHelperTest
     public void testFindBookByQRCodeShouldReturnFoundedBook() throws Exception {
         when(bookDaoServiceMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.createQuery(any(CriteriaQuery.class)).uniqueResultOptional())
-            .thenReturn(Optional.of(DomainTestConstants.BOOK));
+            .thenReturn(Optional.of(BOOK));
 
-        Book actual = sut.findBookByQRCode(DomainTestConstants.DATA);
+        Book actual = sut.findBookByQRCode(DATA);
 
-        assertThat(actual).isEqualTo(DomainTestConstants.BOOK);
+        assertThat(actual).isEqualTo(BOOK);
         verify(sessionMock, atLeastOnce()).createQuery(any(CriteriaQuery.class));
     }
 
@@ -94,7 +99,7 @@ public class RentalHelperTest
             .thenReturn(Optional.empty());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.findBookByQRCode(DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.findBookByQRCode(DATA))
             .withNoCause();
 
         verify(sessionMock, atLeastOnce()).createQuery(any(CriteriaQuery.class));

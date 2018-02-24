@@ -4,7 +4,11 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -37,16 +41,16 @@ public class DBBorrowDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddBorrow() throws Exception {
-        sut.add(DomainTestConstants.BORROW);
+        sut.add(BORROW);
         Stream<Borrow> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteBorrow() throws Exception {
-        sut.delete(DomainTestConstants.BORROW);
+        sut.delete(BORROW);
         Stream<Borrow> actual = sut.getAll();
 
         assertThat(actual).isEmpty();
@@ -57,7 +61,7 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Borrow> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
     }
 
     @Test
@@ -70,14 +74,14 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
-        Optional<Borrow> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Borrow> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.BORROW);
+        assertThat(actual).contains(BORROW);
     }
 
     @Test
     public void testGetByIdEntityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<Borrow> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Borrow> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -85,30 +89,30 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetReturnDate() throws Exception {
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBorrowDate() throws Exception {
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
     }
 
 
     @Test
     public void testGetReturnDateWhichNotExistShouldReturnsEmptyStream() throws Exception {
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetBorrowDateWhichNotExistShouldReturnEmtpyStream() throws Exception {
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
         assertThat(actual).isEmpty();
     }
@@ -126,8 +130,8 @@ public class DBBorrowDaoIT extends AbstractBaseIT
     }
 
     private Borrow createFreshEnity() {
-        Borrow updatedEnity = new Borrow(DomainTestConstants.BORROW_DATE);
-        updatedEnity.setId(DomainTestConstants.ID);
+        Borrow updatedEnity = new Borrow(BORROW_DATE);
+        updatedEnity.setId(ID);
 
         return updatedEnity;
     }

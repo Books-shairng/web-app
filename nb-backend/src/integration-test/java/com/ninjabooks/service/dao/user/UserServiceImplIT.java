@@ -3,7 +3,10 @@ package com.ninjabooks.service.dao.user;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.User;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -36,7 +39,7 @@ public class UserServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetByNameShouldReturnOptionalWithUser() throws Exception {
-        Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
+        Optional<User> actual = sut.getByName(NAME);
 
         assertSoftly(softly -> {
             assertThat(actual).hasValueSatisfying(this::isEmailEqual);
@@ -47,7 +50,7 @@ public class UserServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetByEmailShouldReturnOptionalWithUser() throws Exception {
-        Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
+        Optional<User> actual = sut.getByEmail(EMAIL);
 
         assertSoftly(softly -> {
             assertThat(actual).hasValueSatisfying(this::isEmailEqual);
@@ -71,15 +74,15 @@ public class UserServiceImplIT extends AbstractBaseIT
     }
 
     private boolean isPasswordEqual(User user) {
-        return user.getPassword().equals(DomainTestConstants.PASSWORD);
+        return user.getPassword().equals(PLAIN_PASSWORD);
     }
 
     private boolean isNameEqual(User user) {
-        return user.getName().equals(DomainTestConstants.NAME);
+        return user.getName().equals(NAME);
     }
 
     private boolean isEmailEqual(User user) {
-        return user.getEmail().equals(DomainTestConstants.EMAIL);
+        return user.getEmail().equals(EMAIL);
     }
 
 }

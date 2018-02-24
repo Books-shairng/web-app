@@ -8,8 +8,16 @@ import com.ninjabooks.json.comment.CommentResponse;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.entity.EntityUtilsWrapper;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -42,7 +50,7 @@ import static org.mockito.Mockito.when;
  */
 public class CommentRestServiceImplTest
 {
-    private static final Supplier<Stream<Book>> BOOK_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.BOOK_FULL);
+    private static final Supplier<Stream<Book>> BOOK_SUPPLIER = CommonUtils.asSupplier(BOOK_FULL);
     private static final Supplier<Stream<Book>> EMPTY_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
@@ -70,22 +78,19 @@ public class CommentRestServiceImplTest
 
     @Test
     public void testFetchBookCommentsShouldReturnExpectedValues() throws Exception {
-        when(bookDaoServiceMock.getByISBN(DomainTestConstants.ISBN)).thenReturn(BOOK_SUPPLIER.get());
-        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
+        when(bookDaoServiceMock.getByISBN(ISBN)).thenReturn(BOOK_SUPPLIER.get());
+        Set<CommentResponse> actual = sut.getComments(ISBN);
 
         assertThat(actual)
             .extracting("author", "date", "content", "isbn")
-            .containsExactly(
-                tuple(
-                    DomainTestConstants.NAME, DomainTestConstants.COMMENT_DATE, DomainTestConstants.COMMENT_CONTENT,
-                    DomainTestConstants.ISBN));
+            .containsExactly(tuple(NAME, COMMENT_DATE, COMMENT_CONTENT, ISBN));
         verify(bookDaoServiceMock, atLeastOnce()).getByISBN(any());
     }
 
     @Test
     public void testFetchBookCommentsShouldReturnEmptyStreamWhenCommentsNotFound() throws Exception {
-        when(bookDaoServiceMock.getByISBN(DomainTestConstants.ISBN)).thenReturn(EMPTY_SUPPLIER.get());
-        Set<CommentResponse> actual = sut.getComments(DomainTestConstants.ISBN);
+        when(bookDaoServiceMock.getByISBN(ISBN)).thenReturn(EMPTY_SUPPLIER.get());
+        Set<CommentResponse> actual = sut.getComments(ISBN);
 
         assertThat(actual).isEmpty();
         verify(bookDaoServiceMock, atLeastOnce()).getByISBN(any());
@@ -95,9 +100,9 @@ public class CommentRestServiceImplTest
     public void testAddCommentShouldSucceed() throws Exception {
         when(queryMock.uniqueResultOptional()).thenReturn(Optional.of(createFreshEnity(false, true)));
         when(entityUtilsWrapperMock.getEnity((Class<BaseEntity>) any(), any()))
-            .thenReturn(DomainTestConstants.USER).thenReturn(DomainTestConstants.BOOK);
+            .thenReturn(USER).thenReturn(BOOK);
 
-        sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.addComment(COMMENT_CONTENT, ID, ID);
 
         verify(commentDaoServiceMock, atLeastOnce()).getSession();
         verify(queryMock, atLeastOnce()).uniqueResultOptional();
@@ -111,7 +116,7 @@ public class CommentRestServiceImplTest
 
         assertThatExceptionOfType(CommentException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessage("Unable to add new comment");
 
@@ -125,7 +130,7 @@ public class CommentRestServiceImplTest
 
         assertThatExceptionOfType(CommentException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessage("Unable to add new comment");
 
@@ -139,7 +144,7 @@ public class CommentRestServiceImplTest
 
         assertThatExceptionOfType(EntityNotFoundException.class)
             .isThrownBy(() ->
-                sut.addComment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.ID, DomainTestConstants.ID))
+                sut.addComment(COMMENT_CONTENT, ID, ID))
             .withNoCause()
             .withMessageContaining("enity not found");
 

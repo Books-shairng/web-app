@@ -1,7 +1,8 @@
 package com.ninjabooks.json.book;
 
 import com.ninjabooks.dto.BookDto;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class BookInfoTest
 {
-    private static final BookDto BOOK_DTO = new ModelMapper().map(DomainTestConstants.BOOK_FULL, BookDto.class);
+    private static final BookDto BOOK_DTO = new ModelMapper().map(BOOK_FULL, BookDto.class);
     private static final int EXPECTED_SIZE = 1;
 
     private BookInfo sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BookInfo(DomainTestConstants.BOOK_FULL);
+        this.sut = new BookInfo(BOOK_FULL);
     }
 
     @Test

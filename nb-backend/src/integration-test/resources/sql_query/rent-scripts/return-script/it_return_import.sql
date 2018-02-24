@@ -1,5 +1,5 @@
 -- ################################################# USER TABLE
-INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (1, 'John Dee', 'john.dee@exmaple.com', 'Johny!Dee123', 'USER', TRUE)
+INSERT INTO USER (id, NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) VALUES (1, 'John Dee', 'john.dee@exmaple.com', '$2a$10$yq9VL5OqEooEmsUtxKpwN.6.v/MdpMd/A/iZ/QVZJRmjS8AIVOki6', 'USER', TRUE)
 
 -- ################################################# QR_CODE TABLE
 INSERT INTO QR_CODE(id, DATA, ACTIVE) VALUES (1, '12345abcde', TRUE)

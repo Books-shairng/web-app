@@ -4,7 +4,9 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE_FULL;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -35,9 +37,9 @@ public class QRCodeServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetByDataShouldReturnOptionalWithExpectedQRCode() throws Exception {
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE_FULL);
+        assertThat(actual).contains(QR_CODE_FULL);
     }
 
     @Test

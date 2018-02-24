@@ -1,7 +1,9 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.search.SearchService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SearchControllerTest
 {
-    private final static String SEARCH_QUERY = DomainTestConstants.TITLE;
-    private static final List SEARCH_RESULT = Collections.singletonList(DomainTestConstants.BOOK);
+    private final static String SEARCH_QUERY = TITLE;
+    private static final List SEARCH_RESULT = Collections.singletonList(BOOK);
     private static final String MESSAGE_NOT_FOUND_QUERY = "Unfortunately search phrase not found";
 
     @Rule

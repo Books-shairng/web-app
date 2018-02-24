@@ -5,7 +5,12 @@ import com.ninjabooks.domain.BookStatus;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -51,9 +56,9 @@ public class ExtendRentalServiceImplTest
 
     @Test
     public void testExtendReturnDateShouldReturnExpectedStatus() throws Exception {
-        when(bookDaoService.getById(DomainTestConstants.ID)).thenReturn(Optional.of(BOOK_ENTITY));
+        when(bookDaoService.getById(ID)).thenReturn(Optional.of(BOOK_ENTITY));
 
-        sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.extendReturnDate(ID, ID);
 
         assertThat(BOOK_ENTITY).extracting("borrow.canExtendBorrow").contains(false);
         verify(bookDaoService, atLeastOnce()).getById(any());
@@ -61,9 +66,9 @@ public class ExtendRentalServiceImplTest
 
     @Test
     public void testExtendReturnDateShouldExtendReturnDateByTwoWeeks() throws Exception {
-        when(bookDaoService.getById(DomainTestConstants.ID)).thenReturn(Optional.of(BOOK_ENTITY));
+        when(bookDaoService.getById(ID)).thenReturn(Optional.of(BOOK_ENTITY));
 
-        sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.extendReturnDate(ID, ID);
         Borrow actual = BOOK_ENTITY.getBorrow();
 
         assertThat(actual.getExpectedReturnDate()).isAfterOrEqualTo(ACTUAL_DATE_PLUS_TWO_WEEKS);
@@ -73,17 +78,17 @@ public class ExtendRentalServiceImplTest
     @Test
     public void testExtendReturnDateShouldThrowsExceptionWhenBookNotExist() throws Exception {
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.extendReturnDate(ID, ID))
             .withNoCause();
     }
 
     @Test
     public void testEtendReturnDateShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
-        when(bookDaoService.getById(DomainTestConstants.ID)).thenReturn(Optional.of(BOOK_ENTITY));
+        when(bookDaoService.getById(ID)).thenReturn(Optional.of(BOOK_ENTITY));
         BOOK_ENTITY.setBorrow(null);
 
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.extendReturnDate(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.extendReturnDate(ID, ID))
             .withNoCause()
             .withMessageContaining("is not borrowed");
 
@@ -91,9 +96,9 @@ public class ExtendRentalServiceImplTest
     }
 
     private Book createFreshEnity() {
-        Book book = new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
+        Book book = new Book(TITLE, AUTHOR, ISBN);
         Borrow borrow = new Borrow(LocalDate.now());
-        borrow.setUser(DomainTestConstants.USER);
+        borrow.setUser(USER);
         book.setStatus(BookStatus.BORROWED);
         book.setBorrow(borrow);
 

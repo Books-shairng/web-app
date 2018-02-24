@@ -5,7 +5,13 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.queue.QueueService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
@@ -43,7 +49,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
     @Sql(value = "classpath:sql_query/it_import.sql")
     public void testOrderBookWhenUserHasBookShouldThrowsException() throws Exception {
         assertThatExceptionOfType(OrderException.class)
-            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.orderBook(ID, ID))
             .withNoCause();
     }
 
@@ -54,7 +60,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
          statements = TRUNCATE_TABLE,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testOrderBookShouldAddNewQueue() throws Exception {
-        sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.orderBook(ID, ID);
         Stream<Queue> actual = queueService.getAll();
         actual.forEach(this::assertEachElementOfStream);
     }
@@ -64,9 +70,9 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
             assertThat(queue.getOrderDate())
                 .isBetween(LocalDateTime.now().minusDays(1L), LocalDateTime.now().plusDays(1L));
             assertThat(queue).extracting("user.name", "user.email")
-                .contains(DomainTestConstants.NAME, DomainTestConstants.EMAIL);
+                .contains(NAME, EMAIL);
             assertThat(queue).extracting("book.title", "book.author", "book.isbn")
-                .contains(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
+                .contains(TITLE, AUTHOR, ISBN);
         });
 
     }
@@ -75,7 +81,7 @@ public class OrderBookServiceImplIT extends AbstractBaseIT
     @Sql(scripts = {"classpath:sql_query/it_import.sql", "classpath:sql_query/queue_overflow_script.sql"})
     public void testOrderBookShouldThrowsExceptionWhenQueueLimitExceed() throws Exception {
         assertThatExceptionOfType(OrderException.class)
-            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.orderBook(ID, ID))
             .withNoCause();
     }
 }

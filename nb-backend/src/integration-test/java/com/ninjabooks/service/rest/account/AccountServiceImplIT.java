@@ -5,7 +5,10 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.error.exception.user.UserAlreadyExistException;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import java.util.stream.Stream;
 
@@ -38,18 +41,18 @@ public class AccountServiceImplIT extends AbstractBaseIT
     @Test
     @Transactional
     public void testCreateUserShouldCreateNewUser() throws Exception {
-        sut.createUser(DomainTestConstants.USER);
+        sut.createUser(USER);
         Stream<User> actual = userDao.getAll();
 
         assertThat(actual).extracting("name", "email")
-            .contains(tuple(DomainTestConstants.NAME, DomainTestConstants.EMAIL));
+            .contains(tuple(NAME, EMAIL));
     }
 
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserShouldFailedWhenUserAlreadyExist() throws Exception {
         assertThatExceptionOfType(UserAlreadyExistException.class)
-            .isThrownBy(() -> sut.createUser(DomainTestConstants.USER))
+            .isThrownBy(() -> sut.createUser(USER))
             .withMessageContaining("already exist in database")
             .withNoCause();
     }

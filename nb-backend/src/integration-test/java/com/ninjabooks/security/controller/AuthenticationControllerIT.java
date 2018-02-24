@@ -3,8 +3,10 @@ package com.ninjabooks.security.controller;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
@@ -42,8 +44,8 @@ public class AuthenticationControllerIT extends AbstractBaseIT
 {
     private final static String JSON_REQUEST =
         "{" +
-            "\"email\" : \"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\" : \"" + DomainTestConstants.PASSWORD + "\"" +
+            "\"email\" : \"" + EMAIL + "\"," +
+            "\"password\" : \"" + PLAIN_PASSWORD + "\"" +
         "}";
     private static final int EXPECTED_SIZE = 1;
 
@@ -145,7 +147,7 @@ public class AuthenticationControllerIT extends AbstractBaseIT
     }
 
     private String generateToken() {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
 
         return "Bearer " + token;

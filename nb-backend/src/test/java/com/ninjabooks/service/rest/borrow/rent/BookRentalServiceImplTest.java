@@ -6,7 +6,13 @@ import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -53,7 +59,7 @@ public class BookRentalServiceImplTest
     @Before
     public void setUp() throws Exception {
         this.sut = new BookRentalServiceImpl(borrowServiceMock, userServiceMock, rentalHelperMock);
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.USER));
+        when(userServiceMock.getById(ID)).thenReturn(Optional.of(USER));
         when(rentalHelperMock.findBookByQRCode(anyString())).thenReturn(createFreshEntity());
     }
 
@@ -61,7 +67,7 @@ public class BookRentalServiceImplTest
     public void testRentBookShouldSucceed() throws Exception {
         when(rentalHelperMock.isNotBelongToOtherUserQueue(any(), any())).thenReturn(true);
 
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
 
         verify(userServiceMock, atLeastOnce()).getById(any());
         verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
@@ -73,7 +79,7 @@ public class BookRentalServiceImplTest
         doThrow(EntityNotFoundException.class).when(rentalHelperMock).findBookByQRCode(anyString());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -85,7 +91,7 @@ public class BookRentalServiceImplTest
         when(rentalHelperMock.isBookBorrowed(any())).thenReturn(true);
 
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessageContaining("already borrowed");
 
@@ -99,7 +105,7 @@ public class BookRentalServiceImplTest
         when(rentalHelperMock.isNotBelongToOtherUserQueue(any(), any())).thenReturn(false);
 
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessage("Unable to borrow book");
 
@@ -117,7 +123,7 @@ public class BookRentalServiceImplTest
         when(listMock.size()).thenReturn(MAXIMUM_BORROW_LIMIT);
 
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessageContaining("exceeded the limit");
 
@@ -127,6 +133,6 @@ public class BookRentalServiceImplTest
     }
 
     private Book createFreshEntity() {
-        return new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
+        return new Book(TITLE, AUTHOR, ISBN);
     }
 }

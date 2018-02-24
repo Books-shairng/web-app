@@ -3,8 +3,12 @@ package com.ninjabooks.dao;
 import com.ninjabooks.dao.db.DBBorrowDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.db.SpecifiedElementFinder;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -36,7 +40,7 @@ public class DBBorrowDaoTest
 {
     private static final LocalDate UPDATED_BORROW_DATE = LocalDate.now();
     private static final Supplier<Stream<Borrow>> BORROW_STREAM_SUPPLIER =
-        CommonUtils.asSupplier(DomainTestConstants.BORROW);
+        CommonUtils.asSupplier(BORROW);
     private static final Supplier<Stream<Object>> EMTPY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
@@ -65,16 +69,16 @@ public class DBBorrowDaoTest
 
     @Test
     public void testAddBorrow() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.BORROW);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(BORROW);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteBorrow() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.BORROW);
-        sut.delete(DomainTestConstants.BORROW);
+        doNothing().when(sessionMock).delete(BORROW);
+        sut.delete(BORROW);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
@@ -84,7 +88,7 @@ public class DBBorrowDaoTest
         when(queryMock.stream()).thenReturn(BORROW_STREAM_SUPPLIER.get());
         Stream<Borrow> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
         verify(queryMock, atLeastOnce()).stream();
     }
 
@@ -97,16 +101,16 @@ public class DBBorrowDaoTest
 
     @Test
     public void testGetById() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.BORROW);
-        Optional<Borrow> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(BORROW);
+        Optional<Borrow> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.BORROW);
+        assertThat(actual).contains(BORROW);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdEntityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<Borrow> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Borrow> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -115,9 +119,9 @@ public class DBBorrowDaoTest
     public void testGetReturnDate() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BORROW_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
@@ -125,9 +129,9 @@ public class DBBorrowDaoTest
     public void testGetBorrowDate() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BORROW_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).containsExactly(BORROW);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
@@ -135,7 +139,7 @@ public class DBBorrowDaoTest
     public void testGetReturnDateWhichNotExistShouldReturnsEmptyStream() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMTPY_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -145,7 +149,7 @@ public class DBBorrowDaoTest
     public void testGetBorrowDateWhichNotExistShouldReturnEmtpyStream() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMTPY_STREAM_SUPPLIER.get());
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -163,6 +167,6 @@ public class DBBorrowDaoTest
     }
 
     private Borrow createFreshEntity() {
-        return new Borrow(DomainTestConstants.BORROW_DATE);
+        return new Borrow(BORROW_DATE);
     }
 }

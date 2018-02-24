@@ -2,7 +2,11 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ENCRYPTED_PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,11 +68,11 @@ public class QueryControllerIT extends AbstractBaseIT
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$..ID").value(DomainTestConstants.ID.intValue()))
+            .andExpect(jsonPath("$..ID").value(ID.intValue()))
             .andExpect(jsonPath("$..ACTIVE").value(true))
-            .andExpect(jsonPath("$..PASSWORD").value(DomainTestConstants.PASSWORD))
-            .andExpect(jsonPath("$..EMAIL").value(DomainTestConstants.EMAIL))
-            .andExpect(jsonPath("$..NAME").value(DomainTestConstants.NAME));
+            .andExpect(jsonPath("$..PASSWORD").value(ENCRYPTED_PASSWORD))
+            .andExpect(jsonPath("$..EMAIL").value(EMAIL))
+            .andExpect(jsonPath("$..NAME").value(NAME));
     }
 
     @Test
@@ -87,7 +91,7 @@ public class QueryControllerIT extends AbstractBaseIT
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$..['EXECUTE RESULT']").value(DomainTestConstants.ID.toString()));
+            .andExpect(jsonPath("$..['EXECUTE RESULT']").value(ID.toString()));
     }
 
     @Test
