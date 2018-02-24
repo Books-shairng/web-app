@@ -5,7 +5,7 @@ import com.ninjabooks.error.handler.AccountMgmtControllerHandler;
 import com.ninjabooks.service.rest.account.PasswordManagementService;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
-import static com.ninjabooks.util.constants.DomainTestConstants.PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,7 +38,7 @@ public class AccountMngtControllerTest
     private static final String API_URL_REQUEST = "/api/management/{userID}/";
     private static final String JSON = "" +
         "{" +
-            "\"password\" : " + PASSWORD +
+            "\"password\" : " + PLAIN_PASSWORD +
         "}";
 
     @Rule

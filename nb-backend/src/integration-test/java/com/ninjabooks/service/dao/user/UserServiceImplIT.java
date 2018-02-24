@@ -71,7 +71,7 @@ public class UserServiceImplIT extends AbstractBaseIT
     }
 
     private boolean isPasswordEqual(User user) {
-        return user.getPassword().equals(DomainTestConstants.PASSWORD);
+        return user.getPassword().equals(DomainTestConstants.PLAIN_PASSWORD);
     }
 
     private boolean isNameEqual(User user) {

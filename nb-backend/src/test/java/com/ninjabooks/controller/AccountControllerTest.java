@@ -40,7 +40,7 @@ public class AccountControllerTest
             "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
             "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
             "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"}" +
+            "\"password\":\"" + DomainTestConstants.PLAIN_PASSWORD + "\"}" +
         "}";
 
     @Rule

@@ -10,7 +10,7 @@ import com.ninjabooks.util.entity.EntityUtilsWrapper;
 import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
-import static com.ninjabooks.util.constants.DomainTestConstants.PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -65,7 +65,7 @@ public class PasswordManagementServiceImplTest
     @Test
     public void testChangePasswordShouldThrowsExceptionWhenPasswordNotUnique() throws Exception {
         assertThatExceptionOfType(ManagementException.class)
-            .isThrownBy(() -> sut.change(ID, PASSWORD))
+            .isThrownBy(() -> sut.change(ID, PLAIN_PASSWORD))
             .withNoCause()
             .withMessageContaining("not unique");
 
@@ -73,7 +73,7 @@ public class PasswordManagementServiceImplTest
     }
 
     private User createUserWithEncryptedPassword() {
-        String encodedPassword = passwordEncoder.encode(PASSWORD);
+        String encodedPassword = passwordEncoder.encode(PLAIN_PASSWORD);
         return new User(NAME, EMAIL, encodedPassword);
     }
 }

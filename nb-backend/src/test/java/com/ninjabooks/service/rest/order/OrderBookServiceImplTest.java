@@ -101,7 +101,7 @@ public class OrderBookServiceImplTest
     }
 
     private User createFreshEnity() {
-        User user = new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+        User user = new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
         user.setId(DomainTestConstants.ID);
 
         return user;

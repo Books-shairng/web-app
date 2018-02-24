@@ -66,7 +66,7 @@ public class QueryControllerIT extends AbstractBaseIT
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$..ID").value(DomainTestConstants.ID.intValue()))
             .andExpect(jsonPath("$..ACTIVE").value(true))
-            .andExpect(jsonPath("$..PASSWORD").value(DomainTestConstants.PASSWORD))
+            .andExpect(jsonPath("$..PASSWORD").value(DomainTestConstants.ENCRYPTED_PASSWORD))
             .andExpect(jsonPath("$..EMAIL").value(DomainTestConstants.EMAIL))
             .andExpect(jsonPath("$..NAME").value(DomainTestConstants.NAME));
     }

@@ -47,7 +47,7 @@ public class DBQueryServiceImplIT extends AbstractBaseIT
             .flatExtracting(Map::entrySet)
             .contains(
                 entry("EMAIL", DomainTestConstants.EMAIL),
-                entry("PASSWORD", DomainTestConstants.PASSWORD),
+                entry("PASSWORD", DomainTestConstants.ENCRYPTED_PASSWORD),
                 entry("NAME", DomainTestConstants.NAME)
             );
     }

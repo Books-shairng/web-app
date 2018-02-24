@@ -83,7 +83,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<User> actual = sut.getAll();
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FILEDS).contains(DomainTestConstants.USER);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FILEDS).contains(DomainTestConstants.USER_ENCRYPT_PASS);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class DBUserDaoIT extends AbstractBaseIT
     }
 
     private User createFreshEntity() {
-        User entityToUpdate = new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+        User entityToUpdate = new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
         entityToUpdate.setId(DomainTestConstants.ID);
 
         return entityToUpdate;
@@ -133,7 +133,7 @@ public class DBUserDaoIT extends AbstractBaseIT
         assertThat(actual).hasValueSatisfying(user -> {
             assertThat(user.getEmail()).isEqualTo(DomainTestConstants.EMAIL);
             assertThat(user.getName()).isEqualTo(DomainTestConstants.NAME);
-            assertThat(user.getPassword()).isEqualTo(DomainTestConstants.PASSWORD);
+            assertThat(user.getPassword()).isEqualTo(DomainTestConstants.ENCRYPTED_PASSWORD);
         });
     }
 }

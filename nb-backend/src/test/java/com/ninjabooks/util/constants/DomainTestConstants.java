@@ -25,7 +25,8 @@ public final class DomainTestConstants
     //region User field constants
     public static final String NAME = "John Dee";
     public static final String EMAIL = "john.dee@exmaple.com";
-    public static final String PASSWORD = "Johny!Dee123";
+    public static final String PLAIN_PASSWORD = "Johny!Dee123";
+    public static final String ENCRYPTED_PASSWORD = "$2a$10$yq9VL5OqEooEmsUtxKpwN.6.v/MdpMd/A/iZ/QVZJRmjS8AIVOki6";
     //endregion
 
     //region Book fields constants
@@ -66,7 +67,8 @@ public final class DomainTestConstants
 
     //region Standard entity
     public static final Book BOOK = new Book(TITLE, AUTHOR, ISBN);
-    public static final User USER = new User(NAME, EMAIL, PASSWORD);
+    public static final User USER = new User(NAME, EMAIL, PLAIN_PASSWORD);
+    public static final User USER_ENCRYPT_PASS = new User(NAME, EMAIL, ENCRYPTED_PASSWORD);
     public static final Queue QUEUE = new Queue(ORDER_DATE);
     public static final QRCode QR_CODE = new QRCode(DATA);
     public static final Borrow BORROW = new Borrow(BORROW_DATE);
@@ -75,7 +77,8 @@ public final class DomainTestConstants
     //endregion
 
     public static final Book BOOK_FULL = new Book(TITLE, AUTHOR, ISBN);
-    public static final User USER_FULL = new User(NAME, EMAIL, PASSWORD);
+    public static final User USER_FULL = new User(NAME, EMAIL, PLAIN_PASSWORD);
+    public static final User USER_ENCRYPT_PASS_FULL = new User(NAME, EMAIL, ENCRYPTED_PASSWORD);
     public static final Queue QUEUE_FULL = new Queue(ORDER_DATE);
     public static final QRCode QR_CODE_FULL = new QRCode(DATA);
     public static final Borrow BORROW_FULL = new Borrow(BORROW_DATE);
@@ -89,14 +92,19 @@ public final class DomainTestConstants
         setRelationFieldsInHistory();
         setRelationFieldsInQRCode();
         setRelationFieldsInUser();
+        setRelationFieldsInUserEP();
         setRelationFieldsInQueue();
         setRelationFieldsInComment();
         setIdsInFullEntities();
     }
 
+    private DomainTestConstants() {
+    }
+
     private static void setIds() {
         BOOK.setId(ID);
         USER.setId(ID);
+        USER_ENCRYPT_PASS.setId(ID);
         QUEUE.setId(ID);
         QR_CODE.setId(ID);
         BORROW.setId(ID);
@@ -107,6 +115,7 @@ public final class DomainTestConstants
     private static void setIdsInFullEntities() {
         BOOK_FULL.setId(ID);
         USER_FULL.setId(ID);
+        USER_ENCRYPT_PASS_FULL.setId(ID);
         QUEUE_FULL.setId(ID);
         QR_CODE_FULL.setId(ID);
         BORROW_FULL.setId(ID);
@@ -128,6 +137,13 @@ public final class DomainTestConstants
         USER_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
         USER_FULL.setComments(Collections.singletonList(COMMENT_FULL));
         USER_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
+    }
+
+    private static void setRelationFieldsInUserEP() {
+        USER_ENCRYPT_PASS_FULL.setBorrows(Collections.singletonList(BORROW_FULL));
+        USER_ENCRYPT_PASS_FULL.setQueues(Collections.singletonList(QUEUE_FULL));
+        USER_ENCRYPT_PASS_FULL.setComments(Collections.singletonList(COMMENT_FULL));
+        USER_ENCRYPT_PASS_FULL.setHistories(Collections.singletonList(HISTORY_FULL));
     }
 
     private static void setRelationFieldsInQueue() {

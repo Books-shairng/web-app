@@ -103,7 +103,7 @@ public class AuthenticationServiceImplIT extends AbstractBaseIT
     }
 
     private AuthenticationRequest createAuthRequest() {
-        return new AuthenticationRequest(DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+        return new AuthenticationRequest(DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
     }
 
 }

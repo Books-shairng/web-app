@@ -43,7 +43,7 @@ public class AccountControllerIT extends AbstractBaseIT
             "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
             "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
             "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PASSWORD + "\"" +
+            "\"password\":\"" + DomainTestConstants.PLAIN_PASSWORD + "\"" +
         "}";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
     private static final String SHORT_PASSWORD = "aa";

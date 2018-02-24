@@ -22,7 +22,7 @@ public class UserRequestTest
     @Before
     public void setUp() throws Exception {
         this.sut = new UserRequest(DomainTestConstants.FIRSTNAME, DomainTestConstants.LASTNAME,
-            DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+            DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
     }
 
     @Test

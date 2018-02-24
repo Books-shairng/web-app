@@ -155,7 +155,7 @@ public class DBUserDaoTest
     }
 
     private User createFreshEntity() {
-        return new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PASSWORD);
+        return new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
     }
 
 }

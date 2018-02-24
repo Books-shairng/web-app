@@ -43,7 +43,7 @@ public class AuthenticationControllerIT extends AbstractBaseIT
     private final static String JSON_REQUEST =
         "{" +
             "\"email\" : \"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\" : \"" + DomainTestConstants.PASSWORD + "\"" +
+            "\"password\" : \"" + DomainTestConstants.PLAIN_PASSWORD + "\"" +
         "}";
     private static final int EXPECTED_SIZE = 1;
 
