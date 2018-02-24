@@ -4,7 +4,12 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.dto.QueueDto;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +38,7 @@ public class QueueNotificationIT extends AbstractBaseIT
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new QueueNotification(DomainTestConstants.QUEUE_FULL, POSITION_IN_QUEUE, modelMapper);
+        this.sut = new QueueNotification(QUEUE_FULL, POSITION_IN_QUEUE, modelMapper);
     }
 
     @Test
@@ -41,7 +46,7 @@ public class QueueNotificationIT extends AbstractBaseIT
         QueueDto actual = sut.getQueueDto();
 
         assertThat(actual).extracting("orderDate")
-            .contains(DomainTestConstants.ORDER_DATE);
+            .contains(ORDER_DATE);
     }
 
     @Test
@@ -56,9 +61,9 @@ public class QueueNotificationIT extends AbstractBaseIT
         BookDto actual = sut.getBookDto();
 
         assertSoftly(softly -> {
-            assertThat(actual.getTitle()).isEqualTo(DomainTestConstants.TITLE);
-            assertThat(actual.getAuthor()).isEqualTo(DomainTestConstants.AUTHOR);
-            assertThat(actual.getIsbn()).isEqualTo(DomainTestConstants.ISBN);
+            assertThat(actual.getTitle()).isEqualTo(TITLE);
+            assertThat(actual.getAuthor()).isEqualTo(AUTHOR);
+            assertThat(actual.getIsbn()).isEqualTo(ISBN);
         });
     }
 }

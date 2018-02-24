@@ -3,8 +3,14 @@ package com.ninjabooks.controller;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.FIRSTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.LASTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import java.text.MessageFormat;
 
@@ -40,10 +46,10 @@ public class AccountControllerIT extends AbstractBaseIT
 {
     private static final String JSON =
         "{" +
-            "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
-            "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
-            "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PLAIN_PASSWORD + "\"" +
+            "\"firstName\":\"" + FIRSTNAME + "\"," +
+            "\"lastName\":\"" + LASTNAME + "\"," +
+            "\"email\":\"" + EMAIL + "\"," +
+            "\"password\":\"" + PLAIN_PASSWORD + "\"" +
         "}";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
     private static final String SHORT_PASSWORD = "aa";
@@ -114,7 +120,7 @@ public class AccountControllerIT extends AbstractBaseIT
 
     @Test
     public void testCreateUserWithMalformedEmailShouldFailed() throws Exception {
-        String json = JsonPath.parse(JSON).set("$.email", DomainTestConstants.NAME).jsonString();
+        String json = JsonPath.parse(JSON).set("$.email", NAME).jsonString();
         createUserWithExpectedMessageAsResponse(json, "email is not a well-formated");
     }
 
@@ -122,7 +128,7 @@ public class AccountControllerIT extends AbstractBaseIT
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
         String expectedResponse = MessageFormat.format("Username email: {0} already exist in database",
-            DomainTestConstants.EMAIL);
+            EMAIL);
         createUserWithExpectedMessageAsResponse(JSON, expectedResponse);
     }
 
@@ -143,14 +149,14 @@ public class AccountControllerIT extends AbstractBaseIT
             .header("Authorization", generateToken())
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
-            .andExpect(jsonPath("$.id").value(DomainTestConstants.ID))
-            .andExpect(jsonPath("$.firstName").value(DomainTestConstants.FIRSTNAME))
-            .andExpect(jsonPath("$.lastName").value(DomainTestConstants.LASTNAME))
-            .andExpect(jsonPath("$.email").value(DomainTestConstants.EMAIL));
+            .andExpect(jsonPath("$.id").value(ID))
+            .andExpect(jsonPath("$.firstName").value(FIRSTNAME))
+            .andExpect(jsonPath("$.lastName").value(LASTNAME))
+            .andExpect(jsonPath("$.email").value(EMAIL));
     }
 
     private String generateToken() {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
         return "Bearer " + token;
     }

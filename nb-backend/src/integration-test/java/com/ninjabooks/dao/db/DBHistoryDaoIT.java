@@ -4,7 +4,10 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.HistoryDao;
 import com.ninjabooks.domain.History;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.HISTORY;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -36,16 +39,16 @@ public class DBHistoryDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddHistory() throws Exception {
-        sut.add(DomainTestConstants.HISTORY);
+        sut.add(HISTORY);
         Stream<History> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.HISTORY);
+        assertThat(actual).containsExactly(HISTORY);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteHistoryByEnity() throws Exception {
-        sut.delete(DomainTestConstants.HISTORY);
+        sut.delete(HISTORY);
 
         assertThat(sut.getAll()).isEmpty();
     }
@@ -53,14 +56,14 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
-        Optional<History> actual = sut.getById(DomainTestConstants.ID);
+        Optional<History> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.HISTORY);
+        assertThat(actual).contains(HISTORY);
     }
 
     @Test
     public void testGetByIdEnityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<History> actual = sut.getById(DomainTestConstants.ID);
+        Optional<History> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -70,7 +73,7 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     public void testFindAllHistoriesShouldReturnsAllRecords() throws Exception {
         Stream<History> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.HISTORY);
+        assertThat(actual).containsExactly(HISTORY);
     }
 
     @Test
@@ -91,8 +94,8 @@ public class DBHistoryDaoIT extends AbstractBaseIT
     }
 
     private History createFreshEntity() {
-        History enityToUpdate = new History(DomainTestConstants.EXPECTED_RETURN_DATE);
-        enityToUpdate.setId(DomainTestConstants.ID);
+        History enityToUpdate = new History(EXPECTED_RETURN_DATE);
+        enityToUpdate.setId(ID);
 
         return enityToUpdate;
     }

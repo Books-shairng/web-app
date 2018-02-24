@@ -10,7 +10,11 @@ import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.history.HistoryService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -72,7 +76,7 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.returnBook(DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.returnBook(DATA))
             .withNoCause()
             .withMessageContaining("not borrowed, unable to return");
 
@@ -80,7 +84,7 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testReturnBookShouldChangeStatusBookStatusToFree() throws Exception {
-        sut.returnBook(DomainTestConstants.DATA);
+        sut.returnBook(DATA);
         Stream<Book> actual = bookDaoService.getAll();
 
         assertThat(actual).extracting("status").containsExactly(BookStatus.FREE);
@@ -88,7 +92,7 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testReturnBookShouldSetReturnDateToExpectedDate() throws Exception {
-        sut.returnBook(DomainTestConstants.DATA);
+        sut.returnBook(DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).extracting("realReturnDate").containsExactly(EXPECTED_DATE);
@@ -96,7 +100,7 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testReturnBookShouldSetActiveFieldToFalse() throws Exception {
-        sut.returnBook(DomainTestConstants.DATA);
+        sut.returnBook(DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).extracting("isActive").containsExactly(false);
@@ -104,17 +108,11 @@ public class BookReturnServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testReturnBookShouldAddNewRecordToHistory() throws Exception {
-        sut.returnBook(DomainTestConstants.DATA);
+        sut.returnBook(DATA);
         Stream<History> actual = historyService.getAll();
 
         assertThat(actual)
             .extracting("returnDate", "user.email", "book.title", "book.author")
-            .containsExactly(
-                tuple(
-                    EXPECTED_DATE,
-                    DomainTestConstants.EMAIL,
-                    DomainTestConstants.TITLE,
-                    DomainTestConstants.AUTHOR
-                ));
+            .containsExactly(tuple(EXPECTED_DATE, EMAIL, TITLE, AUTHOR));
     }
 }

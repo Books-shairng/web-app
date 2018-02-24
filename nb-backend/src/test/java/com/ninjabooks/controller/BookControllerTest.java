@@ -5,7 +5,13 @@ import com.ninjabooks.error.handler.BookControllerHandler;
 import com.ninjabooks.error.handler.EntityNotFoundHandler;
 import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.rest.book.BookRestService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.DESCRIPTION;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -38,13 +44,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class BookControllerTest
 {
-    private static final BookInfo BOOK_INFO_RESPONSE = new BookInfo(DomainTestConstants.BOOK);
+    private static final BookInfo BOOK_INFO_RESPONSE = new BookInfo(BOOK);
     private static final String JSON =
         "{" +
-            "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
-            "\"author\":\"" + DomainTestConstants.AUTHOR + "\"," +
-            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"," +
-            "\"description\":\"" + DomainTestConstants.DESCRIPTION + "\"" +
+            "\"title\":\"" + TITLE + "\"," +
+            "\"author\":\"" + AUTHOR + "\"," +
+            "\"isbn\":\"" + ISBN + "\"," +
+            "\"description\":\"" + DESCRIPTION + "\"" +
         "}";
 
     @Rule
@@ -66,7 +72,7 @@ public class BookControllerTest
 
     @Test
     public void testAddNewBookShouldReturnStatusCreated() throws Exception {
-        when(bookRestServiceMock.addBook(DomainTestConstants.BOOK)).thenReturn(any());
+        when(bookRestServiceMock.addBook(BOOK)).thenReturn(any());
 
         mockMvc.perform(post("/api/book/")
             .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -94,7 +100,7 @@ public class BookControllerTest
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
         when(bookRestServiceMock.getBookInfo(anyLong())).thenReturn(BOOK_INFO_RESPONSE);
 
-        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk());
@@ -106,7 +112,7 @@ public class BookControllerTest
     public void testGetDetailsBookInfoShouldFailWhenBookNotFound() throws Exception {
         doThrow(EntityNotFoundException.class).when(bookRestServiceMock).getBookInfo(anyLong());
 
-        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/book/{bookID}", ID))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isBadRequest());

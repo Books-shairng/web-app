@@ -2,7 +2,12 @@ package com.ninjabooks.json.notification;
 
 import com.ninjabooks.dto.BookDto;
 import com.ninjabooks.dto.QueueDto;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +28,14 @@ public class QueueNotificationTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new QueueNotification(DomainTestConstants.QUEUE_FULL, POSITION_IN_QUEUE, new ModelMapper());
+        this.sut = new QueueNotification(QUEUE_FULL, POSITION_IN_QUEUE, new ModelMapper());
     }
 
     @Test
     public void testNotificationShouldReturnCorrectQueueReturnData() throws Exception {
         QueueDto actual = sut.getQueueDto();
 
-        assertThat(actual.getOrderDate()).isEqualTo(DomainTestConstants.ORDER_DATE);
+        assertThat(actual.getOrderDate()).isEqualTo(ORDER_DATE);
     }
 
     @Test
@@ -45,9 +50,9 @@ public class QueueNotificationTest
         BookDto actual = sut.getBookDto();
 
         assertSoftly(softly -> {
-            assertThat(actual.getTitle()).isEqualTo(DomainTestConstants.TITLE);
-            assertThat(actual.getAuthor()).isEqualTo(DomainTestConstants.AUTHOR);
-            assertThat(actual.getIsbn()).isEqualTo(DomainTestConstants.ISBN);
+            assertThat(actual.getTitle()).isEqualTo(TITLE);
+            assertThat(actual.getAuthor()).isEqualTo(AUTHOR);
+            assertThat(actual.getIsbn()).isEqualTo(ISBN);
         });
     }
 }

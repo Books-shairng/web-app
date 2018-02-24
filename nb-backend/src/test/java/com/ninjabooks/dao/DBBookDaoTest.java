@@ -3,8 +3,13 @@ package com.ninjabooks.dao;
 import com.ninjabooks.dao.db.DBBookDao;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.db.SpecifiedElementFinder;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -34,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class DBBookDaoTest
 {
     private static final String UPDATED_TITLE = "New title";
-    private static final Supplier<Stream<Book>> BOOK_STREAM_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.BOOK);
+    private static final Supplier<Stream<Book>> BOOK_STREAM_SUPPLIER = CommonUtils.asSupplier(BOOK);
     private static final Supplier<Stream<Book>> EMPTY_STREAM_SUPPLIER = CommonUtils.asEmptySupplier();
 
     @Rule
@@ -63,32 +68,32 @@ public class DBBookDaoTest
 
     @Test
     public void testAddBook() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.BOOK);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(BOOK);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteBook() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.BOOK);
-        sut.delete(DomainTestConstants.BOOK);
+        doNothing().when(sessionMock).delete(BOOK);
+        sut.delete(BOOK);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testGetByID() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.BOOK);
-        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(BOOK);
+        Optional<Book> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.BOOK);
+        assertThat(actual).contains(BOOK);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdBookWhichNotExistShouldRetunEmptyOptional() throws Exception {
-        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Book> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -98,7 +103,7 @@ public class DBBookDaoTest
         when(queryMock.stream()).thenReturn(BOOK_STREAM_SUPPLIER.get());
         Stream<Book> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        assertThat(actual).containsExactly(BOOK);
         verify(queryMock, atLeastOnce()).stream();
     }
 
@@ -113,9 +118,9 @@ public class DBBookDaoTest
     public void testGetBooksByTitle() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BOOK_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+        Stream<Book> actual = sut.getByTitle(TITLE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        assertThat(actual).containsExactly(BOOK);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
@@ -123,9 +128,9 @@ public class DBBookDaoTest
     public void testGetBooksByAuthor() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BOOK_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+        Stream<Book> actual = sut.getByAuthor(AUTHOR);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        assertThat(actual).containsExactly(BOOK);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
@@ -133,9 +138,9 @@ public class DBBookDaoTest
     public void testGetBooksByISBN() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(BOOK_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+        Stream<Book> actual = sut.getByISBN(ISBN);
 
-        assertThat(actual).containsExactly(DomainTestConstants.BOOK);
+        assertThat(actual).containsExactly(BOOK);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
@@ -143,7 +148,7 @@ public class DBBookDaoTest
     public void testGetBookTitleWhichNotExistShouldBeEmpty() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMPTY_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+        Stream<Book> actual = sut.getByTitle(TITLE);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -153,7 +158,7 @@ public class DBBookDaoTest
     public void testGetBookAuthorWhichNotExistShouldBeEmpty() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMPTY_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+        Stream<Book> actual = sut.getByAuthor(AUTHOR);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -163,7 +168,7 @@ public class DBBookDaoTest
     public void testGetBookISBNWhichNotExistShouldBeEmpty() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any()))
             .thenReturn(EMPTY_STREAM_SUPPLIER.get());
-        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+        Stream<Book> actual = sut.getByISBN(ISBN);
 
         assertThat(actual).isEmpty();
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
@@ -181,6 +186,6 @@ public class DBBookDaoTest
     }
 
     private Book createFreshEntity() {
-        return new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
+        return new Book(TITLE, AUTHOR, ISBN);
     }
 }

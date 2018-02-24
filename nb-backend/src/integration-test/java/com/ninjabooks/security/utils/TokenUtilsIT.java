@@ -2,8 +2,9 @@ package com.ninjabooks.security.utils;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,7 +55,7 @@ public class TokenUtilsIT extends AbstractBaseIT
     public void testGetUsernameShouldReturnExpectedUsername() throws Exception {
         String actual = sut.getUsernameFromToken(generateToken());
 
-        assertThat(actual).isEqualTo(DomainTestConstants.EMAIL);
+        assertThat(actual).isEqualTo(EMAIL);
     }
 
     @Test
@@ -143,7 +144,7 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     private UserDetails obtainUserDetails() {
-        return userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
+        return userDetailsService.loadUserByUsername(EMAIL);
     }
 
     private String generateToken() {

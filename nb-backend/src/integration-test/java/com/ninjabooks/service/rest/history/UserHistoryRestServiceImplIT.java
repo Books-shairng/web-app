@@ -3,7 +3,12 @@ package com.ninjabooks.service.rest.history;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.history.GenericHistoryResponse;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -39,22 +44,22 @@ public class UserHistoryRestServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetHistoryShouldReturnListWithExpectedSize() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
     }
 
     @Test
     public void testGetHistoryShouldReturnExpectedDtoFields() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual)
             .extracting("historyDto.returnDate", "bookDto.author", "bookDto.isbn", "bookDto.title")
             .containsExactly(tuple(
-                DomainTestConstants.EXPECTED_RETURN_DATE,
-                DomainTestConstants.AUTHOR,
-                DomainTestConstants.ISBN,
-                DomainTestConstants.TITLE));
+                EXPECTED_RETURN_DATE,
+                AUTHOR,
+                ISBN,
+                TITLE));
     }
 
     @Test
@@ -63,14 +68,14 @@ public class UserHistoryRestServiceImplIT extends AbstractBaseIT
         statements = TRUNCATE_HISTORY_TABLE,
         executionPhase = BEFORE_TEST_METHOD)
     public void testGetHistoryShouldReturnEmptyListWhenUserDontHaveAnyHistory() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetHistoryShouldReturnEmptyListWhenMinusDayIsLarge() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_NUMBER_OF_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_NUMBER_OF_DAY, ID);
 
         assertThat(actual).isEmpty();
     }

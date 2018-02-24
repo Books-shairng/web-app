@@ -3,8 +3,11 @@ package com.ninjabooks.dao;
 import com.ninjabooks.dao.db.DBQRCodeDao;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.db.SpecifiedElementFinder;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -34,8 +37,8 @@ import static org.mockito.Mockito.when;
 public class DBQRCodeDaoTest
 {
     private static final String NEW_DATA = "54312";
-    private static final Supplier<Stream<QRCode>> QR_CODE_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.QR_CODE);
-    private static final Optional<QRCode> QR_CODE_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.QR_CODE);
+    private static final Supplier<Stream<QRCode>> QR_CODE_SUPPLIER = CommonUtils.asSupplier(QR_CODE);
+    private static final Optional<QRCode> QR_CODE_OPTIONAL = CommonUtils.asOptional(QR_CODE);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -63,32 +66,32 @@ public class DBQRCodeDaoTest
 
     @Test
     public void testAddQRCode() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.QR_CODE);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(QR_CODE);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteQRCode() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.QR_CODE);
-        sut.delete(DomainTestConstants.QR_CODE);
+        doNothing().when(sessionMock).delete(QR_CODE);
+        sut.delete(QR_CODE);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testGetById() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.QR_CODE);
-        Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(QR_CODE);
+        Optional<QRCode> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE);
+        assertThat(actual).contains(QR_CODE);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
+        Optional<QRCode> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -98,7 +101,7 @@ public class DBQRCodeDaoTest
         when(queryMock.stream()).thenReturn(QR_CODE_SUPPLIER.get());
         Stream<QRCode> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.QR_CODE);
+        assertThat(actual).containsExactly(QR_CODE);
     }
 
     @Test
@@ -111,15 +114,15 @@ public class DBQRCodeDaoTest
     @Test
     public void testGetByData() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(QR_CODE_OPTIONAL);
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE);
+        assertThat(actual).contains(QR_CODE);
     }
 
     @Test
     public void testGetDataWhichNotExistShouldReturnEmptyOptional() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
         assertThat(actual).isEmpty();
     }
@@ -136,6 +139,6 @@ public class DBQRCodeDaoTest
     }
 
     private QRCode createFreshEntity() {
-        return new QRCode(DomainTestConstants.DATA);
+        return new QRCode(DATA);
     }
 }

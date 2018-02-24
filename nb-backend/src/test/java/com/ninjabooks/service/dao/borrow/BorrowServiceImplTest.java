@@ -4,7 +4,10 @@ import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -28,8 +31,7 @@ import static org.mockito.Mockito.when;
  */
 public class BorrowServiceImplTest
 {
-    private static final Supplier<Stream<Borrow>> EXPTECTED_STREAM_BORROW =
-        CommonUtils.asSupplier(DomainTestConstants.BORROW);
+    private static final Supplier<Stream<Borrow>> EXPTECTED_STREAM_BORROW = CommonUtils.asSupplier(BORROW);
     private static final Supplier<Stream<Borrow>> EMPTY_STREAM = CommonUtils.asEmptySupplier();
 
     @Rule
@@ -50,27 +52,27 @@ public class BorrowServiceImplTest
 
     @Test
     public void testGeyByBorrowDateShouldReturnStreamWithExpectedBorrow() throws Exception {
-        when(borrowDaoMock.getByBorrowDate(DomainTestConstants.BORROW_DATE)).thenReturn(EXPTECTED_STREAM_BORROW.get());
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        when(borrowDaoMock.getByBorrowDate(BORROW_DATE)).thenReturn(EXPTECTED_STREAM_BORROW.get());
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
-        assertThat(actual).extracting(borrow -> borrow).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).extracting(borrow -> borrow).containsExactly(BORROW);
         verify(borrowDaoMock, atLeastOnce()).getByBorrowDate(any());
     }
 
     @Test
     public void testGetByExpectedReturnDateShouldReturnStreamWithExpectedBorrow() throws Exception {
-        when(borrowDaoMock.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE))
+        when(borrowDaoMock.getByExpectedReturnDate(EXPECTED_RETURN_DATE))
             .thenReturn(EXPTECTED_STREAM_BORROW.get());
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
-        assertThat(actual).extracting(borrow -> borrow).containsExactly(DomainTestConstants.BORROW);
+        assertThat(actual).extracting(borrow -> borrow).containsExactly(BORROW);
         verify(borrowDaoMock, atLeastOnce()).getByExpectedReturnDate(any());
     }
 
     @Test
     public void testGetByBorrowDateShouldReturnEmptyStreamWhenBorrowNotFound() throws Exception {
-        when(borrowDaoMock.getByBorrowDate(DomainTestConstants.BORROW_DATE)).thenReturn(EMPTY_STREAM.get());
-        Stream<Borrow> actual = sut.getByBorrowDate(DomainTestConstants.BORROW_DATE);
+        when(borrowDaoMock.getByBorrowDate(BORROW_DATE)).thenReturn(EMPTY_STREAM.get());
+        Stream<Borrow> actual = sut.getByBorrowDate(BORROW_DATE);
 
         assertThat(actual).isEmpty();
         verify(borrowDaoMock, atLeastOnce()).getByBorrowDate(any());
@@ -78,8 +80,8 @@ public class BorrowServiceImplTest
 
     @Test
     public void testGetByExpectedReturnDateShouldReturnEmptyStreamWhenBorrowNotFound() throws Exception {
-        when(borrowDaoMock.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE)).thenReturn(EMPTY_STREAM.get());
-        Stream<Borrow> actual = sut.getByExpectedReturnDate(DomainTestConstants.EXPECTED_RETURN_DATE);
+        when(borrowDaoMock.getByExpectedReturnDate(EXPECTED_RETURN_DATE)).thenReturn(EMPTY_STREAM.get());
+        Stream<Borrow> actual = sut.getByExpectedReturnDate(EXPECTED_RETURN_DATE);
 
         assertThat(actual).isEmpty();
         verify(borrowDaoMock, atLeastOnce()).getByExpectedReturnDate(any());

@@ -3,7 +3,11 @@ package com.ninjabooks.service.dao.book;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import javax.transaction.Transactional;
 import java.util.stream.Stream;
@@ -36,23 +40,23 @@ public class BookDaoServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetByTitleShouldRetrunStreamWithExpectedBook() throws Exception {
-        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+        Stream<Book> actual = sut.getByTitle(TITLE);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test
     public void testGetByAuthorShouldReturnStreamWithExpectedBook() throws Exception {
-        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+        Stream<Book> actual = sut.getByAuthor(AUTHOR);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test
     public void testGetByISBNShouldReturnStreamWithExpectedBook() throws Exception {
-        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+        Stream<Book> actual = sut.getByISBN(ISBN);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test

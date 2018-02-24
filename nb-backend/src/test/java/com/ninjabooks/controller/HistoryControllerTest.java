@@ -1,7 +1,8 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.history.HistoryRestService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,14 +46,14 @@ public class HistoryControllerTest
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/history/{userID}/", ID))
             .andDo(print())
             .andExpect(status().isOk());
     }
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnMessageWhenUuserHasNoHistory() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID))
+        mockMvc.perform(get("/api/history/{userID}/", ID))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.message").value(EMPTY_HISTORY_MESSAGE));
@@ -60,7 +61,7 @@ public class HistoryControllerTest
 
     @Test
     public void testFetchUserHistoryWithParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", DomainTestConstants.ID)
+        mockMvc.perform(get("/api/history/{userID}/", ID)
             .param("minusDays", MINUS_DAYS))
             .andDo(print())
             .andExpect(status().isOk());

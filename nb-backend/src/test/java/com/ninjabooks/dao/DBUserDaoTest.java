@@ -3,8 +3,13 @@ package com.ninjabooks.dao;
 import com.ninjabooks.dao.db.DBUserDao;
 import com.ninjabooks.domain.User;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.db.QueryFinder;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -34,8 +39,8 @@ import static org.mockito.Mockito.when;
 public class DBUserDaoTest
 {
     private static final String NEW_NAME = "Peter Datov";
-    private static final Supplier<Stream<User>> USER_STREAM_SUPPLIER = CommonUtils.asSupplier(DomainTestConstants.USER);
-    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
+    private static final Supplier<Stream<User>> USER_STREAM_SUPPLIER = CommonUtils.asSupplier(USER);
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(USER);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -63,32 +68,32 @@ public class DBUserDaoTest
 
     @Test
     public void testAddUser() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.USER);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(USER);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteByEnityUser() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.USER);
-        sut.delete(DomainTestConstants.USER);
+        doNothing().when(sessionMock).delete(USER);
+        sut.delete(USER);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testGetById() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.USER);
-        Optional<User> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(USER);
+        Optional<User> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.USER);
+        assertThat(actual).contains(USER);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdEnityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<User> actual = sut.getById(DomainTestConstants.ID);
+        Optional<User> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -106,7 +111,7 @@ public class DBUserDaoTest
     @Test
     public void testGetUserByNameWhichNotExistShouldReturnEmptyOptional() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
-        Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
+        Optional<User> actual = sut.getByName(NAME);
 
         assertThat(actual).isEmpty();
     }
@@ -115,7 +120,7 @@ public class DBUserDaoTest
     @Test
     public void testGetUserByEmailWhichNotExistShouldReturnEmptyOptional() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(Optional.empty());
-        Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
+        Optional<User> actual = sut.getByEmail(EMAIL);
 
         assertThat(actual).isEmpty();
     }
@@ -125,7 +130,7 @@ public class DBUserDaoTest
         when(queryMock.stream()).thenReturn(USER_STREAM_SUPPLIER.get());
         Stream<User> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.USER);
+        assertThat(actual).containsExactly(USER);
         verify(queryMock, atLeastOnce()).stream();
     }
 
@@ -139,23 +144,23 @@ public class DBUserDaoTest
     @Test
     public void testGetUserByName() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(USER_OPTIONAL);
-        Optional<User> actual = sut.getByName(DomainTestConstants.NAME);
+        Optional<User> actual = sut.getByName(NAME);
 
-        assertThat(actual).contains(DomainTestConstants.USER);
+        assertThat(actual).contains(USER);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
     @Test
     public void testGetUserByEmail() throws Exception {
         when(specifiedElementFinderMock.findSpecifiedElementInDB(any(), any(), any())).thenReturn(USER_OPTIONAL);
-        Optional<User> actual = sut.getByEmail(DomainTestConstants.EMAIL);
+        Optional<User> actual = sut.getByEmail(EMAIL);
 
-        assertThat(actual).contains(DomainTestConstants.USER);
+        assertThat(actual).contains(USER);
         verify(specifiedElementFinderMock, atLeastOnce()).findSpecifiedElementInDB(any(), any(), any());
     }
 
     private User createFreshEntity() {
-        return new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
+        return new User(NAME, EMAIL, PLAIN_PASSWORD);
     }
 
 }

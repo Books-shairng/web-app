@@ -3,7 +3,10 @@ package com.ninjabooks.dao;
 import com.ninjabooks.dao.db.DBHistoryDao;
 import com.ninjabooks.domain.History;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.HISTORY;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -35,7 +38,7 @@ public class DBHistoryDaoTest
 {
     private static final LocalDate UPDATED_RETURN_DATE = LocalDate.now();
     private static final Supplier<Stream<History>> HISTORY_STREAM_SUPPLIER =
-        CommonUtils.asSupplier(DomainTestConstants.HISTORY);
+        CommonUtils.asSupplier(HISTORY);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -60,32 +63,32 @@ public class DBHistoryDaoTest
 
     @Test
     public void testAddHistory() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.HISTORY);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(HISTORY);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteHistoryByEnity() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.HISTORY);
-        sut.delete(DomainTestConstants.HISTORY);
+        doNothing().when(sessionMock).delete(HISTORY);
+        sut.delete(HISTORY);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
 
     @Test
     public void testGetById() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.HISTORY);
-        Optional<History> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(HISTORY);
+        Optional<History> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.HISTORY);
+        assertThat(actual).contains(HISTORY);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdEnityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<History> actual = sut.getById(DomainTestConstants.ID);
+        Optional<History> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -95,7 +98,7 @@ public class DBHistoryDaoTest
         when(queryMock.stream()).thenReturn(HISTORY_STREAM_SUPPLIER.get());
         Stream<History> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.HISTORY);
+        assertThat(actual).containsExactly(HISTORY);
     }
 
     @Test
@@ -115,7 +118,7 @@ public class DBHistoryDaoTest
     }
 
     private History createFreshEntity() {
-        return new History(DomainTestConstants.EXPECTED_RETURN_DATE);
+        return new History(EXPECTED_RETURN_DATE);
     }
 
 }

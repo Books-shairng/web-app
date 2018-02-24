@@ -4,6 +4,11 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.DESCRIPTION;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
+
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,10 +44,10 @@ public class BookControllerIT extends AbstractBaseIT
     private static final int MAX_DESCRIPTION_LENGTH = 5000;
     private static final String JSON =
         "{" +
-            "\"title\":\"" + DomainTestConstants.TITLE + "\"," +
-            "\"author\":\"" + DomainTestConstants.AUTHOR + "\"," +
-            "\"isbn\":\"" + DomainTestConstants.ISBN + "\"," +
-            "\"description\":\"" + DomainTestConstants.DESCRIPTION + "\"" +
+            "\"title\":\"" + TITLE + "\"," +
+            "\"author\":\"" + AUTHOR + "\"," +
+            "\"isbn\":\"" + ISBN + "\"," +
+            "\"description\":\"" + DESCRIPTION + "\"" +
         "}";
 
     @Autowired
@@ -129,10 +134,10 @@ public class BookControllerIT extends AbstractBaseIT
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(jsonPath("$.id").value(ID))
-            .andExpect(jsonPath("$.author").value(DomainTestConstants.AUTHOR))
-            .andExpect(jsonPath("$.title").value(DomainTestConstants.TITLE))
-            .andExpect(jsonPath("$.isbn").value(DomainTestConstants.ISBN))
-            .andExpect(jsonPath("$.description").value(DomainTestConstants.DESCRIPTION))
+            .andExpect(jsonPath("$.author").value(AUTHOR))
+            .andExpect(jsonPath("$.title").value(TITLE))
+            .andExpect(jsonPath("$.isbn").value(ISBN))
+            .andExpect(jsonPath("$.description").value(DESCRIPTION))
             .andExpect(jsonPath("$.status").value(BOOK_STATUS))
             .andExpect(jsonPath("$.queueSize").value(EXPECTED_SIZE));
     }

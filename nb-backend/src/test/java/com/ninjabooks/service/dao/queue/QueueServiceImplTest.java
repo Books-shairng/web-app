@@ -4,7 +4,9 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.QueueDao;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -28,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 public class QueueServiceImplTest
 {
-    private static final Supplier<Stream<Queue>> EXPECTED_VALUE = CommonUtils.asSupplier(DomainTestConstants.QUEUE);
+    private static final Supplier<Stream<Queue>> EXPECTED_VALUE = CommonUtils.asSupplier(QUEUE);
     private static final Supplier<Stream<Queue>> EMPTY_STREAM = CommonUtils.asEmptySupplier();
 
     @Rule
@@ -49,17 +51,17 @@ public class QueueServiceImplTest
 
     @Test
     public void testGetByOrderDateShouldReturnStreamWithExpectedValue() throws Exception {
-        when(queueDaoMock.getByOrderDate(DomainTestConstants.ORDER_DATE)).thenReturn(EXPECTED_VALUE.get());
-        Stream<Queue> actual = sut.getByOderDate(DomainTestConstants.ORDER_DATE);
+        when(queueDaoMock.getByOrderDate(ORDER_DATE)).thenReturn(EXPECTED_VALUE.get());
+        Stream<Queue> actual = sut.getByOderDate(ORDER_DATE);
 
-        assertThat(actual).containsExactly(DomainTestConstants.QUEUE);
+        assertThat(actual).containsExactly(QUEUE);
         verify(queueDaoMock, atLeastOnce()).getByOrderDate(any());
     }
 
     @Test
     public void testGetByOrderDateWhichNotExistShouldReturnEmptyStream() throws Exception {
-        when(queueDaoMock.getByOrderDate(DomainTestConstants.ORDER_DATE)).thenReturn(EMPTY_STREAM.get());
-        Stream<Queue> actual = sut.getByOderDate(DomainTestConstants.ORDER_DATE);
+        when(queueDaoMock.getByOrderDate(ORDER_DATE)).thenReturn(EMPTY_STREAM.get());
+        Stream<Queue> actual = sut.getByOderDate(ORDER_DATE);
 
         assertThat(actual).isEmpty();
         verify(queueDaoMock, atLeastOnce()).getByOrderDate(any());

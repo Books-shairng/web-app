@@ -2,7 +2,10 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.text.MessageFormat;
 
@@ -52,27 +55,27 @@ public class BorrowControllerIT extends AbstractBaseIT
          statements = UPDATE_BOOK_STATUS,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isOk());
     }
 
     @Test
     public void testBorrowBookShouldReturnBadRequestWhenUserNotFound() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("Entity with id: {0} not found", DomainTestConstants.ID)));
+                .value(MessageFormat.format("Entity with id: {0} not found", ID)));
     }
 
     @Test
     @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldReturnBadRequestWhenQRCodeNotFound() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
             .param("qrCode", RANDOM_QR_CODE))
             .andDo(print())
             .andExpect(status().isBadRequest())
@@ -84,12 +87,12 @@ public class BorrowControllerIT extends AbstractBaseIT
     @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testBorrowBookShouldReturnBadRequestWhenBookIsNotBorrowed() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/", DomainTestConstants.ID)
-            .param("qrCode", DomainTestConstants.DATA))
+        mockMvc.perform(post("/api/borrow/{userID}/", ID)
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("Book: {0} is already borrowed", DomainTestConstants.TITLE)));
+                .value(MessageFormat.format("Book: {0} is already borrowed", TITLE)));
     }
 
     @Test
@@ -97,7 +100,7 @@ public class BorrowControllerIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldSucceed() throws Exception {
         mockMvc.perform(post("/api/borrow/return/")
-            .param("qrCode", DomainTestConstants.DATA))
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -108,20 +111,20 @@ public class BorrowControllerIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testReturnBookShouldFailedWhenBookIsNotBorrowed() throws Exception {
         mockMvc.perform(post("/api/borrow/return/")
-            .param("qrCode", DomainTestConstants.DATA))
+            .param("qrCode", DATA))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
                 .value(MessageFormat.format("Book: {0} is not borrowed, unable to return",
-                    DomainTestConstants.TITLE)));
+                    TITLE)));
     }
 
     @Test
     @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testExtendReturnDateShouldSucced() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -132,12 +135,12 @@ public class BorrowControllerIT extends AbstractBaseIT
         statements = {TRUNCATE_BORROW_TABLE, TRUNCATE_BOOK_TABLE},
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenBookNotExist() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("Entity with id: {0} not found", DomainTestConstants.ID)));
+                .value(MessageFormat.format("Entity with id: {0} not found", ID)));
     }
 
     @Test
@@ -146,12 +149,12 @@ public class BorrowControllerIT extends AbstractBaseIT
         value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql",
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenBookIsNotBorrowed() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("Book: {0} is not borrowed", DomainTestConstants.TITLE)));
+                .value(MessageFormat.format("Book: {0} is not borrowed", TITLE)));
     }
 
     @Test
@@ -160,11 +163,11 @@ public class BorrowControllerIT extends AbstractBaseIT
         statements = UPDATE_EXTEND_STATUS,
         executionPhase = BEFORE_TEST_METHOD)
     public void testExtendBookShouldFailedWhenExtendStatusIsFalse() throws Exception {
-        mockMvc.perform(post("/api/borrow/{userID}/extend/", DomainTestConstants.ID)
-            .param("bookID", String.valueOf(DomainTestConstants.ID)))
+        mockMvc.perform(post("/api/borrow/{userID}/extend/", ID)
+            .param("bookID", String.valueOf(ID)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message")
-                .value(MessageFormat.format("Unable extend book with id: {0}", DomainTestConstants.ID)));
+                .value(MessageFormat.format("Unable extend book with id: {0}", ID)));
     }
 }

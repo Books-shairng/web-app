@@ -6,7 +6,14 @@ import com.ninjabooks.json.book.BookInfo;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.qrcode.QRCodeService;
 import com.ninjabooks.util.QRCodeGenerator;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.util.Optional;
 
@@ -51,17 +58,17 @@ public class BookRestServiceImplTest
 
     @Test
     public void testAddNewBookShouldGenerateUniqueQRCodeAndAddBookIntoDB() throws Exception {
-        when(codeGeneratorMock.generateCode()).thenReturn(DomainTestConstants.DATA);
-        String actual = sut.addBook(DomainTestConstants.BOOK);
+        when(codeGeneratorMock.generateCode()).thenReturn(DATA);
+        String actual = sut.addBook(BOOK);
 
-        assertThat(actual).isEqualTo(DomainTestConstants.DATA);
+        assertThat(actual).isEqualTo(DATA);
         verify(codeGeneratorMock, atLeastOnce()).generateCode();
     }
 
     @Test
     public void testAddNewBookWhenUnableToGenerateUniqueCodeShouldThrowsException() throws Exception {
-        when(qrCodeServiceMock.getByData(any())).thenReturn(Optional.of(DomainTestConstants.QR_CODE));
-        assertThatExceptionOfType(QRCodeException.class).isThrownBy(() -> sut.addBook(DomainTestConstants.BOOK))
+        when(qrCodeServiceMock.getByData(any())).thenReturn(Optional.of(QR_CODE));
+        assertThatExceptionOfType(QRCodeException.class).isThrownBy(() -> sut.addBook(BOOK))
             .withNoCause();
 
         verify(qrCodeServiceMock, atLeastOnce()).getByData(any());
@@ -69,15 +76,10 @@ public class BookRestServiceImplTest
 
     @Test
     public void testGetBookInfoShouldReturnExpectedBook() throws Exception {
-        when(bookServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(DomainTestConstants.BOOK));
-        BookInfo bookInfo = sut.getBookInfo(DomainTestConstants.ID);
+        when(bookServiceMock.getById(ID)).thenReturn(Optional.of(BOOK));
+        BookInfo bookInfo = sut.getBookInfo(ID);
         BookDto actual = bookInfo.getBookDto();
 
-        assertThat(actual).extracting("author", "title", "isbn")
-            .contains(
-                DomainTestConstants.AUTHOR,
-                DomainTestConstants.TITLE,
-                DomainTestConstants.ISBN
-            );
+        assertThat(actual).extracting("author", "title", "isbn").contains(AUTHOR, TITLE, ISBN);
     }
 }

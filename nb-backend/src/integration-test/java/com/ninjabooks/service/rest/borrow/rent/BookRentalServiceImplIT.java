@@ -10,7 +10,14 @@ import com.ninjabooks.domain.Queue;
 import com.ninjabooks.error.exception.borrow.BorrowException;
 import com.ninjabooks.service.dao.borrow.BorrowService;
 import com.ninjabooks.service.dao.queue.QueueService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.stream.Stream;
@@ -55,7 +62,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testRentBookShouldSucceedAndReturnExpectedSize() throws Exception {
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
@@ -63,7 +70,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testRentBookShouldSucceedAndReturnBorrowStatus() throws Exception {
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).extracting("book", Book.class)
@@ -73,31 +80,26 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testRentBookShouldSucceedAndReturnExpectedBook() throws Exception {
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).extracting("book.title", "book.isbn", "book.author")
-            .containsExactly(
-                tuple(
-                    DomainTestConstants.TITLE,
-                    DomainTestConstants.ISBN,
-                    DomainTestConstants.AUTHOR
-                ));
+            .containsExactly(tuple(TITLE, ISBN, AUTHOR));
     }
 
     @Test
     public void testRentBookShouldSucceedAndReturnExpectedUser() throws Exception {
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
         Stream<Borrow> actual = borrowService.getAll();
 
         assertThat(actual).extracting("user.name", "user.email")
-            .containsExactly(tuple(DomainTestConstants.NAME, DomainTestConstants.EMAIL));
+            .containsExactly(tuple(NAME, EMAIL));
     }
 
     @Test
     public void testRentBookShouldThrowsExceptionWhenBookNotFound() throws Exception {
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, RANDOM_QR_DATA))
+            .isThrownBy(() -> sut.rentBook(ID, RANDOM_QR_DATA))
             .withNoCause()
             .withMessageContaining("not found");
     }
@@ -107,7 +109,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
          statements = QUEUE_INSERT_QUERY,
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldSetActiveToFalseInQueueTableAfterSucceedBorrow() throws Exception {
-        sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA);
+        sut.rentBook(ID, DATA);
         Stream<Queue> actual = queueService.getAll();
 
         assertThat(actual).extracting(BaseEntity::getIsActive).contains(false);
@@ -119,7 +121,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExceptionWhenBookIsAlreadyBorrowed() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessageContaining("already borrowed");
     }
@@ -129,7 +131,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenBookWasOrderedByOtherUser() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessage("Unable to borrow book");
     }
@@ -140,7 +142,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldFailsWhenUserOrderedBookAndNotOnFirstPosition() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessage("Unable to borrow book");
     }
@@ -153,7 +155,7 @@ public class BookRentalServiceImplIT extends AbstractBaseIT
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testRentBookShouldThrowsExcpetionWhenLimitIsExceeded() throws Exception {
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.rentBook(DomainTestConstants.ID, DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.rentBook(ID, DATA))
             .withNoCause()
             .withMessageContaining("exceeded the limit");
     }

@@ -3,7 +3,9 @@ package com.ninjabooks.service.dao.queue;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE_FULL;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -35,9 +37,9 @@ public class QueueServiceImplIT extends AbstractBaseIT
 
     @Test
     public void testGetByOrderDateShouldReturnSteamWithExpectedQueue() throws Exception {
-        Stream<Queue> actual = sut.getByOderDate(DomainTestConstants.ORDER_DATE);
+        Stream<Queue> actual = sut.getByOderDate(ORDER_DATE);
 
-        assertThat(actual).extracting(queue -> queue).containsExactly(DomainTestConstants.QUEUE_FULL);
+        assertThat(actual).extracting(queue -> queue).containsExactly(QUEUE_FULL);
     }
 
     @Test

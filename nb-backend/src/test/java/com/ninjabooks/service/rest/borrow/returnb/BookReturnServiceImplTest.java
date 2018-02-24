@@ -7,6 +7,9 @@ import com.ninjabooks.service.dao.history.HistoryService;
 import com.ninjabooks.service.rest.borrow.RentalHelper;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
@@ -52,7 +55,7 @@ public class BookReturnServiceImplTest
         doThrow(EntityNotFoundException.class).when(rentalHelperMock).findBookByQRCode(anyString());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.returnBook(DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.returnBook(DATA))
             .withNoCause();
 
         verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
@@ -60,10 +63,10 @@ public class BookReturnServiceImplTest
 
     @Test
     public void testReturnBookShouldThrowsExceptionWhenBookIsNotBorrowed() throws Exception {
-        when(rentalHelperMock.isBookBorrowed(DomainTestConstants.BOOK)).thenReturn(false);
+        when(rentalHelperMock.isBookBorrowed(BOOK)).thenReturn(false);
 
         assertThatExceptionOfType(BorrowException.class)
-            .isThrownBy(() -> sut.returnBook(DomainTestConstants.DATA))
+            .isThrownBy(() -> sut.returnBook(DATA))
             .withNoCause();
 
         verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
@@ -74,7 +77,7 @@ public class BookReturnServiceImplTest
     public void testReturnBookShouldSucceed() throws Exception {
         when(rentalHelperMock.isBookBorrowed(any())).thenReturn(true);
 
-        sut.returnBook(DomainTestConstants.DATA);
+        sut.returnBook(DATA);
 
         verify(rentalHelperMock, atLeastOnce()).findBookByQRCode(anyString());
         verify(rentalHelperMock, atLeastOnce()).isBookBorrowed(any());

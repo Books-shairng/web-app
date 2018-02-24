@@ -3,7 +3,11 @@ package com.ninjabooks.service.rest.search;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.util.List;
 
@@ -26,38 +30,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookSearchServiceImplIT extends AbstractBaseIT
 {
     private static final String CUSTOM_SEARCH_QUERY = "Concurrency in practice";
-    private static final String FULL_SEARCH_QUERY =
-        DomainTestConstants.AUTHOR + " " + DomainTestConstants.ISBN + " " + DomainTestConstants.TITLE;
+    private static final String FULL_SEARCH_QUERY = AUTHOR + " " + ISBN + " " + TITLE;
 
     @Autowired
     private SearchService sut;
 
     @Test
     public void testSearchByTitleShouldReturnListOfBooks() throws Exception {
-        List<Book> actual = sut.search(DomainTestConstants.TITLE);
+        List<Book> actual = sut.search(TITLE);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test
     public void testSearchByAuthorShouldReturnListOfBooks() throws Exception {
-        List<Book> actual = sut.search(DomainTestConstants.AUTHOR);
+        List<Book> actual = sut.search(AUTHOR);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test
     public void testSearchByISBNShouldReturnListOfBooks() throws Exception {
-        List<Book> actual = sut.search(DomainTestConstants.ISBN);
+        List<Book> actual = sut.search(ISBN);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test
     public void testSearchByFullQueryShouldReturnListOfBooks() throws Exception {
         List<Book> actual = sut.search(FULL_SEARCH_QUERY);
 
-        assertThat(actual).extracting(book -> book).containsExactly(DomainTestConstants.BOOK_FULL);
+        assertThat(actual).extracting(book -> book).containsExactly(BOOK_FULL);
     }
 
     @Test

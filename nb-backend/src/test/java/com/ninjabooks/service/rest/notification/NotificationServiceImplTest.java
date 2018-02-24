@@ -9,7 +9,10 @@ import com.ninjabooks.json.notification.QueueNotification;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.QueueUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +42,8 @@ import static org.mockito.Mockito.when;
  */
 public class NotificationServiceImplTest
 {
-    private static final Optional<User> FULL_USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
-    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
+    private static final Optional<User> FULL_USER_OPTIONAL = CommonUtils.asOptional(USER_FULL);
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(USER);
     private static final int EXPECTED_SIZE = 1;
 
     @Rule
@@ -75,7 +78,7 @@ public class NotificationServiceImplTest
     @Test
     public void testFindUserBorrowsShouldReturnListOfBorrows() throws Exception {
         prepareOngoingStubs(bookDtoMock, borrowDtoMock);
-        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
+        List<BorrowNotification> actual = sut.findUserBorrows(ID);
 
         assertThat(actual).usingFieldByFieldElementComparator()
             .extracting("bookDto", "borrowDto")
@@ -88,7 +91,7 @@ public class NotificationServiceImplTest
     @Test
     public void testFindUserBorrowsWhenUserNotHaveBorrowsShouldReturnEmptyList() throws Exception {
         when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
-        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
+        List<BorrowNotification> actual = sut.findUserBorrows(ID);
 
         assertThat(actual).isEmpty();
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -97,7 +100,7 @@ public class NotificationServiceImplTest
     @Test
     public void testFindUserBorrowsShouldReturnExpectedSizeOfList() throws Exception {
         prepareOngoingStubs(bookDtoMock, borrowDtoMock);
-        List<BorrowNotification> actual = sut.findUserBorrows(DomainTestConstants.ID);
+        List<BorrowNotification> actual = sut.findUserBorrows(ID);
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -107,7 +110,7 @@ public class NotificationServiceImplTest
     public void testFindUserQueuesShouldReturnListOfQueues() throws Exception {
         prepareSessionStubs();
         prepareOngoingStubs(bookDtoMock, queueDtoMock);
-        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
+        List<QueueNotification> actual = sut.findUserQueues(ID);
 
         assertThat(actual).usingFieldByFieldElementComparator()
             .extracting("bookDto", "queueDto")
@@ -120,7 +123,7 @@ public class NotificationServiceImplTest
     @Test
     public void testFindUserQueuesWhenUserNotHaveQueuesShouldReturnEmptyList() throws Exception {
         when(userServiceMock.getById(any())).thenReturn(USER_OPTIONAL);
-        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
+        List<QueueNotification> actual = sut.findUserQueues(ID);
 
         assertThat(actual).isEmpty();
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -130,7 +133,7 @@ public class NotificationServiceImplTest
     public void testFindUserQueuesShouldReturnExpectedSizeOfList() throws Exception {
         prepareSessionStubs();
         prepareOngoingStubs(bookDtoMock, queueDtoMock);
-        List<QueueNotification> actual = sut.findUserQueues(DomainTestConstants.ID);
+        List<QueueNotification> actual = sut.findUserQueues(ID);
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());

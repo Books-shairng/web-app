@@ -1,6 +1,9 @@
 package com.ninjabooks.json.user;
 
-import com.ninjabooks.util.constants.DomainTestConstants;
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.FIRSTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.LASTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UserRequestTest
 {
-    private static final String EXPECTED_FULLNAME = DomainTestConstants.FIRSTNAME + " " + DomainTestConstants.LASTNAME;
+    private static final String EXPECTED_FULLNAME = FIRSTNAME + " " + LASTNAME;
     private static final String INCORRECT_FIRST_NAME = "12312312Jo!!@#65667&(*_)(    h     n";
     private static final String INCORRECT_LAST_NAME = "31321@!#D@#!@#4@e@$!@$!@             e";
 
@@ -21,8 +24,7 @@ public class UserRequestTest
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new UserRequest(DomainTestConstants.FIRSTNAME, DomainTestConstants.LASTNAME,
-            DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
+        this.sut = new UserRequest(FIRSTNAME, LASTNAME, EMAIL, PLAIN_PASSWORD);
     }
 
     @Test

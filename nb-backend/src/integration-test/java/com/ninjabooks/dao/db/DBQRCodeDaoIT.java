@@ -4,7 +4,10 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -35,16 +38,16 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddQRCode() throws Exception {
-        sut.add(DomainTestConstants.QR_CODE);
+        sut.add(QR_CODE);
         Stream<QRCode> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.QR_CODE);
+        assertThat(actual).containsExactly(QR_CODE);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteQRCode() throws Exception {
-        sut.delete(DomainTestConstants.QR_CODE);
+        sut.delete(QR_CODE);
 
         assertThat(sut.getAll()).isEmpty();
     }
@@ -52,14 +55,14 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
-        Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
+        Optional<QRCode> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE);
+        assertThat(actual).contains(QR_CODE);
     }
 
     @Test
     public void testGetByIdWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<QRCode> actual = sut.getById(DomainTestConstants.ID);
+        Optional<QRCode> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -67,17 +70,17 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByData() throws Exception {
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
         assertThat(actual).hasValueSatisfying(qr -> {
-            assertThat(qr.getId()).isEqualTo(DomainTestConstants.ID);
-            assertThat(qr.getData()).isEqualTo(DomainTestConstants.DATA);
+            assertThat(qr.getId()).isEqualTo(ID);
+            assertThat(qr.getData()).isEqualTo(DATA);
         });
     }
 
     @Test
     public void testGetDataWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
         assertThat(actual).isEmpty();
     }
@@ -87,7 +90,7 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     public void testGetAllQrCodesShouldReturnsAllRecords() throws Exception {
         Stream<QRCode> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.QR_CODE);
+        assertThat(actual).containsExactly(QR_CODE);
     }
 
     @Test
@@ -110,8 +113,8 @@ public class DBQRCodeDaoIT extends AbstractBaseIT
     }
 
     private QRCode createFreshEntity() {
-        QRCode entityToUpdate = new QRCode(DomainTestConstants.DATA);
-        entityToUpdate.setId(DomainTestConstants.ID);
+        QRCode entityToUpdate = new QRCode(DATA);
+        entityToUpdate.setId(ID);
 
         return entityToUpdate;
     }

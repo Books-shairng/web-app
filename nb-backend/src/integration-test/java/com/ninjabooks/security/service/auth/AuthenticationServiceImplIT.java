@@ -5,8 +5,10 @@ import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.json.authentication.AuthenticationRequest;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.security.utils.TokenUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.utils.TestDevice;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import java.util.Optional;
 
@@ -56,7 +58,7 @@ public class AuthenticationServiceImplIT extends AbstractBaseIT
     public void testAuthUserShouldReturnUser() throws Exception {
         UserDetails actual = sut.authUser(createAuthRequest());
 
-        assertThat(actual).extracting("username").containsExactly(DomainTestConstants.EMAIL);
+        assertThat(actual).extracting("username").containsExactly(EMAIL);
     }
 
     @Test
@@ -93,17 +95,17 @@ public class AuthenticationServiceImplIT extends AbstractBaseIT
     public void testGetAuthUserShouldReturnExpectedSpringUser() throws Exception {
         SpringSecurityUser actual = sut.getAuthUser(generateToken());
 
-        assertThat(actual).extracting("username").containsExactly(DomainTestConstants.EMAIL);
+        assertThat(actual).extracting("username").containsExactly(EMAIL);
     }
 
     private String generateToken() {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(DomainTestConstants.EMAIL);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(EMAIL);
         String token = tokenUtils.generateToken(userDetails, TestDevice.createDevice());
         return SECURITY_PATTERN + token;
     }
 
     private AuthenticationRequest createAuthRequest() {
-        return new AuthenticationRequest(DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
+        return new AuthenticationRequest(EMAIL, PLAIN_PASSWORD);
     }
 
 }

@@ -4,7 +4,11 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.CommentDao;
 import com.ninjabooks.domain.Comment;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,16 +40,16 @@ public class DBCommentDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddComment() throws Exception {
-        sut.add(DomainTestConstants.COMMENT);
+        sut.add(COMMENT);
         Stream<Comment> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.COMMENT);
+        assertThat(actual).containsExactly(COMMENT);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteComment() throws Exception {
-        sut.delete(DomainTestConstants.COMMENT);
+        sut.delete(COMMENT);
         Stream<Comment> actual = sut.getAll();
 
         assertThat(actual).isEmpty();
@@ -56,7 +60,7 @@ public class DBCommentDaoIT extends AbstractBaseIT
     public void testGetAllShouldReturnsAllRecord() throws Exception {
         Stream<Comment> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.COMMENT);
+        assertThat(actual).containsExactly(COMMENT);
     }
 
     @Test
@@ -69,14 +73,14 @@ public class DBCommentDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetById() throws Exception {
-        Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Comment> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.COMMENT);
+        assertThat(actual).contains(COMMENT);
     }
 
     @Test
     public void testGetByIdEntityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Comment> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }
@@ -95,8 +99,8 @@ public class DBCommentDaoIT extends AbstractBaseIT
     }
 
     private Comment createFreshEnity() {
-        Comment updatedEnity = new Comment(DomainTestConstants.COMMENT_CONTENT, DomainTestConstants.COMMENT_DATE);
-        updatedEnity.setId(DomainTestConstants.ID);
+        Comment updatedEnity = new Comment(COMMENT_CONTENT, COMMENT_DATE);
+        updatedEnity.setId(ID);
 
         return updatedEnity;
     }

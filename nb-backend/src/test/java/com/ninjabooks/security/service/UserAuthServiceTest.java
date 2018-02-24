@@ -4,7 +4,11 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
 
 import java.util.Optional;
 
@@ -29,7 +33,7 @@ import static org.mockito.Mockito.when;
  */
 public class UserAuthServiceTest
 {
-    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER);
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(USER);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -46,21 +50,21 @@ public class UserAuthServiceTest
 
     @Test
     public void testLoadUserByUsernameShouldReturnExpectedFields() throws Exception {
-        when(userServiceMock.getByEmail(DomainTestConstants.EMAIL)).thenReturn(USER_OPTIONAL);
+        when(userServiceMock.getByEmail(EMAIL)).thenReturn(USER_OPTIONAL);
 
-        SpringSecurityUser actual = (SpringSecurityUser) sut.loadUserByUsername(DomainTestConstants.EMAIL);
+        SpringSecurityUser actual = (SpringSecurityUser) sut.loadUserByUsername(EMAIL);
         assertThat(actual).extracting("id", "name", "email")
-            .containsExactly(DomainTestConstants.ID, DomainTestConstants.NAME, DomainTestConstants.EMAIL);
+            .containsExactly(ID, NAME, EMAIL);
 
         verify(userServiceMock, atLeastOnce()).getByEmail(any());
     }
 
     @Test
     public void testLoadUserByUsernameShouldThrowsExceptionWhenEmpty() throws Exception {
-        when(userServiceMock.getByEmail(DomainTestConstants.EMAIL)).thenReturn(Optional.empty());
+        when(userServiceMock.getByEmail(EMAIL)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(UsernameNotFoundException.class)
-            .isThrownBy(() -> sut.loadUserByUsername(DomainTestConstants.EMAIL))
+            .isThrownBy(() -> sut.loadUserByUsername(EMAIL))
             .withMessageContaining("User not found")
             .withNoCause();
 

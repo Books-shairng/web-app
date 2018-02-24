@@ -3,7 +3,11 @@ package com.ninjabooks.json.notification;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dto.BorrowDto;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.BORROW_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.CAN_EXTEND;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +33,7 @@ public class BorrowNotificationIT extends AbstractBaseIT
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new BorrowNotification(DomainTestConstants.BORROW_FULL, modelMapper);
+        this.sut = new BorrowNotification(BORROW_FULL, modelMapper);
     }
 
     @Test
@@ -37,20 +41,20 @@ public class BorrowNotificationIT extends AbstractBaseIT
         BorrowDto actual = sut.getBorrowDto();
 
         assertThat(actual).extracting("expectedReturnDate")
-            .contains(DomainTestConstants.EXPECTED_RETURN_DATE);
+            .contains(EXPECTED_RETURN_DATE);
     }
 
     @Test
     public void testNotificationShouldReturnCorrectBorrowDate() throws Exception {
         BorrowDto actual = sut.getBorrowDto();
 
-        assertThat(actual).extracting("borrowDate").contains(DomainTestConstants.BORROW_DATE);
+        assertThat(actual).extracting("borrowDate").contains(BORROW_DATE);
     }
 
     @Test
     public void testNotificationShouldReturnExpectedBorrowStatus() throws Exception {
         BorrowDto actual = sut.getBorrowDto();
 
-        assertThat(actual).extracting("canExtendBorrow").contains(DomainTestConstants.CAN_EXTEND);
+        assertThat(actual).extracting("canExtendBorrow").contains(CAN_EXTEND);
     }
 }

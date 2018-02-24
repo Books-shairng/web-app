@@ -5,7 +5,12 @@ import com.ninjabooks.error.handler.AccountControllerHandler;
 import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.service.rest.account.AccountService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.FIRSTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.LASTNAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,10 +42,10 @@ public class AccountControllerTest
     private static final String TOKEN = "Bearer top_sercret_token";
     private static final String JSON =
         "{" +
-            "\"firstName\":\"" + DomainTestConstants.FIRSTNAME + "\"," +
-            "\"lastName\":\"" + DomainTestConstants.LASTNAME + "\"," +
-            "\"email\":\"" + DomainTestConstants.EMAIL + "\"," +
-            "\"password\":\"" + DomainTestConstants.PLAIN_PASSWORD + "\"}" +
+            "\"firstName\":\"" + FIRSTNAME + "\"," +
+            "\"lastName\":\"" + LASTNAME + "\"," +
+            "\"email\":\"" + EMAIL + "\"," +
+            "\"password\":\"" + PLAIN_PASSWORD + "\"}" +
         "}";
 
     @Rule
@@ -103,8 +108,8 @@ public class AccountControllerTest
 
     private SpringSecurityUser initSpringUser() {
         SpringSecurityUser springSecurityUser = new SpringSecurityUser();
-        springSecurityUser.setName(DomainTestConstants.NAME);
-        springSecurityUser.setEmail(DomainTestConstants.EMAIL);
+        springSecurityUser.setName(NAME);
+        springSecurityUser.setEmail(EMAIL);
         return springSecurityUser;
     }
 }

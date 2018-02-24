@@ -6,6 +6,9 @@ import com.ninjabooks.util.CommonUtils;
 import com.ninjabooks.util.constants.DomainTestConstants;
 import com.ninjabooks.util.db.SpecifiedElementFinder;
 
+import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -35,7 +38,7 @@ public class DBCommentDaoTest
 {
     private static final String UPDATED_COMMENT_CONTENT = "new Comment";
     private static final Supplier<Stream<Comment>> COMMENT_STREAM_SUPPLIER =
-        CommonUtils.asSupplier(DomainTestConstants.COMMENT);
+        CommonUtils.asSupplier(COMMENT);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -63,16 +66,16 @@ public class DBCommentDaoTest
 
     @Test
     public void testAddComment() throws Exception {
-        when(sessionMock.save(any())).thenReturn(DomainTestConstants.ID);
-        sut.add(DomainTestConstants.COMMENT);
+        when(sessionMock.save(any())).thenReturn(ID);
+        sut.add(COMMENT);
 
         verify(sessionMock, atLeastOnce()).save(any());
     }
 
     @Test
     public void testDeleteComment() throws Exception {
-        doNothing().when(sessionMock).delete(DomainTestConstants.COMMENT);
-        sut.delete(DomainTestConstants.COMMENT);
+        doNothing().when(sessionMock).delete(COMMENT);
+        sut.delete(COMMENT);
 
         verify(sessionMock, atLeastOnce()).delete(any());
     }
@@ -82,7 +85,7 @@ public class DBCommentDaoTest
         when(queryMock.stream()).thenReturn(COMMENT_STREAM_SUPPLIER.get());
         Stream<Comment> actual = sut.getAll();
 
-        assertThat(actual).containsExactly(DomainTestConstants.COMMENT);
+        assertThat(actual).containsExactly(COMMENT);
         verify(queryMock, atLeastOnce()).stream();
     }
 
@@ -95,16 +98,16 @@ public class DBCommentDaoTest
 
     @Test
     public void testGetById() throws Exception {
-        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(DomainTestConstants.COMMENT);
-        Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
+        when(sessionMock.get((Class<Object>) any(), any())).thenReturn(COMMENT);
+        Optional<Comment> actual = sut.getById(ID);
 
-        assertThat(actual).contains(DomainTestConstants.COMMENT);
+        assertThat(actual).contains(COMMENT);
         verify(sessionMock, atLeastOnce()).get((Class<Object>) any(), any());
     }
 
     @Test
     public void testGetByIdEntityWhichNotExistShouldReturnEmptyOptional() throws Exception {
-        Optional<Comment> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Comment> actual = sut.getById(ID);
 
         assertThat(actual).isEmpty();
     }

@@ -7,7 +7,16 @@ import com.ninjabooks.error.exception.order.OrderException;
 import com.ninjabooks.service.dao.book.BookDaoService;
 import com.ninjabooks.service.dao.queue.QueueService;
 import com.ninjabooks.service.dao.user.UserService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_FULL;
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.QUEUE;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,9 +65,9 @@ public class OrderBookServiceImplTest
 
     @Test
     public void testOrderBookShouldAddBookToTheUserQueue() throws Exception {
-        initMocks(DomainTestConstants.USER, DomainTestConstants.BOOK);
+        initMocks(USER, BOOK);
 
-        sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID);
+        sut.orderBook(ID, ID);
 
         verify(queueServiceMock, atLeastOnce()).add(any());
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -67,10 +76,10 @@ public class OrderBookServiceImplTest
 
     @Test
     public void testOrderBookWithExceedLimitShouldThrowsException() throws Exception {
-        initMocks(userWithOverflowedQueues(), DomainTestConstants.BOOK);
+        initMocks(userWithOverflowedQueues(), BOOK);
 
         assertThatExceptionOfType(OrderException.class)
-            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.orderBook(ID, ID))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -79,10 +88,10 @@ public class OrderBookServiceImplTest
 
     @Test
     public void testOrderBookWhenUserHasAlreadyOrderedShouldThorwsException() throws Exception {
-        initMocks(DomainTestConstants.USER_FULL, DomainTestConstants.BOOK_FULL);
+        initMocks(USER_FULL, BOOK_FULL);
 
         assertThatExceptionOfType(OrderException.class)
-            .isThrownBy(() -> sut.orderBook(DomainTestConstants.ID, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.orderBook(ID, ID))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -93,7 +102,7 @@ public class OrderBookServiceImplTest
         User user = createFreshEnity();
         List<Queue> borrows = IntStream.range(0, MAX_LIMIT_IN_ORDER)
             .parallel()
-            .mapToObj(operand -> DomainTestConstants.QUEUE)
+            .mapToObj(operand -> QUEUE)
             .collect(Collectors.toList());
         user.setQueues(borrows);
 
@@ -101,14 +110,14 @@ public class OrderBookServiceImplTest
     }
 
     private User createFreshEnity() {
-        User user = new User(DomainTestConstants.NAME, DomainTestConstants.EMAIL, DomainTestConstants.PLAIN_PASSWORD);
-        user.setId(DomainTestConstants.ID);
+        User user = new User(NAME, EMAIL, PLAIN_PASSWORD);
+        user.setId(ID);
 
         return user;
     }
 
     private void initMocks(User user, Book book) {
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(user));
-        when(bookServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.of(book));
+        when(userServiceMock.getById(ID)).thenReturn(Optional.of(user));
+        when(bookServiceMock.getById(ID)).thenReturn(Optional.of(book));
     }
 }

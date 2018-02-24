@@ -3,7 +3,10 @@ package com.ninjabooks.security.service;
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.security.user.SpringSecurityUser;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,16 +37,16 @@ public class UserAuthServiceIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testLoadUserByUsernameShouldReturnExpectedFields() throws Exception {
-        UserDetails details = sut.loadUserByUsername(DomainTestConstants.EMAIL);
+        UserDetails details = sut.loadUserByUsername(EMAIL);
         SpringSecurityUser actual = (SpringSecurityUser) details;
         assertThat(actual).extracting("id", "name", "email")
-            .containsExactly(DomainTestConstants.ID, DomainTestConstants.NAME, DomainTestConstants.EMAIL);
+            .containsExactly(ID, NAME, EMAIL);
     }
 
     @Test
     public void testLoadUserByUsernameShouldThrowsExceptionWhenEmpty() throws Exception {
         assertThatExceptionOfType(UsernameNotFoundException.class)
-            .isThrownBy(() -> sut.loadUserByUsername(DomainTestConstants.EMAIL))
+            .isThrownBy(() -> sut.loadUserByUsername(EMAIL))
             .withMessageContaining("User not found")
             .withNoCause();
     }

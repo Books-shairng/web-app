@@ -4,7 +4,14 @@ import com.ninjabooks.domain.User;
 import com.ninjabooks.json.history.GenericHistoryResponse;
 import com.ninjabooks.service.dao.user.UserService;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.EXPECTED_RETURN_DATE;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER;
+import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -32,7 +39,7 @@ import static org.mockito.Mockito.when;
  */
 public class UserHistoryRestServiceImplTest
 {
-    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.USER_FULL);
+    private static final Optional<User> USER_OPTIONAL = CommonUtils.asOptional(USER_FULL);
     private static final long MINUS_NUMBER_OF_DAY = 10L;
     private static final long MINUS_ZERO_DAY = 0L;
     private static final int EXPECTED_SIZE = 1;
@@ -48,12 +55,12 @@ public class UserHistoryRestServiceImplTest
     @Before
     public void setUp() throws Exception {
         this.sut = new UserHistoryRestServiceImpl(userServiceMock, new ModelMapper());
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(USER_OPTIONAL);
+        when(userServiceMock.getById(ID)).thenReturn(USER_OPTIONAL);
     }
 
     @Test
     public void testGetHistoryShouldReturnListWithExpectedSize() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual).hasSize(EXPECTED_SIZE);
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -61,22 +68,18 @@ public class UserHistoryRestServiceImplTest
 
     @Test
     public void testGetHistoryShouldReturnExpectedDtoFields() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual)
             .extracting("historyDto.returnDate", "bookDto.author", "bookDto.isbn", "bookDto.title")
-            .containsExactly(tuple(
-                DomainTestConstants.EXPECTED_RETURN_DATE,
-                DomainTestConstants.AUTHOR,
-                DomainTestConstants.ISBN,
-                DomainTestConstants.TITLE));
+            .containsExactly(tuple(EXPECTED_RETURN_DATE, AUTHOR, ISBN, TITLE));
         verify(userServiceMock, atLeastOnce()).getById(any());
     }
 
     @Test
     public void testGetHistoryShouldReturnEmptyListWhenUserDontHaveAnyHistory() throws Exception {
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.ofNullable(DomainTestConstants.USER));
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID);
+        when(userServiceMock.getById(ID)).thenReturn(Optional.ofNullable(USER));
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_ZERO_DAY, ID);
 
         assertThat(actual).isEmpty();
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -84,7 +87,7 @@ public class UserHistoryRestServiceImplTest
 
     @Test
     public void testGetHistoryShouldReturnEmptyListWhenMinusDayIsLarge() throws Exception {
-        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_NUMBER_OF_DAY, DomainTestConstants.ID);
+        List<GenericHistoryResponse> actual = sut.getHistory(MINUS_NUMBER_OF_DAY, ID);
 
         assertThat(actual).isEmpty();
         verify(userServiceMock, atLeastOnce()).getById(any());
@@ -92,10 +95,10 @@ public class UserHistoryRestServiceImplTest
 
     @Test
     public void testGetHistoryShouldThrowsExceptionWhenUnableToFindUser() throws Exception {
-        when(userServiceMock.getById(DomainTestConstants.ID)).thenReturn(Optional.empty());
+        when(userServiceMock.getById(ID)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(EntityNotFoundException.class)
-            .isThrownBy(() -> sut.getHistory(MINUS_ZERO_DAY, DomainTestConstants.ID))
+            .isThrownBy(() -> sut.getHistory(MINUS_ZERO_DAY, ID))
             .withNoCause();
 
         verify(userServiceMock, atLeastOnce()).getById(any());

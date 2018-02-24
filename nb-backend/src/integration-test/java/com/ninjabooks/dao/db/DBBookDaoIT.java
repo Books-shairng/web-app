@@ -4,7 +4,12 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.domain.Book;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -37,16 +42,16 @@ public class DBBookDaoIT extends AbstractBaseIT
 
     @Test
     public void testAddBook() throws Exception {
-        sut.add(DomainTestConstants.BOOK);
+        sut.add(BOOK);
         Stream<Book> actual = sut.getAll();
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(DomainTestConstants.BOOK);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(BOOK);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteBook() throws Exception {
-        sut.delete(DomainTestConstants.BOOK);
+        sut.delete(BOOK);
         Stream<Book> actual = sut.getAll();
 
         assertThat(actual).isEmpty();
@@ -55,18 +60,18 @@ public class DBBookDaoIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetByID() throws Exception {
-        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Book> actual = sut.getById(ID);
 
         assertThat(actual).hasValueSatisfying(book -> {
-            assertThat(book.getAuthor()).isEqualTo(DomainTestConstants.AUTHOR);
-            assertThat(book.getTitle()).isEqualTo(DomainTestConstants.TITLE);
-            assertThat(book.getIsbn()).isEqualTo(DomainTestConstants.ISBN);
+            assertThat(book.getAuthor()).isEqualTo(AUTHOR);
+            assertThat(book.getTitle()).isEqualTo(TITLE);
+            assertThat(book.getIsbn()).isEqualTo(ISBN);
         });
     }
 
     @Test
     public void testGetByIdBookWhichNotExistShouldRetunEmptyOptional() throws Exception {
-        Optional<Book> actual = sut.getById(DomainTestConstants.ID);
+        Optional<Book> actual = sut.getById(ID);
 
         AssertionsForClassTypes.assertThat(actual).isEmpty();
     }
@@ -76,50 +81,50 @@ public class DBBookDaoIT extends AbstractBaseIT
     public void testGetAllShouldRetrunAllRecords() throws Exception {
         Stream<Book> actual = sut.getAll();
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).containsOnly(DomainTestConstants.BOOK);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).containsOnly(BOOK);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByTitle() throws Exception {
-        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+        Stream<Book> actual = sut.getByTitle(TITLE);
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(DomainTestConstants.BOOK);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(BOOK);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByAuthor() throws Exception {
-        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+        Stream<Book> actual = sut.getByAuthor(AUTHOR);
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(DomainTestConstants.BOOK);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(BOOK);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/dao_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetBooksByISBN() throws Exception {
-        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+        Stream<Book> actual = sut.getByISBN(ISBN);
 
-        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(DomainTestConstants.BOOK);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORED_FIELDS).contains(BOOK);
     }
 
     @Test
     public void testGetBookTitleWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = sut.getByTitle(DomainTestConstants.TITLE);
+        Stream<Book> actual = sut.getByTitle(TITLE);
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetBookAuthorWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = sut.getByAuthor(DomainTestConstants.AUTHOR);
+        Stream<Book> actual = sut.getByAuthor(AUTHOR);
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     public void testGetBookISBNWhichNotExistShouldBeEmpty() throws Exception {
-        Stream<Book> actual = sut.getByISBN(DomainTestConstants.ISBN);
+        Stream<Book> actual = sut.getByISBN(ISBN);
 
         assertThat(actual).isEmpty();
     }
@@ -137,8 +142,8 @@ public class DBBookDaoIT extends AbstractBaseIT
     }
 
     private Book createFreshEnity() {
-        Book enityToUpdate = new Book(DomainTestConstants.TITLE, DomainTestConstants.AUTHOR, DomainTestConstants.ISBN);
-        enityToUpdate.setId(DomainTestConstants.ID);
+        Book enityToUpdate = new Book(TITLE, AUTHOR, ISBN);
+        enityToUpdate.setId(ID);
 
         return enityToUpdate;
     }

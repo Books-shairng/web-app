@@ -4,7 +4,9 @@ import com.ninjabooks.dao.GenericDao;
 import com.ninjabooks.dao.QRCodeDao;
 import com.ninjabooks.domain.QRCode;
 import com.ninjabooks.util.CommonUtils;
-import com.ninjabooks.util.constants.DomainTestConstants;
+
+import static com.ninjabooks.util.constants.DomainTestConstants.DATA;
+import static com.ninjabooks.util.constants.DomainTestConstants.QR_CODE;
 
 import java.util.Optional;
 
@@ -27,7 +29,7 @@ import static org.mockito.Mockito.when;
  */
 public class QRCodeServiceImplTest
 {
-    private static final Optional<QRCode> EXPECTED_OPTIONAL = CommonUtils.asOptional(DomainTestConstants.QR_CODE);
+    private static final Optional<QRCode> EXPECTED_OPTIONAL = CommonUtils.asOptional(QR_CODE);
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
@@ -47,17 +49,17 @@ public class QRCodeServiceImplTest
 
     @Test
     public void testGetByDataShouldReturnOptional() throws Exception {
-        when(qrCodeDaoMock.getByData(DomainTestConstants.DATA)).thenReturn(EXPECTED_OPTIONAL);
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        when(qrCodeDaoMock.getByData(DATA)).thenReturn(EXPECTED_OPTIONAL);
+        Optional<QRCode> actual = sut.getByData(DATA);
 
-        assertThat(actual).contains(DomainTestConstants.QR_CODE);
+        assertThat(actual).contains(QR_CODE);
         verify(qrCodeDaoMock, atLeastOnce()).getByData(any());
     }
 
     @Test
     public void testGetByDataWhenEmptyShouldReturnEmptyOptional() throws Exception {
-        when(qrCodeDaoMock.getByData(DomainTestConstants.DATA)).thenReturn(Optional.empty());
-        Optional<QRCode> actual = sut.getByData(DomainTestConstants.DATA);
+        when(qrCodeDaoMock.getByData(DATA)).thenReturn(Optional.empty());
+        Optional<QRCode> actual = sut.getByData(DATA);
 
         assertThat(actual).isEmpty();
         verify(qrCodeDaoMock, atLeastOnce()).getByData(any());
