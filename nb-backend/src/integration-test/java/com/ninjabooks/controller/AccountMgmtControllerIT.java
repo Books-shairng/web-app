@@ -4,7 +4,7 @@ import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
-import static com.ninjabooks.util.constants.DomainTestConstants.PASSWORD;
+import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,9 +68,18 @@ public class AccountMgmtControllerIT extends AbstractBaseIT
     public void testChangePasswordWithNotUniquePasswordShouldReturnBadRequest() throws Exception {
         mockMvc.perform(post(API_URL_REQUEST + "password", ID)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(generateJson(PASSWORD)))
+            .content(generateJson(PLAIN_PASSWORD)))
             .andDo(print())
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testChangePasswordWithNotUniquePasswordShouldReturnExpectedErrorMessage() throws Exception {
+        mockMvc.perform(post(API_URL_REQUEST + "password", ID)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(generateJson(PLAIN_PASSWORD)))
+            .andDo(print())
+            .andExpect(jsonPath("$.message").value("New password is not unique"));
     }
 
     private String generateJson(String password) {
