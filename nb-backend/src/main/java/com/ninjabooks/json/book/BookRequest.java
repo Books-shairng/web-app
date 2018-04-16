@@ -18,18 +18,18 @@ public class BookRequest implements Serializable
     private static final long serialVersionUID = 1636948648964665823L;
 
     @NotEmpty(message = "{default.NotEmpty.message}")
-    private final String title;
+    private String title;
 
     @NotEmpty(message = "{default.NotEmpty.message}")
-    private final String author;
+    private String author;
 
     @NotEmpty(message = "{default.NotEmpty.message}")
     @ISBN
-    private final String isbn;
+    private String isbn;
 
     @NotEmpty(message = "{default.NotEmpty.message}")
     @Length(max = 5000, message = "{description.Length.message}")
-    private final String description;
+    private String description;
 
     @JsonCreator
     public BookRequest(@JsonProperty(value = "title") String title,

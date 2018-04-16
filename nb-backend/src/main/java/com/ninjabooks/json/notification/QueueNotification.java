@@ -3,9 +3,7 @@ package com.ninjabooks.json.notification;
 import com.ninjabooks.domain.Queue;
 import com.ninjabooks.dto.QueueDto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.modelmapper.ModelMapper;
 
@@ -22,13 +20,10 @@ public class QueueNotification extends GenericNotification
 
     @JsonUnwrapped
     @JsonIgnoreProperties(value = {"active", "id"})
-    private final QueueDto queueDto;
-    private final int positionInQueue;
+    private QueueDto queueDto;
+    private int positionInQueue;
 
-    @JsonCreator
-    public QueueNotification(Queue queue,
-                             @JsonProperty(value = "positionInQueue") int positionInQueue,
-                             ModelMapper modelMapper) {
+    public QueueNotification(Queue queue, int positionInQueue, ModelMapper modelMapper) {
         super(modelMapper, queue.getBook());
         this.queueDto = modelMapper.map(queue, QueueDto.class);
         this.positionInQueue = positionInQueue;
@@ -38,8 +33,16 @@ public class QueueNotification extends GenericNotification
         return queueDto;
     }
 
+    public void setQueueDto(QueueDto queueDto) {
+        this.queueDto = queueDto;
+    }
+
     public int getPositionInQueue() {
         return positionInQueue;
+    }
+
+    public void setPositionInQueue(int positionInQueue) {
+        this.positionInQueue = positionInQueue;
     }
 
 }

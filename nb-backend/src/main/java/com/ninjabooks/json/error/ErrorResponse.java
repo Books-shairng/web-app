@@ -2,8 +2,6 @@ package com.ninjabooks.json.error;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -14,14 +12,11 @@ public class ErrorResponse implements Serializable
 {
     private static final long serialVersionUID = -3253330504028658177L;
 
-    private final int status;
-    private final String message;
-    private final String request;
+    private int status;
+    private String message;
+    private String request;
 
-    @JsonCreator
-    public ErrorResponse(@JsonProperty(value = "status") HttpStatus status,
-                         @JsonProperty(value = "message") Exception ex,
-                         @JsonProperty(value = "request") String request) {
+    public ErrorResponse(HttpStatus status, Exception ex, String request) {
         this.status = status.value();
         this.message = ex.getMessage();
         this.request = request;
@@ -31,12 +26,23 @@ public class ErrorResponse implements Serializable
         return status;
     }
 
+    public void setStatus(HttpStatus status) {
+        this.status = status.value();
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getRequest() {
         return request;
     }
 
+    public void setRequest(String request) {
+        this.request = request;
+    }
 }
