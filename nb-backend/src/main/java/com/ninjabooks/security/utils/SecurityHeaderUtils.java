@@ -9,7 +9,6 @@ import java.util.Optional;
 public final class SecurityHeaderUtils
 {
     private static final String BEARER = "Bearer";
-    private static final String REGEX = ".*\\b" + BEARER + "\\b.*\\s+|\\s+|.*\\b" + BEARER + "\\b.*";
 
     private SecurityHeaderUtils() {
     }
@@ -29,6 +28,6 @@ public final class SecurityHeaderUtils
     }
 
     private static String extract(String header) {
-        return header.replaceAll(REGEX, "");
+        return header.replaceAll(".*\\b" + BEARER + "\\b.*\\s+|\\s+|.*\\b" + BEARER + "\\b.*", "");
     }
 }
