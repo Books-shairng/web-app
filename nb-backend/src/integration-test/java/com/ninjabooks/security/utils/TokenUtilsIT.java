@@ -32,7 +32,7 @@ public class TokenUtilsIT extends AbstractBaseIT
 {
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalDate EXPECTED_EXP_DATE = TODAY.plusDays(7);
-    private static final String EXPECTED_AUDIENCE = "unknown";
+    private static final Audience EXPECTED_AUDIENCE = Audience.UNKNOWN;
     private static final String RANDOM_TOKEN =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
             ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9" +
@@ -95,14 +95,14 @@ public class TokenUtilsIT extends AbstractBaseIT
 
     @Test
     public void testGetAudienceShouldReturnExpectedAudience() throws Exception {
-        String actual = sut.getAudienceFromToken(generateToken());
+        Audience actual = sut.getAudienceFromToken(generateToken());
 
         assertThat(actual).isEqualTo(EXPECTED_AUDIENCE);
     }
 
     @Test
     public void testGetAudienceFromWrongTokenShouldReturnNull() throws Exception {
-        String actual = sut.getAudienceFromToken(RANDOM_TOKEN);
+        Audience actual = sut.getAudienceFromToken(RANDOM_TOKEN);
 
         assertThat(actual).isNull();
     }
