@@ -2,14 +2,6 @@ package com.ninjabooks.security.utils;
 
 import com.ninjabooks.security.user.SpringSecurityUser;
 
-import static com.ninjabooks.security.utils.Audience.MOBILE;
-import static com.ninjabooks.security.utils.Audience.TABLET;
-import static com.ninjabooks.security.utils.Audience.UNKNOWN;
-import static com.ninjabooks.security.utils.Audience.WEB;
-import static com.ninjabooks.security.utils.Claim.AUDIENCE;
-import static com.ninjabooks.security.utils.Claim.CREATED;
-import static com.ninjabooks.security.utils.Claim.USERNAME;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -41,6 +33,15 @@ public class TokenUtils implements Serializable
     private static final LocalDateTime ACTUAL_DATE_TIME = LocalDateTime.now();
     private static final int WEEK_IN_DAYS = 7;
 
+    private static final String CLAIM_KEY_USERNAME = "sub";
+    private static final String CLAIM_KEY_AUDIENCE = "audience";
+    private static final String CLAIM_KEY_CREATED = "created";
+
+    private static final String AUDIENCE_UNKNOWN = "unknown";
+    private static final String AUDIENCE_WEB = "web";
+    private static final String AUDIENCE_MOBILE = "mobile";
+    private static final String AUDIENCE_TABLET = "tablet";
+
     private final String secretHashValue;
 
     public TokenUtils(@Value(value = "${jwt.hash-secret-code}") String secretHashValue) {
@@ -49,9 +50,9 @@ public class TokenUtils implements Serializable
 
     public String generateToken(UserDetails userDetails, Device device) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(USERNAME.key(), userDetails.getUsername());
-        claims.put(AUDIENCE.key(), generateAudience(device));
-        claims.put(CREATED.key(), Timestamp.valueOf(ACTUAL_DATE_TIME));
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device));
+        claims.put(CLAIM_KEY_CREATED, Timestamp.valueOf(ACTUAL_DATE_TIME));
         return generateToken(claims);
     }
 
@@ -70,7 +71,7 @@ public class TokenUtils implements Serializable
         LocalDateTime created;
         try {
             Claims claims = getClaimsFromToken(token);
-            Long val = (Long) claims.get(CREATED.key());
+            Long val = (Long) claims.get(CLAIM_KEY_CREATED);
             created = new Timestamp(val).toLocalDateTime();
         } catch (Exception e) {
             created = null;
@@ -89,12 +90,11 @@ public class TokenUtils implements Serializable
         return expiration;
     }
 
-    public Audience getAudienceFromToken(String token) {
-        Audience audience;
+    public String getAudienceFromToken(String token) {
+        String audience;
         try {
             Claims claims = getClaimsFromToken(token);
-            String s = claims.get(AUDIENCE.key(), String.class);
-            audience = Audience.valueOf(s);
+            audience = (String) claims.get(CLAIM_KEY_AUDIENCE);
         } catch (Exception e) {
             audience = null;
         }
@@ -111,7 +111,7 @@ public class TokenUtils implements Serializable
         String refreshedToken;
         try {
             Claims claims = getClaimsFromToken(token);
-            claims.put(CREATED.key(), Timestamp.valueOf(LocalDateTime.now()));
+            claims.put(CLAIM_KEY_CREATED, Timestamp.valueOf(LocalDateTime.now()));
             refreshedToken = generateToken(claims);
         } catch (Exception e) {
             refreshedToken = null;
@@ -154,23 +154,23 @@ public class TokenUtils implements Serializable
         return (lastPasswordReset != null && created.isBefore(lastPasswordReset));
     }
 
-    private Audience generateAudience(Device device) {
-        Audience audience = UNKNOWN;
+    private String generateAudience(Device device) {
+        String audience = AUDIENCE_UNKNOWN;
         if (device.isNormal()) {
-            audience = WEB;
+            audience = AUDIENCE_WEB;
         }
         else if (device.isTablet()) {
-            audience = TABLET;
+            audience = AUDIENCE_TABLET;
         }
         else if (device.isMobile()) {
-            audience = MOBILE;
+            audience = AUDIENCE_MOBILE;
         }
         return audience;
     }
 
     private Boolean ignoreTokenExpiration(String token) {
-        Audience audience = getAudienceFromToken(token);
-        return (audience == TABLET || audience == MOBILE);
+        String audience = getAudienceFromToken(token);
+        return (AUDIENCE_TABLET.equals(audience) || AUDIENCE_MOBILE.equals(audience));
     }
 
     private String generateToken(Map<String, Object> claims) {
