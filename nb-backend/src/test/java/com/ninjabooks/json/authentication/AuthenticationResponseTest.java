@@ -13,13 +13,6 @@ public class AuthenticationResponseTest
     private static final String TOKEN = "token";
 
     @Test
-    public void testConstructorWithoutArgumentsShouldCreateObjectWithEmptyFields() throws Exception {
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-
-        assertThat(authenticationResponse.getToken()).isNull();
-    }
-
-    @Test
     public void testConstructorWithArgumentsShouldCreateExpectedObject() throws Exception {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse(TOKEN);
 
