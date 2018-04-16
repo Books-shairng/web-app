@@ -5,6 +5,7 @@ import com.ninjabooks.dto.HistoryDto;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.modelmapper.ModelMapper;
 
@@ -17,8 +18,9 @@ public abstract class GenericHistoryResponse implements Serializable
     private static final long serialVersionUID = -7702537035127045678L;
 
     @JsonUnwrapped
-    private HistoryDto historyDto;
+    private final HistoryDto historyDto;
 
+    @JsonCreator
     public GenericHistoryResponse(History history, ModelMapper modelMapper) {
         historyDto = modelMapper.map(history, HistoryDto.class);
     }
@@ -27,7 +29,4 @@ public abstract class GenericHistoryResponse implements Serializable
         return historyDto;
     }
 
-    public void setHistoryDto(HistoryDto historyDto) {
-        this.historyDto = historyDto;
-    }
 }
