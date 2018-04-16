@@ -6,8 +6,6 @@ import com.ninjabooks.util.converter.json.LocalDateTimeSerializer;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -21,16 +19,12 @@ public class CommentResponse implements Serializable
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private final LocalDateTime date;
-    private final String author;
-    private final String content;
-    private final String isbn;
+    private LocalDateTime date;
+    private String author;
+    private String content;
+    private String isbn;
 
-    @JsonCreator
-    public CommentResponse(@JsonProperty(value = "author") String author,
-                           @JsonProperty(value = "date") LocalDateTime date,
-                           @JsonProperty(value = "content") String content,
-                           @JsonProperty(value = "isbn") String isbn) {
+    public CommentResponse(String author, LocalDateTime date, String content, String isbn) {
         this.author = author;
         this.date = date;
         this.content = content;
@@ -41,16 +35,31 @@ public class CommentResponse implements Serializable
         return author;
     }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getIsbn() {
         return isbn;
     }
 
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 }

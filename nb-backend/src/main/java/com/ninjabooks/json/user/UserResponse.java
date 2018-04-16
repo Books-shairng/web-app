@@ -4,8 +4,6 @@ import com.ninjabooks.security.user.SpringSecurityUser;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
@@ -19,9 +17,12 @@ public class UserResponse implements Serializable
     private String lastName;
     private String email;
 
-    @JsonCreator
     public UserResponse(SpringSecurityUser securityUser) {
         prepareResponse(securityUser);
+    }
+
+    public UserResponse() {
+        super();
     }
 
     public Long getId() {

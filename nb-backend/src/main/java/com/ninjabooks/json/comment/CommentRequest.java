@@ -17,7 +17,7 @@ public class CommentRequest implements Serializable
 
     @NotEmpty(message = "{default.NotEmpty.message}")
     @Length(min = 1, max = 250)
-    private final String comment;
+    private String comment;
 
     @JsonCreator
     public CommentRequest(@JsonProperty(value = "comment") String comment) {
