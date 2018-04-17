@@ -31,14 +31,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @ComponentScan(basePackages = {"com.ninjabooks.security", "com.ninjabooks.util"})
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class WebSecuirtyConfig extends WebSecurityConfigurerAdapter
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
     private final UserDetailsService userAuthService;
     private final EntryPointUnauthorizedHandler unauthorizedHandler;
     private final TokenUtils tokenUtils;
 
     @Autowired
-    public WebSecuirtyConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler,
+    public WebSecurityConfig(UserDetailsService userAuthService, EntryPointUnauthorizedHandler unauthorizedHandler,
                              TokenUtils tokenUtils) {
         this.userAuthService = userAuthService;
         this.unauthorizedHandler = unauthorizedHandler;
