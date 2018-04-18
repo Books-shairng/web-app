@@ -2,12 +2,12 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.utils.JSONDateConstans;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.utils.JSONDateConstans.COMMENT_DATE;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
@@ -72,7 +72,7 @@ public class CommentControllerIT extends AbstractBaseIT
             .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.[0].date").value(JSONDateConstans.COMMENT_DATE))
+            .andExpect(jsonPath("$.[0].date").value(COMMENT_DATE.value()))
             .andExpect(jsonPath("$.[0].author").value(NAME))
             .andExpect(jsonPath("$.[0].content").value(COMMENT_CONTENT))
             .andExpect(jsonPath("$.[0].isbn").value(ISBN));

@@ -12,7 +12,6 @@ import com.ninjabooks.service.dao.comment.CommentDaoService;
 import com.ninjabooks.util.entity.EntityUtilsWrapper;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -23,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Piotr 'pitrecki' Nowak

@@ -2,11 +2,11 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.utils.JSONDateConstans;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
+import static com.ninjabooks.utils.JSONDateConstans.RETURN_DATE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class HistoryControllerIT extends AbstractBaseIT
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.[0].id").value(ID))
-            .andExpect(jsonPath("$.[0].returnDate").value(JSONDateConstans.RETURN_DATE))
+            .andExpect(jsonPath("$.[0].returnDate").value(RETURN_DATE.value()))
             .andExpect(jsonPath("$.[0].['book'].id").value(ID))
             .andExpect(jsonPath("$.[0].['book'].author").value(AUTHOR))
             .andExpect(jsonPath("$.[0].['book'].isbn").value(ISBN));

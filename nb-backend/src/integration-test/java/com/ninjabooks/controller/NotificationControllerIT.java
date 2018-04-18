@@ -2,13 +2,15 @@ package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.utils.JSONDateConstans;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
 import static com.ninjabooks.util.constants.DomainTestConstants.CAN_EXTEND;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
+import static com.ninjabooks.utils.JSONDateConstans.BORROW_DATE;
+import static com.ninjabooks.utils.JSONDateConstans.ORDER_DATE;
+import static com.ninjabooks.utils.JSONDateConstans.RETURN_DATE;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,13 +61,13 @@ public class NotificationControllerIT extends AbstractBaseIT
             .andExpect(jsonPath("$.['Queues list'][0].author").value(AUTHOR))
             .andExpect(jsonPath("$.['Queues list'][0].title").value(TITLE))
             .andExpect(jsonPath("$.['Queues list'][0].isbn").value(ISBN))
-            .andExpect(jsonPath("$.['Queues list'][0].orderDate").value(JSONDateConstans.ORDER_DATE))
+            .andExpect(jsonPath("$.['Queues list'][0].orderDate").value(ORDER_DATE.value()))
             .andExpect(jsonPath("$.['Books list'][0].id").value(ID))
             .andExpect(jsonPath("$.['Books list'][0].author").value(AUTHOR))
             .andExpect(jsonPath("$.['Books list'][0].title").value(TITLE))
             .andExpect(jsonPath("$.['Books list'][0].isbn").value(ISBN))
-            .andExpect(jsonPath("$.['Books list'][0].borrowDate").value(JSONDateConstans.BORROW_DATE))
-            .andExpect(jsonPath("$.['Books list'][0].expectedReturnDate").value(JSONDateConstans.RETURN_DATE))
+            .andExpect(jsonPath("$.['Books list'][0].borrowDate").value(BORROW_DATE.value()))
+            .andExpect(jsonPath("$.['Books list'][0].expectedReturnDate").value(RETURN_DATE.value()))
             .andExpect(jsonPath("$.['Books list'][0].canExtendBorrow").value(CAN_EXTEND));
     }
 
@@ -81,8 +83,8 @@ public class NotificationControllerIT extends AbstractBaseIT
             .andExpect(jsonPath("$.['Books list'][0].author").value(AUTHOR))
             .andExpect(jsonPath("$.['Books list'][0].title").value(TITLE))
             .andExpect(jsonPath("$.['Books list'][0].isbn").value(ISBN))
-            .andExpect(jsonPath("$.['Books list'][0].borrowDate").value(JSONDateConstans.BORROW_DATE))
-            .andExpect(jsonPath("$.['Books list'][0].expectedReturnDate").value(JSONDateConstans.RETURN_DATE))
+            .andExpect(jsonPath("$.['Books list'][0].borrowDate").value(BORROW_DATE.value()))
+            .andExpect(jsonPath("$.['Books list'][0].expectedReturnDate").value(RETURN_DATE.value()))
             .andExpect(jsonPath("$.['Books list'][0].canExtendBorrow").value(CAN_EXTEND));
     }
 
@@ -97,7 +99,7 @@ public class NotificationControllerIT extends AbstractBaseIT
             .andExpect(jsonPath("$.['Queues list'][0].author").value(AUTHOR))
             .andExpect(jsonPath("$.['Queues list'][0].title").value(TITLE))
             .andExpect(jsonPath("$.['Queues list'][0].isbn").value(ISBN))
-            .andExpect(jsonPath("$.['Queues list'][0].orderDate").value(JSONDateConstans.ORDER_DATE))
+            .andExpect(jsonPath("$.['Queues list'][0].orderDate").value(ORDER_DATE.value()))
             .andExpect(jsonPath("$.['Books list'][*]").isEmpty());
     }
 
