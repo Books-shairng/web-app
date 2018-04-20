@@ -9,6 +9,8 @@ import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 import static com.ninjabooks.utils.JSONDateConstans.COMMENT_DATE;
 
+import java.util.Collections;
+
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,11 +132,7 @@ public class CommentControllerIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentWithTooLongCommentFieldsShouldFailed() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i <= COMMENT_DEFAULT_LENGTH; i++) {
-            builder.append(" ");
-        }
-        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).set("$.comment", builder.toString()).jsonString();
+        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).set("$.comment", generateLongComment()).jsonString();
         addCommentWithExpectedMessageAsResponse(json, "comment length must be between 1 and 250");
     }
 
@@ -147,5 +145,9 @@ public class CommentControllerIT extends AbstractBaseIT
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.message").value(message))
             .andExpect(status().isBadRequest());
+    }
+
+    private String generateLongComment() {
+        return  String.join("", Collections.nCopies(COMMENT_DEFAULT_LENGTH + 1, " "));
     }
 }

@@ -2,6 +2,7 @@ package com.ninjabooks.security.utils;
 
 import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.config.IntegrationTest;
+import com.ninjabooks.error.exception.TokenException;
 import com.ninjabooks.utils.TestDevice;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
@@ -35,8 +36,8 @@ public class TokenUtilsIT extends AbstractBaseIT
     private static final Audience EXPECTED_AUDIENCE = Audience.UNKNOWN;
     private static final String RANDOM_TOKEN =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-            ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9" +
-            ".TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9" +
+        ".TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -59,10 +60,10 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     @Test
-    public void testGetUsernameFromWrongTokenShouldReturnNull() throws Exception {
-        String actual = sut.getUsernameFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetUsernameFromWrongTokenShouldReturnException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getUsernameFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -73,10 +74,10 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     @Test
-    public void testGetCreatedDateFromWrongTokenShouldRetunNull() throws Exception {
-        LocalDateTime actual = sut.getCreatedDateFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetCreatedDateFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getCreatedDateFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -87,10 +88,10 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     @Test
-    public void testGetExpirationDateFromWrongTokenShouldReturnNull() throws Exception {
-        LocalDateTime actual = sut.getExpirationDateFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetExpirationDateFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getExpirationDateFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -101,10 +102,10 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     @Test
-    public void testGetAudienceFromWrongTokenShouldReturnNull() throws Exception {
-        Audience actual = sut.getAudienceFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetAudienceFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getAudienceFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -123,10 +124,10 @@ public class TokenUtilsIT extends AbstractBaseIT
     }
 
     @Test
-    public void testRefreshTokenShouldReturnNullWhenTokenIsWrong() throws Exception {
-        String actual = sut.refreshToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testRefreshTokenShouldThrowsExceptionWhenTokenIsWrong() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.refreshToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -138,7 +139,7 @@ public class TokenUtilsIT extends AbstractBaseIT
 
     @Test
     public void testIsValidateTokenWithWrongTokenShouldFailedAndReturnFalse() throws Exception {
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(TokenException.class)
             .isThrownBy(() -> sut.isValid(RANDOM_TOKEN, obtainUserDetails()))
             .withNoCause();
     }

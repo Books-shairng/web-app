@@ -1,5 +1,6 @@
 package com.ninjabooks.security.utils;
 
+import com.ninjabooks.error.exception.TokenException;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.utils.TestDevice;
 
@@ -66,10 +67,10 @@ public class TokenUtilsTest
     }
 
     @Test
-    public void testGetUsernameFromWrongTokenShouldReturnNull() throws Exception {
-        String actual = sut.getUsernameFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetUsernameFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getUsernameFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -80,10 +81,10 @@ public class TokenUtilsTest
     }
 
     @Test
-    public void testGetCreatedDateFromWrongTokenShouldRetunNull() throws Exception {
-        LocalDateTime actual = sut.getCreatedDateFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetCreatedDateFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getCreatedDateFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -94,10 +95,10 @@ public class TokenUtilsTest
     }
 
     @Test
-    public void testGetExpirationDateFromWrongTokenShouldReturnNull() throws Exception {
-        LocalDateTime actual = sut.getExpirationDateFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetExpirationDateFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getExpirationDateFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -108,10 +109,10 @@ public class TokenUtilsTest
     }
 
     @Test
-    public void testGetAudienceFromWrongTokenShouldReturnNull() throws Exception {
-        Audience actual = sut.getAudienceFromToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testGetAudienceFromWrongTokenShouldThrowsException() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.getAudienceFromToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -130,10 +131,10 @@ public class TokenUtilsTest
     }
 
     @Test
-    public void testRefreshTokenShouldReturnNullWhenTokenIsWrong() throws Exception {
-        String actual = sut.refreshToken(RANDOM_TOKEN);
-
-        assertThat(actual).isNull();
+    public void testRefreshTokenShouldThrowsExceptiojWhenTokenIsWrong() throws Exception {
+        assertThatExceptionOfType(TokenException.class)
+            .isThrownBy(() -> sut.refreshToken(RANDOM_TOKEN))
+            .withNoCause();
     }
 
     @Test
@@ -147,7 +148,7 @@ public class TokenUtilsTest
 
     @Test
     public void testIsValidateTokenWithWrongTokenShouldFailedAndReturnFalse() throws Exception {
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(TokenException.class)
             .isThrownBy(() -> sut.isValid(RANDOM_TOKEN, springSecurityUserMock))
             .withNoCause();
     }

@@ -1,5 +1,6 @@
 package com.ninjabooks.security.utils;
 
+import com.ninjabooks.error.exception.TokenException;
 import com.ninjabooks.security.user.SpringSecurityUser;
 
 import static com.ninjabooks.security.utils.Audience.MOBILE;
@@ -14,12 +15,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mobile.device.Device;
@@ -37,6 +42,7 @@ import org.springframework.stereotype.Component;
 public class TokenUtils implements Serializable
 {
     private static final long serialVersionUID = -3301605591108950415L;
+    private static final Logger Logger = LogManager.getLogger(TokenUtils.class);
 
     private static final LocalDateTime ACTUAL_DATE_TIME = LocalDateTime.now();
     private static final int WEEK_IN_DAYS = 7;
@@ -56,70 +62,50 @@ public class TokenUtils implements Serializable
     }
 
     public String getUsernameFromToken(String token) {
-        String username;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
-        return username;
+        return Optional.ofNullable(getClaimsFromToken(token))
+            .map(Claims::getSubject)
+            .orElseThrow(() -> new TokenException("Unable to obtain username from claims"));
     }
 
     public LocalDateTime getCreatedDateFromToken(String token) {
-        LocalDateTime created;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            Long val = (Long) claims.get(CREATED.key());
-            created = new Timestamp(val).toLocalDateTime();
-        } catch (Exception e) {
-            created = null;
-        }
-        return created;
+        long timestamp = Optional.ofNullable(getClaimsFromToken(token))
+            .map(claims -> (long) claims.get(CREATED.key()))
+            .orElseThrow(() -> new TokenException("Unable to obtain creation date from claims"));
+
+        return new Timestamp(timestamp).toLocalDateTime();
     }
 
     public LocalDateTime getExpirationDateFromToken(String token) {
-        LocalDateTime expiration;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            expiration = claims.getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        } catch (Exception e) {
-            expiration = null;
-        }
-        return expiration;
+        return Optional.ofNullable(getClaimsFromToken(token))
+            .map(claims -> claims.getExpiration().toInstant())
+            .map(instant -> instant.atZone(ZoneId.systemDefault()))
+            .map(ZonedDateTime::toLocalDateTime)
+            .orElseThrow(() -> new TokenException("Unable to obtain expiration date from claims"));
     }
 
     public Audience getAudienceFromToken(String token) {
-        Audience audience;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            String s = claims.get(AUDIENCE.key(), String.class);
-            audience = Audience.valueOf(s);
-        } catch (Exception e) {
-            audience = null;
-        }
-        return audience;
+        return Optional.ofNullable(getClaimsFromToken(token))
+            .map(claims -> claims.get(AUDIENCE.key(), String.class))
+            .map(Audience::valueOf)
+            .orElseThrow(() -> new TokenException("Unable to obtain audience from claims"));
     }
 
-    public Boolean canTokenBeRefreshed(String token, LocalDateTime lastPasswordReset) {
+    public boolean canTokenBeRefreshed(String token, LocalDateTime lastPasswordReset) {
         final LocalDateTime created = getCreatedDateFromToken(token);
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
             && (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
 
     public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            claims.put(CREATED.key(), Timestamp.valueOf(LocalDateTime.now()));
-            refreshedToken = generateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
+        return Optional.ofNullable(getClaimsFromToken(token))
+            .map(claims -> {
+                claims.put(CREATED.key(), Timestamp.valueOf(LocalDateTime.now()));
+                return generateToken(claims);
+            })
+            .orElseThrow(() -> new TokenException("Unable to refresh token"));
     }
 
-    public Boolean isValid(String token, UserDetails userDetails) {
+    public boolean isValid(String token, UserDetails userDetails) {
         SpringSecurityUser user = (SpringSecurityUser) userDetails;
         String username = getUsernameFromToken(token);
         LocalDateTime created = getCreatedDateFromToken(token);
@@ -129,14 +115,14 @@ public class TokenUtils implements Serializable
     }
 
     private Claims getClaimsFromToken(String token) {
-        Claims claims;
+        Claims claims = null;
         try {
             claims = Jwts.parser()
                 .setSigningKey(secretHashValue)
                 .parseClaimsJws(token)
                 .getBody();
         } catch (Exception e) {
-            claims = null;
+            Logger.error("Unable to obtain claims from token", e);
         }
         return claims;
     }
@@ -145,12 +131,12 @@ public class TokenUtils implements Serializable
         return Timestamp.valueOf(ACTUAL_DATE_TIME.plusDays(WEEK_IN_DAYS));
     }
 
-    private Boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         final LocalDateTime expiration = getExpirationDateFromToken(token);
         return expiration.isBefore(ACTUAL_DATE_TIME);
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(LocalDateTime created, LocalDateTime lastPasswordReset) {
+    private boolean isCreatedBeforeLastPasswordReset(LocalDateTime created, LocalDateTime lastPasswordReset) {
         return (lastPasswordReset != null && created.isBefore(lastPasswordReset));
     }
 
@@ -168,7 +154,7 @@ public class TokenUtils implements Serializable
         return audience;
     }
 
-    private Boolean ignoreTokenExpiration(String token) {
+    private boolean ignoreTokenExpiration(String token) {
         Audience audience = getAudienceFromToken(token);
         return (audience == TABLET || audience == MOBILE);
     }
