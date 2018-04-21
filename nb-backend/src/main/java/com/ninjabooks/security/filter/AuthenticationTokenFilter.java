@@ -48,7 +48,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     }
 
     private void performAuthentication(HttpServletRequest httpRequest, String authToken) {
-        String username = tokenUtils.getUsernameFromToken(authToken);
+        String username = obtainUsername(authToken);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (tokenUtils.isValid(authToken, userDetails)) {
@@ -56,6 +56,15 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
+        }
+    }
+
+    private String obtainUsername(String token) {
+        String username = null;
+        try {
+            username = tokenUtils.getUsernameFromToken(token);
+        } finally {
+            return username;
         }
     }
 }

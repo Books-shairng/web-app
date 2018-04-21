@@ -1,7 +1,6 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.util.constants.DomainTestConstants;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
@@ -12,12 +11,10 @@ import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,8 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 public class BookControllerIT extends AbstractBaseIT
 {
     private static final int EXPECTED_SIZE = 1;

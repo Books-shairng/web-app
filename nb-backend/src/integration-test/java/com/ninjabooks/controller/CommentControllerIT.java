@@ -1,22 +1,21 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
-import com.ninjabooks.utils.JSONDateConstans;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.COMMENT_CONTENT;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
+import static com.ninjabooks.utils.JSONDateConstans.COMMENT_DATE;
+
+import java.util.Collections;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,8 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CommentControllerIT extends AbstractBaseIT
 {
     private static final String NO_COMMENTS_MESSAGE = "Book does not contains any comments";
@@ -72,7 +69,7 @@ public class CommentControllerIT extends AbstractBaseIT
             .param("isbn", ISBN))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.[0].date").value(JSONDateConstans.COMMENT_DATE))
+            .andExpect(jsonPath("$.[0].date").value(COMMENT_DATE.value()))
             .andExpect(jsonPath("$.[0].author").value(NAME))
             .andExpect(jsonPath("$.[0].content").value(COMMENT_CONTENT))
             .andExpect(jsonPath("$.[0].isbn").value(ISBN));
@@ -130,11 +127,7 @@ public class CommentControllerIT extends AbstractBaseIT
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testAddCommentWithTooLongCommentFieldsShouldFailed() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i <= COMMENT_DEFAULT_LENGTH; i++) {
-            builder.append(" ");
-        }
-        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).set("$.comment", builder.toString()).jsonString();
+        String json = JsonPath.parse(JSON_REQUEST_WITH_COMMENT).set("$.comment", generateLongComment()).jsonString();
         addCommentWithExpectedMessageAsResponse(json, "comment length must be between 1 and 250");
     }
 
@@ -147,5 +140,9 @@ public class CommentControllerIT extends AbstractBaseIT
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.message").value(message))
             .andExpect(status().isBadRequest());
+    }
+
+    private String generateLongComment() {
+        return  String.join("", Collections.nCopies(COMMENT_DEFAULT_LENGTH + 1, " "));
     }
 }

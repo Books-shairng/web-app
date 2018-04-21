@@ -1,7 +1,6 @@
 package com.ninjabooks.dao.db;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.UserDao;
 import com.ninjabooks.domain.User;
 
@@ -17,10 +16,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,8 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 1.0
  */
 @Transactional
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DBUserDaoIT extends AbstractBaseIT
 {
     private static final String NEW_NAME = "Peter Datov";

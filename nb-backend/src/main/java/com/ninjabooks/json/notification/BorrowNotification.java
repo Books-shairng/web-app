@@ -21,7 +21,7 @@ public class BorrowNotification extends GenericNotification
 
     @JsonUnwrapped
     @JsonIgnoreProperties(value = {"active", "id"})
-    private BorrowDto borrowDto;
+    private final BorrowDto borrowDto;
 
     public BorrowNotification(Borrow borrow, ModelMapper modelMapper) {
         super(modelMapper, borrow.getBook());
@@ -30,9 +30,5 @@ public class BorrowNotification extends GenericNotification
 
     public BorrowDto getBorrowDto() {
         return borrowDto;
-    }
-
-    public void setBorrowDto(BorrowDto borrowDto) {
-        this.borrowDto = borrowDto;
     }
 }

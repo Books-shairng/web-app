@@ -1,7 +1,6 @@
 package com.ninjabooks.service.rest.borrow.extend;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BorrowDao;
 import com.ninjabooks.domain.Borrow;
 import com.ninjabooks.error.exception.borrow.BorrowException;
@@ -13,10 +12,8 @@ import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +25,6 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(value = "classpath:sql_query/rent-scripts/return-script/it_return_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class ExtendRentalServiceImplIT extends AbstractBaseIT

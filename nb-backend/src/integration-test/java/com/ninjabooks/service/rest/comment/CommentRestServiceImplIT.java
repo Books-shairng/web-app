@@ -1,7 +1,6 @@
 package com.ninjabooks.service.rest.comment;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Comment;
 import com.ninjabooks.domain.History;
 import com.ninjabooks.error.exception.comment.CommentException;
@@ -21,10 +20,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +33,6 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
 public class CommentRestServiceImplIT extends AbstractBaseIT
 {
