@@ -1,7 +1,6 @@
 package com.ninjabooks.service.rest.borrow;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Book;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
@@ -17,11 +16,9 @@ import static com.ninjabooks.util.constants.DomainTestConstants.USER_FULL;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,8 +28,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class RentalHelperIT extends AbstractBaseIT

@@ -1,7 +1,6 @@
 package com.ninjabooks.dao.db;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.dao.BookDao;
 import com.ninjabooks.domain.Book;
 
@@ -16,11 +15,9 @@ import java.util.stream.Stream;
 
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,8 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 1.0
  */
 @Transactional
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DBBookDaoIT extends AbstractBaseIT
 {
     private static final String[] IGNORED_FIELDS = {"queues", "borrows", "histories", "comments"};

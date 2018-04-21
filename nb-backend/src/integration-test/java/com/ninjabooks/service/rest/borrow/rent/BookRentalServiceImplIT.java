@@ -1,7 +1,6 @@
 package com.ninjabooks.service.rest.borrow.rent;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.BaseEntity;
 import com.ninjabooks.domain.Book;
 import com.ninjabooks.domain.BookStatus;
@@ -23,11 +22,9 @@ import javax.persistence.EntityNotFoundException;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +36,6 @@ import static org.assertj.core.groups.Tuple.tuple;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Sql(value = "classpath:sql_query/rent-scripts/it_rent_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class BookRentalServiceImplIT extends AbstractBaseIT

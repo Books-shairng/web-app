@@ -1,7 +1,6 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
@@ -10,11 +9,9 @@ import static com.ninjabooks.utils.JSONDateConstans.RETURN_DATE;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -30,8 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Sql(value = "classpath:sql_query/history-scripts/it_std_hist_script.sql", executionPhase = BEFORE_TEST_METHOD)
 public class HistoryControllerIT extends AbstractBaseIT
 {

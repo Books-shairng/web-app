@@ -1,7 +1,6 @@
 package com.ninjabooks.service.dao.queue;
 
 import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.config.IntegrationTest;
 import com.ninjabooks.domain.Queue;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.ORDER_DATE;
@@ -12,11 +11,9 @@ import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,8 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@IntegrationTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class QueueServiceImplIT extends AbstractBaseIT

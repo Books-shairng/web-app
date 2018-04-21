@@ -3,10 +3,12 @@ package com.ninjabooks.config;
 import javax.sql.DataSource;
 
 import org.junit.After;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * This is base class which is <bold>requried</bold> to proper run integration tests.
@@ -15,6 +17,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
  * since 1.0
  */
 @IntegrationTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public abstract class AbstractBaseIT
 {
     @Autowired
