@@ -1,34 +1,28 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.config.AbstractBaseIT;
+import com.ninjabooks.util.tests.HttpRequest;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
 import static com.ninjabooks.util.constants.DomainTestConstants.ENCRYPTED_PASSWORD;
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.google.common.collect.ImmutableMap;
+import org.junit.Test;
+import org.springframework.test.context.jdbc.Sql;
+
+import static java.util.Collections.singletonMap;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class QueryControllerIT extends AbstractBaseIT
+@Sql(value = "classpath:sql_query/it_import.sql", executionPhase = BEFORE_TEST_METHOD)
+public class QueryControllerIT extends BaseITController
 {
     private static final String WRONG_SQL_COMMAND = "DASDAS ADASDASDAS";
     private static final String SELECT_QUERY = "SELECT * FROM USER";
@@ -36,65 +30,49 @@ public class QueryControllerIT extends AbstractBaseIT
         "INSERT INTO USER (NAME, EMAIL, PASSWORD, AUTHORITY, ACTIVE) " +
         "VALUES ('John Dee', 'john.dee@exmaple.com', 'Johny!Dee123', 'USER', TRUE)";
     public static final int EXPECTED_SIZE = 1;
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    private MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+    private static final String URL = "/api/query";
 
     @Test
     public void testExecuteShouldReturnExpectedStatus() throws Exception {
-        mockMvc.perform(post("/api/query")
-            .param("q", SELECT_QUERY))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        doPost(new HttpRequest.HttpRequestBuilder(URL)
+            .withParameter("q", SELECT_QUERY)
+            .build());
     }
 
     @Test
     public void testExecuteWithSelectQueryShouldReturnExpectedMessage() throws Exception {
-        mockMvc.perform(post("/api/query")
-            .param("q", SELECT_QUERY))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$..ID").value(ID.intValue()))
-            .andExpect(jsonPath("$..ACTIVE").value(true))
-            .andExpect(jsonPath("$..PASSWORD").value(ENCRYPTED_PASSWORD))
-            .andExpect(jsonPath("$..EMAIL").value(EMAIL))
-            .andExpect(jsonPath("$..NAME").value(NAME));
+        Map<String, Object> res = ImmutableMap.of(
+            "$..ID", ID.intValue(),
+            "$..ACTIVE", true,
+            "$..PASSWORD", ENCRYPTED_PASSWORD,
+            "$..EMAIL", EMAIL,
+            "$..NAME", NAME
+        );
+
+        doPost(new HttpRequest.HttpRequestBuilder(URL)
+            .withParameter("q", SELECT_QUERY)
+            .build(), res);
     }
 
     @Test
     public void testExecuteWithSelectQueryShouldRetunResponseWithExpectedSize() throws Exception {
-        mockMvc.perform(post("/api/query")
-            .param("q", SELECT_QUERY))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.length()").value(EXPECTED_SIZE));
+        doPost(new HttpRequest.HttpRequestBuilder(URL)
+            .withParameter("q", SELECT_QUERY)
+            .build(), singletonMap("$.length()", EXPECTED_SIZE));
     }
 
     @Test
     public void testExecuteWithInsertQueryShouldReturnExpectedMessage() throws Exception {
-        mockMvc.perform(post("/api/query")
-            .param("q", INSERT_QUERY))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$..['EXECUTE RESULT']").value(ID.toString()));
+        doPost(new HttpRequest.HttpRequestBuilder(URL)
+            .withParameter("q", INSERT_QUERY)
+            .build(), singletonMap("$..['EXECUTE RESULT']", ID.toString()));
     }
 
     @Test
     public void testExecuteWithWrongSQLCommandShouldThrowsException() throws Exception {
-        mockMvc.perform(post("/api/query")
-            .param("q", WRONG_SQL_COMMAND))
-            .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        doPost(new HttpRequest.HttpRequestBuilder(URL)
+            .withParameter("q", WRONG_SQL_COMMAND)
+            .withStatus(BAD_REQUEST)
+            .build());
     }
 }

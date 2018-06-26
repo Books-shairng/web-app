@@ -1,25 +1,28 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.config.AbstractBaseIT;
-import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
+import com.ninjabooks.util.tests.MockMvcHttpMethod;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.AUTHOR;
+import static com.ninjabooks.util.constants.DomainTestConstants.BOOK_STATUS;
 import static com.ninjabooks.util.constants.DomainTestConstants.DESCRIPTION;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.ISBN;
 import static com.ninjabooks.util.constants.DomainTestConstants.TITLE;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static java.util.Collections.singletonMap;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -30,38 +33,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class BookControllerIT extends AbstractBaseIT
+public class BookControllerIT extends BaseITController
 {
-    private static final int EXPECTED_SIZE = 1;
-    private static final String BOOK_STATUS = DomainTestConstants.BOOK_STATUS.toString();
-    private static final String ID = String.valueOf(DomainTestConstants.ID);
+    private static final Integer EXPECTED_SIZE = 1;
     private static final String INVALID_ISBN = "978-0851310415";
     private static final int MAX_DESCRIPTION_LENGTH = 5000;
     private static final String JSON =
-        "{" +
-            "\"title\":\"" + TITLE + "\"," +
-            "\"author\":\"" + AUTHOR + "\"," +
-            "\"isbn\":\"" + ISBN + "\"," +
-            "\"description\":\"" + DESCRIPTION + "\"" +
-        "}";
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    private MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+        "{\"title\":\"" + TITLE + "\",\"author\":\"" + AUTHOR + "\",\"isbn\":\"" + ISBN + "\"," +
+        "\"description\":\"" + DESCRIPTION + "\"}";
+    private static final String BASE_URL = "/api/book/";
 
     @Test
     public void testAddNewBookShouldReturnStatusCreated() throws Exception {
-        mockMvc.perform(post("/api/book/")
-            .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isCreated());
+        doPost(new HttpRequestBuilder(BASE_URL)
+            .withContent(JSON)
+            .withStatus(CREATED)
+            .build());
     }
 
     @Test
@@ -106,51 +93,52 @@ public class BookControllerIT extends AbstractBaseIT
 
     @Test
     public void testAddNewBookShouldReturnNotEmptyQRCodeMessage() throws Exception {
-        mockMvc.perform(post("/api/book/")
-            .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
+        MockMvc mvc = ((MockMvcHttpMethod) httpMethod).getMvc();
+        mvc.perform(post(BASE_URL)
+            .content(JSON).contentType(APPLICATION_JSON_UTF8))
             .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.generatedCode").isNotEmpty());
     }
 
     @Test
     @Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnStatusOk() throws Exception {
-        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(status().isOk());
+        doGet(new HttpRequestBuilder(BASE_URL + "{bookID}")
+            .withUrlVars(ID)
+            .build());
     }
 
     @Test
     @Sql(scripts = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetDetailsBookInfoShouldReturnExpectedMessage() throws Exception {
-        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(jsonPath("$.id").value(ID))
-            .andExpect(jsonPath("$.author").value(AUTHOR))
-            .andExpect(jsonPath("$.title").value(TITLE))
-            .andExpect(jsonPath("$.isbn").value(ISBN))
-            .andExpect(jsonPath("$.description").value(DESCRIPTION))
-            .andExpect(jsonPath("$.status").value(BOOK_STATUS))
-            .andExpect(jsonPath("$.queueSize").value(EXPECTED_SIZE));
+        Map<String, Object> expectedJson = ImmutableMap.<String, Object>builder()
+            .put("$.id", ID.intValue())
+            .put("$.title", TITLE)
+            .put("$.isbn", ISBN)
+            .put("$.description", DESCRIPTION)
+            .put("$.status", BOOK_STATUS.toString())
+            .put("$.queueSize", EXPECTED_SIZE)
+            .build();
+
+        doGet(new HttpRequestBuilder(BASE_URL + "{bookID}")
+            .withUrlVars(ID)
+            .build(), expectedJson);
     }
 
     @Test
     public void testGetDetailsBookInfoShouldFailWhenBookNotFound() throws Exception {
-        mockMvc.perform(get("/api/book/{bookID}", DomainTestConstants.ID))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(status().isBadRequest());
+        doGet(new HttpRequestBuilder(BASE_URL + "{bookID}")
+            .withUrlVars(ID)
+            .withStatus(BAD_REQUEST)
+            .build());
     }
 
     private void addBookWithExpectedMessageAsResponse(String json, String message) throws Exception {
-        mockMvc.perform(post("/api/book/")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value(message));
+        doPost(new HttpRequestBuilder(BASE_URL)
+            .withContent(json)
+            .withStatus(BAD_REQUEST)
+            .build(), singletonMap("$.message", message));
     }
 }

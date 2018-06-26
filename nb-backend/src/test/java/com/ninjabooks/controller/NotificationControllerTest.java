@@ -1,50 +1,41 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.notification.NotificationService;
-import com.ninjabooks.util.constants.DomainTestConstants;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
 
-import java.util.Collections;
+import static com.ninjabooks.util.constants.DomainTestConstants.ID;
+
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class NotificationControllerTest
+public class NotificationControllerTest extends BaseUTController
 {
-    private static final List RESPONSE_CONTENT = Collections.singletonList("TEST");
-    private static final long USER_ID = DomainTestConstants.ID;
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
+    private static final List RESPONSE_CONTENT = singletonList("TEST");
+    private static final String URL = "/api/notification/{userID}";
+
     @Mock
     private NotificationService notificationServiceMock;
 
-    private MockMvc mockMvc;
     private NotificationController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new NotificationController(notificationServiceMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
+        sut = new NotificationController(notificationServiceMock);
+        mockMvc(standaloneSetup(sut));
     }
 
     @Test
@@ -52,10 +43,9 @@ public class NotificationControllerTest
     public void testUserNotificationFoundBorrowsShouldReturnJson() throws Exception {
         when(notificationServiceMock.findUserBorrows(anyLong())).thenReturn(RESPONSE_CONTENT);
 
-        mockMvc.perform(get("/api/notification/{userID}", USER_ID))
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        doGet(new HttpRequestBuilder(URL)
+            .withUrlVars(ID)
+            .build());
 
         verify(notificationServiceMock, atLeastOnce()).findUserBorrows(anyLong());
     }
@@ -65,19 +55,22 @@ public class NotificationControllerTest
     public void testUserNotificationFoundQueuesShouldRentunJson() throws Exception {
         when(notificationServiceMock.findUserQueues(anyLong())).thenReturn(RESPONSE_CONTENT);
 
-        mockMvc.perform(get("/api/notification/{userID}", USER_ID))
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        doGet(new HttpRequestBuilder(URL)
+            .withUrlVars(ID)
+            .build());
 
         verify(notificationServiceMock, atLeastOnce()).findUserQueues(anyLong());
     }
 
     @Test
     public void testUserNotificationNotFoundAnyBorrowsAndQueuesShouldRetunStauts204() throws Exception {
-        mockMvc.perform(get("/api/notification/{userID}", USER_ID))
-            .andDo(print())
-            .andExpect(status().isOk());
+        when(notificationServiceMock.findUserBorrows(anyLong())).thenReturn(RESPONSE_CONTENT);
+        when(notificationServiceMock.findUserQueues(anyLong())).thenReturn(RESPONSE_CONTENT);
+
+        doGet(new HttpRequestBuilder(URL)
+            .withUrlVars(ID)
+            .build());
+
 
         verify(notificationServiceMock, atLeastOnce()).findUserQueues(anyLong());
         verify(notificationServiceMock, atLeastOnce()).findUserBorrows(anyLong());

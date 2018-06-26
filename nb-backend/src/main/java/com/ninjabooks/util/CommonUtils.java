@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author Piotr 'pitrecki' Nowak
@@ -36,6 +37,6 @@ public final class CommonUtils
         final ModelMapper modelMapper = new ModelMapper();
         return (List<T>) collection.parallelStream()
             .map(o -> modelMapper.map(o, clazz))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 }

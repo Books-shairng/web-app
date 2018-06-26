@@ -1,24 +1,18 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.config.AbstractBaseIT;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
-import org.junit.Before;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static java.lang.String.format;
+import static java.util.Collections.singletonMap;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 
 /**
@@ -26,61 +20,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 1.0
  */
 @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class AccountMgmtControllerIT extends AbstractBaseIT
+public class AccountMgmtControllerIT extends BaseITController
 {
     private static final String API_URL_REQUEST = "/api/management/{userID}/";
-    private static final String UNIQUE_PASSWORD = "RaNdOm!@#123";
+    private static final String RANDOM_PASWORD = RandomStringUtils.random(1);
 
-    @Autowired
-    private WebApplicationContext wac;
-
-    MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    @Test
+    public void testChangePasswordShouldSucceed() throws Exception {
+        doPost(new HttpRequestBuilder(API_URL_REQUEST + "password")
+            .withUrlVars(ID)
+            .withContent(generateJson(RANDOM_PASWORD))
+            .build(), singletonMap("$.message", "Successfully change password"));
     }
 
     @Test
-    public void testChangePasswordShouldSuccedAndReturnExpectedMessage() throws Exception {
-        mockMvc.perform(post(API_URL_REQUEST + "password", ID)
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(generateJson(UNIQUE_PASSWORD)))
-            .andDo(print())
-            .andExpect(jsonPath("$.message").value("Successfully change password"));
-    }
-
-    @Test
-    public void testChangePasswordShouldSucceedAndReturnStatusOK() throws Exception {
-        mockMvc.perform(post(API_URL_REQUEST + "password", ID)
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(generateJson(UNIQUE_PASSWORD)))
-            .andDo(print())
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testChangePasswordWithNotUniquePasswordShouldReturnBadRequest() throws Exception {
-        mockMvc.perform(post(API_URL_REQUEST + "password", ID)
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(generateJson(PLAIN_PASSWORD)))
-            .andDo(print())
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void testChangePasswordWithNotUniquePasswordShouldReturnExpectedErrorMessage() throws Exception {
-        mockMvc.perform(post(API_URL_REQUEST + "password", ID)
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(generateJson(PLAIN_PASSWORD)))
-            .andDo(print())
-            .andExpect(jsonPath("$.message").value("New password is not unique"));
+    public void testChangePasswordWithNotUniquePasswordShouldFail() throws Exception {
+        doPost(new HttpRequestBuilder(API_URL_REQUEST + "password")
+            .withUrlVars(ID)
+            .withContent(generateJson(PLAIN_PASSWORD))
+            .withStatus(BAD_REQUEST)
+            .build(), singletonMap("$.message", "New password is not unique"));
     }
 
     private String generateJson(String password) {
-        return
-            "{" +
-                "\"password\":" +"\"" + password + "\"" +
-            "}";
+        return format("{\"password\":\"%s\"}", password);
     }
 }

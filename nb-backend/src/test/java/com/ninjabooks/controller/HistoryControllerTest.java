@@ -1,69 +1,60 @@
 package com.ninjabooks.controller;
 
 import com.ninjabooks.service.rest.history.HistoryRestService;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.ID;
 
+import java.util.Map;
+
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static java.util.Collections.singletonMap;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class HistoryControllerTest
+public class HistoryControllerTest extends BaseUTController
 {
     private static final String MINUS_DAYS = "10";
     private static final String EMPTY_HISTORY_MESSAGE = "User has no history";
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
+    private static final String URL = "/api/history/{userID}/";
 
     @Mock
     private HistoryRestService historyRestServiceMock;
 
-    private MockMvc mockMvc;
     private HistoryController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new HistoryController(historyRestServiceMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
+        sut = new HistoryController(historyRestServiceMock);
+        mockMvc(standaloneSetup(sut));
     }
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", ID))
-            .andDo(print())
-            .andExpect(status().isOk());
+        doGet(new HttpRequestBuilder(URL)
+            .withUrlVars(ID)
+            .build());
     }
 
     @Test
     public void testFetchUserHistoryWithoutParamsShouldReturnMessageWhenUuserHasNoHistory() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", ID))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.message").value(EMPTY_HISTORY_MESSAGE));
+        Map<String, Object> json = singletonMap("$.message", EMPTY_HISTORY_MESSAGE);
+        doGet(new HttpRequestBuilder(URL)
+            .withUrlVars(ID)
+            .build(), json);
     }
 
     @Test
     public void testFetchUserHistoryWithParamsShouldReturnStatusOK() throws Exception {
-        mockMvc.perform(get("/api/history/{userID}/", ID)
-            .param("minusDays", MINUS_DAYS))
-            .andDo(print())
-            .andExpect(status().isOk());
+        doGet(new HttpRequestBuilder(URL)
+            .withParameter("minusDays", MINUS_DAYS)
+            .withUrlVars(ID)
+            .build());
     }
 }
