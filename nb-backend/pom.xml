@@ -92,6 +92,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>WebApp.*</exclude>
+                        <exclude>com/ninjabooks/domain/*</exclude>
+                        <exclude>com/ninjabooks/configuration/*</exclude>
+                        <exclude>com/ninjabooks/security/config/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <!--Unit Tests configuration-->
                     <execution>
