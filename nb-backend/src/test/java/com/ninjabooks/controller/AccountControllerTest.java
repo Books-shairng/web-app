@@ -5,6 +5,7 @@ import com.ninjabooks.error.handler.AccountControllerHandler;
 import com.ninjabooks.security.service.auth.AuthenticationService;
 import com.ninjabooks.security.user.SpringSecurityUser;
 import com.ninjabooks.service.rest.account.AccountService;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
 import static com.ninjabooks.util.constants.DomainTestConstants.FIRSTNAME;
@@ -13,43 +14,30 @@ import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class AccountControllerTest
+public class AccountControllerTest extends BaseUTController
 {
     private static final String TOKEN = "Bearer top_sercret_token";
+    private static final String URL = "/api/user";
     private static final String JSON =
-        "{" +
-            "\"firstName\":\"" + FIRSTNAME + "\"," +
-            "\"lastName\":\"" + LASTNAME + "\"," +
-            "\"email\":\"" + EMAIL + "\"," +
-            "\"password\":\"" + PLAIN_PASSWORD + "\"}" +
-        "}";
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule().silent();
+        "{\"firstName\":\"" + FIRSTNAME + "\",\"lastName\":\"" + LASTNAME + "\"," +
+        "\"email\":\"" + EMAIL + "\",\"password\":\"" + PLAIN_PASSWORD + "\"}";
 
     @Mock
     private AccountService accountServiceMock;
@@ -57,24 +45,20 @@ public class AccountControllerTest
     @Mock
     private AuthenticationService authenticationServiceMock;
 
-    private MockMvc mockMvc;
     private AccountController sut;
 
     @Before
     public void setUp() throws Exception {
-        this.sut = new AccountController(accountServiceMock, authenticationServiceMock);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sut)
-            .setControllerAdvice(new AccountControllerHandler())
-            .build();
+        sut = new AccountController(accountServiceMock, authenticationServiceMock);
+        mockMvc(standaloneSetup(sut).setControllerAdvice(new AccountControllerHandler()));
     }
 
     @Test
     public void testCreateUserShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/user")
-            .content(JSON)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isCreated());
+        doPost(new HttpRequestBuilder(URL)
+            .withContent(JSON)
+            .withStatus(CREATED)
+            .build());
 
         verify(accountServiceMock, atLeastOnce()).createUser(any());
     }
@@ -83,11 +67,10 @@ public class AccountControllerTest
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
         doThrow(UserAlreadyExistException.class).when(accountServiceMock).createUser(any());
 
-        mockMvc.perform(post("/api/user")
-            .content(JSON).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest());
+        doPost(new HttpRequestBuilder(URL)
+            .withContent(JSON)
+            .withStatus(BAD_REQUEST)
+            .build());
 
         verify(accountServiceMock, atLeastOnce()).createUser(any());
     }
@@ -97,11 +80,10 @@ public class AccountControllerTest
         SpringSecurityUser springUser = initSpringUser();
         when(authenticationServiceMock.getAuthUser(any())).thenReturn(springUser);
 
-        mockMvc.perform(get("/api/user")
-            .header("Authorization", TOKEN)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isFound());
+        doGet(new HttpRequestBuilder(URL)
+            .withHeader("Authorization", TOKEN)
+            .withStatus(FOUND)
+            .build());
 
         verify(authenticationServiceMock, atLeastOnce()).getAuthUser(any());
     }

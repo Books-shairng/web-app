@@ -1,7 +1,7 @@
 package com.ninjabooks.controller;
 
-import com.ninjabooks.config.AbstractBaseIT;
 import com.ninjabooks.security.utils.TokenUtils;
+import com.ninjabooks.util.tests.HttpRequest.HttpRequestBuilder;
 import com.ninjabooks.utils.TestDevice;
 
 import static com.ninjabooks.util.constants.DomainTestConstants.EMAIL;
@@ -11,46 +11,35 @@ import static com.ninjabooks.util.constants.DomainTestConstants.LASTNAME;
 import static com.ninjabooks.util.constants.DomainTestConstants.NAME;
 import static com.ninjabooks.util.constants.DomainTestConstants.PLAIN_PASSWORD;
 
-import java.text.MessageFormat;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static java.text.MessageFormat.format;
+import static java.util.Collections.singletonMap;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
 
 /**
  * @author Piotr 'pitrecki' Nowak
  * @since 1.0
  */
-public class AccountControllerIT extends AbstractBaseIT
+public class AccountControllerIT extends BaseITController
 {
-    private static final String JSON =
-        "{" +
-            "\"firstName\":\"" + FIRSTNAME + "\"," +
-            "\"lastName\":\"" + LASTNAME + "\"," +
-            "\"email\":\"" + EMAIL + "\"," +
-            "\"password\":\"" + PLAIN_PASSWORD + "\"" +
-        "}";
+    private static final String URL = "/api/user";
     private static final String USER_CREATE_MESSAGE = "User was successfully created";
     private static final String SHORT_PASSWORD = "aa";
-
-    @Autowired
-    private WebApplicationContext wac;
+    private static final String JSON =
+        "{\"firstName\":\"" + FIRSTNAME + "\",\"lastName\":\"" + LASTNAME + "\"," +
+            "\"email\":\"" + EMAIL + "\",\"password\":\"" + PLAIN_PASSWORD + "\"}";
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -58,96 +47,70 @@ public class AccountControllerIT extends AbstractBaseIT
     @Autowired
     private UserDetailsService userDetailsService;
 
-    private MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
-
     @Test
     public void testCreateUserShouldSucceed() throws Exception {
-        mockMvc.perform(post("/api/user")
-            .content(JSON)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void testCreateUserShouldCreateUserAndReturnExpectedMessage() throws Exception {
-        mockMvc.perform(post("/api/user")
-            .content(JSON)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(jsonPath("$.message").value(USER_CREATE_MESSAGE));
+        doPost(new HttpRequestBuilder(URL)
+            .withContent(JSON)
+            .withStatus(CREATED)
+            .build(), singletonMap("$.message", USER_CREATE_MESSAGE));
     }
 
     @Test
     public void testCreateUserWithoutMailFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.email").jsonString();
-        createUserWithExpectedMessageAsResponse(json, "email field must be not empty");
+        callApiWithExpectedMessageAsResponse(json, "email field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutFirstNameFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.firstName").jsonString();
-        createUserWithExpectedMessageAsResponse(json, "firstName field must be not empty");
+        callApiWithExpectedMessageAsResponse(json, "firstName field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutLastNameFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.lastName").jsonString();
-        createUserWithExpectedMessageAsResponse(json, "lastName field must be not empty");
+        callApiWithExpectedMessageAsResponse(json, "lastName field must be not empty");
     }
 
     @Test
     public void testCreateUserWithoutPasswordFieldShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).delete("$.password").jsonString();
-        createUserWithExpectedMessageAsResponse(json, "password field must be not empty");
+        callApiWithExpectedMessageAsResponse(json, "password field must be not empty");
     }
 
     @Test
     public void testCreateUserWithShortPasswordShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).set("$.password", SHORT_PASSWORD).jsonString();
-        createUserWithExpectedMessageAsResponse(json, "password is too short, minimum length must equals: 8");
+        callApiWithExpectedMessageAsResponse(json, "password is too short, minimum length must equals: 8");
     }
 
     @Test
     public void testCreateUserWithMalformedEmailShouldFailed() throws Exception {
         String json = JsonPath.parse(JSON).set("$.email", NAME).jsonString();
-        createUserWithExpectedMessageAsResponse(json, "email is not a well-formated");
+        callApiWithExpectedMessageAsResponse(json, "email is not a well-formated");
     }
 
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testCreateUserWhichAlreadyExistShouldThrowsException() throws Exception {
-        String expectedResponse = MessageFormat.format("Username email: {0} already exist in database",
-            EMAIL);
-        createUserWithExpectedMessageAsResponse(JSON, expectedResponse);
+        String expectedResponse = format("Username email: {0} already exist in database", EMAIL);
+        callApiWithExpectedMessageAsResponse(JSON, expectedResponse);
     }
 
     @Test
     @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     public void testGetAuthentationShouldSucceed() throws Exception {
-        mockMvc.perform(get("/api/user")
-            .header("Authorization", generateToken())
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isFound());
-    }
+        Map<String, Object> expctedJson = ImmutableMap.of(
+            "$.id", ID.intValue(),
+            "$.firstName", FIRSTNAME,
+            "$.lastName", LASTNAME,
+            "$.email", EMAIL);
 
-    @Test
-    @Sql(value = "classpath:sql_query/it_import.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    public void testGetAuthentationShouldReturnExpectedJSON() throws Exception {
-        mockMvc.perform(get("/api/user")
-            .header("Authorization", generateToken())
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(jsonPath("$.id").value(ID))
-            .andExpect(jsonPath("$.firstName").value(FIRSTNAME))
-            .andExpect(jsonPath("$.lastName").value(LASTNAME))
-            .andExpect(jsonPath("$.email").value(EMAIL));
+        doGet(new HttpRequestBuilder(URL)
+            .withHeader("Authorization", generateToken())
+            .withStatus(FOUND)
+            .build(), expctedJson);
     }
 
     private String generateToken() {
@@ -156,12 +119,10 @@ public class AccountControllerIT extends AbstractBaseIT
         return "Bearer " + token;
     }
 
-    private void createUserWithExpectedMessageAsResponse(String json, String message) throws Exception {
-        mockMvc.perform(post("/api/user")
-            .content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message").value(message));
+    private void callApiWithExpectedMessageAsResponse(String json, String message) throws Exception {
+        doPost(new HttpRequestBuilder(URL)
+            .withContent(json)
+            .withStatus(BAD_REQUEST)
+            .build(), singletonMap("$.message", message));
     }
 }
